@@ -40,9 +40,7 @@ jobs:
       - name: Run Tests
         run: npm test
 
-      - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v4.1.0
-        with:
-          build_dir: dist/
+      - name: Deploy to Vercel
+         run: vercel --prod
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
