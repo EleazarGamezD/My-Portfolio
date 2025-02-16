@@ -6,4 +6,12 @@ import { Component } from '@angular/core';
   templateUrl: './cv.component.html',
   styleUrl: './cv.component.scss',
 })
-export class CvComponent {}
+export class CvComponent {
+  downloadCV(filename: string): void {
+    const filePath = `assets/docs/${filename}`;
+    const link = document.createElement('a');
+    link.href = filePath;
+    link.download = filename;
+    link.click();
+  }
+}
