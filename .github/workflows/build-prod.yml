@@ -40,4 +40,5 @@ jobs:
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/master'
         run: |
-          npx ngh --dir=dist/my-portfolio  # Usando npx para ejecutar angular-cli-ghpages
+          npm install -g angular-cli-ghpages
+          npx ngh --dir=dist/my-portfolio --no-silent  # Usando npx para ejecutar angular-cli-ghpages
