@@ -8,7 +8,7 @@
     "build": "ng build",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --karma-config ./karma.conf.js",
     "serve:ssr:My-Portfolio": "node dist/my-portfolio/server/server.mjs"
   },
   "private": true,
