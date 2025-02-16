@@ -37,6 +37,11 @@ jobs:
       - name: Install angular-cli-ghpages locally
         run: npm install angular-cli-ghpages --save-dev # install angular-cli-ghpages
 
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/master'
         run: |
