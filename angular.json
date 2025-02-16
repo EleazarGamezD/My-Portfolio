@@ -37,18 +37,15 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "node_modules/swiper/swiper-bundle.min.css",
               "src/assets/css/style.css",
               "src/assets/css/responsive.css",
-              "src/assets/css/icon.min.css",
               "src/assets/spa-salon/spa-salon.css",
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/jquery.appear/jquery.appear.js",
-              "node_modules/animejs/lib/anime.min.js",
-              "node_modules/imagesloaded/imagesloaded.pkgd.min.js",
+              "src/assets/js/jquery.js",
+              "src/assets/js/vendors.min.js",
               "src/assets/js/main.js"
             ],
             "server": "src/main.server.ts",
