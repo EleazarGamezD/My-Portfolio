@@ -38,6 +38,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/swiper/swiper-bundle.min.css",
+              "src/assets/css/icon.min.css",
               "src/assets/css/style.css",
               "src/assets/css/responsive.css",
               "src/assets/spa-salon/spa-salon.css",

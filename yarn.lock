@@ -225,7 +225,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/platform-browser@^19.1.0":
+"@angular/platform-browser@^19.1.6":
   version "19.1.6"
   resolved "https://registry.npmjs.org/@angular/platform-browser/-/platform-browser-19.1.6.tgz"
   integrity sha512-sfWU+gMpqQ6GYtE3tAfDktftC01NgtqAOKfeCQ/KY2rxRTIxYahenW0Licuzgmd+8AZtmncoZaYX0Fd/5XMqzQ==
@@ -1191,6 +1191,11 @@
   version "0.24.2"
   resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.24.2.tgz"
   integrity sha512-7VTgWzgMGvup6aSqDPLiW5zHaxYJGTO4OokMjIlrCtf+VpEL+cXKtCvg723iguPYI5oaUNdS+/V7OU2gvXVWEg==
+
+"@fortawesome/fontawesome-free@^6.7.2":
+  version "6.7.2"
+  resolved "https://registry.npmjs.org/@fortawesome/fontawesome-free/-/fontawesome-free-6.7.2.tgz"
+  integrity sha512-JUOtgFW6k9u4Y+xeIaEiLr3+cjoUPiAuLXoyKOJSia6Duzb7pq+A76P9ZdPDoAoxHdHzq6gE9/jKBGXlZT8FbA==
 
 "@inquirer/checkbox@^4.0.4":
   version "4.1.2"
@@ -6134,7 +6139,7 @@ supports-preserve-symlinks-flag@^1.0.0:
 
 swiper@^11.2.4:
   version "11.2.4"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-11.2.4.tgz#4d1b55e07f909957e0406bdbff81b850b9dc8aeb"
+  resolved "https://registry.npmjs.org/swiper/-/swiper-11.2.4.tgz"
   integrity sha512-DTtglrsFfMYytid+oNy4QI3t2N2+XhhwSYbnyOhlwBmvY8Bkoj3ombK1/b80w8vDpQ+Lqlnbm+0737+i32MrcA==
 
 symbol-observable@4.0.0:
