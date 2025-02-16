@@ -6,6 +6,7 @@
     "start": "ng serve",
     "dev": "ng serve --watch --host 0.0.0.0",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:My-Portfolio": "node dist/my-portfolio/server/server.mjs"
@@ -25,6 +26,8 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "express": "^4.18.2",
+    "husky": "^9.1.7",
+    "prettier": "^3.5.1",
     "rxjs": "~7.8.0",
     "swiper": "^11.2.4",
     "tslib": "^2.3.0",
@@ -34,16 +37,25 @@
     "@angular-devkit/build-angular": "^19.1.6",
     "@angular/cli": "^19.1.6",
     "@angular/compiler-cli": "^19.1.0",
+    "@eslint/js": "^9.20.0",
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
     "@types/jquery": "^3.5.32",
     "@types/node": "^18.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "eslint": "^9.20.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.6.3",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "globals": "^15.15.0",
     "jasmine-core": "~5.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.7.2"
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.24.0"
   }
 }
