@@ -11,11 +11,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('@pages/home/home.component').then((m) => m.HomeComponent),
       },
-      /*  {
-        path: 'about',
+      {
+        path: 'projects',
         loadComponent: () =>
-          import('../about/about.component').then((m) => m.AboutComponent),
-      }, */
+          import('@pages/project-details/project-details.component').then(
+            (m) => m.ProjectDetailsComponent,
+          ),
+      },
     ],
   },
   {

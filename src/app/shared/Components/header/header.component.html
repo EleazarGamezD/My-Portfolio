@@ -57,10 +57,12 @@
         >
           <ul class="navbar-nav navbar-left justify-content-end">
             <li class="nav-item">
-              <a href="demo-spa-salon.html" class="nav-link">Home</a>
+              <button (click)="navigateTo('/')" class="nav-link">Inicio</button>
             </li>
             <li class="nav-item">
-              <a href="demo-spa-salon-about.html" class="nav-link">About</a>
+              <button (click)="scrollTo('small-about')" class="nav-link">
+                Sobre mi
+              </button>
             </li>
             <li class="nav-item">
               <a href="demo-spa-salon-treatments.html" class="nav-link"
@@ -70,9 +72,9 @@
           </ul>
           <ul class="navbar-nav navbar-right justify-content-start">
             <li class="nav-item">
-              <a href="demo-spa-salon-packages.html" class="nav-link"
-                >Packages</a
-              >
+              <button (click)="navigateTo('projects')" class="nav-link">
+                Proyectos
+              </button>
             </li>
             <li class="nav-item">
               <a href="demo-spa-salon-facility.html" class="nav-link"
@@ -80,7 +82,9 @@
               >
             </li>
             <li class="nav-item">
-              <a href="demo-spa-salon-contact.html" class="nav-link">Contact</a>
+              <a href="demo-spa-salon-contact.html" class="nav-link"
+                >Contacto</a
+              >
             </li>
           </ul>
         </div>
