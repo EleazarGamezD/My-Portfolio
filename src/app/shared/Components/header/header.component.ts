@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,11 +9,16 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private location: Location,
   ) {}
+  ngOnInit(): void {
+    this.router.events.subscribe(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   navigateTo(route: string) {
     this.router.navigate([route]);

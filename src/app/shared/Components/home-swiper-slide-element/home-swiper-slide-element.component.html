@@ -1,0 +1,21 @@
+<div
+  class="position-absolute left-0px top-0px w-100 h-100 cover-background"
+  style="background-image: url('{{ sliderContent.image }}');"
+  data-anime='{ "translateY": [0, 0], "opacity": [1,1], "scale": [1,1.1], "duration": 7000, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
+></div>
+<div class="opacity-light bg-gradient-nero-grey-brown"></div>
+<div class="container h-100">
+  <div class="row align-items-center h-100 justify-content-center">
+    <div class="col-xl-8 col-lg-9 position-relative text-white text-center">
+      <span
+        class="fs-15 d-block mb-15px ls-4px text-uppercase"
+        data-anime='{ "opacity": [0, 1], "easing": "easeOutCubic", "duration": 500, "delay": 200 }'
+        >{{ sliderContent.description }}</span
+      >
+      <div
+        class="alt-font fs-80 sm-fs-60 xs-fs-50 mb-40px w-80 lg-w-100 md-w-90 sm-w-100 mx-auto sm-mb-35px anime-text ls-minus-2px"
+        data-fancy-text='{ "opacity": [0, 1], "translateY": [50, 0], "string": ["Relax your mind soul and body"], "duration": 500, "delay": 200, "speed": 10, "easing": "easeOutQuad" }'
+      ></div>
+    </div>
+  </div>
+</div>
