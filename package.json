@@ -1,10 +1,10 @@
 {
   "name": "my-portfolio",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "dev": "ng serve --watch --host 0.0.0.0",
+    "dev": "ng serve --watch --host 0.0.0.0 --no-hmr",
     "build": "ng build",
     "build:prod": "ng build --configuration production --base-href /My-Portfolio/",
     "watch": "ng build --watch --configuration development",

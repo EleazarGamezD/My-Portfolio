@@ -8,29 +8,28 @@
       <div class="col-auto col-lg-2 menu-logo">
         <div class="d-none d-lg-block">
           <a
-            href="tel:1800222000"
+            (click)="scrollTo('cvs')"
             class="widget-text text-white-hover fs-16 lg-fs-15"
-            ><i
-              class="feather icon-feather-phone icon-small me-5px lg-me-2px"
-            ></i
-            >1 800 222 000</a
           >
+            <i class="feather icon-download icon-small me-5px lg-me-2px"></i
+            >Curriculum Vitae
+          </a>
         </div>
-        <a class="navbar-brand" href="demo-spa-salon.html">
+        <a class="navbar-brand" (click)="navigateTo('/')">
           <img
-            src="images/demo-spa-salon-logo-white.png"
+            src="/assets/images/logo-yo-bh.webp"
             data-at2x="images/demo-spa-salon-logo-white@2x.png"
             alt=""
             class="default-logo"
           />
           <img
-            src="images/demo-spa-salon-logo-white.png"
+            src="src/assets/images/logo-yo-bh.webp"
             data-at2x="images/demo-spa-salon-logo-white@2x.png"
             alt=""
             class="alt-logo"
           />
           <img
-            src="images/demo-spa-salon-logo-black.png"
+            src="src/assets/images/logo-yo-bh.webp"
             data-at2x="images/demo-spa-salon-logo-black@2x.png"
             alt=""
             class="mobile-logo"
@@ -65,9 +64,9 @@
               </button>
             </li>
             <li class="nav-item">
-              <a href="demo-spa-salon-treatments.html" class="nav-link"
-                >Treatments</a
-              >
+              <button (click)="scrollTo('skills')" class="nav-link">
+                Habilidades
+              </button>
             </li>
           </ul>
           <ul class="navbar-nav navbar-right justify-content-start">
@@ -77,14 +76,19 @@
               </button>
             </li>
             <li class="nav-item">
-              <a href="demo-spa-salon-facility.html" class="nav-link"
-                >Facility</a
-              >
+              <button (click)="scrollTo('career-path')" class="nav-link">
+                Trayectoria
+              </button>
             </li>
             <li class="nav-item">
-              <a href="demo-spa-salon-contact.html" class="nav-link"
-                >Contacto</a
-              >
+              <button (click)="scrollTo('contact-me')" class="nav-link">
+                Contacto
+              </button>
+            </li>
+            <li class="nav-item d-lg-none d-flex">
+              <button (click)="scrollTo('cvs')" class="nav-link">
+                Curriculum Vitae
+              </button>
             </li>
           </ul>
         </div>
