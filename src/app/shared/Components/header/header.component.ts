@@ -10,6 +10,17 @@ import { Router } from '@angular/router';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
+  social = [
+    {
+      icon: 'fa-brands fa-github',
+      url: 'https://github.com/EleazarGamezD',
+    },
+    {
+      icon: 'fa-brands fa-linkedin',
+      url: 'https://www.linkedin.com/in/eleazar-gamez/',
+    },
+  ];
+
   constructor(
     private router: Router,
     private location: Location,
