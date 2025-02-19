@@ -11,28 +11,17 @@
             (click)="scrollTo('cvs')"
             class="widget-text text-white-hover fs-16 lg-fs-15"
           >
-            <i class="feather icon-download icon-small me-5px lg-me-2px"></i
-            >Curriculum Vitae
+            <i
+              class="feather icon-feather-file-minus icon-small me-5px lg-me-2px"
+            ></i
+            >CV
           </a>
         </div>
         <a class="navbar-brand" (click)="navigateTo('/')">
           <img
-            src="/assets/images/logo-yo-bh.webp"
-            data-at2x="images/demo-spa-salon-logo-white@2x.png"
-            alt=""
+            src="/assets/images/home/logo-yo-bh.webp"
+            alt="brand-logo"
             class="default-logo"
-          />
-          <img
-            src="src/assets/images/logo-yo-bh.webp"
-            data-at2x="images/demo-spa-salon-logo-white@2x.png"
-            alt=""
-            class="alt-logo"
-          />
-          <img
-            src="src/assets/images/logo-yo-bh.webp"
-            data-at2x="images/demo-spa-salon-logo-black@2x.png"
-            alt=""
-            class="mobile-logo"
           />
         </a>
       </div>
@@ -96,15 +85,11 @@
       <div class="col-auto col-lg-2 text-end">
         <div class="header-icon">
           <div class="header-social-icon icon">
-            <a href="http://www.facebook.com" target="_blank"
-              ><i class="fa-brands fa-facebook-f"></i
-            ></a>
-            <a href="http://www.instagram.com" target="_blank"
-              ><i class="fa-brands fa-instagram"></i
-            ></a>
-            <a href="http://www.twitter.com" target="_blank"
-              ><i class="fa-brands fa-twitter"></i
-            ></a>
+            @for (item of social; track $index) {
+              <a href="{{ item.url }}" target="_blank"
+                ><i class="{{ item.icon }}"></i
+              ></a>
+            }
           </div>
         </div>
       </div>
