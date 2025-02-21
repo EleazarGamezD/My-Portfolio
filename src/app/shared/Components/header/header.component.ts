@@ -35,7 +35,9 @@ export class HeaderComponent implements OnInit {
       }
     });
     this.router.events.subscribe(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     });
   }
 
