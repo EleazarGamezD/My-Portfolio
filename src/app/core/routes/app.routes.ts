@@ -3,16 +3,16 @@ import { MainLayoutComponent } from '@layouts/main-layout/main-layout.component'
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'home',
     component: MainLayoutComponent,
     children: [
       {
-        path: 'home',
+        path: '',
         loadComponent: () =>
           import('@pages/home/home.component').then((m) => m.HomeComponent),
       },
       {
-        path: 'home/:section',
+        path: ':section',
         loadComponent: () =>
           import('@pages/home/home.component').then((m) => m.HomeComponent),
       },
