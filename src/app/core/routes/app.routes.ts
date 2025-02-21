@@ -12,11 +12,6 @@ export const routes: Routes = [
           import('@pages/home/home.component').then((m) => m.HomeComponent),
       },
       {
-        path: ':section',
-        loadComponent: () =>
-          import('@pages/home/home.component').then((m) => m.HomeComponent),
-      },
-      {
         path: 'projectDetails/:id',
         loadComponent: () =>
           import('@pages/project-details/project-details.component').then(
@@ -25,7 +20,7 @@ export const routes: Routes = [
       },
     ],
   },
-  {
+  /*   {
     path: 'projectDetails',
     component: MainLayoutComponent,
     children: [
@@ -37,7 +32,7 @@ export const routes: Routes = [
           ),
       },
     ],
-  },
+  }, */
   {
     path: '',
     redirectTo: '',
