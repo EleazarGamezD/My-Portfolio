@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private location: Location,
     private activeRoute: ActivatedRoute,
   ) {}
 
@@ -42,12 +44,15 @@ export class HeaderComponent implements OnInit {
   }
 
   scrollTo(elementId: string) {
-    const url = this.router
-      .createUrlTree([], { queryParams: { scrollTo: elementId } })
-      .toString();
-    this.router.navigateByUrl(url).then(() => {
+    if (this.location.path() !== '/') {
+      this.router
+        .navigate(['/'], { queryParams: { scrollTo: elementId } })
+        .then(() => {
+          this.scrollToElement(elementId);
+        });
+    } else {
       this.scrollToElement(elementId);
-    });
+    }
   }
 
   scrollToElement(elementId: string) {
