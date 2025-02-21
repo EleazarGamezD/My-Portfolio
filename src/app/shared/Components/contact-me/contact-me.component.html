@@ -1,124 +1,62 @@
-<section
-  class="background-repeat position-relative sm-pt-0"
-  style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')"
->
+<section class="background-repeat position-relative sm-pt-0"
+  style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')">
   <div class="container" id="appointment">
     <div class="row justify-content-center mb-2">
-      <div
-        class="col-12 text-center"
-        data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
-      >
-        <span
-          class="fs-15 mb-5px text-base-color fw-500 d-block text-uppercase ls-2px"
-          >Get in touch with us</span
-        >
+      <div class="col-12 text-center"
+        data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'>
+        <span class="fs-15 mb-5px text-base-color fw-500 d-block text-uppercase ls-2px">Creemos juntos</span>
         <h3 class="alt-font ls-minus-1px text-dark-gray">
-          How we can help you?
+          En que puedo ayudarte?
         </h3>
       </div>
     </div>
-    <div
-      class="row row-cols-md-1 justify-content-center mb-10 md-mb-15 sm-mb-0"
-    >
+    <div class="row row-cols-md-1 justify-content-center mb-10 md-mb-15 sm-mb-0">
       <div class="col-xl-9 col-lg-10 col-md-12">
-        <form
-          action="email-templates/contact-form.php"
-          method="post"
-          class="contact-form-style-03"
-        >
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form-style-03">
           <div class="row">
             <div class="col-md-6">
-              <label
-                for="exampleInputEmail1"
-                class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0"
-                >Your name*</label
-              >
+              <label for="exampleInputEmail1"
+                class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">Tu nombre*</label>
               <div class="position-relative form-group mb-25px">
-                <span class="form-icon"
-                  ><i class="bi bi-emoji-smile text-dark-gray"></i
-                ></span>
-                <input
-                  class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
-                  id="exampleInputEmail1"
-                  type="text"
-                  name="name"
-                  placeholder="What's your good name?"
-                />
+                <span class="form-icon"><i class="bi bi-emoji-smile text-dark-gray"></i></span>
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
+                  id="exampleInputEmail1" type="text" formControlName="name" placeholder="What's your good name?" />
               </div>
             </div>
             <div class="col-md-6">
-              <label
-                for="exampleInputEmail1"
-                class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0"
-                >Your email address*</label
-              >
+              <label for="exampleInputEmail1"
+                class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">Tu correo*</label>
               <div class="position-relative form-group mb-25px">
-                <span class="form-icon"
-                  ><i class="bi bi-envelope text-dark-gray"></i
-                ></span>
-                <input
-                  class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
-                  id="exampleInputEmail2"
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email address"
-                />
+                <span class="form-icon"><i class="bi bi-envelope text-dark-gray"></i></span>
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
+                  id="exampleInputEmail2" type="email" formControlName="email" placeholder="Enter your email address" />
               </div>
             </div>
             <div class="col-md-6">
-              <label
-                for="exampleInputEmail1"
-                class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0"
-                >Your phone number*</label
-              >
+              <label for="exampleInputEmail1"
+                class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">Tu teléfono*</label>
               <div class="position-relative form-group mb-25px">
-                <span class="form-icon"
-                  ><i class="bi bi-telephone text-dark-gray"></i
-                ></span>
-                <input
-                  class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
-                  id="exampleInputEmail3"
-                  type="tel"
-                  name="phone"
-                  placeholder="Enter your phone number"
-                />
+                <span class="form-icon"><i class="bi bi-telephone text-dark-gray"></i></span>
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
+                  id="exampleInputEmail3" type="tel" formControlName="phone" placeholder="Enter your phone number" />
               </div>
             </div>
             <div class="col-md-6">
-              <label
-                for="exampleInputEmail1"
-                class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0"
-                >Your subject</label
-              >
+              <label for="exampleInputEmail1"
+                class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">Tu asunto*</label>
               <div class="position-relative form-group mb-25px">
-                <span class="form-icon"
-                  ><i class="bi bi-journals text-dark-gray"></i
-                ></span>
-                <input
-                  class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control"
-                  id="exampleInputEmail4"
-                  type="text"
-                  name="subject"
-                  placeholder="How can we help you?"
-                />
+                <span class="form-icon"><i class="bi bi-journals text-dark-gray"></i></span>
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control"
+                  id="exampleInputEmail4" type="text" formControlName="subject" placeholder="How can we help you?" />
               </div>
             </div>
             <div class="col-12 mb-35px">
-              <label
-                for="exampleInputEmail1"
-                class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0"
-                >Your message</label
-              >
+              <label for="exampleInputEmail1"
+                class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">Tu mensaje*</label>
               <div class="position-relative form-group form-textarea mb-0">
-                <textarea
-                  class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control"
-                  name="comment"
-                  placeholder="Describe about your message"
-                  rows="4"
-                ></textarea>
-                <span class="form-icon"
-                  ><i class="bi bi-chat-square-dots text-dark-gray"></i
-                ></span>
+                <textarea class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control"
+                  formControlName="comment" placeholder="Describe about your message" rows="4"></textarea>
+                <span class="form-icon"><i class="bi bi-chat-square-dots text-dark-gray"></i></span>
               </div>
             </div>
             <div class="col-md-8 sm-mb-30px text-center text-md-start">
@@ -128,21 +66,15 @@
               </p>
             </div>
             <div class="col-md-4 text-center text-md-end">
-              <input
-                id="exampleInputEmail5"
-                type="hidden"
-                name="redirect"
-                value=""
-              />
-              <button
-                class="btn btn-small btn-double-border btn-border-base-color left-icon submit"
-                type="submit"
-              >
+              <ngx-invisible-recaptcha #captchaElem [siteKey]="siteKey" (reset)="handleReset()" (ready)="handleReady()"
+                (load)="handleLoad()" (success)="handleSuccess($event)" [ngModel]="recaptcha"
+                [ngModelOptions]="{ standalone: true }">
+              </ngx-invisible-recaptcha>
+              <input id="exampleInputEmail5" type="hidden" name="redirect" value="" />
+              <button class="btn btn-small btn-double-border btn-border-base-color left-icon submit" type="submit">
                 <span>
                   <span><i class="fa-regular fa-paper-plane"></i></span>
-                  <span class="btn-double-text" data-text="Send message"
-                    >Send message</span
-                  >
+                  <span class="btn-double-text" data-text="Send message">Enviar mensaje</span>
                 </span>
               </button>
             </div>
