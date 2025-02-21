@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CareerPathComponent } from '../../shared/Components/career-path/career-path.component';
 import { ContactMeHelloComponent } from '../../shared/Components/contact-me-hello/contact-me-hello.component';
 import { ContactMeComponent } from '../../shared/Components/contact-me/contact-me.component';
@@ -25,4 +25,14 @@ import { WorkReferencesComponent } from '../../shared/Components/work-references
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {}
+export class HomeComponent implements OnInit {
+  ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }
+  }
+}
