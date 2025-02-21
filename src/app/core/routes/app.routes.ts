@@ -12,7 +12,7 @@ export const routes: Routes = [
           import('@pages/home/home.component').then((m) => m.HomeComponent),
       },
       {
-        path: 'home/:section',
+        path: ':section',
         loadComponent: () =>
           import('@pages/home/home.component').then((m) => m.HomeComponent),
       },
@@ -26,12 +26,25 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'projectDetails',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('@pages/project-details/project-details.component').then(
+            (m) => m.ProjectDetailsComponent,
+          ),
+      },
+    ],
+  },
+  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: '',
     pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: '',
   },
 ];
