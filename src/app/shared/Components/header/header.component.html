@@ -1,51 +1,30 @@
 <!-- start header -->
 <header>
   <!-- start navigation -->
-  <nav
-    class="navbar navbar-expand-lg header-transparent bg-transparent center-logo disable-fixed"
-  >
+  <nav class="navbar navbar-expand-lg header-transparent bg-transparent center-logo disable-fixed">
     <div class="container-fluid">
       <div class="col-auto col-lg-2 menu-logo">
         <div class="d-none d-lg-block">
-          <a
-            (click)="scrollTo('cvs')"
-            class="widget-text text-white-hover fs-16 lg-fs-15"
-          >
-            <i
-              class="feather icon-feather-file-minus icon-small me-5px lg-me-2px"
-            ></i
-            >CV
+          <a (click)="scrollTo('cvs')" class="widget-text text-white-hover fs-16 lg-fs-15">
+            <i class="feather icon-feather-file-minus icon-small me-5px lg-me-2px"></i>CV
           </a>
         </div>
-        <a class="navbar-brand" (click)="navigateTo('/')">
-          <img
-            src="/assets/images/home/logo-yo-bh.webp"
-            alt="brand-logo"
-            class="default-logo"
-          />
+        <a class="navbar-brand" (click)="navigateTo('home')">
+          <img src="/assets/images/home/logo-yo-bh.webp" alt="brand-logo" class="default-logo" />
         </a>
       </div>
       <div class="col-auto col-lg-8 menu-order">
-        <button
-          class="navbar-toggler float-end"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler float-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-label="Toggle navigation">
           <span class="navbar-toggler-line"></span>
           <span class="navbar-toggler-line"></span>
           <span class="navbar-toggler-line"></span>
           <span class="navbar-toggler-line"></span>
         </button>
-        <div
-          class="collapse navbar-collapse justify-content-between"
-          id="navbarNav"
-        >
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
           <ul class="navbar-nav navbar-left justify-content-end">
             <li class="nav-item">
-              <button (click)="navigateTo('/')" class="nav-link">Inicio</button>
+              <button (click)="navigateTo('home')" class="nav-link">Inicio</button>
             </li>
             <li class="nav-item">
               <button (click)="scrollTo('small-about')" class="nav-link">
@@ -60,7 +39,7 @@
           </ul>
           <ul class="navbar-nav navbar-right justify-content-start">
             <li class="nav-item">
-              <button (click)="navigateTo('projects')" class="nav-link">
+              <button (click)="scrollTo('slider-projects')" class="nav-link">
                 Proyectos
               </button>
             </li>
@@ -86,9 +65,7 @@
         <div class="header-icon">
           <div class="header-social-icon icon">
             @for (item of social; track $index) {
-              <a href="{{ item.url }}" target="_blank"
-                ><i class="{{ item.icon }}"></i
-              ></a>
+            <a href="{{ item.url }}" target="_blank"><i class="{{ item.icon }}"></i></a>
             }
           </div>
         </div>

@@ -7,12 +7,17 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       {
-        path: '',
+        path: 'home',
         loadComponent: () =>
           import('@pages/home/home.component').then((m) => m.HomeComponent),
       },
       {
-        path: 'projects',
+        path: 'home/:section',
+        loadComponent: () =>
+          import('@pages/home/home.component').then((m) => m.HomeComponent),
+      },
+      {
+        path: 'projectDetails/:id',
         loadComponent: () =>
           import('@pages/project-details/project-details.component').then(
             (m) => m.ProjectDetailsComponent,
@@ -22,6 +27,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'home',
   },
 ];
