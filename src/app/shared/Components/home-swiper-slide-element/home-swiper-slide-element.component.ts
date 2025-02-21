@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { HomeBannerSlider } from '@core/interfaces/home-banner-slider/home-banner-slider.interface';
+import { IHomeBannerSlider } from '@core/interfaces/home-banner-slider/home-banner-slider.interface';
 
 @Component({
   selector: 'app-home-swiper-slide-element',
@@ -8,6 +8,6 @@ import { HomeBannerSlider } from '@core/interfaces/home-banner-slider/home-banne
   styleUrl: './home-swiper-slide-element.component.scss',
 })
 export class HomeSwiperSlideElementComponent {
-  @Input({ required: true }) sliderContent: HomeBannerSlider =
-    {} as HomeBannerSlider;
+  @Input({ required: true }) sliderContent: IHomeBannerSlider =
+    {} as IHomeBannerSlider;
 }

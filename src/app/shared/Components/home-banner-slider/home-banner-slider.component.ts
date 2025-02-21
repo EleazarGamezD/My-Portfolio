@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HomeBannerSlider } from '@core/interfaces/home-banner-slider/home-banner-slider.interface';
+import { IHomeBannerSlider } from '@core/interfaces/home-banner-slider/home-banner-slider.interface';
 import { HomeSwiperSlideElementComponent } from '../home-swiper-slide-element/home-swiper-slide-element.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { HomeSwiperSlideElementComponent } from '../home-swiper-slide-element/ho
   styleUrl: './home-banner-slider.component.scss',
 })
 export class HomeBannerSliderComponent {
-  sliderContentArray: HomeBannerSlider[] = [
+  sliderContentArray: IHomeBannerSlider[] = [
     {
       title: 'Web Developer',
       description:

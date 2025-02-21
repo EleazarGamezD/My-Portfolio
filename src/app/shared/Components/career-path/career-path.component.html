@@ -1,106 +1,45 @@
-<section
-  class="py-0 border-top border-color-light-gray md-border-top-0 background-repeat"
-  style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')"
->
-  <div class="container mb-5">
-    <div
-      class="row row-cols-1 row-cols-lg-4 row-cols-sm-2 g-0"
-      data-anime='{ "el": "childs", "translateX": [-30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
-    >
-      <!-- start process step item -->
-      <div
-        class="col process-step-style-06 last-paragraph-no-margin hover-box md-mb-50px"
-      >
-        <div class="process-step-icon-box position-relative top-minus-16px">
-          <span
-            class="progress-step-separator bg-light-gray w-100 separator-line-1px opacity-1"
-          ></span>
-          <div
-            class="step-box d-flex align-items-center justify-content-center bg-base-color border-radius-100 w-30px h-30px position-relative"
-          >
-            <span
-              class="w-8px h-8px bg-very-light-gray border-radius-100"
-            ></span>
-          </div>
+<section class="big-section">
+  <div class="container">
+    <div class="row overlap-section justify-content-center g-0 mb-8">
+    </div>
+    <div class="row align-items-center">
+      <div class="col-xxl-4 col-lg-5 md-mb-15 sm-mb-20 text-center text-lg-start">
+        <span class="fs-16 mb-10px text-base-color fw-bold d-block text-uppercase ls-2px ">Trayectoria</span>
+        <h3 class="text-dark-gray fw-600 ls-minus-2px mb-40px">Mi trayectoria profesional.</h3>
+        <div class="row row-cols-1">
+          <!-- start process step item -->
+          @for(item of careerPathArray; track $index){ <div
+            class="col-12 process-step-style-05 position-relative hover-box">
+            <div class="process-step-item d-flex">
+              <div class="process-step-icon-wrap position-relative">
+                <div
+                  class="process-step-icon d-flex justify-content-center align-items-center mx-auto rounded-circle h-60px w-60px fs-16 bg-solitude-blue fw-600 position-relative">
+                  <span class="number position-relative z-index-1 text-dark-gray">{{$index + 1 }}</span>
+                  <div class="box-overlay bg-base-color rounded-circle"></div>
+                </div>
+                <span class="progress-step-separator bg-dark-gray opacity-1"></span>
+              </div>
+              <div class="process-content ps-30px last-paragraph-no-margin mb-30px">
+                <span class="d-block fw-600 text-dark-gray mb-5px fs-18">{{item.title}}<br>{{item.year}}</span>
+                <p class="w-90 lg-w-100">{{item.description}}</p>
+              </div>
+            </div>
+          </div>}
+          <!-- end process step item -->
         </div>
-        <h3 class="d-block alt-font text-dark-gray ls-minus-2px fw-600 mb-5px">
-          2000
-        </h3>
-        <p class="w-80 lg-w-90 md-w-75 sm-w-100">
-          Lorem ipsum is simply text printing and typesetting.
-        </p>
       </div>
-      <!-- end process step item -->
-      <!-- start process step item -->
-      <div
-        class="col process-step-style-06 last-paragraph-no-margin hover-box md-mb-50px"
-      >
-        <div class="process-step-icon-box position-relative top-minus-16px">
-          <span
-            class="progress-step-separator bg-light-gray w-100 separator-line-1px opacity-1"
-          ></span>
-          <div
-            class="step-box d-flex align-items-center justify-content-center bg-base-color border-radius-100 w-30px h-30px position-relative"
-          >
-            <span
-              class="w-8px h-8px bg-very-light-gray border-radius-100"
-            ></span>
-          </div>
-        </div>
-        <h3 class="d-block alt-font text-dark-gray ls-minus-2px fw-600 mb-5px">
-          2002
-        </h3>
-        <p class="w-80 lg-w-90 md-w-75 sm-w-100">
-          Lorem ipsum is simply text printing and typesetting.
-        </p>
+      <div class="col-lg-7 offset-xxl-1 position-relative md-mb-30px sm-mb-15">
+        <img src="https://placehold.co/675x560" class="position-relative z-index-9 top-40px" alt="">
+        <img src="images/demo-corporate-03.png" class="absolute-middle-center xs-w-95" alt="">
+        <img src="https://placehold.co/144x64" class="position-absolute top-50px left-0px xs-left-15px"
+          data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)" alt="">
+        <img src="https://placehold.co/67x34" class="position-absolute top-150px left-50px"
+          data-bottom-top="transform: translateY(30px)" data-top-bottom="transform: translateY(-30px)" alt="">
+        <img src="https://placehold.co/61x30" class="position-absolute top-50px right-50px"
+          data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)" alt="">
+        <img src="https://placehold.co/93x45" class="position-absolute top-100px right-0px xs-right-15px"
+          data-bottom-top="transform: translateY(30px)" data-top-bottom="transform: translateY(-30px)" alt="">
       </div>
-      <!-- end process step item -->
-      <!-- start process step item -->
-      <div
-        class="col process-step-style-06 last-paragraph-no-margin hover-box sm-mb-50px"
-      >
-        <div class="process-step-icon-box position-relative top-minus-16px">
-          <span
-            class="progress-step-separator bg-light-gray w-100 separator-line-1px opacity-1"
-          ></span>
-          <div
-            class="step-box d-flex align-items-center justify-content-center bg-base-color border-radius-100 w-30px h-30px position-relative"
-          >
-            <span
-              class="w-8px h-8px bg-very-light-gray border-radius-100"
-            ></span>
-          </div>
-        </div>
-        <h3 class="d-block alt-font text-dark-gray ls-minus-2px fw-600 mb-5px">
-          2010
-        </h3>
-        <p class="w-80 lg-w-90 md-w-75 sm-w-100">
-          Lorem ipsum is simply text printing and typesetting.
-        </p>
-      </div>
-      <!-- end process step item -->
-      <!-- start process step item -->
-      <div class="col process-step-style-06 last-paragraph-no-margin hover-box">
-        <div class="process-step-icon-box position-relative top-minus-16px">
-          <span
-            class="progress-step-separator bg-light-gray w-100 separator-line-1px opacity-1"
-          ></span>
-          <div
-            class="step-box d-flex align-items-center justify-content-center bg-base-color border-radius-100 w-30px h-30px position-relative"
-          >
-            <span
-              class="w-8px h-8px bg-very-light-gray border-radius-100"
-            ></span>
-          </div>
-        </div>
-        <h3 class="d-block alt-font text-dark-gray ls-minus-2px fw-600 mb-5px">
-          2020
-        </h3>
-        <p class="w-80 lg-w-90 md-w-75 sm-w-100">
-          Lorem ipsum is simply text printing and typesetting.
-        </p>
-      </div>
-      <!-- end process step item -->
     </div>
   </div>
 </section>
