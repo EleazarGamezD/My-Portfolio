@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ICareerPath } from '@core/interfaces/carrer-path/career-path.interface';
+import { ICareerPath } from '@core/interfaces/carrer-path/carrer-path.interface';
 
 @Component({
   selector: 'app-career-path',

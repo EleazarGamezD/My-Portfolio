@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -24,8 +24,15 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private location: Location,
+    private activeRoute: ActivatedRoute,
   ) {}
+
   ngOnInit(): void {
+    this.activeRoute.fragment.subscribe((fragment) => {
+      if (fragment) {
+        this.scrollTo(fragment);
+      }
+    });
     this.router.events.subscribe(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -36,14 +43,11 @@ export class HeaderComponent implements OnInit {
   }
 
   scrollTo(elementId: string) {
-    if (this.location.path() !== '/') {
-      this.router.navigate(['/']).then(() => {
-        this.scrollToElement(elementId);
-      });
-    } else {
+    this.router.navigate([`/${elementId}`]).then(() => {
       this.scrollToElement(elementId);
-    }
+    });
   }
+
   scrollToElement(elementId: string) {
     const element = document.getElementById(elementId);
     console.log(elementId);
