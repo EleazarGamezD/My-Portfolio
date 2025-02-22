@@ -30,6 +30,7 @@ export class ContactMeComponent implements OnInit {
     private emailService: EmailService,
     private fb: FormBuilder,
     private reCaptchaV3Service: ReCaptchaV3Service,
+    private recaptchaService: RecaptchaService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -39,10 +40,18 @@ export class ContactMeComponent implements OnInit {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
+      phone: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$'),
+        ],
+      ],
       subject: ['', Validators.required],
       message: ['', Validators.required],
-      reCaptcha: ['', Validators.required],
+      reCaptcha: [''],
     });
 
     if (this.isBrowser) {
@@ -76,7 +85,9 @@ export class ContactMeComponent implements OnInit {
     this.contactForm.patchValue({ reCaptcha: token });
   }
 
-  onSubmit(): void {
+  async onSubmit() {
+    console.log(this.contactForm.valid);
+    console.log(this.contactForm.value.reCaptcha);
     if (this.contactForm.valid) {
       const formData: ISendEmail = {
         subject: this.contactForm.value.subject,
@@ -84,6 +95,21 @@ export class ContactMeComponent implements OnInit {
         contactEmail: this.contactForm.value.email,
         message: this.contactForm.value.message,
       };
+      this.reCaptchaV3Service.execute(
+        this.siteKey,
+        'homepage',
+        async (token) => {
+          const captchaTokenVerify =
+            await this.recaptchaService.verifyToken(token);
+          console.log('This is your token: ', token);
+          console.log('This is your captchaTokenVerify: ', captchaTokenVerify);
+          if (captchaTokenVerify) {
+            const emailSent = this.emailService.sendEmail(formData);
+            console.log('This is your emailSent: ', emailSent);
+          }
+        },
+      );
+
       console.log(formData);
     }
   }
