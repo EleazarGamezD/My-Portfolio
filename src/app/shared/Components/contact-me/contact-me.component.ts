@@ -7,14 +7,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ISendEmail } from '@core/interfaces/email/email.interface';
 import { EmailService } from '@services/email/email.service';
+import { RecaptchaService } from '@services/recaptcha/recaptcha.service';
 import { NgxCaptchaModule, ReCaptchaV3Service } from 'ngx-captcha';
 import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-contact-me',
   imports: [NgxCaptchaModule, ReactiveFormsModule, FormsModule],
-  providers: [EmailService],
+  providers: [EmailService, RecaptchaService],
   templateUrl: './contact-me.component.html',
   styleUrl: './contact-me.component.scss',
 })
@@ -39,7 +41,7 @@ export class ContactMeComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       subject: ['', Validators.required],
-      comment: ['', Validators.required],
+      message: ['', Validators.required],
       reCaptcha: ['', Validators.required],
     });
 
@@ -76,7 +78,12 @@ export class ContactMeComponent implements OnInit {
 
   onSubmit(): void {
     if (this.contactForm.valid) {
-      const formData = this.contactForm.value;
+      const formData: ISendEmail = {
+        subject: this.contactForm.value.subject,
+        name: this.contactForm.value.name,
+        contactEmail: this.contactForm.value.email,
+        message: this.contactForm.value.message,
+      };
       console.log(formData);
     }
   }
