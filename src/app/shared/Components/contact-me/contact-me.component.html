@@ -12,7 +12,7 @@
     </div>
     <div class="row row-cols-md-1 justify-content-center mb-10 md-mb-15 sm-mb-0">
       <div class="col-xl-9 col-lg-10 col-md-12">
-        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form-style-03">
+        <form [formGroup]="contactForm" class="contact-form-style-03">
           <div class="row">
             <div class="col-md-6">
               <label for="exampleInputEmail1"
@@ -71,11 +71,12 @@
                 [ngModelOptions]="{ standalone: true }">
               </ngx-invisible-recaptcha>
               <input id="exampleInputEmail5" type="hidden" name="redirect" value="" />
-              <button class="btn btn-small btn-double-border btn-border-base-color left-icon submit" type="submit">
+              <button class="btn btn-small btn-double-border btn-border-base-color left-icon submit"
+                [ariaDisabled]="contactForm.invalid" type="submit" (click)="onSubmit()">
                 <span>
                   <span><i class="fa-regular fa-paper-plane"></i></span>
-                  <span class="btn-double-text" data-text="Send message" [ariaDisabled]="contactForm.invalid">Enviar
-                    mensaje</span>
+                  <span class="btn-double-text" data-text="Enviar email">Enviar
+                    email</span>
                 </span>
               </button>
             </div>

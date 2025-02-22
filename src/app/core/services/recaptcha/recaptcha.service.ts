@@ -7,7 +7,7 @@ import { GlobalHttpService } from '@services/globalHttp/global-http.service';
   providedIn: 'root',
 })
 export class RecaptchaService extends GlobalHttpService {
-  async checkRecaptcha(token: string): Promise<boolean> {
+  async verifyToken(token: string): Promise<boolean> {
     return await this.makeHttpRequest<boolean>(
       API_RECAPTCHA_ROUTES.checkRecaptcha,
       { token },
