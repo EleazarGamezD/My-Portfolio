@@ -86,7 +86,18 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
-            }
+            },
+            	"local-development": {
+							"optimization": false,							
+							"sourceMap": true,						
+							"extractLicenses": false,
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.local.ts"
+								}
+							]
+						}
           },
           "defaultConfiguration": "production"
         },
@@ -98,7 +109,10 @@
             },
             "development": {
               "buildTarget": "My-Portfolio:build:development"
-            }
+            },
+            	"local-development": {
+							"buildTarget": "My-Portfolio:build:local-development"
+						}
           },
           "defaultConfiguration": "development"
         },

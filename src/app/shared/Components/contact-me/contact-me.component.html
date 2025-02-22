@@ -55,7 +55,7 @@
                 class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">Tu mensaje*</label>
               <div class="position-relative form-group form-textarea mb-0">
                 <textarea class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control"
-                  formControlName="comment" placeholder="Describe about your message" rows="4"></textarea>
+                  formControlName="message" placeholder="Describe about your message" rows="4"></textarea>
                 <span class="form-icon"><i class="bi bi-chat-square-dots text-dark-gray"></i></span>
               </div>
             </div>
@@ -74,7 +74,8 @@
               <button class="btn btn-small btn-double-border btn-border-base-color left-icon submit" type="submit">
                 <span>
                   <span><i class="fa-regular fa-paper-plane"></i></span>
-                  <span class="btn-double-text" data-text="Send message">Enviar mensaje</span>
+                  <span class="btn-double-text" data-text="Send message" [ariaDisabled]="contactForm.invalid">Enviar
+                    mensaje</span>
                 </span>
               </button>
             </div>
