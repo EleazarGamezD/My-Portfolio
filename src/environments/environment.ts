@@ -1,6 +1,5 @@
 export const environment = {
   production: false,
-  reCaptchaSiteKey: '6LeLw94qAAAAAE1OPB7Myosf-WoKY3FZdWeO0YYH',
-  reCaptchaSecretKey: '',
+  reCaptchaSiteKey: '6Lf0QOAqAAAAALLBwbkS12Z4BppSOzjaw3Z1lfBX',
   apiUrl: 'https://mailer-pf.vercel.app',
 };
