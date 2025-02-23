@@ -8,14 +8,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { ISendEmail } from '@core/interfaces/email/email.interface';
+import { IRecaptchaVerifyResponse } from '@core/interfaces/recaptcha/recaptchat.interface';
 import { EmailService } from '@services/email/email.service';
 import { RecaptchaService } from '@services/recaptcha/recaptcha.service';
-import { NgxCaptchaModule, ReCaptchaV3Service } from 'ngx-captcha';
+import { NgRecaptcha3Service } from 'ng-recaptcha3';
 import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-contact-me',
-  imports: [NgxCaptchaModule, ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   providers: [EmailService, RecaptchaService],
   templateUrl: './contact-me.component.html',
   styleUrl: './contact-me.component.scss',
@@ -29,7 +30,7 @@ export class ContactMeComponent implements OnInit {
   constructor(
     private emailService: EmailService,
     private fb: FormBuilder,
-    private reCaptchaV3Service: ReCaptchaV3Service,
+    private reCaptchaV3Service: NgRecaptcha3Service,
     private recaptchaService: RecaptchaService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
@@ -51,66 +52,43 @@ export class ContactMeComponent implements OnInit {
       ],
       subject: ['', Validators.required],
       message: ['', Validators.required],
-      reCaptcha: [''],
+      reCaptchaToken: [Boolean, Validators.required],
     });
-
     if (this.isBrowser) {
-      this.reCaptchaV3Service.execute(
-        this.siteKey,
-        'homepage',
-        (token) => {
-          console.log('This is your token: ', token);
-        },
-        {
-          useGlobalDomain: false,
-        },
-      );
+      this.reCaptchaV3Service.init(this.siteKey);
     }
-  }
-
-  handleReset(): void {
-    this.recaptcha = '';
-  }
-
-  handleReady(): void {
-    console.log('reCAPTCHA ready');
-  }
-
-  handleLoad(): void {
-    console.log('reCAPTCHA loaded');
-  }
-
-  handleSuccess(token: string): void {
-    this.recaptcha = token;
-    this.contactForm.patchValue({ reCaptcha: token });
   }
 
   async onSubmit() {
-    console.log(this.contactForm.valid);
-    console.log(this.contactForm.value.reCaptcha);
-    if (this.contactForm.valid) {
-      const formData: ISendEmail = {
-        subject: this.contactForm.value.subject,
-        name: this.contactForm.value.name,
-        contactEmail: this.contactForm.value.email,
-        message: this.contactForm.value.message,
-      };
-      this.reCaptchaV3Service.execute(
-        this.siteKey,
-        'homepage',
-        async (token) => {
-          const captchaTokenVerify =
-            await this.recaptchaService.verifyToken(token);
-          console.log('This is your token: ', token);
-          console.log('This is your captchaTokenVerify: ', captchaTokenVerify);
-          if (captchaTokenVerify) {
-            const emailSent = this.emailService.sendEmail(formData);
-            console.log('This is your emailSent: ', emailSent);
-          }
-        },
-      );
+    //first we get the token from the reCaptchaV3Service
+    //then we add the token to the form data
+    //then we send the form data to the email service only if the form is valid
+    let verifyToken: IRecaptchaVerifyResponse = { success: false };
 
-      console.log(formData);
-    }
+    this.reCaptchaV3Service
+      .getToken({ action: 'contact' })
+      .then(
+        async (token) => {
+          verifyToken = await this.recaptchaService.verifyToken(token);
+          this.contactForm.value.reCaptchaToken = verifyToken.success;
+        },
+        (error) => {
+          this.contactForm.value.reCaptchaToken = false;
+          console.log('cant get token: ', error);
+        },
+      )
+      .then(async () => {
+        console.log(this.contactForm.valid && verifyToken.success);
+        if (this.contactForm.valid) {
+          const formData: ISendEmail = {
+            subject: this.contactForm.value.subject,
+            name: this.contactForm.value.name,
+            contactEmail: this.contactForm.value.email,
+            message: this.contactForm.value.message,
+          };
+          const emailSent = await this.emailService.sendEmail(formData);
+          console.log('This is your emailSent: ', emailSent);
+        }
+      });
   }
 }

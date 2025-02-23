@@ -66,10 +66,7 @@
               </p>
             </div>
             <div class="col-md-4 text-center text-md-end">
-              <ngx-invisible-recaptcha #captchaElem [siteKey]="siteKey" (reset)="handleReset()" (ready)="handleReady()"
-                (load)="handleLoad()" (success)="handleSuccess($event)" [ngModel]="recaptcha"
-                [ngModelOptions]="{ standalone: true }">
-              </ngx-invisible-recaptcha>
+
               <input id="exampleInputEmail5" type="hidden" name="redirect" value="" />
               <button class="btn btn-small btn-double-border btn-border-base-color left-icon submit"
                 [ariaDisabled]="contactForm.invalid" type="submit" (click)="onSubmit()">
