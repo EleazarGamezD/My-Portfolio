@@ -54,6 +54,7 @@ export class ContactMeComponent implements OnInit {
       message: ['', Validators.required],
       reCaptchaToken: [Boolean, Validators.required],
     });
+    console.log('Is Browser ? : ', this.isBrowser);
     if (this.isBrowser) {
       this.reCaptchaV3Service.init(this.siteKey);
     }
