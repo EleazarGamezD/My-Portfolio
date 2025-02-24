@@ -36,7 +36,7 @@ jobs:
         run: npm cache clean --force
 
       - name: Install Dependencies
-        run: npm install --force
+        run: npm install --legacy-peer-deps --force
 
       - name: Verify Dependencies
         run: npm ls
