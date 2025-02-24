@@ -32,14 +32,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      - name: Clear npm cache
-        run: npm cache clean --force
-
       - name: Install Dependencies
-        run: npm install --force
-
-      - name: Verify Dependencies
-        run: npm ls
+        run: npm ci --force
 
       - name: Install Angular CLI
         run: npm install -g @angular/cli --force
