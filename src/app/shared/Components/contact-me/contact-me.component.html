@@ -67,10 +67,9 @@
               </p>
             </div>
             <div class="col-md-4 text-center text-md-end">
-
               <input id="exampleInputEmail5" type="hidden" name="redirect" value="" />
               <button class="btn btn-small btn-double-border btn-border-base-color left-icon submit"
-                [ariaDisabled]="contactForm.invalid" type="submit" (click)="onSubmit()">
+                [disabled]='contactForm.invalid' type="submit" (click)="onSubmit()">
                 <span>
                   <span><i class="fa-regular fa-paper-plane"></i></span>
                   @if (!sendingEmail) {
