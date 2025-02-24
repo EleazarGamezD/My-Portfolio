@@ -8,9 +8,8 @@ describe('CareerPathComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CareerPathComponent]
-    })
-    .compileComponents();
+      imports: [CareerPathComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CareerPathComponent);
     component = fixture.componentInstance;
