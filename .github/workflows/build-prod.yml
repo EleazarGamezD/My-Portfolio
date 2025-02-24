@@ -44,8 +44,9 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli --force
 
-      #   - name: Run Tests
-      #    run: npm test
+      # Uncomment the following lines to run tests
+      # - name: Run Tests
+      #   run: npm test
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest --force
