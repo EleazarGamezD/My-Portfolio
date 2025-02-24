@@ -25,7 +25,7 @@ export class ContactMeComponent implements OnInit {
   siteKey: string = environment.reCaptchaSiteKey;
   recaptcha: string = '';
   isBrowser: boolean;
-
+  sendingEmail: boolean = false;
   constructor(
     private emailService: EmailService,
     private fb: FormBuilder,
@@ -52,7 +52,6 @@ export class ContactMeComponent implements OnInit {
       ],
       subject: ['', Validators.required],
       message: ['', Validators.required],
-      reCaptchaToken: [Boolean, Validators.required],
     });
   }
 
@@ -61,42 +60,51 @@ export class ContactMeComponent implements OnInit {
     //then we add the token to the form data
     //then we send the form data to the email service only if the form is valid
     //if the token is not verified, we log the error
-    if (!this.isBrowser || !this.contactForm.valid) return;
 
-    try {
-      // 1. get token from reCaptcha
-      const token = (await this.recaptchaV3Service
-        .execute('contact')
-        .toPromise()) as string;
+    //if the form is not valid, we return
+    if (!this.contactForm.valid) {
+      this.toastr.error('Formulario inválido', 'Error', {
+        timeOut: 3000,
+      });
+    } else {
+      this.sendingEmail = true;
+      try {
+        // 1. get token from reCaptcha
+        const token = (await this.recaptchaV3Service
+          .execute('contact')
+          .toPromise()) as string;
 
-      // 2. check token from reCaptcha is valid and has a score >= 0.5
-      const verification = await this.recaptchaService.verifyToken(token);
+        // 2. check token from reCaptcha is valid and has a score >= 0.5
+        const verification = await this.recaptchaService.verifyToken(token);
 
-      if (verification.success && verification.score >= 0.5) {
-        // 3. send email with form data if reCAPTCHA is valid
-        const formData = {
-          subject: this.contactForm.value.subject,
-          name: this.contactForm.value.name,
-          contactEmail: this.contactForm.value.email,
-          message: this.contactForm.value.message,
-        };
+        if (verification.success && verification.score >= 0.5) {
+          // 3. send email with form data if reCAPTCHA is valid
+          const formData = {
+            subject: this.contactForm.value.subject,
+            name: this.contactForm.value.name,
+            contactEmail: this.contactForm.value.email,
+            message: this.contactForm.value.message,
+          };
 
-        const emailSent = await this.emailService.sendEmail(formData);
-        if (emailSent) {
-          this.contactForm.reset();
-          this.toastr.success('Email enviado con éxito', 'Success', {
+          const emailSent = await this.emailService.sendEmail(formData);
+          if (emailSent) {
+            this.contactForm.reset();
+            this.toastr.success('Email enviado con éxito', 'Exito', {
+              timeOut: 3000,
+            });
+          }
+        } else {
+          this.toastr.error('reCAPTCHA falló', 'Error', {
             timeOut: 3000,
           });
         }
-      } else {
-        this.toastr.error('reCAPTCHA falló', 'Major Error', {
+      } catch {
+        this.toastr.error('Error en el proceso', 'Error', {
           timeOut: 3000,
         });
+      } finally {
+        this.sendingEmail = false;
       }
-    } catch {
-      this.toastr.error('Error en el proceso', 'Major Error', {
-        timeOut: 3000,
-      });
     }
   }
 }
