@@ -7,11 +7,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ISendEmail } from '@core/interfaces/email/email.interface';
-import { IRecaptchaVerifyResponse } from '@core/interfaces/recaptcha/recaptchat.interface';
 import { EmailService } from '@services/email/email.service';
 import { RecaptchaService } from '@services/recaptcha/recaptcha.service';
-import { NgRecaptcha3Service } from 'ng-recaptcha3';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -30,8 +29,9 @@ export class ContactMeComponent implements OnInit {
   constructor(
     private emailService: EmailService,
     private fb: FormBuilder,
-    private reCaptchaV3Service: NgRecaptcha3Service,
+    private recaptchaV3Service: ReCaptchaV3Service,
     private recaptchaService: RecaptchaService,
+    private toastr: ToastrService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -54,42 +54,49 @@ export class ContactMeComponent implements OnInit {
       message: ['', Validators.required],
       reCaptchaToken: [Boolean, Validators.required],
     });
-    console.log('Is Browser ? : ', this.isBrowser);
-    if (this.isBrowser) {
-      this.reCaptchaV3Service.init(this.siteKey);
-    }
   }
 
   async onSubmit() {
     //first we get the token from the reCaptchaV3Service
     //then we add the token to the form data
     //then we send the form data to the email service only if the form is valid
-    let verifyToken: IRecaptchaVerifyResponse = { success: false };
+    //if the token is not verified, we log the error
+    if (!this.isBrowser || !this.contactForm.valid) return;
 
-    this.reCaptchaV3Service
-      .getToken({ action: 'contact' })
-      .then(
-        async (token) => {
-          verifyToken = await this.recaptchaService.verifyToken(token);
-          this.contactForm.value.reCaptchaToken = verifyToken.success;
-        },
-        (error) => {
-          this.contactForm.value.reCaptchaToken = false;
-          console.log('cant get token: ', error);
-        },
-      )
-      .then(async () => {
-        console.log(this.contactForm.valid && verifyToken.success);
-        if (this.contactForm.valid) {
-          const formData: ISendEmail = {
-            subject: this.contactForm.value.subject,
-            name: this.contactForm.value.name,
-            contactEmail: this.contactForm.value.email,
-            message: this.contactForm.value.message,
-          };
-          const emailSent = await this.emailService.sendEmail(formData);
-          console.log('This is your emailSent: ', emailSent);
+    try {
+      // 1. get token from reCaptcha
+      const token = (await this.recaptchaV3Service
+        .execute('contact')
+        .toPromise()) as string;
+
+      // 2. check token from reCaptcha is valid and has a score >= 0.5
+      const verification = await this.recaptchaService.verifyToken(token);
+
+      if (verification.success && verification.score >= 0.5) {
+        // 3. send email with form data if reCAPTCHA is valid
+        const formData = {
+          subject: this.contactForm.value.subject,
+          name: this.contactForm.value.name,
+          contactEmail: this.contactForm.value.email,
+          message: this.contactForm.value.message,
+        };
+
+        const emailSent = await this.emailService.sendEmail(formData);
+        if (emailSent) {
+          this.contactForm.reset();
+          this.toastr.success('Email enviado con éxito', 'Success', {
+            timeOut: 3000,
+          });
         }
+      } else {
+        this.toastr.error('reCAPTCHA falló', 'Major Error', {
+          timeOut: 3000,
+        });
+      }
+    } catch {
+      this.toastr.error('Error en el proceso', 'Major Error', {
+        timeOut: 3000,
       });
+    }
   }
 }
