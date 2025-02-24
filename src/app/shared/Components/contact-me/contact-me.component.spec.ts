@@ -15,15 +15,7 @@ describe('ContactMeComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ContactMeComponent);
-    component = fixture.componentInstance;
-    setTimeout(function () {
-      fixture.detectChanges();
-    }, 2000);
   });
 });
