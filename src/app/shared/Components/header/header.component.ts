@@ -1,5 +1,5 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { isPlatformBrowser, Location } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -20,12 +20,16 @@ export class HeaderComponent implements OnInit {
       url: 'https://www.linkedin.com/in/eleazar-gamez/',
     },
   ];
+  isBrowser: boolean;
 
   constructor(
     private router: Router,
     private location: Location,
     private activeRoute: ActivatedRoute,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.activeRoute.queryParams.subscribe((params) => {
@@ -35,7 +39,7 @@ export class HeaderComponent implements OnInit {
       }
     });
     this.router.events.subscribe(() => {
-      if (typeof window !== 'undefined') {
+      if (this.isBrowser) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
@@ -58,10 +62,12 @@ export class HeaderComponent implements OnInit {
   }
 
   scrollToElement(elementId: string) {
-    const element = document.getElementById(elementId);
-    console.log(elementId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    if (this.isBrowser) {
+      const element = document.getElementById(elementId);
+      console.log(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   }
 }
