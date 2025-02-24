@@ -32,8 +32,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - name: Install Dependencies
-        run: npm ci --force
+        run: npm install --force
+
+      - name: Verify Dependencies
+        run: npm ls
 
       - name: Install Angular CLI
         run: npm install -g @angular/cli --force
@@ -46,10 +52,10 @@ jobs:
         run: npm install --global vercel@latest --force
 
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} --force
 
       - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }} --force
 
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} --force
