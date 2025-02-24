@@ -20,7 +20,7 @@
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-emoji-smile text-dark-gray"></i></span>
                 <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
-                  id="exampleInputEmail1" type="text" formControlName="name" placeholder="What's your good name?" />
+                  id="exampleInputEmail1" type="text" formControlName="name" placeholder="Cual es tu nombre?" />
               </div>
             </div>
             <div class="col-md-6">
@@ -29,7 +29,8 @@
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-envelope text-dark-gray"></i></span>
                 <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
-                  id="exampleInputEmail2" type="email" formControlName="email" placeholder="Enter your email address" />
+                  id="exampleInputEmail2" type="email" formControlName="email"
+                  placeholder="Ingresa tu dirección de correo" />
               </div>
             </div>
             <div class="col-md-6">
@@ -38,7 +39,7 @@
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-telephone text-dark-gray"></i></span>
                 <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
-                  id="exampleInputEmail3" type="tel" formControlName="phone" placeholder="Enter your phone number" />
+                  id="exampleInputEmail3" type="tel" formControlName="phone" placeholder="Ingresa tu teléfono" />
               </div>
             </div>
             <div class="col-md-6">
@@ -47,7 +48,7 @@
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-journals text-dark-gray"></i></span>
                 <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control"
-                  id="exampleInputEmail4" type="text" formControlName="subject" placeholder="How can we help you?" />
+                  id="exampleInputEmail4" type="text" formControlName="subject" placeholder="En que puedo ayudarte?" />
               </div>
             </div>
             <div class="col-12 mb-35px">
@@ -55,14 +56,14 @@
                 class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">Tu mensaje*</label>
               <div class="position-relative form-group form-textarea mb-0">
                 <textarea class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control"
-                  formControlName="message" placeholder="Describe about your message" rows="4"></textarea>
+                  formControlName="message" placeholder="Ingresa tu mensaje" rows="4"></textarea>
                 <span class="form-icon"><i class="bi bi-chat-square-dots text-dark-gray"></i></span>
               </div>
             </div>
             <div class="col-md-8 sm-mb-30px text-center text-md-start">
               <p class="mb-0 fs-15 lh-26 w-80 md-w-85 sm-w-100">
-                We are committed to protecting your privacy. We will never
-                collect information about you without your explicit consent.
+                Estamos comprometidos a proteger tu privacidad. Nunca recopilaremos información sobre ti sin tu
+                consentimiento explícito.
               </p>
             </div>
             <div class="col-md-4 text-center text-md-end">
@@ -72,8 +73,11 @@
                 [ariaDisabled]="contactForm.invalid" type="submit" (click)="onSubmit()">
                 <span>
                   <span><i class="fa-regular fa-paper-plane"></i></span>
-                  <span class="btn-double-text" data-text="Enviar email">Enviar
-                    email</span>
+                  @if (!sendingEmail) {
+                  <span class="btn-double-text" data-text="Enviar email">Enviar email</span>
+                  } @else {
+                  <span class="btn-double-text" data-text="Enviando email">Enviando</span>
+                  }
                 </span>
               </button>
             </div>
@@ -85,4 +89,3 @@
       </div>
     </div>
   </div>
-</section>
