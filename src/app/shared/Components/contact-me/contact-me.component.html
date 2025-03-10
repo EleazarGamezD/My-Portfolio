@@ -47,7 +47,7 @@
                 class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">Tu asunto*</label>
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-journals text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control"
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
                   id="exampleInputEmail4" type="text" formControlName="subject" placeholder="En que puedo ayudarte?" />
               </div>
             </div>
@@ -55,7 +55,8 @@
               <label for="exampleInputEmail1"
                 class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">Tu mensaje*</label>
               <div class="position-relative form-group form-textarea mb-0">
-                <textarea class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control"
+                <textarea
+                  class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
                   formControlName="message" placeholder="Ingresa tu mensaje" rows="4"></textarea>
                 <span class="form-icon"><i class="bi bi-chat-square-dots text-dark-gray"></i></span>
               </div>
@@ -75,7 +76,7 @@
                   @if (!sendingEmail) {
                   <span class="btn-double-text" data-text="Enviar email">Enviar email</span>
                   } @else {
-                  <span class="btn-double-text" data-text="Enviando email">Enviando</span>
+                  <span class="btn-double-text" data-text="Enviando email">Enviando email</span>
                   }
                 </span>
               </button>
