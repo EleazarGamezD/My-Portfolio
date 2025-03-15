@@ -1,6 +1,6 @@
-import { isPlatformBrowser, Location } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {isPlatformBrowser, Location} from '@angular/common';
+import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit {
     });
     this.router.events.subscribe(() => {
       if (this.isBrowser) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({top: 0, behavior: 'smooth'});
       }
     });
   }
@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
   scrollTo(elementId: string) {
     if (this.location.path() !== '/') {
       this.router
-        .navigate(['/'], { queryParams: { scrollTo: elementId } })
+        .navigate(['/'], {queryParams: {scrollTo: elementId}})
         .then(() => {
           this.scrollToElement(elementId);
         });
@@ -64,9 +64,8 @@ export class HeaderComponent implements OnInit {
   scrollToElement(elementId: string) {
     if (this.isBrowser) {
       const element = document.getElementById(elementId);
-      console.log(elementId);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({behavior: 'smooth'});
       }
     }
   }

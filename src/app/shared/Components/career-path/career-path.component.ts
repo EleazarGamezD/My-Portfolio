@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ICareerPath } from '@core/interfaces/carrer-path/carrer-path.interface';
+import {Component} from '@angular/core';
+import {ICareerPath} from '@core/interfaces/carrer-path/carrer-path.interface';
 
 @Component({
   selector: 'app-career-path',
@@ -10,7 +10,13 @@ import { ICareerPath } from '@core/interfaces/carrer-path/carrer-path.interface'
 export class CareerPathComponent {
   careerPathArray: ICareerPath[] = [
     {
-      year: '2024 - Actual',
+      year: '2025 - Actual',
+      title: 'L4 Ventures LLC',
+      description:
+        'Desarrollador Fullstack, Desarrollo de Aplicaciones Web.',
+    },
+    {
+      year: '2024 - 2025',
       title: 'Meraki Office',
       description:
         'Desarrollador Fullstack, Creación de Marketplace, integración de pasarelas de pago, chats, empresas de logística.',
