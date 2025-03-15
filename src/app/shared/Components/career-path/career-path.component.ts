@@ -21,12 +21,12 @@ export class CareerPathComponent {
       description:
         'Desarrollador Fullstack, Creación de Marketplace, integración de pasarelas de pago, chats, empresas de logística.',
     },
-    {
-      year: '2024-2025',
-      title: 'Sendifico',
-      description:
-        'Desarrollador Backend, integraciones de plataformas de logística.',
-    },
+    /*   {
+        year: '2024-2025',
+        title: 'Sendifico',
+        description:
+          'Desarrollador Backend, integraciones de plataformas de logística.',
+      }, */
     {
       year: '2023-Actual',
       title: 'Freelance',
