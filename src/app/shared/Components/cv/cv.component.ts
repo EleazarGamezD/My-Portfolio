@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {SideIcons} from '@core/constants/sideIcons';
 
 @Component({
   selector: 'app-cv',
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './cv.component.scss',
 })
 export class CvComponent {
+  Icons = SideIcons
   downloadCV(filename: string): void {
     const filePath = `assets/docs/${filename}`;
     const link = document.createElement('a');

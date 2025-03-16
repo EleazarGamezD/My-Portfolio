@@ -8897,7 +8897,7 @@ header.sticky .left-sidebar-nav .navbar-nav .nav-link {
 .show-search-popup .search-form-wrapper {
   opacity: 1;
   visibility: visible;
-  cursor: url(../shared/images/mfg-close.png), auto;
+  cursor: url(../images/shared/images/mfg-close.png), auto;
 }
 .show-search-popup .search-form-wrapper .search-form {
   height: 50%;
@@ -11001,7 +11001,7 @@ blockquote footer {
 }
 /* Contact form */
 .select-style select {
-  background-image: url("../shared/images/contact-form-down-arrow.jpg");
+  background-image: url("../images/shared/images/contact-form-down-arrow.jpg");
   background-repeat: no-repeat;
   background-position: top 25px right 30px;
   cursor: pointer;
@@ -11119,7 +11119,7 @@ blockquote footer {
 }
 .contact-form-style-06 .select-style select {
   color: var(--light-medium-gray);
-  background-image: url("../shared/images/contact-form-arrow-white.png");
+  background-image: url("../images/shared/images/contact-form-arrow-white.png");
   background-position: top 25px right 20px;
   padding-right: 45px;
 }
@@ -11779,7 +11779,7 @@ blockquote footer {
   content: "";
   width: 45px;
   height: 62px;
-  background: url("../shared/images/marker02.png") left center no-repeat;
+  background: url("../images/shared/images/marker02.png") left center no-repeat;
   background-size: cover;
   position: absolute;
   left: -15px;
@@ -12957,7 +12957,7 @@ blockquote footer {
   opacity: 1;
 }
 .mfp-wrap {
-  cursor: url("../shared/images/mfg-close.png"), auto;
+  cursor: url("../images/shared/images/mfg-close.png"), auto;
 }
 .mfp-wrap .mfp-container {
   cursor: auto;

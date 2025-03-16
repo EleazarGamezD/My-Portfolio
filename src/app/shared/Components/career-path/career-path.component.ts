@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
+import {SideIcons} from '@core/constants/sideIcons';
 import {ICareerPath} from '@core/interfaces/carrer-path/carrer-path.interface';
+import {careerPath} from '@shared/Json/carrerPath';
 
 @Component({
   selector: 'app-career-path',
@@ -8,42 +10,6 @@ import {ICareerPath} from '@core/interfaces/carrer-path/carrer-path.interface';
   styleUrl: './career-path.component.scss',
 })
 export class CareerPathComponent {
-  careerPathArray: ICareerPath[] = [
-    {
-      year: '2025 - Actual',
-      title: 'L4 Ventures LLC',
-      description:
-        'Desarrollador Fullstack, Desarrollo de Aplicaciones Web.',
-    },
-    {
-      year: '2024 - 2025',
-      title: 'Meraki Office',
-      description:
-        'Desarrollador Fullstack, Creación de Marketplace, integración de pasarelas de pago, chats, empresas de logística.',
-    },
-    /*   {
-        year: '2024-2025',
-        title: 'Sendifico',
-        description:
-          'Desarrollador Backend, integraciones de plataformas de logística.',
-      }, */
-    {
-      year: '2023-Actual',
-      title: 'Freelance',
-      description:
-        'Desarrollador Fullstack, en desarrollo de proyectos personalizados.',
-    },
-    {
-      year: '2018-2023',
-      title: 'PosTouch  Colombia S.A.S',
-      description:
-        'Jefe de departamento Técnico, soporte a sistemas fiscales y contables.',
-    },
-    {
-      year: '2013-2018',
-      title: 'Retail Pos systems tec. C.A.',
-      description:
-        'Jefe de departamento Técnico, soporte a sistemas fiscales y contables.',
-    },
-  ];
+  careerPathArray: ICareerPath[] = careerPath
+  Icons = SideIcons
 }

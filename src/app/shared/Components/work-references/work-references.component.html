@@ -1,14 +1,11 @@
-<section class="background-repeat overlap-height position-relative pt-4 md-pt-8"
-  style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')">
-  <div class="position-absolute left-minus-100px top-50 d-none d-lg-inline-block"
-    data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)">
-    <img src="https://placehold.co/270x270" alt="" />
+<section class="background-repeat overlap-height position-relative pt-4 md-pt-8" style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')">
+  <div class="position-absolute left-minus-100px top-50 d-none d-lg-inline-block" data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)">
+    <img src="{{Icons.ServerIcon}}" alt="" style='max-width: 250px; max-height: 250px' />
   </div>
   <div class="container overlap-gap-section">
     <div class="row justify-content-center mb-6 md-mb-8 xs-mb-40px">
       <div class="col-xl-10 testimonials-style-11 position-relative ps-15 pe-15 sm-ps-15px sm-pe-15px text-center">
-        <div class="swiper slider-custom-text"
-          data-slider-options='{ "loop": true, "keyboard": { "enabled": true, "onlyInViewport": true }, "autoplay": { "delay": 4000, "disableOnInteraction": false }, "navigation": { "nextEl": ".swiper-button-next-nav", "prevEl": ".swiper-button-previous-nav", "effect": "fade" } }'>
+        <div class="swiper slider-custom-text" data-slider-options='{ "loop": true, "keyboard": { "enabled": true, "onlyInViewport": true }, "autoplay": { "delay": 4000, "disableOnInteraction": false }, "navigation": { "nextEl": ".swiper-button-next-nav", "prevEl": ".swiper-button-previous-nav", "effect": "fade" } }'>
           <div class="swiper-wrapper">
             @for(testimonial of workReferences; track $index){
             <!-- start testimonial item -->
@@ -17,71 +14,35 @@
                 {{testimonial.testimonialEs}}
               </h6>
               <span class="fs-15 text-base-color fw-500 d-block text-uppercase ls-2px">{{testimonial.name}}</span>
-              <span
-                class="fs-14 lh-20 text-dark-gray fw-500 text-uppercase d-block ls-05px">{{testimonial.position}}</span>
-              <span
-                class="fs-14 lh-20 text-dark-gray fw-500 text-uppercase d-block ls-05px">{{testimonial.company}}</span>
+              <span class="fs-14 lh-20 text-dark-gray fw-500 text-uppercase d-block ls-05px">{{testimonial.position}}</span>
+              <span class="fs-14 lh-20 text-dark-gray fw-500 text-uppercase d-block ls-05px">{{testimonial.company}}</span>
             </div>
             <!-- end testimonial item -->
             }
           </div>
         </div>
         <!-- start slider navigation -->
-        <div
-          class="swiper-button-previous-nav swiper-button-prev slider-custom-text-prev fs-14 text-uppercase text-dark-gray fw-500 ls-1px">
+        <div class="swiper-button-previous-nav swiper-button-prev slider-custom-text-prev fs-14 text-uppercase text-dark-gray fw-500 ls-1px">
           prev
         </div>
-        <div
-          class="swiper-button-next-nav swiper-button-next slider-custom-text-next fs-14 text-uppercase text-dark-gray fw-500 ls-1px">
+        <div class="swiper-button-next-nav swiper-button-next slider-custom-text-next fs-14 text-uppercase text-dark-gray fw-500 ls-1px">
           next
         </div>
         <!-- end slider pagination -->
       </div>
     </div>
-    <div class="row row-cols-2 row-cols-lg-6 row-cols-sm-3 text-center justify-content-center clients-style-05"
-      data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'>
+    <div class="row row-cols-2 row-cols-lg-6 row-cols-sm-3 text-center justify-content-center clients-style-05" data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'>
+
+      @for ( icon of downSideIcons; track $index ){
       <!-- start client item -->
       <div class="col md-mb-30px">
         <div class="client-box">
-          <a href="#"><img src="https://placehold.co/165x205" class="h-110px" alt="" /></a>
+          <a href="#"><img src="{{icon.url}}" class="h-110px" alt="" /></a>
         </div>
       </div>
       <!-- end client item -->
-      <!-- start client item -->
-      <div class="col md-mb-30px">
-        <div class="client-box">
-          <a href="#"><img src="https://placehold.co/165x205" class="h-110px" alt="" /></a>
-        </div>
-      </div>
-      <!-- end client item -->
-      <!-- start client item -->
-      <div class="col md-mb-30px">
-        <div class="client-box">
-          <a href="#"><img src="https://placehold.co/165x205" class="h-110px" alt="" /></a>
-        </div>
-      </div>
-      <!-- end client item -->
-      <!-- start client item -->
-      <div class="col xs-mb-30px">
-        <div class="client-box">
-          <a href="#"><img src="https://placehold.co/165x205" class="h-110px" alt="" /></a>
-        </div>
-      </div>
-      <!-- end client item -->
-      <!-- start client item -->
-      <div class="col">
-        <div class="client-box">
-          <a href="#"><img src="https://placehold.co/165x205" class="h-110px" alt="" /></a>
-        </div>
-      </div>
-      <!-- end client item -->
-      <!-- start client item -->
-      <div class="col">
-        <div class="client-box">
-          <a href="#"><img src="https://placehold.co/165x205" class="h-110px" alt="" /></a>
-        </div>
-      </div>
-      <!-- end client item -->
+      }
+
     </div>
   </div>
 </section>

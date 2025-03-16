@@ -1,23 +1,22 @@
-<div class="swiper-slide">
+<div (click)="navigateToProject()" class='cursor-pointer'>
   <div class="row g-0 services-box-style-02 border-radius-6px overflow-hidden hover-box dark-hover">
     <div class="col-sm-6 position-relative bg-very-light-gray p-10 xxl-p-6 xs-p-10">
       <div class="services-box-icon mb-65px position-relative z-index-9 lg-mb-30px">
-        <img class="w-75px lg-w-65px" src="https://placehold.co/150x150" alt="" />
+        <img class="w-75px lg-w-65px" src="{{project.icon}}" alt="" style='height: 150px; height: 150px; ' />
       </div>
       <div class="services-box-content last-paragraph-no-margin position-relative z-index-9">
         <span class="d-inline-block alt-font text-dark-gray fs-24 mb-5px">Beauty</span>
         <p class="text-light-opacity lh-30">
-          Bring brighter and younger looking skin.
+          {{project.title}}
         </p>
       </div>
       <div class="box-overlay bg-dark-gray"></div>
     </div>
     <div class="col-sm-6 services-box-img overflow-hidden">
       <div class="h-100 cover-background position-relative xs-h-300px" style="
-                        background-image: url(https://placehold.co/580x705);
+                        background-image: url('{{project.images[0]}}');
                       ">
-        <span
-          class="position-absolute left-minus-30px bottom-50px fs-100 lg-fs-80 xs-fs-90 fw-600 text-very-light-gray xl-bottom-25px md-left-minus-20px">01</span>
+        <span class="position-absolute left-minus-30px bottom-50px fs-100 lg-fs-80 xs-fs-90 fw-600 text-very-light-gray xl-bottom-25px md-left-minus-20px">{{project.id}}</span>
       </div>
     </div>
   </div>
