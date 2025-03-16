@@ -1,17 +1,13 @@
-<section class="background-repeat border-top border-color-light-gray position-relative overlap-height z-index-1"
-  style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')">
-  <div class="position-absolute right-minus-50px overlap-section z-index-minus-1 d-none d-lg-inline-block"
-    data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)">
-    <img src="https://placehold.co/175x175" alt="" />
+<section class="background-repeat border-top border-color-light-gray position-relative overlap-height z-index-1" style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')">
+  <div class="position-absolute right-minus-50px overlap-section z-index-minus-1 d-none d-lg-inline-block" data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)">
+    <img src="{{Icons.MultiTaskIcon}}" alt="" style='max-width: 175px; max-height: 175px' />
   </div>
-  <div class="position-absolute left-minus-100px top-50 z-index-minus-1 d-none d-lg-inline-block"
-    data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)">
-    <img src="https://placehold.co/270x270" alt="" />
+  <div class="position-absolute left-minus-100px top-50 z-index-minus-1 d-none d-lg-inline-block" data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)">
+    <img src="{{Icons.ApiIcon}}" alt="" style='max-width: 250px; max-height: 250px' />
   </div>
   <div class="container overlap-gap-section">
     <div class="row justify-content-center mb-2">
-      <div class="col-lg-6 col-md-8 text-center"
-        data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1],  "delay":0, "duration": 600, "staggervalue": 300, "easing": "easeOutQuad" }'>
+      <div class="col-lg-6 col-md-8 text-center" data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1],  "delay":0, "duration": 600, "staggervalue": 300, "easing": "easeOutQuad" }'>
         <span class="fs-15 mb-5px text-base-color fw-bold d-block text-uppercase ls-2px">Proyectos</span>
         <h3 class="alt-font ls-minus-1px text-dark-gray w-100 xl-w-80 sm-w-100 mx-auto">
           Un vistazo a algunos de mis proyectos más recientes.
@@ -21,12 +17,40 @@
     <div class="row mb-5 xs-mb-15px">
       <div class="col-12 position-relative">
         <div class="outside-box-right-40 sm-outside-box-right-0">
-          <div class="swiper magic-cursor"
-            data-slider-options='{ "slidesPerView": 1, "spaceBetween": 30, "loop": true, "autoplay": { "delay": 3000, "disableOnInteraction": false },  "pagination": { "el": ".slider-three-slide-pagination", "clickable": true, "dynamicBullets": false }, "keyboard": { "enabled": true, "onlyInViewport": true }, "breakpoints": { "992": { "slidesPerView": 3 }, "768": { "slidesPerView": 2 }, "320": { "slidesPerView": 1 } }, "effect": "slide" }'>
+          <div class="swiper" data-slider-options='{
+          "slidesPerView": 1,
+          "spaceBetween": 30,
+          "loop": true,
+          "autoplay": {
+            "delay": 3000,
+            "disableOnInteraction": false
+          },
+          "pagination": {
+            "el": ".slider-three-slide-pagination",
+            "clickable": true,
+            "dynamicBullets": false
+          },
+          "keyboard": {
+            "enabled": true,
+            "onlyInViewport": true
+          },
+          "breakpoints": {
+            "1400": { "slidesPerView": 4 },
+            "1200": { "slidesPerView": 3 },
+            "992": { "slidesPerView": 3 },
+            "768": { "slidesPerView": 2 },
+            "320": { "slidesPerView": 1 }
+          },
+          "effect": "slide"
+        }'>
             <div class="swiper-wrapper pt-20px pb-20px">
+              @for(project of ProjectsArray; track $index){
               <!-- start slider item -->
-              <app-slider-project-item />
+              <div class="swiper-slide separator">
+                <app-slider-project-item [project]="project" />
+              </div>
               <!-- end slider item -->
+              }
             </div>
           </div>
         </div>

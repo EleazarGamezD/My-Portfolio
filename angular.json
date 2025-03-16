@@ -53,7 +53,8 @@
             "scripts": [
               "src/assets/js/jquery.js",
               "src/assets/js/vendors.min.js",
-              "src/assets/js/main.js"
+               "src/assets/js/main.js",
+              "src/assets/js/templateBridge.js"
             ],
             "server": "src/main.server.ts",
             "prerender": true,

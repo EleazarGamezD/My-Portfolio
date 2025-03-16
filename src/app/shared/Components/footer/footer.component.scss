@@ -1,0 +1,20 @@
+.img-fluid {
+  width: 140px;
+  height: 140px;
+  margin-top: 100px;
+  animation: rotate 6s linear infinite; // Rotación continua
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Puedes añadir una pausa al hacer hover (opcional)
+.img-fluid:hover {
+  animation-play-state: paused;
+}

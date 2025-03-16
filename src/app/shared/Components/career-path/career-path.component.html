@@ -8,12 +8,10 @@
         <h3 class="text-dark-gray fw-600 ls-minus-2px mb-40px">Mi trayectoria profesional.</h3>
         <div class="row row-cols-1">
           <!-- start process step item -->
-          @for(item of careerPathArray; track $index){ <div
-            class="col-12 process-step-style-05 position-relative hover-box">
+          @for(item of careerPathArray; track $index){ <div class="col-12 process-step-style-05 position-relative hover-box">
             <div class="process-step-item d-flex">
               <div class="process-step-icon-wrap position-relative">
-                <div
-                  class="process-step-icon d-flex justify-content-center align-items-center mx-auto rounded-circle h-60px w-60px fs-16 bg-solitude-blue fw-600 position-relative">
+                <div class="process-step-icon d-flex justify-content-center align-items-center mx-auto rounded-circle h-60px w-60px fs-16 bg-solitude-blue fw-600 position-relative">
                   <span class="number position-relative z-index-1 text-dark-gray">{{$index + 1 }}</span>
                   <div class="box-overlay bg-base-color rounded-circle"></div>
                 </div>
@@ -29,16 +27,12 @@
         </div>
       </div>
       <div class="col-lg-7 offset-xxl-1 position-relative md-mb-30px sm-mb-15">
-        <img src="https://placehold.co/675x560" class="position-relative z-index-9 top-40px" alt="">
-        <img src="images/demo-corporate-03.png" class="absolute-middle-center xs-w-95" alt="">
-        <img src="https://placehold.co/144x64" class="position-absolute top-50px left-0px xs-left-15px"
-          data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)" alt="">
-        <img src="https://placehold.co/67x34" class="position-absolute top-150px left-50px"
-          data-bottom-top="transform: translateY(30px)" data-top-bottom="transform: translateY(-30px)" alt="">
-        <img src="https://placehold.co/61x30" class="position-absolute top-50px right-50px"
-          data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)" alt="">
-        <img src="https://placehold.co/93x45" class="position-absolute top-100px right-0px xs-right-15px"
-          data-bottom-top="transform: translateY(30px)" data-top-bottom="transform: translateY(-30px)" alt="">
+        <img src="{{ Icons.ApiIcon}}" class="position-relative z-index-9 top-40px" alt="">
+        <img src="{{ Icons.RainDigits}}" class="absolute-middle-center xs-w-95" alt="">
+        <img src="{{ Icons.RainDigits}}" class="position-absolute top-50px left-0px xs-left-15px" data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)" alt="">
+        <img src="{{ Icons.webBackground}}" class="position-absolute top-150px left-50px" data-bottom-top="transform: translateY(30px)" data-top-bottom="transform: translateY(-30px)" alt="">
+        <img src="{{ Icons.RainDigits}}" class="position-absolute top-50px right-50px" data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)" alt="">
+        <img src="{{ Icons.RainDigits}}" class="position-absolute top-100px right-0px xs-right-15px" data-bottom-top="transform: translateY(30px)" data-top-bottom="transform: translateY(-30px)" alt="">
       </div>
     </div>
   </div>

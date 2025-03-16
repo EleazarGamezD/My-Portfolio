@@ -1,5 +1,14 @@
+section {
+  padding-top:80px !important;
+   padding-bottom:130px !important;
+  @media (max-width: 767px) {
+    padding-bottom: 80px !important;
+  }
+}
+
+
 .mobile-cover{
-    @media  (max-width: 480px) {       
+    @media  (max-width: 480px) {
     background-position: center;
     background-size: cover;
     }

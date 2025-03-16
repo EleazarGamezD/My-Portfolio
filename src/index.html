@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>MyPortfolio</title>
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+<head>
+  <meta charset="utf-8" />
+  <title>Eleazar Gámez Fullstack Developer | Portfolio Profesional</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-    <!-- google fonts preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  </head>
-  <body class="overflow-x-hidden" data-mobile-nav-style="classic">
-    <app-root></app-root>
-  </body>
+  <!-- google fonts preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body class="overflow-x-hidden" data-mobile-nav-style="classic">
+  <app-root></app-root>
+
+  <!-- Script para reinicializar componentes después de cambios de ruta -->
+  <script>
+
+    // Esta función permite reinicializar los componentes manualmente si es necesario
+    function reinitTemplateComponents() {
+      if (window.templateBridge && typeof window.templateBridge.reinitAll === 'function') {
+        window.templateBridge.reinitAll();
+      }
+    }
+
+    // Detectar cuando Angular ha terminado de renderizar
+    window.addEventListener('DOMContentLoaded', function () {
+      console.log('🚀 DOM cargado, esperando inicialización de Angular...');
+    });
+  </script>
+</body>
 </html>
