@@ -4,19 +4,19 @@ export const sliderContent: IHomeBannerSlider[] = [
   {
     title: 'Web Developer',
     description:
-      'I am a software developer with a passion for creating innovative solutions that make a difference.',
+      'Desarrollo soluciones web completas y escalables, combinando tecnologías frontend y backend para crear experiencias digitales robustas y orientadas a resultados, con un enfoque centrado en el usuario.',
     image: '/assets/images/shared/backgrounds/bg-1.webp',
   },
   {
     title: 'Backend Developer',
     description:
-      'I am a web developer with a passion for creating beautiful and functional websites.',
+      'Diseño y implemento soluciones backend eficientes APIs RESTfull, gestión de bases de datos y desarrollo de microservicios. Implemento soluciones eficientes y seguras con Node.js, NestJS y tecnologías cloud.',
     image: '/assets/images/shared/backgrounds/keyboard.webp',
   },
   {
     title: 'Frontend Developer',
     description:
-      'I am a mobile developer with a passion for creating beautiful and functional mobile applications.',
+      'Creo interfaces de usuario dinámicas y responsivas con Angular,usando componentes reutilizables y metodologías modernas. Me enfoco en optimizar rendimiento, accesibilidad y experiencia de usuario para desarrollar aplicaciones web elegantes e intuitivas.',
     image: '/assets/images/shared/backgrounds/wallpaperflare.jpg',
   },
 ];
