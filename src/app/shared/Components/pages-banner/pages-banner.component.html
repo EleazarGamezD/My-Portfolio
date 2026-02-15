@@ -9,10 +9,9 @@
       <div class="col-12 text-center position-relative page-title-extra-large">
         <div class="d-flex flex-column extra-small-screen">
           <div class="mt-auto">
-            <h1
-              class="text-white alt-font mb-0 text-shadow-extra-large fw-400 ls-minus-1px"
-              data-fancy-text='{ "opacity": [0, 1], "translateY": [50, 0], "filter": ["blur(20px)", "blur(0px)"], "string": ["Packages"], "duration": 500, "delay": 0, "speed": 50, "easing": "easeOutQuad" }'
-            ></h1>
+            <h1 class="text-white alt-font mb-0 text-shadow-extra-large fw-400 ls-minus-1px">
+              {{ t('page.projectDetails') }}
+            </h1>
           </div>
           <!-- start breadcrumb -->
           <div
@@ -21,8 +20,8 @@
             <ul
               data-anime='{ "el": "childs", "translateY": [50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              <li><a href="demo-spa-salon.html" class="text-white">Home</a></li>
-              <li>Packages</li>
+              <li>{{ t('page.home') }}</li>
+              <li>{{ t('page.projectDetails') }}</li>
             </ul>
           </div>
           <!-- end breadcrumb -->

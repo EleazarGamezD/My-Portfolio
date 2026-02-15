@@ -1,40 +1,34 @@
-import {ICareerPath} from "@core/interfaces/carrer-path/carrer-path.interface";
+import { ICareerPath } from '@core/interfaces/carrer-path/carrer-path.interface';
 
 export const careerPath: ICareerPath[] = [
   {
     year: '2025 - Actual',
     title: 'L4 Ventures LLC',
-    description:
-      'Desarrollador Fullstack, Desarrollo de Aplicaciones Web.',
+    descriptionEs: 'Desarrollador Fullstack, desarrollo de aplicaciones web.',
+    descriptionEn: 'Fullstack developer, web application development.',
   },
   {
     year: '2024 - 2025',
     title: 'Meraki Office',
-    description:
-      'Desarrollador Fullstack, Creación de Marketplace, integración de pasarelas de pago, chats, empresas de logística.',
+    descriptionEs: 'Desarrollador Fullstack, creacion de marketplace, integracion de pasarelas de pago, chats y plataformas de logistica.',
+    descriptionEn: 'Fullstack developer, marketplace creation, payment gateway integration, chat systems, and logistics platform integrations.',
   },
-  /*   {
-      year: '2024-2025',
-      title: 'Sendifico',
-      description:
-        'Desarrollador Backend, integraciones de plataformas de logística.',
-    }, */
   {
-    year: '2023-Actual',
+    year: '2023 - Actual',
     title: 'Freelance',
-    description:
-      'Desarrollador Fullstack, en desarrollo de proyectos personalizados.',
+    descriptionEs: 'Desarrollador Fullstack en proyectos personalizados.',
+    descriptionEn: 'Fullstack developer for custom projects.',
   },
   {
-    year: '2018-2023',
-    title: 'PosTouch  Colombia S.A.S',
-    description:
-      'Jefe de departamento Técnico, soporte a sistemas fiscales y contables.',
+    year: '2018 - 2023',
+    title: 'PosTouch Colombia S.A.S',
+    descriptionEs: 'Jefe de departamento tecnico, soporte a sistemas fiscales y contables.',
+    descriptionEn: 'Technical department lead, support for fiscal and accounting systems.',
   },
   {
-    year: '2013-2018',
-    title: 'Retail Pos systems tec. C.A.',
-    description:
-      'Jefe de departamento Técnico, soporte a sistemas fiscales y contables.',
+    year: '2013 - 2018',
+    title: 'Retail Pos Systems Tec. C.A.',
+    descriptionEs: 'Jefe de departamento tecnico, soporte a sistemas fiscales y contables.',
+    descriptionEn: 'Technical department lead, support for fiscal and accounting systems.',
   },
 ];

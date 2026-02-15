@@ -1,0 +1,22 @@
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 16px;
+}
+
+.lang-btn {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 999px;
+  padding: 6px 10px;
+  transition: all 0.2s ease;
+}
+
+.lang-btn.active {
+  border-color: #fff;
+  background-color: rgba(255, 255, 255, 0.15);
+}

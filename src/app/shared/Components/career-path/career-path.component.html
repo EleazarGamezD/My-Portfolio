@@ -4,8 +4,8 @@
     </div>
     <div class="row align-items-center">
       <div class="col-xxl-4 col-lg-5 md-mb-15 sm-mb-20 text-center text-lg-start">
-        <span class="fs-16 mb-10px text-base-color fw-bold d-block text-uppercase ls-2px ">Trayectoria</span>
-        <h3 class="text-dark-gray fw-600 ls-minus-2px mb-40px">Mi trayectoria profesional.</h3>
+        <span class="fs-16 mb-10px text-base-color fw-bold d-block text-uppercase ls-2px ">{{ t('home.career.badge') }}</span>
+        <h3 class="text-dark-gray fw-600 ls-minus-2px mb-40px">{{ t('home.career.title') }}</h3>
         <div class="row row-cols-1">
           <!-- start process step item -->
           @for(item of careerPathArray; track $index){ <div class="col-12 process-step-style-05 position-relative hover-box">
@@ -19,7 +19,7 @@
               </div>
               <div class="process-content ps-30px last-paragraph-no-margin mb-30px">
                 <span class="d-block fw-600 text-dark-gray mb-5px fs-18">{{item.title}}<br>{{item.year}}</span>
-                <p class="w-90 lg-w-100">{{item.description}}</p>
+                <p class="w-90 lg-w-100">{{ getDescription(item) }}</p>
               </div>
             </div>
           </div>}

@@ -2,9 +2,9 @@
   <div class="container" id="appointment">
     <div class="row justify-content-center mb-2">
       <div class="col-12 text-center" data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'>
-        <span class="fs-15 mb-5px text-base-color fw-500 d-block text-uppercase ls-2px">Creemos juntos</span>
+        <span class="fs-15 mb-5px text-base-color fw-500 d-block text-uppercase ls-2px">{{ t('home.contactForm.badge') }}</span>
         <h3 class="alt-font ls-minus-1px text-dark-gray">
-          En que puedo ayudarte?
+          {{ t('home.contactForm.title') }}
         </h3>
       </div>
     </div>
@@ -13,44 +13,43 @@
         <form [formGroup]="contactForm" class="contact-form-style-03">
           <div class="row">
             <div class="col-md-6">
-              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">Tu nombre*</label>
+              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.name.label') }}</label>
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-emoji-smile text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail1" type="text" formControlName="name" placeholder="Cual es tu nombre?" />
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail1" type="text" formControlName="name" [placeholder]="t('home.contactForm.name.placeholder')" />
               </div>
             </div>
             <div class="col-md-6">
-              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">Tu correo*</label>
+              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.email.label') }}</label>
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-envelope text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail2" type="email" formControlName="email" placeholder="Ingresa tu dirección de correo" />
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail2" type="email" formControlName="email" [placeholder]="t('home.contactForm.email.placeholder')" />
               </div>
             </div>
             <div class="col-md-6">
-              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">Tu teléfono*</label>
+              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.phone.label') }}</label>
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-telephone text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail3" type="tel" formControlName="phone" placeholder="Ingresa tu teléfono" />
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail3" type="tel" formControlName="phone" [placeholder]="t('home.contactForm.phone.placeholder')" />
               </div>
             </div>
             <div class="col-md-6">
-              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">Tu asunto*</label>
+              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">{{ t('home.contactForm.subject.label') }}</label>
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-journals text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail4" type="text" formControlName="subject" placeholder="En que puedo ayudarte?" />
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail4" type="text" formControlName="subject" [placeholder]="t('home.contactForm.subject.placeholder')" />
               </div>
             </div>
             <div class="col-12 mb-35px">
-              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">Tu mensaje*</label>
+              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">{{ t('home.contactForm.message.label') }}</label>
               <div class="position-relative form-group form-textarea mb-0">
-                <textarea class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" formControlName="message" placeholder="Ingresa tu mensaje" rows="4"></textarea>
+                <textarea class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" formControlName="message" [placeholder]="t('home.contactForm.message.placeholder')" rows="4"></textarea>
                 <span class="form-icon"><i class="bi bi-chat-square-dots text-dark-gray"></i></span>
               </div>
             </div>
             <div class="col-md-8 sm-mb-30px text-center text-md-start">
               <p class="mb-0 fs-15 lh-26 w-80 md-w-85 sm-w-100">
-                Cumpliendo con el compromiso de proteger tu privacidad. Nunca se recopilara información sobre ti sin tu
-                consentimiento explícito.
+                {{ t('home.contactForm.privacy') }}
               </p>
             </div>
             <div class="col-md-4 text-center text-md-end">
@@ -59,9 +58,9 @@
                 <span>
                   <span><i class="fa-regular fa-paper-plane"></i></span>
                   @if (!sendingEmail) {
-                  <span class="btn-double-text" data-text="Enviar email">Enviar email</span>
+                  <span class="btn-double-text" [attr.data-text]="t('home.contactForm.submit')">{{ t('home.contactForm.submit') }}</span>
                   } @else {
-                  <span class="btn-double-text" data-text="Enviando email">Enviando email</span>
+                  <span class="btn-double-text" [attr.data-text]="t('home.contactForm.submitting')">{{ t('home.contactForm.submitting') }}</span>
                   }
                 </span>
               </button>
