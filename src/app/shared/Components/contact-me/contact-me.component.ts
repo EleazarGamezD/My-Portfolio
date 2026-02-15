@@ -11,6 +11,7 @@ import { EmailService } from '@services/email/email.service';
 import { RecaptchaService } from '@services/recaptcha/recaptcha.service';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
+import { I18nService } from '@core/services/i18n/i18n.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -32,6 +33,7 @@ export class ContactMeComponent implements OnInit {
     private recaptchaV3Service: ReCaptchaV3Service,
     private recaptchaService: RecaptchaService,
     private toastr: ToastrService,
+    public i18nService: I18nService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -63,7 +65,7 @@ export class ContactMeComponent implements OnInit {
 
     //if the form is not valid, we return
     if (!this.contactForm.valid) {
-      this.toastr.error('Formulario inválido', 'Error', {
+      this.toastr.error(this.t('toast.error.invalidForm'), this.t('toast.error.title'), {
         timeOut: 3000,
       });
     } else {
@@ -89,22 +91,26 @@ export class ContactMeComponent implements OnInit {
           const emailSent = await this.emailService.sendEmail(formData);
           if (emailSent) {
             this.contactForm.reset();
-            this.toastr.success('Email enviado con éxito', 'Exito', {
+            this.toastr.success(this.t('toast.success.sent'), this.t('toast.success.title'), {
               timeOut: 3000,
             });
           }
         } else {
-          this.toastr.error('reCAPTCHA falló', 'Error', {
+          this.toastr.error(this.t('toast.error.recaptcha'), this.t('toast.error.title'), {
             timeOut: 3000,
           });
         }
       } catch {
-        this.toastr.error('Error en el proceso', 'Error', {
+        this.toastr.error(this.t('toast.error.process'), this.t('toast.error.title'), {
           timeOut: 3000,
         });
       } finally {
         this.sendingEmail = false;
       }
     }
+  }
+
+  t(key: string) {
+    return this.i18nService.t(key);
   }
 }

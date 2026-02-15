@@ -1,5 +1,7 @@
 export interface IHomeBannerSlider {
-  title: string;
+  titleEs: string;
+  titleEn: string;
   image: string;
-  description: string;
+  descriptionEs: string;
+  descriptionEn: string;
 }

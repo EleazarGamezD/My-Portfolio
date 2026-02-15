@@ -20,4 +20,12 @@ export class SliderProjectItemComponent {
   navigateToProject() {
     this.router.navigateByUrl(this.i18nService.localizedPath(`projectDetails/${this.project.id}`));
   }
+
+  get title() {
+    return this.i18nService.selectText(this.project.titleEs, this.project.titleEn);
+  }
+
+  t(key: string) {
+    return this.i18nService.t(key);
+  }
 }

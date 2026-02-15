@@ -11,7 +11,7 @@
             <!-- start testimonial item -->
             <div class="swiper-slide text-center">
               <h6 class="alt-font lh-40 text-dark-gray mb-20px">
-                {{testimonial.testimonialEs}}
+                {{ getTestimonial(testimonial) }}
               </h6>
               <span class="fs-15 text-base-color fw-500 d-block text-uppercase ls-2px">{{testimonial.name}}</span>
               <span class="fs-14 lh-20 text-dark-gray fw-500 text-uppercase d-block ls-05px">{{testimonial.position}}</span>
@@ -23,10 +23,10 @@
         </div>
         <!-- start slider navigation -->
         <div class="swiper-button-previous-nav swiper-button-prev slider-custom-text-prev fs-14 text-uppercase text-dark-gray fw-500 ls-1px">
-          prev
+          {{ t('workReferences.prev') }}
         </div>
         <div class="swiper-button-next-nav swiper-button-next slider-custom-text-next fs-14 text-uppercase text-dark-gray fw-500 ls-1px">
-          next
+          {{ t('workReferences.next') }}
         </div>
         <!-- end slider pagination -->
       </div>

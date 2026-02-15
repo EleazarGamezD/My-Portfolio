@@ -1,5 +1,6 @@
 export interface ICareerPath {
   year: string;
   title: string;
-  description: string;
+  descriptionEs: string;
+  descriptionEn: string;
 }
