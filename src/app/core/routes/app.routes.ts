@@ -1,9 +1,10 @@
-import {Routes} from '@angular/router';
-import {MainLayoutComponent} from '@layouts/main-layout/main-layout.component';
+import { Route, Routes } from '@angular/router';
+import { DEFAULT_LANGUAGE, AppLanguage } from '@core/i18n/i18n.config';
+import { MainLayoutComponent } from '@layouts/main-layout/main-layout.component';
 
-export const routes: Routes = [
-  {
-    path: '',
+function localizedRoute(lang: AppLanguage): Route {
+  return {
+    path: lang,
     component: MainLayoutComponent,
     children: [
       {
@@ -11,7 +12,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('@pages/home/home.component')
             .then(
-              (m) => m.HomeComponent
+              (m) => m.HomeComponent,
             ),
       },
       {
@@ -23,14 +24,28 @@ export const routes: Routes = [
             ),
       },
     ],
-  },
+  };
+}
+
+export const routes: Routes = [
   {
     path: '',
-    redirectTo: '',
+    redirectTo: DEFAULT_LANGUAGE,
+    pathMatch: 'full',
+  },
+  localizedRoute('es'),
+  localizedRoute('en'),
+  {
+    path: 'home',
+    redirectTo: DEFAULT_LANGUAGE,
     pathMatch: 'full',
   },
   {
+    path: 'projectDetails/:id',
+    redirectTo: `${DEFAULT_LANGUAGE}/projectDetails/:id`,
+  },
+  {
     path: '**',
-    redirectTo: '',
+    redirectTo: DEFAULT_LANGUAGE,
   },
 ];

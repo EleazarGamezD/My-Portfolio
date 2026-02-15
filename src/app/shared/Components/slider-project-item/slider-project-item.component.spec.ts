@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { SliderProjectItemComponent } from './slider-project-item.component';
 
@@ -8,7 +9,8 @@ describe('SliderProjectItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SliderProjectItemComponent]
+      imports: [SliderProjectItemComponent],
+      providers: [provideRouter([])],
     })
     .compileComponents();
 
