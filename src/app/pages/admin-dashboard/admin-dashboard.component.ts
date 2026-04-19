@@ -21,6 +21,8 @@ type AdminSection =
   | 'resumes'
   | 'socialLinks';
 
+type ContentResourceName = 'techSkills' | 'experience' | 'testimonials' | 'resumes' | 'socialLinks';
+
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
@@ -37,10 +39,20 @@ export class AdminDashboardComponent implements OnInit {
   testimonials: IApiContentItem[] = [];
   socialLinks: IApiContentItem[] = [];
   resumes: IApiResume[] = [];
+  readonly newProject: Partial<IProject> = this.createEmptyProjectDraft();
+  newProjectStackValue = '';
+  readonly newContentItems: Record<Exclude<ContentResourceName, 'resumes'>, Partial<IApiContentItem>> = {
+    techSkills: this.createEmptyContentDraft(),
+    experience: this.createEmptyContentDraft(),
+    testimonials: this.createEmptyContentDraft(),
+    socialLinks: this.createEmptyContentDraft(),
+  };
   loading = true;
   contentLoading = true;
+  actionLoadingKey: string | null = null;
   error: string | null = null;
   contentError: string | null = null;
+  actionMessage: string | null = null;
   activeSection: AdminSection = 'overview';
   readonly sections: Array<{ key: AdminSection; label: string }> = [
     { key: 'overview', label: 'Overview' },
@@ -150,6 +162,160 @@ export class AdminDashboardComponent implements OnInit {
     this.activeSection = section;
   }
 
+  async saveProject(project: IProject): Promise<void> {
+    if (!project._id) {
+      this.contentError = 'Project id is required to save changes.';
+      return;
+    }
+
+    const payload: Partial<IProject> = {
+      slug: project.slug,
+      title: project.title,
+      summary: project.summary,
+      description: project.description,
+      stack: project.stack,
+      projectLink: project.projectLink,
+      codeLink: project.codeLink,
+      featured: project.featured,
+      status: project.status,
+      publishedAt: project.publishedAt,
+    };
+
+    await this.runContentAction(`project-save-${project._id}`, async () => {
+      await this.projectsService.updateProject(project._id!, payload);
+      await this.loadContentData();
+      this.actionMessage = `Project ${this.getProjectName(project)} updated.`;
+    });
+  }
+
+  async saveProfile(): Promise<void> {
+    if (!this.profile) {
+      this.contentError = 'Profile is not loaded.';
+      return;
+    }
+
+    const payload: Partial<IApiProfile> = {
+      label: this.profile.label,
+      title: this.profile.title,
+      description: this.profile.description,
+      availability: this.profile.availability,
+      location: this.profile.location,
+      email: this.profile.email,
+      phone: this.profile.phone,
+      metadata: this.profile.metadata,
+    };
+
+    await this.runContentAction('profile-save', async () => {
+      await this.contentService.updateProfile(payload);
+      await this.loadContentData();
+      this.actionMessage = 'Profile updated.';
+    });
+  }
+
+  async createProject(): Promise<void> {
+    const title = this.getLocalizedText(this.newProject.title);
+    if (!this.newProject.slug || title === '-') {
+      this.contentError = 'Project slug and title are required.';
+      return;
+    }
+
+    const payload: Partial<IProject> = {
+      slug: this.newProject.slug,
+      title: this.newProject.title,
+      summary: this.newProject.summary ?? { es: '', en: '' },
+      description: this.newProject.description ?? { es: '', en: '' },
+      stack: this.newProjectStackValue
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean),
+      projectLink: this.newProject.projectLink,
+      codeLink: this.newProject.codeLink,
+      featured: this.newProject.featured,
+      status: this.newProject.status,
+      publishedAt: this.newProject.publishedAt,
+    };
+
+    await this.runContentAction('project-create', async () => {
+      await this.projectsService.createProject(payload);
+      this.resetProjectDraft();
+      await this.loadContentData();
+      this.actionMessage = 'Project created.';
+    });
+  }
+
+  async deleteProject(project: IProject): Promise<void> {
+    if (!project._id || !this.confirmAction(`Delete project ${this.getProjectName(project)}?`)) {
+      return;
+    }
+
+    await this.runContentAction(`project-delete-${project._id}`, async () => {
+      await this.projectsService.deleteProject(project._id!);
+      await this.loadContentData();
+      this.actionMessage = `Project ${this.getProjectName(project)} deleted.`;
+    });
+  }
+
+  async createContentItem(resourceName: Exclude<ContentResourceName, 'resumes'>): Promise<void> {
+    const draft = this.newContentItems[resourceName];
+    const name = this.getLocalizedText(draft.label || draft.title);
+
+    if (!draft.slug || name === '-') {
+      this.contentError = `Slug and label are required to create ${resourceName}.`;
+      return;
+    }
+
+    const payload: Partial<IApiContentItem> = {
+      slug: draft.slug,
+      label: draft.label,
+      title: draft.title?.es || draft.title?.en ? draft.title : draft.label,
+      description: draft.description?.es || draft.description?.en ? draft.description : { es: '', en: '' },
+      value: draft.value,
+      icon: draft.icon,
+      href: draft.href,
+      order: draft.order,
+      active: draft.active ?? true,
+      metadata: draft.metadata,
+    };
+
+    await this.runContentAction(`${resourceName}-create`, async () => {
+      await this.contentService.createContentItem(resourceName, payload);
+      this.resetContentDraft(resourceName);
+      await this.loadContentData();
+      this.actionMessage = `${resourceName} item created.`;
+    });
+  }
+
+  async saveContentItem(resourceName: ContentResourceName, item: IApiContentItem | IApiResume): Promise<void> {
+    if (!item._id) {
+      this.contentError = 'Content item id is required to save changes.';
+      return;
+    }
+
+    const payload = this.getContentPayload(item);
+
+    await this.runContentAction(`${resourceName}-save-${item._id}`, async () => {
+      await this.contentService.updateContentItem(resourceName, item._id!, payload);
+      await this.loadContentData();
+      this.actionMessage = `${this.getContentItemName(item)} updated.`;
+    });
+  }
+
+  async deleteContentItem(resourceName: ContentResourceName, item: IApiContentItem | IApiResume): Promise<void> {
+    if (!item._id || !this.confirmAction(`Delete ${this.getContentItemName(item)}?`)) {
+      return;
+    }
+
+    await this.runContentAction(`${resourceName}-delete-${item._id}`, async () => {
+      await this.contentService.deleteContentItem(resourceName, item._id!);
+      await this.loadContentData();
+      this.actionMessage = `${this.getContentItemName(item)} deleted.`;
+    });
+  }
+
+  isActionLoading(actionKey: string): boolean {
+    return this.actionLoadingKey === actionKey;
+  }
+
   getMetricTotal(type: string): number {
     return this.metrics?.groupedTotals?.find((item) => item._id === type)?.total ?? 0;
   }
@@ -169,5 +335,84 @@ export class AdminDashboardComponent implements OnInit {
 
   getProjectName(project: IProject): string {
     return this.getLocalizedText(project.title);
+  }
+
+  private resetProjectDraft(): void {
+    Object.assign(this.newProject, this.createEmptyProjectDraft());
+    this.newProjectStackValue = '';
+  }
+
+  private resetContentDraft(resourceName: Exclude<ContentResourceName, 'resumes'>): void {
+    Object.assign(this.newContentItems[resourceName], this.createEmptyContentDraft());
+  }
+
+  private createEmptyProjectDraft(): Partial<IProject> {
+    return {
+      slug: '',
+      title: { es: '', en: '' },
+      summary: { es: '', en: '' },
+      description: { es: '', en: '' },
+      stack: [],
+      projectLink: '',
+      codeLink: '',
+      featured: false,
+      status: 'draft',
+      publishedAt: '',
+    };
+  }
+
+  private createEmptyContentDraft(): Partial<IApiContentItem> {
+    return {
+      slug: '',
+      label: { es: '', en: '' },
+      title: { es: '', en: '' },
+      description: { es: '', en: '' },
+      value: '',
+      icon: '',
+      href: '',
+      order: 0,
+      active: true,
+      metadata: {},
+    };
+  }
+
+  private getContentPayload(item: IApiContentItem | IApiResume): Partial<IApiContentItem & IApiResume> {
+    return {
+      slug: item.slug,
+      label: item.label,
+      title: item.title,
+      description: item.description,
+      value: item.value,
+      icon: item.icon,
+      href: item.href,
+      order: item.order,
+      active: item.active,
+      metadata: item.metadata,
+      fileName: 'fileName' in item ? item.fileName : undefined,
+      mimeType: 'mimeType' in item ? item.mimeType : undefined,
+      base64: 'base64' in item ? item.base64 : undefined,
+    };
+  }
+
+  private async runContentAction(actionKey: string, callback: () => Promise<void>): Promise<void> {
+    try {
+      this.actionLoadingKey = actionKey;
+      this.actionMessage = null;
+      this.contentError = null;
+      await callback();
+    } catch (error) {
+      this.contentError = error instanceof Error ? error.message : 'Failed to apply admin action';
+      console.error('Admin action failed:', error);
+    } finally {
+      this.actionLoadingKey = null;
+    }
+  }
+
+  private confirmAction(message: string): boolean {
+    if (typeof window === 'undefined' || typeof window.confirm !== 'function') {
+      return true;
+    }
+
+    return window.confirm(message);
   }
 }

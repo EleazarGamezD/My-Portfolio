@@ -8,6 +8,14 @@ import { GlobalHttpService } from '@services/globalHttp/global-http.service';
   providedIn: 'root',
 })
 export class ProjectsService extends GlobalHttpService {
+  async createProject(payload: Partial<IProject>): Promise<IProject> {
+    return this.makeRequest<IProject, Partial<IProject>>(
+      API_PROJECT_ROUTES.getProjects,
+      payload,
+      RequestMethod.POST,
+    );
+  }
+
   async getProjects(): Promise<IProject[]> {
     return this.makeRequest<IProject[], null>(
       API_PROJECT_ROUTES.getProjects,
@@ -21,6 +29,22 @@ export class ProjectsService extends GlobalHttpService {
       API_PROJECT_ROUTES.getProjectById(idOrSlug),
       null,
       RequestMethod.GET,
+    );
+  }
+
+  async updateProject(id: string, payload: Partial<IProject>): Promise<IProject> {
+    return this.makeRequest<IProject, Partial<IProject>>(
+      API_PROJECT_ROUTES.updateProject(id),
+      payload,
+      RequestMethod.PATCH,
+    );
+  }
+
+  async deleteProject(id: string): Promise<{ deleted: boolean }> {
+    return this.makeRequest<{ deleted: boolean }, null>(
+      API_PROJECT_ROUTES.deleteProject(id),
+      null,
+      RequestMethod.DELETE,
     );
   }
 }

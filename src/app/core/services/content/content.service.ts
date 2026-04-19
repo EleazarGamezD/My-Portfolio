@@ -12,6 +12,25 @@ import { GlobalHttpService } from '@services/globalHttp/global-http.service';
   providedIn: 'root',
 })
 export class ContentService extends GlobalHttpService {
+  async createContentItem<T extends IApiContentItem | IApiResume>(
+    resourceName: string,
+    payload: Partial<T>,
+  ): Promise<T> {
+    return this.makeRequest<T, Partial<T>>(
+      API_CONTENT_ROUTES.getResource(resourceName),
+      payload,
+      RequestMethod.POST,
+    );
+  }
+
+  async updateProfile(payload: Partial<IApiProfile>): Promise<IApiProfile> {
+    return this.makeRequest<IApiProfile, Partial<IApiProfile>>(
+      API_CONTENT_ROUTES.updateProfile,
+      payload,
+      RequestMethod.PUT,
+    );
+  }
+
   async getProfile(): Promise<IApiProfile> {
     return this.makeRequest<IApiProfile, null>(
       API_CONTENT_ROUTES.getProfile,
@@ -57,6 +76,26 @@ export class ContentService extends GlobalHttpService {
       API_CONTENT_ROUTES.getResumes,
       null,
       RequestMethod.GET,
+    );
+  }
+
+  async updateContentItem<T extends IApiContentItem | IApiResume>(
+    resourceName: string,
+    id: string,
+    payload: Partial<T>,
+  ): Promise<T> {
+    return this.makeRequest<T, Partial<T>>(
+      API_CONTENT_ROUTES.updateResourceItem(resourceName, id),
+      payload,
+      RequestMethod.PATCH,
+    );
+  }
+
+  async deleteContentItem(resourceName: string, id: string): Promise<{ deleted: boolean }> {
+    return this.makeRequest<{ deleted: boolean }, null>(
+      API_CONTENT_ROUTES.deleteResourceItem(resourceName, id),
+      null,
+      RequestMethod.DELETE,
     );
   }
 }

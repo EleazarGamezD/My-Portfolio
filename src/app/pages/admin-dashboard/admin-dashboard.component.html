@@ -61,6 +61,10 @@
           {{ contentError }}
         </div>
 
+        <div *ngIf="actionMessage" class="alert alert-success" role="alert">
+          {{ actionMessage }}
+        </div>
+
         <div *ngIf="activeSection === 'overview' && !loading && metrics" class="row">
           <div class="col-md-6 col-lg-3 mb-4">
             <div class="card">
@@ -219,6 +223,49 @@
               <h5 class="card-title mb-0">Projects</h5>
               <span class="badge text-bg-light">{{ projects.length }}</span>
             </div>
+            <div class="dashboard-create-box mb-4">
+              <h6 class="mb-3">Create Project</h6>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="newProject.slug" placeholder="Slug" />
+                </div>
+                <div class="col-md-4">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="newProject.title!.es" placeholder="Title ES" />
+                </div>
+                <div class="col-md-4">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="newProject.title!.en" placeholder="Title EN" />
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="newProject.summary!.es" placeholder="Summary ES" />
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="newProject.summary!.en" placeholder="Summary EN" />
+                </div>
+                <div class="col-md-6">
+                  <textarea class="form-control form-control-sm" [(ngModel)]="newProject.description!.es" placeholder="Description ES"></textarea>
+                </div>
+                <div class="col-md-6">
+                  <textarea class="form-control form-control-sm" [(ngModel)]="newProject.description!.en" placeholder="Description EN"></textarea>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="newProjectStackValue" placeholder="Stack CSV" />
+                </div>
+                <div class="col-md-3">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="newProject.status" placeholder="Status" />
+                </div>
+                <div class="col-md-3">
+                  <input type="date" class="form-control form-control-sm" [(ngModel)]="newProject.publishedAt" />
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <label class="form-check-label d-flex align-items-center gap-2">
+                    <input type="checkbox" [(ngModel)]="newProject.featured" /> Featured
+                  </label>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                  <button class="btn btn-sm btn-primary" type="button" (click)="createProject()" [disabled]="isActionLoading('project-create')">Create Project</button>
+                </div>
+              </div>
+            </div>
             <div *ngIf="contentLoading" class="text-muted">Loading projects...</div>
             <div class="table-responsive" *ngIf="!contentLoading">
               <table class="table table-striped" *ngIf="projects.length > 0; else emptyProjects">
@@ -235,9 +282,21 @@
                   <tr *ngFor="let project of projects">
                     <td>{{ getProjectName(project) }}</td>
                     <td>{{ project.slug || '-' }}</td>
-                    <td>{{ project.status || '-' }}</td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" [(ngModel)]="project.status" />
+                    </td>
                     <td>{{ project.stack?.join(', ') || '-' }}</td>
-                    <td class="text-end">{{ project.featured ? 'Yes' : 'No' }}</td>
+                    <td class="text-end">
+                      <input type="checkbox" [(ngModel)]="project.featured" />
+                    </td>
+                    <td class="text-end dashboard-actions-cell">
+                      <button class="btn btn-sm btn-primary" type="button" (click)="saveProject(project)" [disabled]="isActionLoading('project-save-' + project._id)">
+                        Save
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteProject(project)" [disabled]="isActionLoading('project-delete-' + project._id)">
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -250,7 +309,12 @@
 
         <div *ngIf="activeSection === 'profile'" class="card">
           <div class="card-body">
-            <h5 class="card-title mb-3">Profile</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Profile</h5>
+              <button class="btn btn-sm btn-primary" type="button" (click)="saveProfile()" [disabled]="isActionLoading('profile-save') || !profile">
+                Save Profile
+              </button>
+            </div>
             <div *ngIf="contentLoading" class="text-muted">Loading profile...</div>
             <div *ngIf="!contentLoading && profile" class="row g-3">
               <div class="col-md-6">
@@ -268,25 +332,25 @@
               <div class="col-md-6">
                 <div class="dashboard-detail-card">
                   <span class="dashboard-detail-label">Availability</span>
-                  <strong>{{ profile.availability || '-' }}</strong>
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="profile.availability" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="dashboard-detail-card">
                   <span class="dashboard-detail-label">Location</span>
-                  <strong>{{ profile.location || '-' }}</strong>
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="profile.location" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="dashboard-detail-card">
                   <span class="dashboard-detail-label">Email</span>
-                  <strong>{{ profile.email || '-' }}</strong>
+                  <input type="email" class="form-control form-control-sm" [(ngModel)]="profile.email" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="dashboard-detail-card">
                   <span class="dashboard-detail-label">Phone</span>
-                  <strong>{{ profile.phone || '-' }}</strong>
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="profile.phone" />
                 </div>
               </div>
             </div>
@@ -299,6 +363,16 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="card-title mb-0">Tech Skills</h5>
               <span class="badge text-bg-light">{{ techSkills.length }}</span>
+            </div>
+            <div class="dashboard-create-box mb-4">
+              <h6 class="mb-3">Create Skill</h6>
+              <div class="row g-3">
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.techSkills.slug" placeholder="Slug" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.techSkills.label!.es" placeholder="Label ES" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.techSkills.label!.en" placeholder="Label EN" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.techSkills.value" placeholder="Value" /></div>
+                <div class="col-12 d-flex justify-content-end"><button class="btn btn-sm btn-primary" type="button" (click)="createContentItem('techSkills')" [disabled]="isActionLoading('techSkills-create')">Create Skill</button></div>
+              </div>
             </div>
             <div class="table-responsive" *ngIf="!contentLoading">
               <table class="table table-striped" *ngIf="techSkills.length > 0; else emptySkills">
@@ -314,8 +388,20 @@
                   <tr *ngFor="let item of techSkills">
                     <td>{{ getContentItemName(item) }}</td>
                     <td>{{ item.slug || '-' }}</td>
-                    <td>{{ item.value || '-' }}</td>
-                    <td class="text-end">{{ item.active === false ? 'No' : 'Yes' }}</td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" [(ngModel)]="item.value" />
+                    </td>
+                    <td class="text-end">
+                      <input type="checkbox" [(ngModel)]="item.active" />
+                    </td>
+                    <td class="text-end dashboard-actions-cell">
+                      <button class="btn btn-sm btn-primary" type="button" (click)="saveContentItem('techSkills', item)" [disabled]="isActionLoading('techSkills-save-' + item._id)">
+                        Save
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteContentItem('techSkills', item)" [disabled]="isActionLoading('techSkills-delete-' + item._id)">
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -332,6 +418,18 @@
               <h5 class="card-title mb-0">Experience</h5>
               <span class="badge text-bg-light">{{ experience.length }}</span>
             </div>
+            <div class="dashboard-create-box mb-4">
+              <h6 class="mb-3">Create Experience Item</h6>
+              <div class="row g-3">
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.experience.slug" placeholder="Slug" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.experience.label!.es" placeholder="Label ES" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.experience.label!.en" placeholder="Label EN" /></div>
+                <div class="col-md-3"><input type="number" class="form-control form-control-sm" [(ngModel)]="newContentItems.experience.order" placeholder="Order" /></div>
+                <div class="col-md-6"><textarea class="form-control form-control-sm" [(ngModel)]="newContentItems.experience.description!.es" placeholder="Description ES"></textarea></div>
+                <div class="col-md-6"><textarea class="form-control form-control-sm" [(ngModel)]="newContentItems.experience.description!.en" placeholder="Description EN"></textarea></div>
+                <div class="col-12 d-flex justify-content-end"><button class="btn btn-sm btn-primary" type="button" (click)="createContentItem('experience')" [disabled]="isActionLoading('experience-create')">Create Experience</button></div>
+              </div>
+            </div>
             <div class="table-responsive" *ngIf="!contentLoading">
               <table class="table table-striped" *ngIf="experience.length > 0; else emptyExperience">
                 <thead>
@@ -347,7 +445,17 @@
                     <td>{{ getContentItemName(item) }}</td>
                     <td>{{ item.slug || '-' }}</td>
                     <td>{{ getLocalizedText(item.description) }}</td>
-                    <td class="text-end">{{ item.order ?? '-' }}</td>
+                    <td class="text-end">
+                      <input type="number" class="form-control form-control-sm dashboard-number-input" [(ngModel)]="item.order" />
+                    </td>
+                    <td class="text-end dashboard-actions-cell">
+                      <button class="btn btn-sm btn-primary" type="button" (click)="saveContentItem('experience', item)" [disabled]="isActionLoading('experience-save-' + item._id)">
+                        Save
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteContentItem('experience', item)" [disabled]="isActionLoading('experience-delete-' + item._id)">
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -364,6 +472,18 @@
               <h5 class="card-title mb-0">Testimonials</h5>
               <span class="badge text-bg-light">{{ testimonials.length }}</span>
             </div>
+            <div class="dashboard-create-box mb-4">
+              <h6 class="mb-3">Create Testimonial</h6>
+              <div class="row g-3">
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.testimonials.slug" placeholder="Slug" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.testimonials.label!.es" placeholder="Label ES" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.testimonials.label!.en" placeholder="Label EN" /></div>
+                <div class="col-md-3 d-flex align-items-center"><label class="form-check-label d-flex align-items-center gap-2"><input type="checkbox" [(ngModel)]="newContentItems.testimonials.active" /> Active</label></div>
+                <div class="col-md-6"><textarea class="form-control form-control-sm" [(ngModel)]="newContentItems.testimonials.description!.es" placeholder="Description ES"></textarea></div>
+                <div class="col-md-6"><textarea class="form-control form-control-sm" [(ngModel)]="newContentItems.testimonials.description!.en" placeholder="Description EN"></textarea></div>
+                <div class="col-12 d-flex justify-content-end"><button class="btn btn-sm btn-primary" type="button" (click)="createContentItem('testimonials')" [disabled]="isActionLoading('testimonials-create')">Create Testimonial</button></div>
+              </div>
+            </div>
             <div class="table-responsive" *ngIf="!contentLoading">
               <table class="table table-striped" *ngIf="testimonials.length > 0; else emptyTestimonials">
                 <thead>
@@ -379,7 +499,17 @@
                     <td>{{ getContentItemName(item) }}</td>
                     <td>{{ item.slug || '-' }}</td>
                     <td>{{ getLocalizedText(item.description) }}</td>
-                    <td class="text-end">{{ item.active === false ? 'No' : 'Yes' }}</td>
+                    <td class="text-end">
+                      <input type="checkbox" [(ngModel)]="item.active" />
+                    </td>
+                    <td class="text-end dashboard-actions-cell">
+                      <button class="btn btn-sm btn-primary" type="button" (click)="saveContentItem('testimonials', item)" [disabled]="isActionLoading('testimonials-save-' + item._id)">
+                        Save
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteContentItem('testimonials', item)" [disabled]="isActionLoading('testimonials-delete-' + item._id)">
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -411,7 +541,17 @@
                     <td>{{ getContentItemName(item) }}</td>
                     <td>{{ item.fileName || '-' }}</td>
                     <td>{{ item.mimeType || '-' }}</td>
-                    <td class="text-end">{{ item.active === false ? 'No' : 'Yes' }}</td>
+                    <td class="text-end">
+                      <input type="checkbox" [(ngModel)]="item.active" />
+                    </td>
+                    <td class="text-end dashboard-actions-cell">
+                      <button class="btn btn-sm btn-primary" type="button" (click)="saveContentItem('resumes', item)" [disabled]="isActionLoading('resumes-save-' + item._id)">
+                        Save
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteContentItem('resumes', item)" [disabled]="isActionLoading('resumes-delete-' + item._id)">
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -428,6 +568,17 @@
               <h5 class="card-title mb-0">Social Links</h5>
               <span class="badge text-bg-light">{{ socialLinks.length }}</span>
             </div>
+            <div class="dashboard-create-box mb-4">
+              <h6 class="mb-3">Create Social Link</h6>
+              <div class="row g-3">
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.socialLinks.slug" placeholder="Slug" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.socialLinks.label!.es" placeholder="Label ES" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.socialLinks.label!.en" placeholder="Label EN" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.socialLinks.icon" placeholder="Icon" /></div>
+                <div class="col-md-9"><input type="text" class="form-control form-control-sm" [(ngModel)]="newContentItems.socialLinks.href" placeholder="Href" /></div>
+                <div class="col-md-3 d-flex justify-content-end"><button class="btn btn-sm btn-primary" type="button" (click)="createContentItem('socialLinks')" [disabled]="isActionLoading('socialLinks-create')">Create Social Link</button></div>
+              </div>
+            </div>
             <div class="table-responsive" *ngIf="!contentLoading">
               <table class="table table-striped" *ngIf="socialLinks.length > 0; else emptySocialLinks">
                 <thead>
@@ -442,8 +593,20 @@
                   <tr *ngFor="let item of socialLinks">
                     <td>{{ getContentItemName(item) }}</td>
                     <td>{{ item.slug || '-' }}</td>
-                    <td>{{ item.href || '-' }}</td>
-                    <td class="text-end">{{ item.icon || '-' }}</td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" [(ngModel)]="item.href" />
+                    </td>
+                    <td class="text-end">
+                      <input type="text" class="form-control form-control-sm" [(ngModel)]="item.icon" />
+                    </td>
+                    <td class="text-end dashboard-actions-cell">
+                      <button class="btn btn-sm btn-primary" type="button" (click)="saveContentItem('socialLinks', item)" [disabled]="isActionLoading('socialLinks-save-' + item._id)">
+                        Save
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteContentItem('socialLinks', item)" [disabled]="isActionLoading('socialLinks-delete-' + item._id)">
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>

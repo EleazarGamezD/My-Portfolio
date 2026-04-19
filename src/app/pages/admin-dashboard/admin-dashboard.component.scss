@@ -52,6 +52,24 @@
   text-transform: uppercase;
 }
 
+.dashboard-create-box {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 1rem;
+  background: rgba(247, 250, 252, 0.92);
+}
+
+.dashboard-actions-cell {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  min-width: 180px;
+}
+
+.dashboard-number-input {
+  min-width: 86px;
+}
+
 .card {
   border: none;
   border-radius: 8px;
