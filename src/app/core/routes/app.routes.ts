@@ -34,6 +34,22 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'admin/login',
+    loadComponent: () =>
+      import('@pages/admin-dashboard/admin-dashboard.component')
+        .then(
+          (m) => m.AdminDashboardComponent,
+        ),
+  },
+  {
+    path: 'admin/dashboard',
+    loadComponent: () =>
+      import('@pages/admin-dashboard/admin-dashboard.component')
+        .then(
+          (m) => m.AdminDashboardComponent,
+        ),
+  },
+  {
     path: 'admin-dashboard',
     loadComponent: () =>
       import('@pages/admin-dashboard/admin-dashboard.component')

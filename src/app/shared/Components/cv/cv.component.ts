@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { SideIcons } from '@core/constants/sideIcons';
-import { IApiContentItem } from '@core/interfaces/content/content.interface';
+import { IApiResume } from '@core/interfaces/content/content.interface';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -14,7 +14,7 @@ import { I18nService } from '@core/services/i18n/i18n.service';
 })
 export class CvComponent implements OnInit {
   Icons = SideIcons
-  resumes: IApiContentItem[] = [];
+  resumes: IApiResume[] = [];
   loading = true;
   error: string | null = null;
 
@@ -32,7 +32,8 @@ export class CvComponent implements OnInit {
     try {
       this.loading = true;
       this.error = null;
-      this.resumes = await this.contentService.getResumes();
+      const resumes = await this.contentService.getResumes();
+      this.resumes = resumes.filter((resume) => resume.active !== false);
     } catch (err) {
       console.error('Error loading resumes:', err);
       this.error = 'Error loading resumes';
@@ -41,16 +42,40 @@ export class CvComponent implements OnInit {
     }
   }
 
-  downloadCV(filename: string): void {
-    // Track the download
-    this.analyticsService.trackCVDownload(filename);
+  downloadCV(resume: IApiResume): void {
+    if (!resume.base64) {
+      return;
+    }
 
-    // Trigger download
-    const filePath = `assets/docs/${filename}`;
+    const fileName = resume.fileName || this.getResumeFileName(resume);
+    const mimeType = resume.mimeType || 'application/pdf';
+    const filePath = `data:${mimeType};base64,${resume.base64}`;
+
+    this.analyticsService.trackCVDownload(fileName);
+
     const link = document.createElement('a');
     link.href = filePath;
-    link.download = filename;
+    link.download = fileName;
     link.click();
+  }
+
+  getResumeTitle(resume: IApiResume) {
+    return this.i18nService.selectText(
+      resume.title?.es ?? resume.label?.es ?? '',
+      resume.title?.en ?? resume.label?.en ?? resume.title?.es ?? resume.label?.es ?? '',
+    );
+  }
+
+  getResumeDescription(resume: IApiResume) {
+    return this.i18nService.selectText(
+      resume.description?.es ?? '',
+      resume.description?.en ?? resume.description?.es ?? '',
+    );
+  }
+
+  private getResumeFileName(resume: IApiResume) {
+    const title = this.getResumeTitle(resume).trim().replace(/\s+/g, '-').toLowerCase();
+    return `${title || 'resume'}.pdf`;
   }
 
   t(key: string) {

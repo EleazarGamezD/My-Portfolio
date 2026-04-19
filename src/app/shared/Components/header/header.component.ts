@@ -78,6 +78,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl(this.i18nService.localizedPath(normalizedRoute));
   }
 
+  navigateToAdminLogin() {
+    this.router.navigateByUrl('/admin/login');
+  }
+
   scrollTo(elementId: string) {
     if (!this.i18nService.isHomeUrl(this.router.url)) {
       this.router

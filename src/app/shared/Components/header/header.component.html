@@ -8,6 +8,7 @@
           <a (click)="scrollTo('cvs')" class="widget-text text-white-hover fs-16 lg-fs-15">
             <i class="feather icon-feather-file-minus icon-small me-5px lg-me-2px"></i>CV
           </a>
+          <button type="button" class="admin-trigger admin-trigger-desktop" (click)="navigateToAdminLogin()" aria-label="Admin access"></button>
         </div>
         <a class="navbar-brand" (click)="navigateTo('home')">
           <img src="/assets/images/home/logo-yo-bh.webp" alt="brand-logo" class="default-logo" />
@@ -57,6 +58,9 @@
               <button (click)="scrollTo('cvs')" class="nav-link">
                 {{ t('nav.cv') }}
               </button>
+            </li>
+            <li class="nav-item d-lg-none d-flex admin-mobile-item">
+              <button type="button" class="admin-trigger admin-trigger-mobile" (click)="navigateToAdminLogin()" aria-label="Admin access"></button>
             </li>
           </ul>
         </div>

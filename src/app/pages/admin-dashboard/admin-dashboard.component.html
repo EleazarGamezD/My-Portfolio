@@ -12,11 +12,16 @@
             </div>
 
             <div class="mb-3">
-              <label for="apiKey" class="form-label">API Key:</label>
-              <input type="password" class="form-control" id="apiKey" [(ngModel)]="apiKey" placeholder="Enter admin API key">
+              <label for="adminEmail" class="form-label">Email:</label>
+              <input type="email" class="form-control" id="adminEmail" [(ngModel)]="email" placeholder="Enter admin email">
             </div>
 
-            <button class="btn btn-primary w-100" (click)="authenticate(apiKey)" [disabled]="!apiKey">
+            <div class="mb-4">
+              <label for="adminPassword" class="form-label">Password:</label>
+              <input type="password" class="form-control" id="adminPassword" [(ngModel)]="password" placeholder="Enter password">
+            </div>
+
+            <button class="btn btn-primary w-100" (click)="authenticate()" [disabled]="!email || !password">
               Login
             </button>
           </div>
@@ -54,7 +59,7 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">CV Downloads</h5>
-                <p class="card-text display-4">{{ metrics.cvDownloads || 0 }}</p>
+                <p class="card-text display-4">{{ getMetricTotal('cv_download') }}</p>
               </div>
             </div>
           </div>
@@ -64,7 +69,7 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">CTA Clicks</h5>
-                <p class="card-text display-4">{{ metrics.ctaClicks || 0 }}</p>
+                <p class="card-text display-4">{{ getMetricTotal('cta_click') }}</p>
               </div>
             </div>
           </div>
@@ -74,7 +79,7 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Project Views</h5>
-                <p class="card-text display-4">{{ (metrics.projectViews ? Object.keys(metrics.projectViews).length : 0) }}</p>
+                <p class="card-text display-4">{{ getMetricTotal('project_view') }}</p>
               </div>
             </div>
           </div>
@@ -85,7 +90,7 @@
               <div class="card-body">
                 <h5 class="card-title">Top Pages</h5>
                 <div class="table-responsive">
-                  <table class="table table-striped" *ngIf="metrics.topPages && metrics.topPages.length > 0">
+                  <table class="table table-striped" *ngIf="metrics.groupedByPath && metrics.groupedByPath.length > 0">
                     <thead>
                       <tr>
                         <th>Page</th>
@@ -93,13 +98,13 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let page of metrics.topPages">
-                        <td>{{ page.path }}</td>
-                        <td class="text-end">{{ page.count }}</td>
+                      <tr *ngFor="let page of metrics.groupedByPath">
+                        <td>{{ page._id }}</td>
+                        <td class="text-end">{{ page.total }}</td>
                       </tr>
                     </tbody>
                   </table>
-                  <p *ngIf="!metrics.topPages || metrics.topPages.length === 0" class="text-muted">No data</p>
+                  <p *ngIf="!metrics.groupedByPath || metrics.groupedByPath.length === 0" class="text-muted">No data</p>
                 </div>
               </div>
             </div>
@@ -111,7 +116,7 @@
               <div class="card-body">
                 <h5 class="card-title">Top Projects</h5>
                 <div class="table-responsive">
-                  <table class="table table-striped" *ngIf="metrics.topProjects && metrics.topProjects.length > 0">
+                  <table class="table table-striped" *ngIf="metrics.groupedByProject && metrics.groupedByProject.length > 0">
                     <thead>
                       <tr>
                         <th>Project ID</th>
@@ -119,13 +124,13 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let project of metrics.topProjects">
-                        <td>{{ project.projectId }}</td>
-                        <td class="text-end">{{ project.views }}</td>
+                      <tr *ngFor="let project of metrics.groupedByProject">
+                        <td>{{ project._id || 'No project' }}</td>
+                        <td class="text-end">{{ project.total }}</td>
                       </tr>
                     </tbody>
                   </table>
-                  <p *ngIf="!metrics.topProjects || metrics.topProjects.length === 0" class="text-muted">No data</p>
+                  <p *ngIf="!metrics.groupedByProject || metrics.groupedByProject.length === 0" class="text-muted">No data</p>
                 </div>
               </div>
             </div>

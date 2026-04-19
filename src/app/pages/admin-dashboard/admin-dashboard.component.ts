@@ -1,8 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnalyticsService, IDashboardMetrics } from '@core/services/analytics/analytics.service';
+import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 
 @Component({
@@ -16,44 +17,51 @@ export class AdminDashboardComponent implements OnInit {
     metrics: IDashboardMetrics | null = null;
     loading = true;
     authenticated = false;
-    apiKey = '';
+    email = '';
+    password = '';
     error: string | null = null;
     Object = Object;
+    private readonly isBrowser: boolean;
 
     constructor(
         private analyticsService: AnalyticsService,
+        private adminAuthService: AdminAuthService,
         private router: Router,
         private route: ActivatedRoute,
-        public i18nService: I18nService
-    ) { }
-
-    ngOnInit(): void {
-        this.checkAuthentication();
+        public i18nService: I18nService,
+        @Inject(PLATFORM_ID) platformId: object,
+    ) {
+        this.isBrowser = isPlatformBrowser(platformId);
     }
 
-    private checkAuthentication(): void {
-        // Check if admin key is in sessionStorage
-        const storedKey = sessionStorage.getItem('admin_api_key');
-        if (storedKey) {
-            this.apiKey = storedKey;
+    async ngOnInit(): Promise<void> {
+        await this.checkAuthentication();
+    }
+
+    private async checkAuthentication(): Promise<void> {
+        if (!this.isBrowser) {
+            this.loading = false;
+            return;
+        }
+
+        const isAuthenticated = await this.adminAuthService.isAuthenticated();
+
+        if (isAuthenticated) {
             this.authenticated = true;
-            this.loadMetrics();
+            await this.loadMetrics();
         } else {
             this.loading = false;
         }
     }
 
-    async authenticate(key: string): Promise<void> {
-        // In a real app, you would validate the key with the backend
-        // For now, we'll assume any non-empty key is valid
-        if (key && key.length > 0) {
-            this.apiKey = key;
-            sessionStorage.setItem('admin_api_key', key);
+    async authenticate(): Promise<void> {
+        if (this.email && this.password) {
+            await this.adminAuthService.login(this.email, this.password);
             this.authenticated = true;
             this.error = null;
-            this.loadMetrics();
+            await this.loadMetrics();
         } else {
-            this.error = 'Invalid API key';
+            this.error = 'Email and password are required.';
         }
     }
 
@@ -70,11 +78,16 @@ export class AdminDashboardComponent implements OnInit {
         }
     }
 
-    logout(): void {
-        sessionStorage.removeItem('admin_api_key');
+    async logout(): Promise<void> {
+        await this.adminAuthService.logout();
         this.authenticated = false;
-        this.apiKey = '';
+        this.email = '';
+        this.password = '';
         this.metrics = null;
+    }
+
+    getMetricTotal(type: string): number {
+        return this.metrics?.groupedTotals?.find((item) => item._id === type)?.total ?? 0;
     }
 
     t(key: string): string {

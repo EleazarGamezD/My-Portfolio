@@ -3,6 +3,7 @@ import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.en
 import {
   IApiContentItem,
   IApiProfile,
+  IApiResume,
 } from '@core/interfaces/content/content.interface';
 import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
@@ -51,8 +52,8 @@ export class ContentService extends GlobalHttpService {
     );
   }
 
-  async getResumes(): Promise<IApiContentItem[]> {
-    return this.makeRequest<IApiContentItem[], null>(
+  async getResumes(): Promise<IApiResume[]> {
+    return this.makeRequest<IApiResume[], null>(
       API_CONTENT_ROUTES.getResumes,
       null,
       RequestMethod.GET,

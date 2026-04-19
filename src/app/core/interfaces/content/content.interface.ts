@@ -19,6 +19,13 @@ export interface IApiContentItem {
   metadata?: Record<string, unknown>;
 }
 
+export interface IApiResume extends IApiContentItem {
+  fileName?: string;
+  mimeType?: string;
+  base64?: string;
+  active?: boolean;
+}
+
 export interface IApiProfile {
   label?: ILocalizedText;
   title?: ILocalizedText;

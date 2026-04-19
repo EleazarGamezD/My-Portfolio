@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 import { API_ANALYTICS_ROUTES } from '@core/routes/analytics/analytics.routes';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
+import { StorageMap } from '@ngx-pwa/local-storage';
 
 export interface IAnalyticsEvent {
     type: 'project_view' | 'cv_download' | 'cta_click' | 'link_click' | 'page_visit' | string;
@@ -15,11 +16,19 @@ export interface IAnalyticsEvent {
 
 export interface IDashboardMetrics {
     totalEvents: number;
-    projectViews: Record<string, number>;
-    cvDownloads: number;
-    ctaClicks: number;
-    topPages: Array<{ path: string; count: number }>;
-    topProjects: Array<{ projectId: string; views: number }>;
+    filters?: Record<string, unknown>;
+    groupedTotals: Array<{ _id: string; total: number }>;
+    groupedByPath: Array<{ _id: string; total: number }>;
+    groupedByProject: Array<{ _id: string | null; total: number }>;
+    groupedByLanguage: Array<{ _id: string; total: number }>;
+    recentEvents: Array<{
+        _id?: string;
+        type: string;
+        path: string;
+        projectId: string | null;
+        language: string;
+        createdAt: string;
+    }>;
     [key: string]: unknown;
 }
 
@@ -29,8 +38,12 @@ export interface IDashboardMetrics {
 export class AnalyticsService extends GlobalHttpService {
     private sessionId: string = this.generateSessionId();
 
-    constructor(httpClient: HttpClient) {
-        super(httpClient);
+    constructor(
+        httpClient: HttpClient,
+        storageMap: StorageMap,
+        @Inject(PLATFORM_ID) platformId: object,
+    ) {
+        super(httpClient, storageMap, platformId);
         this.initializeSessionId();
     }
 
