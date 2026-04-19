@@ -18,7 +18,8 @@ export class SliderProjectItemComponent {
   ) { }
 
   navigateToProject() {
-    this.router.navigateByUrl(this.i18nService.localizedPath(`projectDetails/${this.project.id}`));
+    const identifier = this.project.slug || String(this.project.id);
+    this.router.navigateByUrl(this.i18nService.localizedPath(`projectDetails/${identifier}`));
   }
 
   get title() {

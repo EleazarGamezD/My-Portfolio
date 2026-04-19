@@ -1,5 +1,6 @@
 export interface IProject {
   id: number;
+  slug?: string;
   icon: string;
   images: string[];
   titleEs: string;

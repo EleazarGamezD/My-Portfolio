@@ -16,6 +16,11 @@
     </div>
     <div class="row mb-5 xs-mb-15px">
       <div class="col-12 position-relative">
+        @if (!isLoading && ProjectsArray.length === 0) {
+        <div class="text-center text-dark-gray fs-18 pt-40px pb-40px">
+          No projects available right now.
+        </div>
+        } @else {
         <div class="outside-box-right-40 sm-outside-box-right-0">
           <div class="swiper" data-slider-options='{
           "slidesPerView": 1,
@@ -54,6 +59,7 @@
             </div>
           </div>
         </div>
+        }
 
       </div>
     </div>
