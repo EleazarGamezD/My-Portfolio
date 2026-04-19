@@ -1,7 +1,12 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import {
+  IApiContentItem,
+  IApiProfile,
+} from '@core/interfaces/content/content.interface';
 import { AppLanguage } from '@core/i18n/i18n.config';
+import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { filter } from 'rxjs/operators';
 
@@ -13,14 +18,17 @@ import { filter } from 'rxjs/operators';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
-  social = [
+  profileContent: IApiProfile | null = null;
+  social: IApiContentItem[] = [
     {
+      label: { es: 'GitHub', en: 'GitHub' },
       icon: 'fa-brands fa-github',
-      url: 'https://github.com/EleazarGamezD',
+      href: 'https://github.com/EleazarGamezD',
     },
     {
+      label: { es: 'LinkedIn', en: 'LinkedIn' },
       icon: 'fa-brands fa-linkedin',
-      url: 'https://www.linkedin.com/in/eleazar-gamez/',
+      href: 'https://www.linkedin.com/in/eleazar-gamez/',
     },
   ];
   isBrowser: boolean;
@@ -28,13 +36,26 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     public i18nService: I18nService,
+    private readonly contentService: ContentService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.i18nService.syncLanguageFromUrl(this.router.url);
+
+    try {
+      const [socialLinks, profile] = await Promise.all([
+        this.contentService.getSocialLinks(),
+        this.contentService.getProfile(),
+      ]);
+
+      this.social = socialLinks;
+      this.profileContent = profile;
+    } catch (error) {
+      console.warn('Failed to load header content from API.', error);
+    }
 
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))

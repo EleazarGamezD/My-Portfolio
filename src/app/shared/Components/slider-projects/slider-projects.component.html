@@ -52,7 +52,7 @@
               @for(project of ProjectsArray; track $index){
               <!-- start slider item -->
               <div class="swiper-slide separator">
-                <app-slider-project-item [project]="project" />
+                <app-slider-project-item [project]="project" [projectIndex]="$index" />
               </div>
               <!-- end slider item -->
               }

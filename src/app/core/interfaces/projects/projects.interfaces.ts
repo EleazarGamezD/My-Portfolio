@@ -1,15 +1,25 @@
+export interface ILocalizedText {
+  es?: string;
+  en?: string;
+}
+
+export interface IProjectAsset {
+  url?: string;
+  base64?: string;
+  mimeType?: string;
+  fileName?: string;
+}
+
 export interface IProject {
-  id: number;
+  _id?: string;
   slug?: string;
-  icon: string;
-  images: string[];
-  titleEs: string;
-  titleEn: string;
-  descriptionEs: string;
-  descriptionEn: string;
-  resume: string;
-  technologiesEs: string;
-  technologiesEn: string;
-  projectLink: string;
-  codeLink: string;
+  title?: ILocalizedText;
+  summary?: ILocalizedText;
+  description?: ILocalizedText;
+  stack?: string[];
+  images?: Array<string | IProjectAsset>;
+  coverImage?: string | IProjectAsset | null;
+  projectLink?: string;
+  codeLink?: string;
+  icon?: string;
 }

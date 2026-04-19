@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IProject } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import { projects } from '@shared/Json/projects';
+import { ProjectsService } from '@core/services/projects/projects.service';
 
 @Component({
   selector: 'app-project-detail-box',
@@ -10,17 +10,30 @@ import { projects } from '@shared/Json/projects';
   templateUrl: './project-detail-box.component.html',
   styleUrl: './project-detail-box.component.scss',
 })
-export class ProjectDetailBoxComponent {
+export class ProjectDetailBoxComponent implements OnInit {
   project: IProject | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private readonly projectsService: ProjectsService,
     public i18nService: I18nService,
-  ) {
-    this.route.paramMap.subscribe((params) => {
-      const projectId = Number(params.get('id'));
-      this.project = projects.find((item) => item.id === projectId);
+  ) {}
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(async (params) => {
+      const projectIdOrSlug = params.get('id') || '';
+      this.project = undefined;
+
+      if (!projectIdOrSlug) {
+        return;
+      }
+
+      try {
+        this.project = await this.projectsService.getProjectByIdOrSlug(projectIdOrSlug);
+      } catch (error) {
+        console.warn(`Failed to load project detail for "${projectIdOrSlug}" from API.`, error);
+      }
     });
   }
 
@@ -28,21 +41,24 @@ export class ProjectDetailBoxComponent {
     if (!this.project) {
       return '';
     }
-    return this.i18nService.selectText(this.project.titleEs, this.project.titleEn);
+    return this.i18nService.selectText(this.project.title?.es || '', this.project.title?.en || this.project.title?.es || '');
   }
 
   get projectDescription() {
     if (!this.project) {
       return '';
     }
-    return this.i18nService.selectText(this.project.descriptionEs, this.project.descriptionEn);
+    return this.i18nService.selectText(
+      this.project.description?.es || this.project.summary?.es || '',
+      this.project.description?.en || this.project.summary?.en || this.project.description?.es || '',
+    );
   }
 
   get projectTechnologies() {
     if (!this.project) {
       return '';
     }
-    return this.i18nService.selectText(this.project.technologiesEs, this.project.technologiesEn);
+    return Array.isArray(this.project.stack) ? this.project.stack.join(', ') : '';
   }
 
   get hasLiveDemo() {

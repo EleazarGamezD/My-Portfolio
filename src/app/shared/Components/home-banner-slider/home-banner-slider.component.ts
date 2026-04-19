@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {IHomeBannerSlider} from '@core/interfaces/home-banner-slider/home-banner-slider.interface';
-import {sliderContent} from '@shared/Json/homeBanner';
+import { Component, OnInit } from '@angular/core';
+import { IApiHeroSlide } from '@core/interfaces/content/content.interface';
+import { ContentService } from '@core/services/content/content.service';
 import {HomeSwiperSlideElementComponent} from '../home-swiper-slide-element/home-swiper-slide-element.component';
 
 @Component({
@@ -9,6 +9,17 @@ import {HomeSwiperSlideElementComponent} from '../home-swiper-slide-element/home
   templateUrl: './home-banner-slider.component.html',
   styleUrl: './home-banner-slider.component.scss',
 })
-export class HomeBannerSliderComponent {
-  sliderContentArray: IHomeBannerSlider[] = sliderContent
+export class HomeBannerSliderComponent implements OnInit {
+  sliderContentArray: IApiHeroSlide[] = [];
+
+  constructor(private readonly contentService: ContentService) {}
+
+  async ngOnInit() {
+    try {
+      const profile = await this.contentService.getProfile();
+      this.sliderContentArray = profile.metadata?.heroSlides ?? [];
+    } catch (error) {
+      console.warn('Failed to load hero slides from API.', error);
+    }
+  }
 }

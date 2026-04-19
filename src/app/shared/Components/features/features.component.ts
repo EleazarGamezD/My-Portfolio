@@ -1,8 +1,8 @@
-import {CommonModule} from '@angular/common';
-import {Component} from '@angular/core';
-import {ITechStack} from '@core/interfaces/techStack/techStack.interface';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { IApiContentItem } from '@core/interfaces/content/content.interface';
+import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import {techStack} from '@shared/Json/techStack';
 
 @Component({
   selector: 'app-features',
@@ -10,12 +10,30 @@ import {techStack} from '@shared/Json/techStack';
   templateUrl: './features.component.html',
   styleUrl: './features.component.scss',
 })
-export class FeaturesComponent {
-  constructor(public i18nService: I18nService) {}
+export class FeaturesComponent implements OnInit {
+  stack: IApiContentItem[] = [];
 
-  stack: ITechStack[] = techStack
+  constructor(
+    public i18nService: I18nService,
+    private readonly contentService: ContentService,
+  ) {}
+
+  async ngOnInit() {
+    try {
+      this.stack = await this.contentService.getTechSkills();
+    } catch (error) {
+      console.warn('Failed to load tech skills from API.', error);
+    }
+  }
 
   t(key: string) {
     return this.i18nService.t(key);
+  }
+
+  getItemLabel(item: IApiContentItem) {
+    return this.i18nService.selectText(
+      item.label?.es ?? item.value ?? '',
+      item.label?.en ?? item.label?.es ?? item.value ?? '',
+    );
   }
 }

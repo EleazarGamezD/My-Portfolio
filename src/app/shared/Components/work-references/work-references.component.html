@@ -13,9 +13,9 @@
               <h6 class="alt-font lh-40 text-dark-gray mb-20px">
                 {{ getTestimonial(testimonial) }}
               </h6>
-              <span class="fs-15 text-base-color fw-500 d-block text-uppercase ls-2px">{{testimonial.name}}</span>
-              <span class="fs-14 lh-20 text-dark-gray fw-500 text-uppercase d-block ls-05px">{{testimonial.position}}</span>
-              <span class="fs-14 lh-20 text-dark-gray fw-500 text-uppercase d-block ls-05px">{{testimonial.company}}</span>
+              <span class="fs-15 text-base-color fw-500 d-block text-uppercase ls-2px">{{ getName(testimonial) }}</span>
+              <span class="fs-14 lh-20 text-dark-gray fw-500 text-uppercase d-block ls-05px">{{ getMetadataText(testimonial, 'position') }}</span>
+              <span class="fs-14 lh-20 text-dark-gray fw-500 text-uppercase d-block ls-05px">{{ getMetadataText(testimonial, 'company') }}</span>
             </div>
             <!-- end testimonial item -->
             }
