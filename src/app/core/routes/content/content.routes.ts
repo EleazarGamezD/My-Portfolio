@@ -6,4 +6,5 @@ export const API_CONTENT_ROUTES = {
   getExperience: `${environment.apiUrl}/content/experience`,
   getSocialLinks: `${environment.apiUrl}/content/socialLinks`,
   getTestimonials: `${environment.apiUrl}/content/testimonials`,
+  getResumes: `${environment.apiUrl}/content/resumes`,
 };

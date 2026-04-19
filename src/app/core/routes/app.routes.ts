@@ -1,5 +1,5 @@
 import { Route, Routes } from '@angular/router';
-import { DEFAULT_LANGUAGE, AppLanguage } from '@core/i18n/i18n.config';
+import { AppLanguage, DEFAULT_LANGUAGE } from '@core/i18n/i18n.config';
 import { MainLayoutComponent } from '@layouts/main-layout/main-layout.component';
 
 function localizedRoute(lang: AppLanguage): Route {
@@ -32,6 +32,14 @@ export const routes: Routes = [
     path: '',
     redirectTo: DEFAULT_LANGUAGE,
     pathMatch: 'full',
+  },
+  {
+    path: 'admin-dashboard',
+    loadComponent: () =>
+      import('@pages/admin-dashboard/admin-dashboard.component')
+        .then(
+          (m) => m.AdminDashboardComponent,
+        ),
   },
   localizedRoute('es'),
   localizedRoute('en'),

@@ -50,4 +50,12 @@ export class ContentService extends GlobalHttpService {
       RequestMethod.GET,
     );
   }
+
+  async getResumes(): Promise<IApiContentItem[]> {
+    return this.makeRequest<IApiContentItem[], null>(
+      API_CONTENT_ROUTES.getResumes,
+      null,
+      RequestMethod.GET,
+    );
+  }
 }
