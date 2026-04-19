@@ -16,6 +16,42 @@
   }
 }
 
+.dashboard-section-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.dashboard-section-btn {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+  color: #4b5a6a;
+}
+
+.dashboard-section-btn.active {
+  background: #0066cc;
+  border-color: #0066cc;
+  color: #fff;
+}
+
+.dashboard-detail-card {
+  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.dashboard-detail-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #6b7683;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .card {
   border: none;
   border-radius: 8px;

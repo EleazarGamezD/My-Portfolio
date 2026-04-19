@@ -10,12 +10,16 @@ export interface IApiHeroSlide {
 }
 
 export interface IApiContentItem {
+  _id?: string;
+  slug?: string;
   label?: ILocalizedText;
   title?: ILocalizedText;
   description?: ILocalizedText;
   value?: string;
   icon?: string | null;
   href?: string;
+  order?: number;
+  active?: boolean;
   metadata?: Record<string, unknown>;
 }
 
@@ -27,11 +31,15 @@ export interface IApiResume extends IApiContentItem {
 }
 
 export interface IApiProfile {
+  _id?: string;
+  slug?: string;
   label?: ILocalizedText;
   title?: ILocalizedText;
   description?: ILocalizedText;
   location?: string;
   availability?: string;
+  email?: string;
+  phone?: string;
   metadata?: {
     about?: ILocalizedText;
     heroSlides?: IApiHeroSlide[];

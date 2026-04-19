@@ -22,4 +22,7 @@ export interface IProject {
   projectLink?: string;
   codeLink?: string;
   icon?: string;
+  featured?: boolean;
+  status?: string;
+  publishedAt?: string;
 }

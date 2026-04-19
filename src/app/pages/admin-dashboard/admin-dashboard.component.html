@@ -41,6 +41,12 @@
           </div>
         </div>
 
+        <div class="dashboard-section-nav mb-4">
+          <button *ngFor="let section of sections" type="button" class="btn dashboard-section-btn" [class.active]="activeSection === section.key" (click)="setActiveSection(section.key)">
+            {{ section.label }}
+          </button>
+        </div>
+
         <div *ngIf="loading" class="text-center py-5">
           <div class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -51,7 +57,11 @@
           {{ error }}
         </div>
 
-        <div *ngIf="!loading && metrics" class="row">
+        <div *ngIf="contentError" class="alert alert-warning" role="alert">
+          {{ contentError }}
+        </div>
+
+        <div *ngIf="activeSection === 'overview' && !loading && metrics" class="row">
           <div class="col-md-6 col-lg-3 mb-4">
             <div class="card">
               <div class="card-body">
@@ -201,6 +211,247 @@
 
         <div *ngIf="!loading && !metrics" class="alert alert-info">
           No metrics available
+        </div>
+
+        <div *ngIf="activeSection === 'projects'" class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Projects</h5>
+              <span class="badge text-bg-light">{{ projects.length }}</span>
+            </div>
+            <div *ngIf="contentLoading" class="text-muted">Loading projects...</div>
+            <div class="table-responsive" *ngIf="!contentLoading">
+              <table class="table table-striped" *ngIf="projects.length > 0; else emptyProjects">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Slug</th>
+                    <th>Status</th>
+                    <th>Stack</th>
+                    <th class="text-end">Featured</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let project of projects">
+                    <td>{{ getProjectName(project) }}</td>
+                    <td>{{ project.slug || '-' }}</td>
+                    <td>{{ project.status || '-' }}</td>
+                    <td>{{ project.stack?.join(', ') || '-' }}</td>
+                    <td class="text-end">{{ project.featured ? 'Yes' : 'No' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <ng-template #emptyProjects>
+                <p class="text-muted mb-0">No projects found.</p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="activeSection === 'profile'" class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Profile</h5>
+            <div *ngIf="contentLoading" class="text-muted">Loading profile...</div>
+            <div *ngIf="!contentLoading && profile" class="row g-3">
+              <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                  <span class="dashboard-detail-label">Name</span>
+                  <strong>{{ getLocalizedText(profile.label) }}</strong>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                  <span class="dashboard-detail-label">Title</span>
+                  <strong>{{ getLocalizedText(profile.title) }}</strong>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                  <span class="dashboard-detail-label">Availability</span>
+                  <strong>{{ profile.availability || '-' }}</strong>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                  <span class="dashboard-detail-label">Location</span>
+                  <strong>{{ profile.location || '-' }}</strong>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                  <span class="dashboard-detail-label">Email</span>
+                  <strong>{{ profile.email || '-' }}</strong>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                  <span class="dashboard-detail-label">Phone</span>
+                  <strong>{{ profile.phone || '-' }}</strong>
+                </div>
+              </div>
+            </div>
+            <p *ngIf="!contentLoading && !profile" class="text-muted mb-0">No profile found.</p>
+          </div>
+        </div>
+
+        <div *ngIf="activeSection === 'skills'" class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Tech Skills</h5>
+              <span class="badge text-bg-light">{{ techSkills.length }}</span>
+            </div>
+            <div class="table-responsive" *ngIf="!contentLoading">
+              <table class="table table-striped" *ngIf="techSkills.length > 0; else emptySkills">
+                <thead>
+                  <tr>
+                    <th>Label</th>
+                    <th>Slug</th>
+                    <th>Value</th>
+                    <th class="text-end">Active</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of techSkills">
+                    <td>{{ getContentItemName(item) }}</td>
+                    <td>{{ item.slug || '-' }}</td>
+                    <td>{{ item.value || '-' }}</td>
+                    <td class="text-end">{{ item.active === false ? 'No' : 'Yes' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <ng-template #emptySkills>
+                <p class="text-muted mb-0">No skills found.</p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="activeSection === 'experience'" class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Experience</h5>
+              <span class="badge text-bg-light">{{ experience.length }}</span>
+            </div>
+            <div class="table-responsive" *ngIf="!contentLoading">
+              <table class="table table-striped" *ngIf="experience.length > 0; else emptyExperience">
+                <thead>
+                  <tr>
+                    <th>Label</th>
+                    <th>Slug</th>
+                    <th>Description</th>
+                    <th class="text-end">Order</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of experience">
+                    <td>{{ getContentItemName(item) }}</td>
+                    <td>{{ item.slug || '-' }}</td>
+                    <td>{{ getLocalizedText(item.description) }}</td>
+                    <td class="text-end">{{ item.order ?? '-' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <ng-template #emptyExperience>
+                <p class="text-muted mb-0">No experience items found.</p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="activeSection === 'testimonials'" class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Testimonials</h5>
+              <span class="badge text-bg-light">{{ testimonials.length }}</span>
+            </div>
+            <div class="table-responsive" *ngIf="!contentLoading">
+              <table class="table table-striped" *ngIf="testimonials.length > 0; else emptyTestimonials">
+                <thead>
+                  <tr>
+                    <th>Label</th>
+                    <th>Slug</th>
+                    <th>Description</th>
+                    <th class="text-end">Active</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of testimonials">
+                    <td>{{ getContentItemName(item) }}</td>
+                    <td>{{ item.slug || '-' }}</td>
+                    <td>{{ getLocalizedText(item.description) }}</td>
+                    <td class="text-end">{{ item.active === false ? 'No' : 'Yes' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <ng-template #emptyTestimonials>
+                <p class="text-muted mb-0">No testimonials found.</p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="activeSection === 'resumes'" class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Resumes</h5>
+              <span class="badge text-bg-light">{{ resumes.length }}</span>
+            </div>
+            <div class="table-responsive" *ngIf="!contentLoading">
+              <table class="table table-striped" *ngIf="resumes.length > 0; else emptyResumes">
+                <thead>
+                  <tr>
+                    <th>Label</th>
+                    <th>File</th>
+                    <th>Mime Type</th>
+                    <th class="text-end">Active</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of resumes">
+                    <td>{{ getContentItemName(item) }}</td>
+                    <td>{{ item.fileName || '-' }}</td>
+                    <td>{{ item.mimeType || '-' }}</td>
+                    <td class="text-end">{{ item.active === false ? 'No' : 'Yes' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <ng-template #emptyResumes>
+                <p class="text-muted mb-0">No resumes found.</p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="activeSection === 'socialLinks'" class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Social Links</h5>
+              <span class="badge text-bg-light">{{ socialLinks.length }}</span>
+            </div>
+            <div class="table-responsive" *ngIf="!contentLoading">
+              <table class="table table-striped" *ngIf="socialLinks.length > 0; else emptySocialLinks">
+                <thead>
+                  <tr>
+                    <th>Label</th>
+                    <th>Slug</th>
+                    <th>Href</th>
+                    <th class="text-end">Icon</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of socialLinks">
+                    <td>{{ getContentItemName(item) }}</td>
+                    <td>{{ item.slug || '-' }}</td>
+                    <td>{{ item.href || '-' }}</td>
+                    <td class="text-end">{{ item.icon || '-' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <ng-template #emptySocialLinks>
+                <p class="text-muted mb-0">No social links found.</p>
+              </ng-template>
+            </div>
+          </div>
         </div>
       </div>
     </div>
