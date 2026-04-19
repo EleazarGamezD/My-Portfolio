@@ -1,34 +1,88 @@
 <section class="background-repeat" style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')">
-  <div class="container pt-100px pb-100px">
+  <div class="container project-detail-shell pt-100px pb-100px">
     @if (project) {
-      <div class="row justify-content-center">
-        <div class="col-lg-10">
-          <h2 class="alt-font text-dark-gray mb-20px">{{ projectTitle }}</h2>
-          <p class="mb-25px fs-18">{{ projectDescription }}</p>
+      <div class="project-detail-card">
+        <div class="project-detail-grid">
+          <div class="project-media-panel">
+            <div class="project-media-frame">
+              @if (heroImage) {
+                <img [src]="heroImage" [alt]="projectTitle" class="project-hero-image" />
+              } @else {
+                <div class="project-media-placeholder">
+                  <span>{{ projectTitle }}</span>
+                </div>
+              }
+            </div>
 
-          <h6 class="text-dark-gray mb-10px">{{ t('project.details.technologies') }}</h6>
-          <p class="mb-30px">{{ projectTechnologies }}</p>
+            @if (galleryImages.length > 1) {
+              <div class="project-gallery">
+                @for (image of galleryImages; track image) {
+                  <button
+                    type="button"
+                    class="project-gallery-thumb"
+                    [class.is-active]="image === heroImage"
+                    (click)="selectImage(image)">
+                    <img [src]="image" [alt]="projectTitle" />
+                  </button>
+                }
+              </div>
+            }
+          </div>
 
-          <div class="d-flex flex-wrap gap-3">
-            @if (hasLiveDemo) {
-              <a class="btn btn-small btn-dark-gray" [href]="project.projectLink" target="_blank" rel="noopener noreferrer">
-                {{ t('project.details.liveDemo') }}
-              </a>
+          <div class="project-content-panel">
+            <span class="project-kicker">{{ t('home.projects.title') }}</span>
+            <h1 class="alt-font text-dark-gray project-title">{{ projectTitle }}</h1>
+
+            @if (projectSummary) {
+              <p class="project-summary">{{ projectSummary }}</p>
             }
 
-            <a class="btn btn-small btn-transparent-dark-gray" [href]="project.codeLink" target="_blank" rel="noopener noreferrer">
-              {{ t('project.details.sourceCode') }}
-            </a>
+            <div class="project-meta-list">
+              <div class="project-meta-item">
+                <span class="project-meta-label">{{ t('project.details.technologies') }}</span>
+                <div class="project-chip-list">
+                  @for (technology of projectTechnologies; track technology) {
+                    <span class="project-chip">{{ technology }}</span>
+                  }
+                </div>
+              </div>
 
-            <button class="btn btn-small btn-base-color" type="button" (click)="backToHome()">
-              {{ t('project.details.backHome') }}
-            </button>
+              @if (projectSlug) {
+                <div class="project-meta-item">
+                  <span class="project-meta-label">Slug</span>
+                  <span class="project-meta-value">{{ projectSlug }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="project-description-block">
+              <h6 class="text-dark-gray mb-10px">{{ t('project.details.description') }}</h6>
+              <p class="mb-0">{{ projectDescription }}</p>
+            </div>
+
+            <div class="project-actions">
+              @if (hasLiveDemo) {
+                <a class="btn btn-medium btn-dark-gray" [href]="project.projectLink" target="_blank" rel="noopener noreferrer">
+                  {{ t('project.details.liveDemo') }}
+                </a>
+              }
+
+              @if (hasSourceCode) {
+                <a class="btn btn-medium btn-transparent-dark-gray" [href]="project.codeLink" target="_blank" rel="noopener noreferrer">
+                  {{ t('project.details.sourceCode') }}
+                </a>
+              }
+
+              <button class="btn btn-medium btn-base-color" type="button" (click)="backToHome()">
+                {{ t('project.details.backHome') }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
     } @else {
       <div class="row justify-content-center">
-        <div class="col-lg-8 text-center">
+        <div class="col-lg-8 text-center project-empty-state">
           <h4 class="text-dark-gray">{{ t('project.details.notFound') }}</h4>
           <button class="btn btn-small btn-base-color mt-15px" type="button" (click)="backToHome()">
             {{ t('project.details.backHome') }}

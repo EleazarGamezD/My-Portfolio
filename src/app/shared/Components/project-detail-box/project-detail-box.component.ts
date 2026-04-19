@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IProject } from '@core/interfaces/projects/projects.interfaces';
+import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
@@ -14,6 +14,7 @@ import { ProjectsService } from '@core/services/projects/projects.service';
 })
 export class ProjectDetailBoxComponent implements OnInit {
   project: IProject | undefined;
+  activeImage: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,6 +35,7 @@ export class ProjectDetailBoxComponent implements OnInit {
 
       try {
         this.project = await this.projectsService.getProjectByIdOrSlug(projectIdOrSlug);
+        this.activeImage = this.galleryImages[0] || null;
 
         // Track project view
         if (this.project?._id) {
@@ -62,15 +64,75 @@ export class ProjectDetailBoxComponent implements OnInit {
     );
   }
 
-  get projectTechnologies() {
+  get projectSummary() {
     if (!this.project) {
       return '';
     }
-    return Array.isArray(this.project.stack) ? this.project.stack.join(', ') : '';
+
+    return this.i18nService.selectText(
+      this.project.summary?.es || this.project.description?.es || '',
+      this.project.summary?.en || this.project.description?.en || this.project.summary?.es || '',
+    );
+  }
+
+  get projectTechnologies() {
+    if (!this.project) {
+      return [];
+    }
+    return Array.isArray(this.project.stack) ? this.project.stack : [];
+  }
+
+  get projectSlug() {
+    return this.project?.slug || this.project?._id || '';
+  }
+
+  get galleryImages() {
+    if (!this.project) {
+      return [];
+    }
+
+    const sources = [this.project.coverImage, ...(this.project.images || [])];
+    const normalized = sources
+      .map((asset) => this.resolveProjectAsset(asset))
+      .filter((asset): asset is string => !!asset);
+
+    return [...new Set(normalized)];
+  }
+
+  get heroImage() {
+    return this.activeImage || this.galleryImages[0] || null;
   }
 
   get hasLiveDemo() {
     return !!this.project?.projectLink && this.project.projectLink.startsWith('http');
+  }
+
+  get hasSourceCode() {
+    return !!this.project?.codeLink && this.project.codeLink.startsWith('http');
+  }
+
+  selectImage(image: string) {
+    this.activeImage = image;
+  }
+
+  private resolveProjectAsset(asset?: string | IProjectAsset | null) {
+    if (!asset) {
+      return null;
+    }
+
+    if (typeof asset === 'string') {
+      return asset;
+    }
+
+    if (asset.url) {
+      return asset.url;
+    }
+
+    if (asset.base64 && asset.mimeType) {
+      return `data:${asset.mimeType};base64,${asset.base64}`;
+    }
+
+    return null;
   }
 
   backToHome() {
