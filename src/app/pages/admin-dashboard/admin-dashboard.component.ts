@@ -41,6 +41,7 @@ export class AdminDashboardComponent implements OnInit {
   resumes: IApiResume[] = [];
   readonly newProject: Partial<IProject> = this.createEmptyProjectDraft();
   newProjectStackValue = '';
+  readonly newResume: Partial<IApiResume> = this.createEmptyResumeDraft();
   readonly newContentItems: Record<Exclude<ContentResourceName, 'resumes'>, Partial<IApiContentItem>> = {
     techSkills: this.createEmptyContentDraft(),
     experience: this.createEmptyContentDraft(),
@@ -285,6 +286,34 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
+  async createResume(): Promise<void> {
+    const name = this.getLocalizedText(this.newResume.label || this.newResume.title);
+
+    if (!this.newResume.slug || name === '-' || !this.newResume.base64 || !this.newResume.fileName || !this.newResume.mimeType) {
+      this.contentError = 'Resume slug, label and file are required.';
+      return;
+    }
+
+    const payload: Partial<IApiResume> = {
+      slug: this.newResume.slug,
+      label: this.newResume.label,
+      title: this.newResume.title?.es || this.newResume.title?.en ? this.newResume.title : this.newResume.label,
+      description: this.newResume.description?.es || this.newResume.description?.en ? this.newResume.description : { es: '', en: '' },
+      active: this.newResume.active ?? true,
+      fileName: this.newResume.fileName,
+      mimeType: this.newResume.mimeType,
+      base64: this.newResume.base64,
+      metadata: this.newResume.metadata,
+    };
+
+    await this.runContentAction('resumes-create', async () => {
+      await this.contentService.createContentItem('resumes', payload);
+      this.resetResumeDraft();
+      await this.loadContentData();
+      this.actionMessage = 'Resume created.';
+    });
+  }
+
   async saveContentItem(resourceName: ContentResourceName, item: IApiContentItem | IApiResume): Promise<void> {
     if (!item._id) {
       this.contentError = 'Content item id is required to save changes.';
@@ -316,6 +345,40 @@ export class AdminDashboardComponent implements OnInit {
     return this.actionLoadingKey === actionKey;
   }
 
+  async onNewResumeFileSelected(event: Event): Promise<void> {
+    const file = this.getSelectedFile(event);
+    if (!file) {
+      return;
+    }
+
+    try {
+      const fileData = await this.readFileAsDataUrl(file);
+      this.newResume.fileName = file.name;
+      this.newResume.mimeType = file.type || 'application/octet-stream';
+      this.newResume.base64 = fileData;
+      this.contentError = null;
+    } catch (error) {
+      this.contentError = error instanceof Error ? error.message : 'Failed to read resume file';
+    }
+  }
+
+  async onResumeFileSelected(item: IApiResume, event: Event): Promise<void> {
+    const file = this.getSelectedFile(event);
+    if (!file) {
+      return;
+    }
+
+    try {
+      const fileData = await this.readFileAsDataUrl(file);
+      item.fileName = file.name;
+      item.mimeType = file.type || 'application/octet-stream';
+      item.base64 = fileData;
+      this.contentError = null;
+    } catch (error) {
+      this.contentError = error instanceof Error ? error.message : 'Failed to read resume file';
+    }
+  }
+
   getMetricTotal(type: string): number {
     return this.metrics?.groupedTotals?.find((item) => item._id === type)?.total ?? 0;
   }
@@ -340,6 +403,10 @@ export class AdminDashboardComponent implements OnInit {
   private resetProjectDraft(): void {
     Object.assign(this.newProject, this.createEmptyProjectDraft());
     this.newProjectStackValue = '';
+  }
+
+  private resetResumeDraft(): void {
+    Object.assign(this.newResume, this.createEmptyResumeDraft());
   }
 
   private resetContentDraft(resourceName: Exclude<ContentResourceName, 'resumes'>): void {
@@ -372,6 +439,20 @@ export class AdminDashboardComponent implements OnInit {
       href: '',
       order: 0,
       active: true,
+      metadata: {},
+    };
+  }
+
+  private createEmptyResumeDraft(): Partial<IApiResume> {
+    return {
+      slug: '',
+      label: { es: '', en: '' },
+      title: { es: '', en: '' },
+      description: { es: '', en: '' },
+      active: true,
+      fileName: '',
+      mimeType: '',
+      base64: '',
       metadata: {},
     };
   }
@@ -414,5 +495,24 @@ export class AdminDashboardComponent implements OnInit {
     }
 
     return window.confirm(message);
+  }
+
+  private getSelectedFile(event: Event): File | null {
+    const input = event.target as HTMLInputElement | null;
+    return input?.files?.[0] ?? null;
+  }
+
+  private async readFileAsDataUrl(file: File): Promise<string> {
+    const maxSizeBytes = 5 * 1024 * 1024;
+    if (file.size > maxSizeBytes) {
+      throw new Error('Resume file exceeds 5MB limit.');
+    }
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+      reader.onerror = () => reject(new Error('Failed to read file.'));
+      reader.readAsDataURL(file);
+    });
   }
 }
