@@ -1,7 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 import { catchError, from, lastValueFrom, map } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +47,14 @@ export class GlobalHttpService {
     options: unknown = {},
     method: string = RequestMethod.GET,
   ): Promise<T> {
-    const headers = { 'Content-Type': 'application/json' };
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    if (method !== RequestMethod.GET && environment.backendApiKey) {
+      headers = headers.set('x-api-key', environment.backendApiKey);
+    }
+
     const requestOptions: object =
       method === RequestMethod.GET ? { headers } : { body: options, headers };
     return lastValueFrom(
