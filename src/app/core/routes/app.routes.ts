@@ -1,4 +1,5 @@
 import { Route, Routes } from '@angular/router';
+import { adminAuthGuard } from '@core/guards/admin-auth.guard';
 import { AppLanguage, DEFAULT_LANGUAGE } from '@core/i18n/i18n.config';
 import { MainLayoutComponent } from '@layouts/main-layout/main-layout.component';
 
@@ -36,13 +37,14 @@ export const routes: Routes = [
   {
     path: 'admin/login',
     loadComponent: () =>
-      import('@pages/admin-dashboard/admin-dashboard.component')
+      import('@pages/admin-login/admin-login.component')
         .then(
-          (m) => m.AdminDashboardComponent,
+          (m) => m.AdminLoginComponent,
         ),
   },
   {
     path: 'admin/dashboard',
+    canActivate: [adminAuthGuard],
     loadComponent: () =>
       import('@pages/admin-dashboard/admin-dashboard.component')
         .then(
@@ -51,11 +53,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin-dashboard',
-    loadComponent: () =>
-      import('@pages/admin-dashboard/admin-dashboard.component')
-        .then(
-          (m) => m.AdminDashboardComponent,
-        ),
+    redirectTo: 'admin/dashboard',
   },
   localizedRoute('es'),
   localizedRoute('en'),

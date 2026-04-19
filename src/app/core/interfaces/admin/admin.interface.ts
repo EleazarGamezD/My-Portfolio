@@ -26,3 +26,11 @@ export interface IAdminMeResponse {
   authenticated: boolean;
   user: IAdminUser | null;
 }
+
+export interface IAdminDashboardFilters {
+  year?: string;
+  month?: string;
+  day?: string;
+  from?: string;
+  to?: string;
+}

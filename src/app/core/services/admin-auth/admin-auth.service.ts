@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { StorageMap } from '@ngx-pwa/local-storage';
+import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import {
+  IAdminDashboardFilters,
   IAdminLoginRequest,
   IAdminLoginResponse,
   IAdminMeResponse,
 } from '@core/interfaces/admin/admin.interface';
 import { API_ADMIN_ROUTES } from '@core/routes/admin/admin.routes';
+import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
+import { StorageMap } from '@ngx-pwa/local-storage';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
-import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +40,22 @@ export class AdminAuthService extends GlobalHttpService {
 
   async getCurrentAdmin() {
     return this.makeRequest<IAdminMeResponse, null>(API_ADMIN_ROUTES.me, null, RequestMethod.GET);
+  }
+
+  async getDashboardMetrics(filters: IAdminDashboardFilters = {}) {
+    const query = new URLSearchParams();
+
+    for (const [key, value] of Object.entries(filters)) {
+      if (typeof value === 'string' && value.trim()) {
+        query.set(key, value.trim());
+      }
+    }
+
+    const route = query.size > 0
+      ? `${API_ADMIN_ROUTES.dashboardMetrics}?${query.toString()}`
+      : API_ADMIN_ROUTES.dashboardMetrics;
+
+    return this.makeRequest<IDashboardMetrics, null>(route, null, RequestMethod.GET);
   }
 
   async isAuthenticated() {

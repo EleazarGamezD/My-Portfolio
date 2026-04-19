@@ -1,40 +1,44 @@
-<section class="pt-100px pb-100px background-repeat" style="background-image: url('/assets/images/shared/backgrounds/bg-1.webp')">
+<section class="pt-100px pb-100px background-repeat admin-dashboard-shell" style="background-image: url('/assets/images/shared/backgrounds/bg-1.webp')">
   <div class="container">
-    <!-- Login Section -->
-    <div *ngIf="!authenticated" class="row justify-content-center">
-      <div class="col-lg-6">
-        <div class="card shadow-lg">
-          <div class="card-body p-5">
-            <h2 class="card-title text-center mb-4">Admin Dashboard</h2>
-
-            <div *ngIf="error" class="alert alert-danger" role="alert">
-              {{ error }}
-            </div>
-
-            <div class="mb-3">
-              <label for="adminEmail" class="form-label">Email:</label>
-              <input type="email" class="form-control" id="adminEmail" [(ngModel)]="email" placeholder="Enter admin email">
-            </div>
-
-            <div class="mb-4">
-              <label for="adminPassword" class="form-label">Password:</label>
-              <input type="password" class="form-control" id="adminPassword" [(ngModel)]="password" placeholder="Enter password">
-            </div>
-
-            <button class="btn btn-primary w-100" (click)="authenticate()" [disabled]="!email || !password">
-              Login
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dashboard Section -->
-    <div *ngIf="authenticated" class="row">
+    <div class="row">
       <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2>Dashboard Analytics</h2>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+          <div>
+            <p class="dashboard-eyebrow mb-1">Admin</p>
+            <h2 class="mb-0">Dashboard Analytics</h2>
+          </div>
           <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+        </div>
+
+        <div class="card mb-4 dashboard-filters-card">
+          <div class="card-body">
+            <div class="row g-3 align-items-end">
+              <div class="col-md-2">
+                <label class="form-label" for="filterYear">Year</label>
+                <input id="filterYear" type="number" class="form-control" [(ngModel)]="filters.year" min="2000" max="2100" />
+              </div>
+              <div class="col-md-2">
+                <label class="form-label" for="filterMonth">Month</label>
+                <input id="filterMonth" type="number" class="form-control" [(ngModel)]="filters.month" min="1" max="12" />
+              </div>
+              <div class="col-md-2">
+                <label class="form-label" for="filterDay">Day</label>
+                <input id="filterDay" type="number" class="form-control" [(ngModel)]="filters.day" min="1" max="31" />
+              </div>
+              <div class="col-md-3">
+                <label class="form-label" for="filterFrom">From</label>
+                <input id="filterFrom" type="datetime-local" class="form-control" [(ngModel)]="filters.from" />
+              </div>
+              <div class="col-md-3">
+                <label class="form-label" for="filterTo">To</label>
+                <input id="filterTo" type="datetime-local" class="form-control" [(ngModel)]="filters.to" />
+              </div>
+              <div class="col-12 d-flex gap-2 justify-content-end">
+                <button class="btn btn-outline-secondary" type="button" (click)="clearFilters()">Clear</button>
+                <button class="btn btn-primary" type="button" (click)="applyFilters()">Apply filters</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div *ngIf="loading" class="text-center py-5">
@@ -43,8 +47,11 @@
           </div>
         </div>
 
+        <div *ngIf="error" class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+
         <div *ngIf="!loading && metrics" class="row">
-          <!-- Total Events Card -->
           <div class="col-md-6 col-lg-3 mb-4">
             <div class="card">
               <div class="card-body">
@@ -54,7 +61,6 @@
             </div>
           </div>
 
-          <!-- CV Downloads Card -->
           <div class="col-md-6 col-lg-3 mb-4">
             <div class="card">
               <div class="card-body">
@@ -64,7 +70,6 @@
             </div>
           </div>
 
-          <!-- CTA Clicks Card -->
           <div class="col-md-6 col-lg-3 mb-4">
             <div class="card">
               <div class="card-body">
@@ -74,7 +79,6 @@
             </div>
           </div>
 
-          <!-- Project Views Card -->
           <div class="col-md-6 col-lg-3 mb-4">
             <div class="card">
               <div class="card-body">
@@ -84,8 +88,7 @@
             </div>
           </div>
 
-          <!-- Top Pages Table -->
-          <div class="col-12 mb-4">
+          <div class="col-xl-6 mb-4">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Top Pages</h5>
@@ -110,8 +113,7 @@
             </div>
           </div>
 
-          <!-- Top Projects Table -->
-          <div class="col-12">
+          <div class="col-xl-6 mb-4">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Top Projects</h5>
@@ -136,8 +138,61 @@
             </div>
           </div>
 
-          <!-- Refresh Button -->
-          <div class="col-12 mt-4">
+          <div class="col-xl-6 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">By Language</h5>
+                <div class="table-responsive">
+                  <table class="table table-striped" *ngIf="metrics.groupedByLanguage && metrics.groupedByLanguage.length > 0">
+                    <thead>
+                      <tr>
+                        <th>Language</th>
+                        <th class="text-end">Events</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let language of metrics.groupedByLanguage">
+                        <td>{{ language._id }}</td>
+                        <td class="text-end">{{ language.total }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p *ngIf="!metrics.groupedByLanguage || metrics.groupedByLanguage.length === 0" class="text-muted">No data</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-6 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Recent Events</h5>
+                <div class="table-responsive">
+                  <table class="table table-striped" *ngIf="metrics.recentEvents && metrics.recentEvents.length > 0">
+                    <thead>
+                      <tr>
+                        <th>Type</th>
+                        <th>Path</th>
+                        <th>Language</th>
+                        <th class="text-end">Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let event of metrics.recentEvents">
+                        <td>{{ event.type }}</td>
+                        <td>{{ event.path }}</td>
+                        <td>{{ event.language }}</td>
+                        <td class="text-end">{{ event.createdAt | date:'short' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p *ngIf="!metrics.recentEvents || metrics.recentEvents.length === 0" class="text-muted">No recent events</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
             <button class="btn btn-primary" (click)="loadMetrics()">
               Refresh Data
             </button>

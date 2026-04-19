@@ -1,3 +1,21 @@
+.admin-dashboard-shell {
+  min-height: 100vh;
+}
+
+.dashboard-eyebrow {
+  color: #0066cc;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.dashboard-filters-card {
+  .card-body {
+    padding: 1.25rem;
+  }
+}
+
 .card {
   border: none;
   border-radius: 8px;
