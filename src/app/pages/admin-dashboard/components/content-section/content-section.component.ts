@@ -3,13 +3,21 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiContentItem, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import {
+    BadgeModule,
+    ButtonModule,
+    CardModule,
+    FormModule,
+    SpinnerModule,
+    TableModule,
+} from '@coreui/angular';
 
 export type AdminContentSectionVariant = 'skills' | 'experience' | 'testimonials' | 'socialLinks';
 
 @Component({
     selector: 'app-admin-content-section',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, BadgeModule, ButtonModule, CardModule, FormModule, SpinnerModule, TableModule],
     templateUrl: './content-section.component.html',
     styleUrl: './content-section.component.scss',
 })

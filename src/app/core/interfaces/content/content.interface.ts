@@ -1,3 +1,5 @@
+import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
+
 export interface ILocalizedText {
   es?: string;
   en?: string;
@@ -6,7 +8,7 @@ export interface ILocalizedText {
 export interface IApiHeroSlide {
   title?: ILocalizedText;
   description?: ILocalizedText;
-  image?: string;
+  image?: string | IProjectAsset | null;
 }
 
 export interface IApiContentItem {

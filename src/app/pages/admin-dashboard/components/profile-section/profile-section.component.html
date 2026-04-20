@@ -13,14 +13,26 @@
         <div *ngIf="!contentLoading && profile" class="row g-3">
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Name</span>
-                    <strong>{{ getLocalizedText(profile.label) }}</strong>
+                    <span class="dashboard-detail-label">Name ES</span>
+                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.label!.es" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Title</span>
-                    <strong>{{ getLocalizedText(profile.title) }}</strong>
+                    <span class="dashboard-detail-label">Name EN</span>
+                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.label!.en" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">Title ES</span>
+                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.title!.es" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">Title EN</span>
+                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.title!.en" />
                 </div>
             </div>
             <div class="col-md-6">
@@ -45,6 +57,81 @@
                 <div class="dashboard-detail-card">
                     <span class="dashboard-detail-label">Phone</span>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.phone" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">Description ES</span>
+                    <textarea cFormControl rows="4" [(ngModel)]="profile.description!.es"></textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">Description EN</span>
+                    <textarea cFormControl rows="4" [(ngModel)]="profile.description!.en"></textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">About ES</span>
+                    <textarea cFormControl rows="5" [(ngModel)]="profile.metadata!.about!.es"></textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">About EN</span>
+                    <textarea cFormControl rows="5" [(ngModel)]="profile.metadata!.about!.en"></textarea>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="dashboard-detail-card">
+                    <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                        <div>
+                            <span class="dashboard-detail-label">Hero Slides</span>
+                            <div class="text-body-secondary small">Update homepage slider copy and image assets directly from the dashboard.</div>
+                        </div>
+                        <button cButton color="secondary" size="sm" type="button" (click)="addHeroSlide()">
+                            Add Slide
+                        </button>
+                    </div>
+
+                    <div class="d-flex flex-column gap-3" *ngIf="heroSlides.length; else emptySlides">
+                        <div class="border rounded p-3" *ngFor="let slide of heroSlides; let index = index">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <strong>Slide {{ index + 1 }}</strong>
+                                <button cButton color="danger" variant="outline" size="sm" type="button" (click)="removeHeroSlide(index)">
+                                    Remove
+                                </button>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input cFormControl sizing="sm" type="text" [(ngModel)]="slide.title!.es" placeholder="Title ES" />
+                                </div>
+                                <div class="col-md-6">
+                                    <input cFormControl sizing="sm" type="text" [(ngModel)]="slide.title!.en" placeholder="Title EN" />
+                                </div>
+                                <div class="col-md-6">
+                                    <textarea cFormControl rows="4" [(ngModel)]="slide.description!.es" placeholder="Description ES"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <textarea cFormControl rows="4" [(ngModel)]="slide.description!.en" placeholder="Description EN"></textarea>
+                                </div>
+                                <div class="col-md-8">
+                                    <input cFormControl sizing="sm" type="text" [ngModel]="getImageFieldValue(slide.image)" (ngModelChange)="updateImageField(index, $event)" placeholder="Image URL or existing asset" />
+                                </div>
+                                <div class="col-md-4">
+                                    <input cFormControl sizing="sm" type="file" accept="image/*" (change)="heroSlideImageSelected.emit({ index, event: $event })" />
+                                </div>
+                                <div class="col-12" *ngIf="resolveImagePreview(slide.image) as previewImage">
+                                    <img [src]="previewImage" [alt]="slide.title?.es || slide.title?.en || 'Hero slide preview'" class="img-fluid rounded border" style="max-height: 160px; object-fit: cover;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ng-template #emptySlides>
+                        <p class="text-muted mb-0">No hero slides configured yet.</p>
+                    </ng-template>
                 </div>
             </div>
         </div>

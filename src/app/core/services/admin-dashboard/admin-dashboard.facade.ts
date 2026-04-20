@@ -1,16 +1,24 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { IAdminDashboardFilters, IAdminUser } from '@core/interfaces/admin/admin.interface';
-import { IApiContentItem, IApiProfile, IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
-import { IProject } from '@core/interfaces/projects/projects.interfaces';
+import { IApiContentItem, IApiHeroSlide, IApiProfile, IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
+import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
+import { createBase64ImageAsset } from '@core/utils/image/admin-image.utils';
 import { ToastrService } from 'ngx-toastr';
 
 export type ContentResourceName = 'techSkills' | 'experience' | 'testimonials' | 'resumes' | 'socialLinks';
+
+interface AdminConfirmationDialog {
+  visible: boolean;
+  title: string;
+  message: string;
+  confirmLabel: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +53,12 @@ export class AdminDashboardFacade {
   error: string | null = null;
   contentError: string | null = null;
   actionMessage: string | null = null;
+  readonly confirmationDialog: AdminConfirmationDialog = {
+    visible: false,
+    title: '',
+    message: '',
+    confirmLabel: 'Confirm',
+  };
 
   readonly filters: IAdminDashboardFilters = {
     year: '',
@@ -57,6 +71,7 @@ export class AdminDashboardFacade {
   private currentAdminLoaded = false;
   private metricsLoaded = false;
   private contentLoaded = false;
+  private pendingConfirmationAction: (() => Promise<void>) | null = null;
 
   constructor(
     private readonly adminAuthService: AdminAuthService,
@@ -143,7 +158,7 @@ export class AdminDashboardFacade {
       ]);
 
       this.projects = projects;
-      this.profile = profile;
+      this.profile = this.normalizeProfile(profile);
       this.techSkills = techSkills;
       this.experience = experience;
       this.testimonials = testimonials;
@@ -195,6 +210,8 @@ export class AdminDashboardFacade {
       return;
     }
 
+    this.ensureProfileMetadata();
+
     const payload: Partial<IApiProfile> = {
       label: this.profile.label,
       title: this.profile.title,
@@ -230,8 +247,8 @@ export class AdminDashboardFacade {
         .split(',')
         .map((item) => item.trim())
         .filter(Boolean),
-      coverImage: this.parseProjectCoverImage(this.newProjectCoverImageValue),
-      images: this.parseProjectImages(this.newProjectImagesValue),
+      coverImage: this.newProject.coverImage ?? this.parseProjectCoverImage(this.newProjectCoverImageValue),
+      images: this.newProject.images?.length ? this.newProject.images : this.parseProjectImages(this.newProjectImagesValue),
       projectLink: this.newProject.projectLink,
       codeLink: this.newProject.codeLink,
       featured: this.newProject.featured,
@@ -248,15 +265,46 @@ export class AdminDashboardFacade {
   }
 
   async deleteProject(project: IProject): Promise<void> {
-    if (!project._id || !this.confirmAction(`Delete project ${this.getProjectName(project)}?`)) {
+    if (!project._id) {
       return;
     }
 
-    await this.runContentAction(`project-delete-${project._id}`, async () => {
-      await this.projectsService.deleteProject(project._id!);
-      await this.loadContentData();
-      this.actionMessage = `Project ${this.getProjectName(project)} deleted.`;
-    });
+    this.openConfirmation(
+      'Delete project',
+      `This will permanently remove ${this.getProjectName(project)} from the portfolio.`,
+      'Delete project',
+      async () => {
+        await this.runContentAction(`project-delete-${project._id}`, async () => {
+          await this.projectsService.deleteProject(project._id!);
+          await this.loadContentData();
+          this.actionMessage = `Project ${this.getProjectName(project)} deleted.`;
+        });
+      },
+    );
+  }
+
+  async confirmPendingAction(): Promise<void> {
+    if (!this.pendingConfirmationAction) {
+      return;
+    }
+
+    const action = this.pendingConfirmationAction;
+    this.pendingConfirmationAction = null;
+    this.confirmationDialog.visible = false;
+    await action();
+  }
+
+  cancelPendingAction(): void {
+    this.pendingConfirmationAction = null;
+    this.confirmationDialog.visible = false;
+  }
+
+  onConfirmationVisibleChange(visible: boolean): void {
+    this.confirmationDialog.visible = visible;
+
+    if (!visible) {
+      this.pendingConfirmationAction = null;
+    }
   }
 
   async createContentItem(resourceName: Exclude<ContentResourceName, 'resumes'>): Promise<void> {
@@ -336,15 +384,22 @@ export class AdminDashboardFacade {
   }
 
   async deleteContentItem(resourceName: ContentResourceName, item: IApiContentItem | IApiResume): Promise<void> {
-    if (!item._id || !this.confirmAction(`Delete ${this.getContentItemName(item)}?`)) {
+    if (!item._id) {
       return;
     }
 
-    await this.runContentAction(`${resourceName}-delete-${item._id}`, async () => {
-      await this.contentService.deleteContentItem(resourceName, item._id!);
-      await this.loadContentData();
-      this.actionMessage = `${this.getContentItemName(item)} deleted.`;
-    });
+    this.openConfirmation(
+      `Delete ${resourceName}`,
+      `This will permanently remove ${this.getContentItemName(item)} from ${resourceName}.`,
+      'Delete item',
+      async () => {
+        await this.runContentAction(`${resourceName}-delete-${item._id}`, async () => {
+          await this.contentService.deleteContentItem(resourceName, item._id!);
+          await this.loadContentData();
+          this.actionMessage = `${this.getContentItemName(item)} deleted.`;
+        });
+      },
+    );
   }
 
   async saveAdminUser(user: IAdminUser): Promise<void> {
@@ -443,6 +498,84 @@ export class AdminDashboardFacade {
     project.images = this.parseProjectImages(value);
   }
 
+  async onNewProjectCoverImageSelected(event: Event): Promise<void> {
+    const file = this.getSelectedFile(event);
+    if (!file) {
+      return;
+    }
+
+    try {
+      this.newProject.coverImage = await this.createProjectAsset(file);
+      this.newProjectCoverImageValue = '';
+      this.contentError = null;
+    } catch (error) {
+      this.handleImageError(error);
+    }
+  }
+
+  async onNewProjectImagesSelected(event: Event): Promise<void> {
+    const files = this.getSelectedFiles(event);
+    if (!files.length) {
+      return;
+    }
+
+    try {
+      this.newProject.images = await Promise.all(files.map((file) => this.createProjectAsset(file)));
+      this.newProjectImagesValue = '';
+      this.contentError = null;
+    } catch (error) {
+      this.handleImageError(error);
+    }
+  }
+
+  async onProjectCoverImageSelected(project: IProject, event: Event): Promise<void> {
+    const file = this.getSelectedFile(event);
+    if (!file) {
+      return;
+    }
+
+    try {
+      project.coverImage = await this.createProjectAsset(file);
+      this.contentError = null;
+    } catch (error) {
+      this.handleImageError(error);
+    }
+  }
+
+  async onProjectImagesSelected(project: IProject, event: Event): Promise<void> {
+    const files = this.getSelectedFiles(event);
+    if (!files.length) {
+      return;
+    }
+
+    try {
+      project.images = await Promise.all(files.map((file) => this.createProjectAsset(file)));
+      this.contentError = null;
+    } catch (error) {
+      this.handleImageError(error);
+    }
+  }
+
+  async onHeroSlideImageSelected(index: number, event: Event): Promise<void> {
+    const file = this.getSelectedFile(event);
+    if (!file || !this.profile) {
+      return;
+    }
+
+    this.ensureProfileMetadata();
+    const slide = this.profile.metadata?.heroSlides?.[index];
+    if (!slide) {
+      return;
+    }
+
+    try {
+      slide.image = await this.createProjectAsset(file);
+      this.contentError = null;
+    } catch (error) {
+      this.handleImageError(error);
+    }
+  }
+
   getContentItems(resourceName: Exclude<ContentResourceName, 'resumes'>): IApiContentItem[] {
     switch (resourceName) {
       case 'techSkills':
@@ -521,6 +654,49 @@ export class AdminDashboardFacade {
     };
   }
 
+  private normalizeProfile(profile: IApiProfile | null): IApiProfile | null {
+    if (!profile) {
+      return null;
+    }
+
+    const metadata = profile.metadata ?? {};
+
+    return {
+      ...profile,
+      label: { es: profile.label?.es ?? '', en: profile.label?.en ?? '' },
+      title: { es: profile.title?.es ?? '', en: profile.title?.en ?? '' },
+      description: { es: profile.description?.es ?? '', en: profile.description?.en ?? '' },
+      metadata: {
+        ...metadata,
+        about: {
+          es: metadata.about?.es ?? '',
+          en: metadata.about?.en ?? '',
+        },
+        heroSlides: Array.isArray(metadata.heroSlides)
+          ? metadata.heroSlides.map((slide) => this.normalizeHeroSlide(slide))
+          : [],
+      },
+    };
+  }
+
+  private normalizeHeroSlide(slide?: IApiHeroSlide): IApiHeroSlide {
+    return {
+      title: { es: slide?.title?.es ?? '', en: slide?.title?.en ?? '' },
+      description: { es: slide?.description?.es ?? '', en: slide?.description?.en ?? '' },
+      image: slide?.image ?? null,
+    };
+  }
+
+  private ensureProfileMetadata(): void {
+    if (!this.profile) {
+      return;
+    }
+
+    this.profile.metadata ??= {};
+    this.profile.metadata.about ??= { es: '', en: '' };
+    this.profile.metadata.heroSlides ??= [];
+  }
+
   private getContentPayload(item: IApiContentItem | IApiResume): Partial<IApiContentItem & IApiResume> {
     return {
       slug: item.slug,
@@ -577,17 +753,27 @@ export class AdminDashboardFacade {
     });
   }
 
-  private confirmAction(message: string): boolean {
-    if (typeof window === 'undefined' || typeof window.confirm !== 'function') {
-      return true;
-    }
-
-    return window.confirm(message);
+  private openConfirmation(
+    title: string,
+    message: string,
+    confirmLabel: string,
+    action: () => Promise<void>,
+  ): void {
+    this.confirmationDialog.title = title;
+    this.confirmationDialog.message = message;
+    this.confirmationDialog.confirmLabel = confirmLabel;
+    this.confirmationDialog.visible = true;
+    this.pendingConfirmationAction = action;
   }
 
   private getSelectedFile(event: Event): File | null {
     const input = event.target as HTMLInputElement | null;
     return input?.files?.[0] ?? null;
+  }
+
+  private getSelectedFiles(event: Event): File[] {
+    const input = event.target as HTMLInputElement | null;
+    return Array.from(input?.files ?? []);
   }
 
   private parseProjectCoverImage(value: string): string | null {
@@ -600,6 +786,22 @@ export class AdminDashboardFacade {
       .split(/\r?\n|,/)
       .map((item) => item.trim())
       .filter(Boolean);
+  }
+
+  private async createProjectAsset(file: File): Promise<IProjectAsset> {
+    const asset = await createBase64ImageAsset(file);
+
+    return {
+      base64: asset.base64,
+      mimeType: asset.mimeType,
+      fileName: asset.fileName,
+      extension: asset.extension,
+    };
+  }
+
+  private handleImageError(error: unknown): void {
+    this.contentError = error instanceof Error ? error.message : 'Failed to process image file';
+    this.showErrorToast(this.contentError, 'Images');
   }
 
   private async readFileAsDataUrl(file: File): Promise<string> {

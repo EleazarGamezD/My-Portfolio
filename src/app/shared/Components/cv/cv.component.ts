@@ -33,10 +33,13 @@ export class CvComponent implements OnInit {
       this.loading = true;
       this.error = null;
       const resumes = await this.contentService.getResumes();
-      this.resumes = resumes.filter((resume) => resume.active !== false);
+      this.resumes = Array.isArray(resumes)
+        ? resumes.filter((resume) => resume.active !== false)
+        : [];
     } catch (err) {
       console.error('Error loading resumes:', err);
       this.error = 'Error loading resumes';
+      this.resumes = [];
     } finally {
       this.loading = false;
     }

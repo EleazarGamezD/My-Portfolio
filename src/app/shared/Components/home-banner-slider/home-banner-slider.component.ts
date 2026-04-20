@@ -17,9 +17,10 @@ export class HomeBannerSliderComponent implements OnInit {
   async ngOnInit() {
     try {
       const profile = await this.contentService.getProfile();
-      this.sliderContentArray = profile.metadata?.heroSlides ?? [];
+      this.sliderContentArray = profile?.metadata?.heroSlides ?? [];
     } catch (error) {
       console.warn('Failed to load hero slides from API.', error);
+      this.sliderContentArray = [];
     }
   }
 }

@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "dev": "ng serve --watch --host 0.0.0.0 ",
-    "local": "ng serve --c local-development --watch --host 0.0.0.0",
+    "dev": "ng serve --configuration development --host 0.0.0.0",
+    "local": "ng serve --configuration local-development --host 0.0.0.0",
     "build": "ng build",
     "build:prod": "ng build --configuration production --base-href /My-Portfolio/",
     "watch": "ng build --watch --configuration development",

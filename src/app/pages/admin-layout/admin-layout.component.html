@@ -63,3 +63,20 @@
         <div class="ms-auto text-body-secondary">{{ currentYear }}</div>
     </footer>
 </div>
+
+<c-modal alignment="center" backdrop="static" [visible]="facade.confirmationDialog.visible" (visibleChange)="facade.onConfirmationVisibleChange($event)">
+    <c-modal-header>
+        <h5 cModalTitle>{{ facade.confirmationDialog.title }}</h5>
+    </c-modal-header>
+    <c-modal-body>
+        {{ facade.confirmationDialog.message }}
+    </c-modal-body>
+    <c-modal-footer>
+        <button cButton color="secondary" variant="outline" type="button" (click)="facade.cancelPendingAction()">
+            Cancel
+        </button>
+        <button cButton color="danger" type="button" (click)="facade.confirmPendingAction()">
+            {{ facade.confirmationDialog.confirmLabel }}
+        </button>
+    </c-modal-footer>
+</c-modal>

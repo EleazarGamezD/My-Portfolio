@@ -4,7 +4,7 @@ import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.en
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { StorageService } from '@services/storage/storage.service';
-import { catchError, from, lastValueFrom, map } from 'rxjs';
+import { catchError, defaultIfEmpty, lastValueFrom, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -52,15 +52,12 @@ export class GlobalHttpService extends StorageService {
     payload: P,
     method: string = RequestMethod.GET,
   ): Promise<T> {
-    return lastValueFrom(
-      from(this.makeHttpRequest<T>(route, payload, method)).pipe(
-        map((res: T) => res),
-        catchError((error: HttpErrorResponse) => {
-          console.error('Error:', error);
-          throw error;
-        }),
-      ),
-    );
+    try {
+      return await this.makeHttpRequest<T>(route, payload, method);
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
   }
 
   /**
@@ -79,10 +76,17 @@ export class GlobalHttpService extends StorageService {
     const headers = await this.getAuthHeaders();
     const requestOptions: object =
       method === RequestMethod.GET ? { headers } : { body: options, headers };
+
     return lastValueFrom(
       this._http
         .request<T>(method, url, requestOptions)
-        .pipe(map((response) => response as T)),
+        .pipe(
+          map((response) => response as T),
+          defaultIfEmpty(null as T),
+          catchError((error: HttpErrorResponse) =>
+            throwError(() => error),
+          ),
+        ),
     );
   }
 }

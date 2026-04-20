@@ -11,7 +11,6 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   provideRouter,
-  withEnabledBlockingInitialNavigation,
   withInMemoryScrolling,
   withRouterConfig,
   withViewTransitions,
@@ -36,7 +35,6 @@ export const appConfig: ApplicationConfig = {
         scrollPositionRestoration: 'top',
         anchorScrolling: 'enabled',
       }),
-      withEnabledBlockingInitialNavigation(),
       withViewTransitions(),
     ),
     provideClientHydration(withEventReplay()),

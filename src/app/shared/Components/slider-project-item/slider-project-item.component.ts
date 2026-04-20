@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { IProject } from '@core/interfaces/projects/projects.interfaces';
+import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
 
 @Component({
@@ -31,32 +31,42 @@ export class SliderProjectItemComponent {
     const rawImages = Array.isArray(this.project.images) ? this.project.images : [];
 
     for (const image of rawImages) {
-      if (typeof image === 'string' && image) {
-        return image;
-      }
-
-      if (typeof image === 'object' && image?.url) {
-        return image.url;
-      }
-
-      if (typeof image === 'object' && image?.base64) {
-        return image.base64;
+      const resolvedImage = this.resolveProjectAsset(image);
+      if (resolvedImage) {
+        return resolvedImage;
       }
     }
 
-    if (typeof this.project.coverImage === 'string' && this.project.coverImage) {
-      return this.project.coverImage;
-    }
-
-    if (typeof this.project.coverImage === 'object' && this.project.coverImage?.url) {
-      return this.project.coverImage.url;
-    }
-
-    if (typeof this.project.coverImage === 'object' && this.project.coverImage?.base64) {
-      return this.project.coverImage.base64;
+    const coverImage = this.resolveProjectAsset(this.project.coverImage);
+    if (coverImage) {
+      return coverImage;
     }
 
     return '/assets/images/shared/backgrounds/desktop-v3.webp';
+  }
+
+  private resolveProjectAsset(asset?: string | IProjectAsset | null) {
+    if (!asset) {
+      return null;
+    }
+
+    if (typeof asset === 'string') {
+      return asset;
+    }
+
+    if (asset.url) {
+      return asset.url;
+    }
+
+    if (asset.base64 && asset.mimeType) {
+      return `data:${asset.mimeType};base64,${asset.base64}`;
+    }
+
+    if (asset.base64) {
+      return asset.base64.startsWith('data:') ? asset.base64 : `data:image/webp;base64,${asset.base64}`;
+    }
+
+    return null;
   }
 
   t(key: string) {

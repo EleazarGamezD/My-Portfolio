@@ -3,11 +3,19 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import {
+    BadgeModule,
+    ButtonModule,
+    CardModule,
+    FormModule,
+    SpinnerModule,
+    TableModule,
+} from '@coreui/angular';
 
 @Component({
     selector: 'app-admin-resumes-section',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, BadgeModule, ButtonModule, CardModule, FormModule, SpinnerModule, TableModule],
     templateUrl: './resumes-section.component.html',
     styleUrl: './resumes-section.component.scss',
 })

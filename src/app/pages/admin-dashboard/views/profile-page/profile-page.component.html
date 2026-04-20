@@ -7,5 +7,5 @@
         </div>
     </div>
 
-    <app-admin-profile-section [profile]="facade.profile" [contentLoading]="facade.contentLoading" [saveLoading]="facade.isActionLoading('profile-save')" (saveProfile)="facade.saveProfile()"></app-admin-profile-section>
+    <app-admin-profile-section [profile]="facade.profile" [contentLoading]="facade.contentLoading" [saveLoading]="facade.isActionLoading('profile-save')" (saveProfile)="facade.saveProfile()" (heroSlideImageSelected)="facade.onHeroSlideImageSelected($event.index, $event.event)"></app-admin-profile-section>
 </section>
