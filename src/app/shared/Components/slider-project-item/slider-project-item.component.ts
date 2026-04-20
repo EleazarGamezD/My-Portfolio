@@ -46,6 +46,21 @@ export class SliderProjectItemComponent {
     return '/assets/images/shared/backgrounds/desktop-v3.webp';
   }
 
+  get summary() {
+    return this.i18nService.selectText(
+      this.project.summary?.es || this.project.description?.es || '',
+      this.project.summary?.en || this.project.description?.en || this.project.summary?.es || '',
+    );
+  }
+
+  get stackPreview() {
+    return Array.isArray(this.project.stack) ? this.project.stack.slice(0, 3) : [];
+  }
+
+  get stackCountRemainder() {
+    return Array.isArray(this.project.stack) && this.project.stack.length > 3 ? this.project.stack.length - 3 : 0;
+  }
+
   private resolveProjectAsset(asset?: string | IProjectAsset | null) {
     return resolveImageAssetUrl(asset);
   }
