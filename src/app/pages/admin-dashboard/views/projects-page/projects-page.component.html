@@ -1,0 +1,19 @@
+<section>
+    <div class="admin-page-header">
+        <div>
+            <p class="admin-page-kicker">Content Management</p>
+            <h2 class="admin-page-title">Projects</h2>
+            <p class="admin-page-copy mb-0">Manage project metadata, publication state, links and gallery assets.</p>
+        </div>
+    </div>
+
+    <div *ngIf="facade.contentError" class="alert alert-warning admin-page-message" role="alert">
+        {{ facade.contentError }}
+    </div>
+
+    <div *ngIf="facade.actionMessage" class="alert alert-success admin-page-message" role="alert">
+        {{ facade.actionMessage }}
+    </div>
+
+    <app-admin-projects-section [projects]="facade.projects" [newProject]="facade.newProject" [newProjectStackValue]="facade.newProjectStackValue" [newProjectCoverImageValue]="facade.newProjectCoverImageValue" [newProjectImagesValue]="facade.newProjectImagesValue" [contentLoading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" (createProject)="facade.createProject()" (saveProject)="facade.saveProject($event)" (deleteProject)="facade.deleteProject($event)" (newProjectStackValueChange)="facade.newProjectStackValue = $event" (newProjectCoverImageValueChange)="facade.newProjectCoverImageValue = $event" (newProjectImagesValueChange)="facade.newProjectImagesValue = $event" (projectStackChange)="facade.onProjectStackChange($event.project, $event.value)" (projectCoverImageChange)="facade.onProjectCoverImageChange($event.project, $event.value)" (projectImagesChange)="facade.onProjectImagesChange($event.project, $event.value)"></app-admin-projects-section>
+</section>

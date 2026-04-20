@@ -1,0 +1,19 @@
+<section>
+    <div class="admin-page-header">
+        <div>
+            <p class="admin-page-kicker">{{ config.kicker }}</p>
+            <h2 class="admin-page-title">{{ config.sectionTitle }}</h2>
+            <p class="admin-page-copy mb-0">{{ config.description }}</p>
+        </div>
+    </div>
+
+    <div *ngIf="facade.contentError" class="alert alert-warning admin-page-message" role="alert">
+        {{ facade.contentError }}
+    </div>
+
+    <div *ngIf="facade.actionMessage" class="alert alert-success admin-page-message" role="alert">
+        {{ facade.actionMessage }}
+    </div>
+
+    <app-admin-content-section [sectionTitle]="config.sectionTitle" [createTitle]="config.createTitle" [emptyMessage]="config.emptyMessage" [resourceKey]="config.resourceName" [variant]="config.variant" [items]="items" [draft]="draft" [contentLoading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" (createItem)="facade.createContentItem(config.resourceName)" (saveItem)="facade.saveContentItem(config.resourceName, $event)" (deleteItem)="facade.deleteContentItem(config.resourceName, $event)"></app-admin-content-section>
+</section>

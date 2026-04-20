@@ -1,8 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
 import { IAdminDashboardFilters, IAdminUser } from '@core/interfaces/admin/admin.interface';
 import { IApiContentItem, IApiProfile, IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { IProject } from '@core/interfaces/projects/projects.interfaces';
@@ -11,26 +7,13 @@ import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
-import { ADMIN_SECTIONS, AdminSection, isAdminSection } from '@pages/admin-dashboard/admin-sections';
-import { AdminContentSectionComponent } from '@pages/admin-dashboard/components/content-section/content-section.component';
-import { AdminOverviewSectionComponent } from '@pages/admin-dashboard/components/overview-section/overview-section.component';
-import { AdminProfileSectionComponent } from '@pages/admin-dashboard/components/profile-section/profile-section.component';
-import { AdminProjectsSectionComponent } from '@pages/admin-dashboard/components/projects-section/projects-section.component';
-import { AdminResumesSectionComponent } from '@pages/admin-dashboard/components/resumes-section/resumes-section.component';
-import { AdminUsersSectionComponent } from '@pages/admin-dashboard/components/users-section/users-section.component';
 
-type ContentResourceName = 'techSkills' | 'experience' | 'testimonials' | 'resumes' | 'socialLinks';
+export type ContentResourceName = 'techSkills' | 'experience' | 'testimonials' | 'resumes' | 'socialLinks';
 
-@Component({
-  selector: 'app-admin-dashboard',
-  standalone: true,
-  imports: [CommonModule, FormsModule, AdminContentSectionComponent, AdminOverviewSectionComponent, AdminProfileSectionComponent, AdminProjectsSectionComponent, AdminResumesSectionComponent, AdminUsersSectionComponent],
-  templateUrl: './admin-dashboard.component.html',
-  styleUrl: './admin-dashboard.component.scss',
+@Injectable({
+  providedIn: 'root',
 })
-export class AdminDashboardComponent implements OnInit {
-  private readonly destroyRef = inject(DestroyRef);
-
+export class AdminDashboardFacade {
   metrics: IDashboardMetrics | null = null;
   profile: IApiProfile | null = null;
   projects: IProject[] = [];
@@ -41,6 +24,7 @@ export class AdminDashboardComponent implements OnInit {
   resumes: IApiResume[] = [];
   adminUsers: IAdminUser[] = [];
   currentAdmin: IAdminUser | null = null;
+
   readonly newProject: Partial<IProject> = this.createEmptyProjectDraft();
   newProjectStackValue = '';
   newProjectCoverImageValue = '';
@@ -52,14 +36,14 @@ export class AdminDashboardComponent implements OnInit {
     testimonials: this.createEmptyContentDraft(),
     socialLinks: this.createEmptyContentDraft(),
   };
+
   loading = true;
   contentLoading = true;
   actionLoadingKey: string | null = null;
   error: string | null = null;
   contentError: string | null = null;
   actionMessage: string | null = null;
-  activeSection: AdminSection = 'overview';
-  readonly sections = ADMIN_SECTIONS;
+
   readonly filters: IAdminDashboardFilters = {
     year: '',
     month: '',
@@ -68,39 +52,47 @@ export class AdminDashboardComponent implements OnInit {
     to: '',
   };
 
+  private currentAdminLoaded = false;
+  private metricsLoaded = false;
+  private contentLoaded = false;
+
   constructor(
     private readonly adminAuthService: AdminAuthService,
     private readonly contentService: ContentService,
     private readonly projectsService: ProjectsService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    public readonly i18nService: I18nService,
-  ) { }
+    private readonly i18nService: I18nService,
+  ) {}
 
-  async ngOnInit(): Promise<void> {
-    this.route.paramMap
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((params) => {
-        const section = params.get('section');
-        this.activeSection = isAdminSection(section) ? section : 'overview';
-      });
-
-    const authenticated = await this.adminAuthService.isAuthenticated();
-
-    if (!authenticated) {
-      await this.router.navigate(['/admin/login'], {
-        queryParams: { redirectTo: '/admin/dashboard/overview' },
-      });
+  async ensureCurrentAdmin(): Promise<void> {
+    if (this.currentAdminLoaded) {
       return;
     }
 
     const currentAdminResponse = await this.adminAuthService.getCurrentAdmin();
     this.currentAdmin = currentAdminResponse.user;
+    this.currentAdminLoaded = true;
+  }
 
-    await Promise.all([
-      this.loadMetrics(),
-      this.loadContentData(),
-    ]);
+  async ensureOverviewReady(): Promise<void> {
+    await this.ensureCurrentAdmin();
+
+    if (this.metricsLoaded) {
+      return;
+    }
+
+    await this.loadMetrics();
+    this.metricsLoaded = true;
+  }
+
+  async ensureContentReady(): Promise<void> {
+    await this.ensureCurrentAdmin();
+
+    if (this.contentLoaded) {
+      return;
+    }
+
+    await this.loadContentData();
+    this.contentLoaded = true;
   }
 
   async loadMetrics(): Promise<void> {
@@ -127,12 +119,6 @@ export class AdminDashboardComponent implements OnInit {
     this.filters.from = '';
     this.filters.to = '';
     await this.loadMetrics();
-  }
-
-  async logout(): Promise<void> {
-    await this.adminAuthService.logout();
-    this.metrics = null;
-    await this.router.navigateByUrl('/admin/login');
   }
 
   async loadContentData(): Promise<void> {
@@ -165,14 +151,6 @@ export class AdminDashboardComponent implements OnInit {
     } finally {
       this.contentLoading = false;
     }
-  }
-
-  setActiveSection(section: AdminSection): void {
-    if (this.activeSection === section) {
-      return;
-    }
-
-    void this.router.navigate(['/admin/dashboard', section]);
   }
 
   async saveProject(project: IProject): Promise<void> {
@@ -448,6 +426,23 @@ export class AdminDashboardComponent implements OnInit {
 
   onProjectImagesChange(project: IProject, value: string): void {
     project.images = this.parseProjectImages(value);
+  }
+
+  getContentItems(resourceName: Exclude<ContentResourceName, 'resumes'>): IApiContentItem[] {
+    switch (resourceName) {
+      case 'techSkills':
+        return this.techSkills;
+      case 'experience':
+        return this.experience;
+      case 'testimonials':
+        return this.testimonials;
+      case 'socialLinks':
+        return this.socialLinks;
+    }
+  }
+
+  getContentDraft(resourceName: Exclude<ContentResourceName, 'resumes'>): Partial<IApiContentItem> {
+    return this.newContentItems[resourceName];
   }
 
   private resetProjectDraft(): void {

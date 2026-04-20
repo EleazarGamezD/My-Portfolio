@@ -62,11 +62,111 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'dashboard/:section',
+        path: 'dashboard/overview',
         loadComponent: () =>
-          import('@pages/admin-dashboard/admin-dashboard.component')
+          import('@pages/admin-dashboard/views/overview-page/overview-page.component')
             .then(
-              (m) => m.AdminDashboardComponent,
+              (m) => m.AdminOverviewPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/projects',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/projects-page/projects-page.component')
+            .then(
+              (m) => m.AdminProjectsPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/profile',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/profile-page/profile-page.component')
+            .then(
+              (m) => m.AdminProfilePageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/skills',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/content-page/content-page.component')
+            .then(
+              (m) => m.AdminContentPageComponent,
+            ),
+        data: {
+          resourceName: 'techSkills',
+          variant: 'skills',
+          sectionTitle: 'Tech Skills',
+          createTitle: 'Create Skill',
+          emptyMessage: 'No skills found.',
+          kicker: 'Technical Catalog',
+          description: 'Manage skill labels, ordering and supporting metadata displayed on the public site.',
+        },
+      },
+      {
+        path: 'dashboard/experience',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/content-page/content-page.component')
+            .then(
+              (m) => m.AdminContentPageComponent,
+            ),
+        data: {
+          resourceName: 'experience',
+          variant: 'experience',
+          sectionTitle: 'Experience',
+          createTitle: 'Create Experience Item',
+          emptyMessage: 'No experience items found.',
+          kicker: 'Timeline Content',
+          description: 'Edit experience entries that shape the public professional timeline.',
+        },
+      },
+      {
+        path: 'dashboard/testimonials',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/content-page/content-page.component')
+            .then(
+              (m) => m.AdminContentPageComponent,
+            ),
+        data: {
+          resourceName: 'testimonials',
+          variant: 'testimonials',
+          sectionTitle: 'Testimonials',
+          createTitle: 'Create Testimonial',
+          emptyMessage: 'No testimonials found.',
+          kicker: 'Social Proof',
+          description: 'Maintain testimonial items and their ordering for the portfolio landing experience.',
+        },
+      },
+      {
+        path: 'dashboard/resumes',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/resumes-page/resumes-page.component')
+            .then(
+              (m) => m.AdminResumesPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/socialLinks',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/content-page/content-page.component')
+            .then(
+              (m) => m.AdminContentPageComponent,
+            ),
+        data: {
+          resourceName: 'socialLinks',
+          variant: 'socialLinks',
+          sectionTitle: 'Social Links',
+          createTitle: 'Create Social Link',
+          emptyMessage: 'No social links found.',
+          kicker: 'Distribution Channels',
+          description: 'Control outbound networks, labels and URLs surfaced through the public portfolio.',
+        },
+      },
+      {
+        path: 'dashboard/users',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/users-page/users-page.component')
+            .then(
+              (m) => m.AdminUsersPageComponent,
             ),
       },
     ],

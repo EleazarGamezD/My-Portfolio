@@ -32,8 +32,8 @@
 
             <div class="admin-header__actions">
                 <div class="admin-header__user">
-                    <span class="admin-header__user-name">{{ currentAdmin?.displayName || currentAdmin?.email || 'Admin user' }}</span>
-                    <small class="admin-header__user-role">{{ currentAdmin?.role || 'authenticated' }}</small>
+                    <span class="admin-header__user-name">{{ facade.currentAdmin?.displayName || facade.currentAdmin?.email || 'Admin user' }}</span>
+                    <small class="admin-header__user-role">{{ facade.currentAdmin?.role || 'authenticated' }}</small>
                 </div>
                 <button class="btn btn-outline-danger" type="button" (click)="logout()">
                     <svg cIcon name="cilAccountLogout" class="me-2" title="Logout"></svg>

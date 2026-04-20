@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { IAdminUser } from '@core/interfaces/admin/admin.interface';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
+import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { IconDirective } from '@coreui/icons-angular';
 import {
   ContainerComponent,
@@ -45,18 +45,17 @@ import { adminNavItems } from './admin-layout.nav';
 })
 export class AdminLayoutComponent implements OnInit {
   readonly navItems: INavData[] = adminNavItems;
-  currentAdmin: IAdminUser | null = null;
   currentYear = new Date().getFullYear();
 
   constructor(
     private readonly adminAuthService: AdminAuthService,
     private readonly router: Router,
+    public readonly facade: AdminDashboardFacade,
   ) {}
 
   async ngOnInit(): Promise<void> {
     try {
-      const response = await this.adminAuthService.getCurrentAdmin();
-      this.currentAdmin = response.user;
+      await this.facade.ensureCurrentAdmin();
     } catch (error) {
       console.error('Failed to load current admin for layout:', error);
     }

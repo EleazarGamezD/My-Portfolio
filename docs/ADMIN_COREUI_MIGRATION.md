@@ -28,15 +28,17 @@ Mantener el portfolio publico con su template actual y migrar solo la zona admin
   - `admin/dashboard/resumes`
   - `admin/dashboard/socialLinks`
   - `admin/dashboard/users`
-- El dashboard actual sigue reutilizando la logica CRUD existente, pero ahora sincroniza la seccion activa con la ruta.
+- El antiguo `AdminDashboardComponent` fue retirado de rutas y borrado del proyecto.
+- Cada seccion del admin ahora es una pagina hija real dentro del shell CoreUI.
+- La logica CRUD compartida vive en `src/app/core/services/admin-dashboard/admin-dashboard.facade.ts`.
 - El layout nuevo esta en `src/app/pages/admin-layout`.
 
 ## Decision de arquitectura
 
 1. No tocar la UI publica del portfolio.
 2. Encapsular el admin en un shell CoreUI con sidebar y header propios.
-3. Mantener por ahora la logica CRUD dentro de `AdminDashboardComponent`.
-4. En una siguiente iteracion, separar cada seccion en una pagina de ruta real para reducir carga y estado compartido.
+3. Centralizar la logica CRUD del admin en un facade compartido para evitar repetir estado entre paginas.
+4. Renderizar cada seccion del admin como pagina hija real dentro del shell CoreUI.
 
 ## Plan de trabajo recomendado
 
@@ -50,7 +52,7 @@ Mantener el portfolio publico con su template actual y migrar solo la zona admin
 ### Fase 2. UX real del dashboard
 
 - [ ] Reemplazar el nav secundario de botones dentro del dashboard por breadcrumbs o tabs CoreUI.
-- [ ] Separar cada seccion en pagina hija para evitar que siempre cargue todo el estado.
+- [x] Separar cada seccion en pagina hija para evitar que siempre cargue todo el estado.
 - [ ] Usar componentes CoreUI de tablas, formularios y cards donde aporte valor real.
 - [ ] Añadir toasts/modals consistentes para guardar/eliminar.
 

@@ -1,0 +1,19 @@
+<section>
+    <div class="admin-page-header">
+        <div>
+            <p class="admin-page-kicker">Profile Settings</p>
+            <h2 class="admin-page-title">Profile</h2>
+            <p class="admin-page-copy mb-0">Update the portfolio owner metadata exposed on the public site.</p>
+        </div>
+    </div>
+
+    <div *ngIf="facade.contentError" class="alert alert-warning admin-page-message" role="alert">
+        {{ facade.contentError }}
+    </div>
+
+    <div *ngIf="facade.actionMessage" class="alert alert-success admin-page-message" role="alert">
+        {{ facade.actionMessage }}
+    </div>
+
+    <app-admin-profile-section [profile]="facade.profile" [contentLoading]="facade.contentLoading" [saveLoading]="facade.isActionLoading('profile-save')" (saveProfile)="facade.saveProfile()"></app-admin-profile-section>
+</section>

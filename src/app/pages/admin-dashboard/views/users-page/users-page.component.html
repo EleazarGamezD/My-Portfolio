@@ -1,0 +1,19 @@
+<section>
+    <div class="admin-page-header">
+        <div>
+            <p class="admin-page-kicker">Access Control</p>
+            <h2 class="admin-page-title">Users</h2>
+            <p class="admin-page-copy mb-0">Review admin accounts and maintain base roles and activation states.</p>
+        </div>
+    </div>
+
+    <div *ngIf="facade.contentError" class="alert alert-warning admin-page-message" role="alert">
+        {{ facade.contentError }}
+    </div>
+
+    <div *ngIf="facade.actionMessage" class="alert alert-success admin-page-message" role="alert">
+        {{ facade.actionMessage }}
+    </div>
+
+    <app-admin-users-section [adminUsers]="facade.adminUsers" [contentLoading]="facade.contentLoading" [currentAdminId]="facade.currentAdmin?._id" [actionLoadingKey]="facade.actionLoadingKey" (saveUser)="facade.saveAdminUser($event)"></app-admin-users-section>
+</section>
