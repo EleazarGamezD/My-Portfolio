@@ -33,6 +33,9 @@ Mantener el portfolio publico con su template actual y migrar solo la zona admin
 - Cada seccion del admin ahora es una pagina hija real dentro del shell CoreUI.
 - La logica CRUD compartida vive en `src/app/core/services/admin-dashboard/admin-dashboard.facade.ts`.
 - El layout nuevo esta en `src/app/pages/admin-layout`.
+- El shell admin ya muestra breadcrumb dinamico por seccion y titulo contextual en header.
+- Las paginas `overview`, `projects`, `profile`, `skills`, `experience`, `testimonials`, `resumes`, `socialLinks` y `users` ya empezaron a reemplazar wrappers HTML genericos por `c-alert`, `c-card`, `c-spinner` y `cButton` de CoreUI.
+- El feedback del admin ya usa `ngx-toastr`, reutilizando el mismo toast del UI publico en lugar de banners inline para acciones CRUD y errores operativos.
 - SSR y prerender vuelven a compilar con Angular 21 tras adaptar `main.server.ts` y `app.config.server.ts`.
 - La unica libreria heredada pendiente de reemplazo es `ng-recaptcha`, que no publica soporte oficial para Angular 21.
 
@@ -54,10 +57,11 @@ Mantener el portfolio publico con su template actual y migrar solo la zona admin
 
 ### Fase 2. UX real del dashboard
 
-- [ ] Reemplazar el nav secundario de botones dentro del dashboard por breadcrumbs o tabs CoreUI.
+- [x] Reemplazar el nav secundario de botones dentro del dashboard por breadcrumbs o tabs CoreUI.
 - [x] Separar cada seccion en pagina hija para evitar que siempre cargue todo el estado.
-- [ ] Usar componentes CoreUI de tablas, formularios y cards donde aporte valor real.
-- [ ] Añadir toasts/modals consistentes para guardar/eliminar.
+- [~] Usar componentes CoreUI de tablas, formularios y cards donde aporte valor real.
+- [x] Reutilizar el toast existente del portfolio para feedback de acciones admin.
+- [ ] Añadir modals consistentes para confirmar o editar acciones sensibles.
 
 ### Fase 3. Imagenes embebidas en DB
 

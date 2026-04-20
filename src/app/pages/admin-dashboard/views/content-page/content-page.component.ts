@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
+import { AlertModule } from '@coreui/angular';
 import {
   AdminDashboardFacade,
   ContentResourceName,
@@ -26,7 +27,7 @@ interface AdminContentPageData {
 @Component({
   selector: 'app-admin-content-page',
   standalone: true,
-  imports: [CommonModule, AdminContentSectionComponent],
+  imports: [CommonModule, AlertModule, AdminContentSectionComponent],
   templateUrl: './content-page.component.html',
   styleUrl: './content-page.component.scss',
 })

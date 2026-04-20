@@ -7,13 +7,5 @@
         </div>
     </div>
 
-    <div *ngIf="facade.contentError" class="alert alert-warning admin-page-message" role="alert">
-        {{ facade.contentError }}
-    </div>
-
-    <div *ngIf="facade.actionMessage" class="alert alert-success admin-page-message" role="alert">
-        {{ facade.actionMessage }}
-    </div>
-
     <app-admin-resumes-section [resumes]="facade.resumes" [newResume]="facade.newResume" [contentLoading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" (createResume)="facade.createResume()" (saveResume)="facade.saveContentItem('resumes', $event)" (deleteResume)="facade.deleteContentItem('resumes', $event)" (newResumeFileSelected)="facade.onNewResumeFileSelected($event)" (resumeFileSelected)="facade.onResumeFileSelected($event.item, $event.event)"></app-admin-resumes-section>
 </section>

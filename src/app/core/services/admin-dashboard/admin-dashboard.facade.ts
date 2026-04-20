@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { IAdminDashboardFilters, IAdminUser } from '@core/interfaces/admin/admin.interface';
 import { IApiContentItem, IApiProfile, IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { IProject } from '@core/interfaces/projects/projects.interfaces';
@@ -7,6 +8,7 @@ import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
+import { ToastrService } from 'ngx-toastr';
 
 export type ContentResourceName = 'techSkills' | 'experience' | 'testimonials' | 'resumes' | 'socialLinks';
 
@@ -61,6 +63,8 @@ export class AdminDashboardFacade {
     private readonly contentService: ContentService,
     private readonly projectsService: ProjectsService,
     private readonly i18nService: I18nService,
+    private readonly toastr: ToastrService,
+    @Inject(PLATFORM_ID) private readonly platformId: object,
   ) {}
 
   async ensureCurrentAdmin(): Promise<void> {
@@ -102,6 +106,7 @@ export class AdminDashboardFacade {
       this.metrics = await this.adminAuthService.getDashboardMetrics(this.filters);
     } catch (err) {
       this.error = err instanceof Error ? err.message : 'Failed to load metrics';
+      this.showErrorToast(this.error, 'Analytics');
       console.error('Error loading metrics:', err);
     } finally {
       this.loading = false;
@@ -147,6 +152,7 @@ export class AdminDashboardFacade {
       this.adminUsers = adminUsers;
     } catch (err) {
       this.contentError = err instanceof Error ? err.message : 'Failed to load admin content';
+      this.showErrorToast(this.contentError, 'Admin content');
       console.error('Error loading admin content:', err);
     } finally {
       this.contentLoading = false;
@@ -156,6 +162,7 @@ export class AdminDashboardFacade {
   async saveProject(project: IProject): Promise<void> {
     if (!project._id) {
       this.contentError = 'Project id is required to save changes.';
+      this.showErrorToast(this.contentError, 'Projects');
       return;
     }
 
@@ -184,6 +191,7 @@ export class AdminDashboardFacade {
   async saveProfile(): Promise<void> {
     if (!this.profile) {
       this.contentError = 'Profile is not loaded.';
+      this.showErrorToast(this.contentError, 'Profile');
       return;
     }
 
@@ -209,6 +217,7 @@ export class AdminDashboardFacade {
     const title = this.getLocalizedText(this.newProject.title);
     if (!this.newProject.slug || title === '-') {
       this.contentError = 'Project slug and title are required.';
+      this.showErrorToast(this.contentError, 'Projects');
       return;
     }
 
@@ -256,6 +265,7 @@ export class AdminDashboardFacade {
 
     if (!draft.slug || name === '-') {
       this.contentError = `Slug and label are required to create ${resourceName}.`;
+      this.showErrorToast(this.contentError, 'Content');
       return;
     }
 
@@ -285,6 +295,7 @@ export class AdminDashboardFacade {
 
     if (!this.newResume.slug || name === '-' || !this.newResume.base64 || !this.newResume.fileName || !this.newResume.mimeType) {
       this.contentError = 'Resume slug, label and file are required.';
+      this.showErrorToast(this.contentError, 'Resumes');
       return;
     }
 
@@ -311,6 +322,7 @@ export class AdminDashboardFacade {
   async saveContentItem(resourceName: ContentResourceName, item: IApiContentItem | IApiResume): Promise<void> {
     if (!item._id) {
       this.contentError = 'Content item id is required to save changes.';
+      this.showErrorToast(this.contentError, 'Content');
       return;
     }
 
@@ -338,6 +350,7 @@ export class AdminDashboardFacade {
   async saveAdminUser(user: IAdminUser): Promise<void> {
     if (!user._id) {
       this.contentError = 'Admin user id is required to save changes.';
+      this.showErrorToast(this.contentError, 'Users');
       return;
     }
 
@@ -372,6 +385,7 @@ export class AdminDashboardFacade {
       this.contentError = null;
     } catch (error) {
       this.contentError = error instanceof Error ? error.message : 'Failed to read resume file';
+      this.showErrorToast(this.contentError, 'Resumes');
     }
   }
 
@@ -389,6 +403,7 @@ export class AdminDashboardFacade {
       this.contentError = null;
     } catch (error) {
       this.contentError = error instanceof Error ? error.message : 'Failed to read resume file';
+      this.showErrorToast(this.contentError, 'Resumes');
     }
   }
 
@@ -530,12 +545,36 @@ export class AdminDashboardFacade {
       this.actionMessage = null;
       this.contentError = null;
       await callback();
+      if (this.actionMessage) {
+        this.showSuccessToast(this.actionMessage, 'Admin updated');
+      }
     } catch (error) {
       this.contentError = error instanceof Error ? error.message : 'Failed to apply admin action';
+      this.showErrorToast(this.contentError, 'Admin action');
       console.error('Admin action failed:', error);
     } finally {
       this.actionLoadingKey = null;
     }
+  }
+
+  private showSuccessToast(message: string, title: string): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.toastr.success(message, title, {
+      timeOut: 3000,
+    });
+  }
+
+  private showErrorToast(message: string, title: string): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.toastr.error(message, title, {
+      timeOut: 3000,
+    });
   }
 
   private confirmAction(message: string): boolean {

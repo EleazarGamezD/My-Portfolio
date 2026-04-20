@@ -7,13 +7,5 @@
         </div>
     </div>
 
-    <div *ngIf="facade.contentError" class="alert alert-warning admin-page-message" role="alert">
-        {{ facade.contentError }}
-    </div>
-
-    <div *ngIf="facade.actionMessage" class="alert alert-success admin-page-message" role="alert">
-        {{ facade.actionMessage }}
-    </div>
-
     <app-admin-profile-section [profile]="facade.profile" [contentLoading]="facade.contentLoading" [saveLoading]="facade.isActionLoading('profile-save')" (saveProfile)="facade.saveProfile()"></app-admin-profile-section>
 </section>

@@ -5,13 +5,13 @@
             <h2 class="admin-page-title">Overview</h2>
             <p class="admin-page-copy mb-0">Core metrics, recent activity and traffic summaries for the portfolio.</p>
         </div>
-        <button class="btn btn-outline-primary" type="button" (click)="facade.loadMetrics()">
+        <button cButton color="primary" variant="outline" type="button" (click)="facade.loadMetrics()">
             Refresh Data
         </button>
     </div>
 
-    <div class="card admin-page-surface mb-4">
-        <div class="card-body">
+    <c-card class="admin-page-surface mb-4">
+        <c-card-body>
             <div class="row g-3 align-items-end">
                 <div class="col-md-2">
                     <label class="form-label" for="filterYear">Year</label>
@@ -34,26 +34,24 @@
                     <input id="filterTo" type="datetime-local" class="form-control" [(ngModel)]="facade.filters.to" />
                 </div>
                 <div class="col-12 d-flex gap-2 justify-content-end">
-                    <button class="btn btn-outline-secondary" type="button" (click)="facade.clearFilters()">Clear</button>
-                    <button class="btn btn-primary" type="button" (click)="facade.applyFilters()">Apply filters</button>
+                    <button cButton color="secondary" variant="outline" type="button" (click)="facade.clearFilters()">Clear</button>
+                    <button cButton color="primary" type="button" (click)="facade.applyFilters()">Apply filters</button>
                 </div>
             </div>
-        </div>
-    </div>
+        </c-card-body>
+    </c-card>
 
-    <div *ngIf="facade.error" class="alert alert-danger admin-page-message" role="alert">
+    <c-alert *ngIf="facade.error" color="danger" class="admin-page-message">
         {{ facade.error }}
-    </div>
+    </c-alert>
 
     <div *ngIf="facade.loading" class="text-center py-5">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
+        <c-spinner color="primary" label="Loading overview metrics"></c-spinner>
     </div>
 
     <app-admin-overview-section *ngIf="!facade.loading && facade.metrics" [metrics]="facade.metrics"></app-admin-overview-section>
 
-    <div *ngIf="!facade.loading && !facade.metrics" class="alert alert-info">
+    <c-alert *ngIf="!facade.loading && !facade.metrics" color="info">
         No metrics available.
-    </div>
+    </c-alert>
 </section>

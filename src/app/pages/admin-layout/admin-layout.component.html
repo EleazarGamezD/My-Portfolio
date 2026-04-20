@@ -27,7 +27,13 @@
 
             <div class="admin-header__meta">
                 <p class="admin-header__eyebrow mb-0">Portfolio Control Panel</p>
-                <h1 class="admin-header__title mb-0">Admin Dashboard</h1>
+                <h1 class="admin-header__title mb-0">{{ currentSectionLabel }}</h1>
+                <c-breadcrumb class="admin-header__breadcrumb mb-0">
+                    <c-breadcrumb-item>
+                        <a [routerLink]="['/admin/dashboard/overview']">Dashboard</a>
+                    </c-breadcrumb-item>
+                    <c-breadcrumb-item [active]="true">{{ currentSectionLabel }}</c-breadcrumb-item>
+                </c-breadcrumb>
             </div>
 
             <div class="admin-header__actions">
@@ -35,7 +41,7 @@
                     <span class="admin-header__user-name">{{ facade.currentAdmin?.displayName || facade.currentAdmin?.email || 'Admin user' }}</span>
                     <small class="admin-header__user-role">{{ facade.currentAdmin?.role || 'authenticated' }}</small>
                 </div>
-                <button class="btn btn-outline-danger" type="button" (click)="logout()">
+                <button cButton color="danger" variant="outline" type="button" (click)="logout()">
                     <svg cIcon name="cilAccountLogout" class="me-2" title="Logout"></svg>
                     Logout
                 </button>
