@@ -16,7 +16,8 @@ Mantener el portfolio publico con su template actual y migrar solo la zona admin
 
 ## Estado actual
 
-- CoreUI ya fue agregado a `My-Portfolio` con versiones compatibles con Angular 19.
+- `My-Portfolio` ya quedó alineado con Angular 21 y el builder moderno usado por `BookingAgency_Frontend_V2`.
+- CoreUI ya fue agregado a `My-Portfolio` con versiones alineadas a esa base moderna.
 - El admin ya no entra por un componente monolitico directo; ahora tiene shell propio:
   - `admin/login`
   - `admin/dashboard/overview`
@@ -32,6 +33,8 @@ Mantener el portfolio publico con su template actual y migrar solo la zona admin
 - Cada seccion del admin ahora es una pagina hija real dentro del shell CoreUI.
 - La logica CRUD compartida vive en `src/app/core/services/admin-dashboard/admin-dashboard.facade.ts`.
 - El layout nuevo esta en `src/app/pages/admin-layout`.
+- SSR y prerender vuelven a compilar con Angular 21 tras adaptar `main.server.ts` y `app.config.server.ts`.
+- La unica libreria heredada pendiente de reemplazo es `ng-recaptcha`, que no publica soporte oficial para Angular 21.
 
 ## Decision de arquitectura
 
@@ -44,7 +47,7 @@ Mantener el portfolio publico con su template actual y migrar solo la zona admin
 
 ### Fase 1. Shell y navegacion
 
-- [x] Instalar CoreUI compatible con Angular 19.
+- [x] Instalar CoreUI sobre base Angular 21 alineada con `BookingAgency_Frontend_V2`.
 - [x] Registrar iconos CoreUI en la app.
 - [x] Crear layout `admin-layout` con sidebar/header/footer.
 - [x] Migrar el admin a rutas por seccion.
