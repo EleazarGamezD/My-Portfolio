@@ -7,6 +7,8 @@ import {
   IAdminLoginRequest,
   IAdminLoginResponse,
   IAdminMeResponse,
+  IAdminUser,
+  IAdminUsersResponse,
 } from '@core/interfaces/admin/admin.interface';
 import { API_ADMIN_ROUTES } from '@core/routes/admin/admin.routes';
 import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
@@ -56,6 +58,19 @@ export class AdminAuthService extends GlobalHttpService {
       : API_ADMIN_ROUTES.dashboardMetrics;
 
     return this.makeRequest<IDashboardMetrics, null>(route, null, RequestMethod.GET);
+  }
+
+  async getAdminUsers() {
+    const response = await this.makeRequest<IAdminUsersResponse, null>(API_ADMIN_ROUTES.users, null, RequestMethod.GET);
+    return response.users;
+  }
+
+  async updateAdminUser(id: string, payload: Partial<IAdminUser>) {
+    return this.makeRequest<{ updated: boolean; user: IAdminUser }, Partial<IAdminUser>>(
+      API_ADMIN_ROUTES.updateUser(id),
+      payload,
+      RequestMethod.PATCH,
+    );
   }
 
   async isAuthenticated() {

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IAdminDashboardFilters } from '@core/interfaces/admin/admin.interface';
+import { IAdminDashboardFilters, IAdminUser } from '@core/interfaces/admin/admin.interface';
 import { IApiContentItem, IApiProfile, IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { IProject } from '@core/interfaces/projects/projects.interfaces';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
@@ -10,6 +10,9 @@ import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
+import { AdminOverviewSectionComponent } from '@pages/admin-dashboard/components/overview-section/overview-section.component';
+import { AdminProfileSectionComponent } from '@pages/admin-dashboard/components/profile-section/profile-section.component';
+import { AdminUsersSectionComponent } from '@pages/admin-dashboard/components/users-section/users-section.component';
 
 type AdminSection =
   | 'overview'
@@ -19,14 +22,15 @@ type AdminSection =
   | 'experience'
   | 'testimonials'
   | 'resumes'
-  | 'socialLinks';
+  | 'socialLinks'
+  | 'users';
 
 type ContentResourceName = 'techSkills' | 'experience' | 'testimonials' | 'resumes' | 'socialLinks';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AdminOverviewSectionComponent, AdminProfileSectionComponent, AdminUsersSectionComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss',
 })
@@ -39,8 +43,12 @@ export class AdminDashboardComponent implements OnInit {
   testimonials: IApiContentItem[] = [];
   socialLinks: IApiContentItem[] = [];
   resumes: IApiResume[] = [];
+  adminUsers: IAdminUser[] = [];
+  currentAdmin: IAdminUser | null = null;
   readonly newProject: Partial<IProject> = this.createEmptyProjectDraft();
   newProjectStackValue = '';
+  newProjectCoverImageValue = '';
+  newProjectImagesValue = '';
   readonly newResume: Partial<IApiResume> = this.createEmptyResumeDraft();
   readonly newContentItems: Record<Exclude<ContentResourceName, 'resumes'>, Partial<IApiContentItem>> = {
     techSkills: this.createEmptyContentDraft(),
@@ -64,6 +72,7 @@ export class AdminDashboardComponent implements OnInit {
     { key: 'testimonials', label: 'Testimonials' },
     { key: 'resumes', label: 'Resumes' },
     { key: 'socialLinks', label: 'Social Links' },
+    { key: 'users', label: 'Users' },
   ];
   readonly filters: IAdminDashboardFilters = {
     year: '',
@@ -90,6 +99,9 @@ export class AdminDashboardComponent implements OnInit {
       });
       return;
     }
+
+    const currentAdminResponse = await this.adminAuthService.getCurrentAdmin();
+    this.currentAdmin = currentAdminResponse.user;
 
     await Promise.all([
       this.loadMetrics(),
@@ -134,7 +146,7 @@ export class AdminDashboardComponent implements OnInit {
       this.contentLoading = true;
       this.contentError = null;
 
-      const [projects, profile, techSkills, experience, testimonials, socialLinks, resumes] = await Promise.all([
+      const [projects, profile, techSkills, experience, testimonials, socialLinks, resumes, adminUsers] = await Promise.all([
         this.projectsService.getProjects(),
         this.contentService.getProfile(),
         this.contentService.getTechSkills(),
@@ -142,6 +154,7 @@ export class AdminDashboardComponent implements OnInit {
         this.contentService.getTestimonials(),
         this.contentService.getSocialLinks(),
         this.contentService.getResumes(),
+        this.adminAuthService.getAdminUsers(),
       ]);
 
       this.projects = projects;
@@ -151,6 +164,7 @@ export class AdminDashboardComponent implements OnInit {
       this.testimonials = testimonials;
       this.socialLinks = socialLinks;
       this.resumes = resumes;
+      this.adminUsers = adminUsers;
     } catch (err) {
       this.contentError = err instanceof Error ? err.message : 'Failed to load admin content';
       console.error('Error loading admin content:', err);
@@ -175,6 +189,8 @@ export class AdminDashboardComponent implements OnInit {
       summary: project.summary,
       description: project.description,
       stack: project.stack,
+      images: project.images,
+      coverImage: project.coverImage,
       projectLink: project.projectLink,
       codeLink: project.codeLink,
       featured: project.featured,
@@ -229,6 +245,8 @@ export class AdminDashboardComponent implements OnInit {
         .split(',')
         .map((item) => item.trim())
         .filter(Boolean),
+      coverImage: this.parseProjectCoverImage(this.newProjectCoverImageValue),
+      images: this.parseProjectImages(this.newProjectImagesValue),
       projectLink: this.newProject.projectLink,
       codeLink: this.newProject.codeLink,
       featured: this.newProject.featured,
@@ -341,6 +359,25 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
+  async saveAdminUser(user: IAdminUser): Promise<void> {
+    if (!user._id) {
+      this.contentError = 'Admin user id is required to save changes.';
+      return;
+    }
+
+    const payload: Partial<IAdminUser> = {
+      displayName: user.displayName,
+      role: user.role,
+      active: user.active,
+    };
+
+    await this.runContentAction(`admin-user-save-${user._id}`, async () => {
+      await this.adminAuthService.updateAdminUser(user._id!, payload);
+      await this.loadContentData();
+      this.actionMessage = `Admin user ${user.displayName} updated.`;
+    });
+  }
+
   isActionLoading(actionKey: string): boolean {
     return this.actionLoadingKey === actionKey;
   }
@@ -379,10 +416,6 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
-  getMetricTotal(type: string): number {
-    return this.metrics?.groupedTotals?.find((item) => item._id === type)?.total ?? 0;
-  }
-
   getLocalizedText(value?: ILocalizedText): string {
     if (!value) {
       return '-';
@@ -400,9 +433,61 @@ export class AdminDashboardComponent implements OnInit {
     return this.getLocalizedText(project.title);
   }
 
+  getProjectStackValue(project: IProject): string {
+    return project.stack?.join(', ') || '';
+  }
+
+  getProjectCoverImageValue(project: IProject): string {
+    const coverImage = project.coverImage;
+
+    if (!coverImage) {
+      return '';
+    }
+
+    if (typeof coverImage === 'string') {
+      return coverImage;
+    }
+
+    return coverImage.url || coverImage.base64 || '';
+  }
+
+  getProjectImagesValue(project: IProject): string {
+    return (project.images || [])
+      .map((image) => {
+        if (typeof image === 'string') {
+          return image;
+        }
+
+        return image.url || image.base64 || '';
+      })
+      .filter(Boolean)
+      .join('\n');
+  }
+
+  isCurrentAdmin(user: IAdminUser): boolean {
+    return Boolean(this.currentAdmin?._id && user._id === this.currentAdmin._id);
+  }
+
+  onProjectStackChange(project: IProject, value: string): void {
+    project.stack = value
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  onProjectCoverImageChange(project: IProject, value: string): void {
+    project.coverImage = this.parseProjectCoverImage(value);
+  }
+
+  onProjectImagesChange(project: IProject, value: string): void {
+    project.images = this.parseProjectImages(value);
+  }
+
   private resetProjectDraft(): void {
     Object.assign(this.newProject, this.createEmptyProjectDraft());
     this.newProjectStackValue = '';
+    this.newProjectCoverImageValue = '';
+    this.newProjectImagesValue = '';
   }
 
   private resetResumeDraft(): void {
@@ -420,6 +505,8 @@ export class AdminDashboardComponent implements OnInit {
       summary: { es: '', en: '' },
       description: { es: '', en: '' },
       stack: [],
+      images: [],
+      coverImage: null,
       projectLink: '',
       codeLink: '',
       featured: false,
@@ -500,6 +587,18 @@ export class AdminDashboardComponent implements OnInit {
   private getSelectedFile(event: Event): File | null {
     const input = event.target as HTMLInputElement | null;
     return input?.files?.[0] ?? null;
+  }
+
+  private parseProjectCoverImage(value: string): string | null {
+    const normalizedValue = value.trim();
+    return normalizedValue || null;
+  }
+
+  private parseProjectImages(value: string): string[] {
+    return value
+      .split(/\r?\n|,/)
+      .map((item) => item.trim())
+      .filter(Boolean);
   }
 
   private async readFileAsDataUrl(file: File): Promise<string> {

@@ -65,152 +65,12 @@
           {{ actionMessage }}
         </div>
 
-        <div *ngIf="activeSection === 'overview' && !loading && metrics" class="row">
-          <div class="col-md-6 col-lg-3 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Total Events</h5>
-                <p class="card-text display-4">{{ metrics.totalEvents || 0 }}</p>
-              </div>
-            </div>
-          </div>
+        <app-admin-overview-section *ngIf="activeSection === 'overview' && !loading && metrics" [metrics]="metrics"></app-admin-overview-section>
 
-          <div class="col-md-6 col-lg-3 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">CV Downloads</h5>
-                <p class="card-text display-4">{{ getMetricTotal('cv_download') }}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-3 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">CTA Clicks</h5>
-                <p class="card-text display-4">{{ getMetricTotal('cta_click') }}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-3 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Project Views</h5>
-                <p class="card-text display-4">{{ getMetricTotal('project_view') }}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-6 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Top Pages</h5>
-                <div class="table-responsive">
-                  <table class="table table-striped" *ngIf="metrics.groupedByPath && metrics.groupedByPath.length > 0">
-                    <thead>
-                      <tr>
-                        <th>Page</th>
-                        <th class="text-end">Visits</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let page of metrics.groupedByPath">
-                        <td>{{ page._id }}</td>
-                        <td class="text-end">{{ page.total }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <p *ngIf="!metrics.groupedByPath || metrics.groupedByPath.length === 0" class="text-muted">No data</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-6 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Top Projects</h5>
-                <div class="table-responsive">
-                  <table class="table table-striped" *ngIf="metrics.groupedByProject && metrics.groupedByProject.length > 0">
-                    <thead>
-                      <tr>
-                        <th>Project ID</th>
-                        <th class="text-end">Views</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let project of metrics.groupedByProject">
-                        <td>{{ project._id || 'No project' }}</td>
-                        <td class="text-end">{{ project.total }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <p *ngIf="!metrics.groupedByProject || metrics.groupedByProject.length === 0" class="text-muted">No data</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-6 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">By Language</h5>
-                <div class="table-responsive">
-                  <table class="table table-striped" *ngIf="metrics.groupedByLanguage && metrics.groupedByLanguage.length > 0">
-                    <thead>
-                      <tr>
-                        <th>Language</th>
-                        <th class="text-end">Events</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let language of metrics.groupedByLanguage">
-                        <td>{{ language._id }}</td>
-                        <td class="text-end">{{ language.total }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <p *ngIf="!metrics.groupedByLanguage || metrics.groupedByLanguage.length === 0" class="text-muted">No data</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-6 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Recent Events</h5>
-                <div class="table-responsive">
-                  <table class="table table-striped" *ngIf="metrics.recentEvents && metrics.recentEvents.length > 0">
-                    <thead>
-                      <tr>
-                        <th>Type</th>
-                        <th>Path</th>
-                        <th>Language</th>
-                        <th class="text-end">Created</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let event of metrics.recentEvents">
-                        <td>{{ event.type }}</td>
-                        <td>{{ event.path }}</td>
-                        <td>{{ event.language }}</td>
-                        <td class="text-end">{{ event.createdAt | date:'short' }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <p *ngIf="!metrics.recentEvents || metrics.recentEvents.length === 0" class="text-muted">No recent events</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 mt-2">
-            <button class="btn btn-primary" (click)="loadMetrics()">
-              Refresh Data
-            </button>
-          </div>
+        <div *ngIf="activeSection === 'overview' && !loading && metrics" class="col-12 mt-2">
+          <button class="btn btn-primary" (click)="loadMetrics()">
+            Refresh Data
+          </button>
         </div>
 
         <div *ngIf="!loading && !metrics" class="alert alert-info">
@@ -247,8 +107,20 @@
                 <div class="col-md-6">
                   <textarea class="form-control form-control-sm" [(ngModel)]="newProject.description!.en" placeholder="Description EN"></textarea>
                 </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="newProjectCoverImageValue" placeholder="Cover Image URL" />
+                </div>
+                <div class="col-md-6">
+                  <textarea class="form-control form-control-sm" [(ngModel)]="newProjectImagesValue" placeholder="Gallery image URLs, one per line"></textarea>
+                </div>
                 <div class="col-md-4">
                   <input type="text" class="form-control form-control-sm" [(ngModel)]="newProjectStackValue" placeholder="Stack CSV" />
+                </div>
+                <div class="col-md-4">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="newProject.projectLink" placeholder="Project Link" />
+                </div>
+                <div class="col-md-4">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="newProject.codeLink" placeholder="Code Link" />
                 </div>
                 <div class="col-md-3">
                   <input type="text" class="form-control form-control-sm" [(ngModel)]="newProject.status" placeholder="Status" />
@@ -273,19 +145,46 @@
                   <tr>
                     <th>Title</th>
                     <th>Slug</th>
+                    <th>Links</th>
+                    <th>Media</th>
                     <th>Status</th>
                     <th>Stack</th>
+                    <th>Published</th>
                     <th class="text-end">Featured</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let project of projects">
-                    <td>{{ getProjectName(project) }}</td>
-                    <td>{{ project.slug || '-' }}</td>
+                    <td>
+                      <div class="d-flex flex-column gap-2">
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="project.title!.es" placeholder="Title ES" />
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="project.title!.en" placeholder="Title EN" />
+                      </div>
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" [(ngModel)]="project.slug" />
+                    </td>
+                    <td>
+                      <div class="d-flex flex-column gap-2">
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="project.projectLink" placeholder="Project URL" />
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="project.codeLink" placeholder="Code URL" />
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex flex-column gap-2">
+                        <input type="text" class="form-control form-control-sm" [ngModel]="getProjectCoverImageValue(project)" (ngModelChange)="onProjectCoverImageChange(project, $event)" placeholder="Cover image URL" />
+                        <textarea class="form-control form-control-sm" [ngModel]="getProjectImagesValue(project)" (ngModelChange)="onProjectImagesChange(project, $event)" placeholder="Gallery URLs, one per line"></textarea>
+                      </div>
+                    </td>
                     <td>
                       <input type="text" class="form-control form-control-sm" [(ngModel)]="project.status" />
                     </td>
-                    <td>{{ project.stack?.join(', ') || '-' }}</td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" [ngModel]="getProjectStackValue(project)" (ngModelChange)="onProjectStackChange(project, $event)" placeholder="react, node, mongo" />
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" [(ngModel)]="project.publishedAt" />
+                    </td>
                     <td class="text-end">
                       <input type="checkbox" [(ngModel)]="project.featured" />
                     </td>
@@ -307,56 +206,7 @@
           </div>
         </div>
 
-        <div *ngIf="activeSection === 'profile'" class="card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="card-title mb-0">Profile</h5>
-              <button class="btn btn-sm btn-primary" type="button" (click)="saveProfile()" [disabled]="isActionLoading('profile-save') || !profile">
-                Save Profile
-              </button>
-            </div>
-            <div *ngIf="contentLoading" class="text-muted">Loading profile...</div>
-            <div *ngIf="!contentLoading && profile" class="row g-3">
-              <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                  <span class="dashboard-detail-label">Name</span>
-                  <strong>{{ getLocalizedText(profile.label) }}</strong>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                  <span class="dashboard-detail-label">Title</span>
-                  <strong>{{ getLocalizedText(profile.title) }}</strong>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                  <span class="dashboard-detail-label">Availability</span>
-                  <input type="text" class="form-control form-control-sm" [(ngModel)]="profile.availability" />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                  <span class="dashboard-detail-label">Location</span>
-                  <input type="text" class="form-control form-control-sm" [(ngModel)]="profile.location" />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                  <span class="dashboard-detail-label">Email</span>
-                  <input type="email" class="form-control form-control-sm" [(ngModel)]="profile.email" />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                  <span class="dashboard-detail-label">Phone</span>
-                  <input type="text" class="form-control form-control-sm" [(ngModel)]="profile.phone" />
-                </div>
-              </div>
-            </div>
-            <p *ngIf="!contentLoading && !profile" class="text-muted mb-0">No profile found.</p>
-          </div>
-        </div>
+        <app-admin-profile-section *ngIf="activeSection === 'profile'" [profile]="profile" [contentLoading]="contentLoading" [saveLoading]="isActionLoading('profile-save')" (saveProfile)="saveProfile()"></app-admin-profile-section>
 
         <div *ngIf="activeSection === 'skills'" class="card">
           <div class="card-body">
@@ -634,6 +484,8 @@
             </div>
           </div>
         </div>
+
+        <app-admin-users-section *ngIf="activeSection === 'users'" [adminUsers]="adminUsers" [contentLoading]="contentLoading" [currentAdminId]="currentAdmin?._id" [actionLoadingKey]="actionLoadingKey" (saveUser)="saveAdminUser($event)"></app-admin-users-section>
       </div>
     </div>
   </div>

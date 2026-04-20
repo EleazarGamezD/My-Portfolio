@@ -27,6 +27,10 @@ export interface IAdminMeResponse {
   user: IAdminUser | null;
 }
 
+export interface IAdminUsersResponse {
+  users: IAdminUser[];
+}
+
 export interface IAdminDashboardFilters {
   year?: string;
   month?: string;

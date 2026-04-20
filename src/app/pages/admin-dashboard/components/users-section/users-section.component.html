@@ -1,0 +1,53 @@
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="card-title mb-0">Admin Users</h5>
+                <p class="text-muted small mb-0">User creation stays in Swagger through the protected x-api-key endpoint.</p>
+            </div>
+            <span class="badge text-bg-light">{{ adminUsers.length }}</span>
+        </div>
+        <div class="table-responsive" *ngIf="!contentLoading">
+            <table class="table table-striped" *ngIf="adminUsers.length > 0; else emptyAdminUsers">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Display Name</th>
+                        <th>Role</th>
+                        <th>Last Login</th>
+                        <th class="text-end">Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of adminUsers">
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="user.displayName" />
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm" [(ngModel)]="user.role" [disabled]="isCurrentAdmin(user)">
+                                <option value="super_admin">super_admin</option>
+                                <option value="admin">admin</option>
+                                <option value="editor">editor</option>
+                            </select>
+                        </td>
+                        <td>{{ user.lastLoginAt ? (user.lastLoginAt | date:'short') : 'Never' }}</td>
+                        <td class="text-end">
+                            <input type="checkbox" [(ngModel)]="user.active" [disabled]="isCurrentAdmin(user)" />
+                        </td>
+                        <td class="text-end dashboard-actions-cell">
+                            <button class="btn btn-sm btn-primary" type="button" (click)="saveUser.emit(user)" [disabled]="isActionLoading(user)">
+                                Save
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ng-template #emptyAdminUsers>
+                <p class="text-muted mb-0">No admin users found.</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

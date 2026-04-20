@@ -1,0 +1,50 @@
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0">Profile</h5>
+            <button class="btn btn-sm btn-primary" type="button" (click)="saveProfile.emit()" [disabled]="saveLoading || !profile">
+                Save Profile
+            </button>
+        </div>
+        <div *ngIf="contentLoading" class="text-muted">Loading profile...</div>
+        <div *ngIf="!contentLoading && profile" class="row g-3">
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">Name</span>
+                    <strong>{{ getLocalizedText(profile.label) }}</strong>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">Title</span>
+                    <strong>{{ getLocalizedText(profile.title) }}</strong>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">Availability</span>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="profile.availability" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">Location</span>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="profile.location" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">Email</span>
+                    <input type="email" class="form-control form-control-sm" [(ngModel)]="profile.email" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-detail-card">
+                    <span class="dashboard-detail-label">Phone</span>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="profile.phone" />
+                </div>
+            </div>
+        </div>
+        <p *ngIf="!contentLoading && !profile" class="text-muted mb-0">No profile found.</p>
+    </div>
+</div>
