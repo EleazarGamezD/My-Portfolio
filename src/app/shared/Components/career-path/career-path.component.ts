@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {SideIcons} from '@core/constants/sideIcons';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
   selector: 'app-career-path',
@@ -17,6 +18,7 @@ export class CareerPathComponent implements OnInit {
   constructor(
     public i18nService: I18nService,
     private readonly contentService: ContentService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
@@ -24,6 +26,9 @@ export class CareerPathComponent implements OnInit {
       this.careerPathArray = await this.contentService.getExperience();
     } catch (error) {
       console.warn('Failed to load experience from API.', error);
+    } finally {
+      this.changeDetectorRef.detectChanges();
+      requestTemplateReinit();
     }
   }
 

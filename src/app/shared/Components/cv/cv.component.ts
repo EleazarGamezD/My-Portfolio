@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SideIcons } from '@core/constants/sideIcons';
 import { IApiResume } from '@core/interfaces/content/content.interface';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
   selector: 'app-cv',
@@ -21,7 +22,8 @@ export class CvComponent implements OnInit {
   constructor(
     public i18nService: I18nService,
     private contentService: ContentService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +44,8 @@ export class CvComponent implements OnInit {
       this.resumes = [];
     } finally {
       this.loading = false;
+      this.changeDetectorRef.detectChanges();
+      requestTemplateReinit();
     }
   }
 

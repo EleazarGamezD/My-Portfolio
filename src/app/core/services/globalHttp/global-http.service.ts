@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { StorageMap } from '@ngx-pwa/local-storage';
@@ -14,6 +14,7 @@ export class GlobalHttpService extends StorageService {
   constructor(
     public _http: HttpClient,
     storageMap: StorageMap,
+    private readonly ngZone: NgZone,
     @Inject(PLATFORM_ID) platformId: object,
   ) {
     super(storageMap, platformId);
@@ -53,10 +54,11 @@ export class GlobalHttpService extends StorageService {
     method: string = RequestMethod.GET,
   ): Promise<T> {
     try {
-      return await this.makeHttpRequest<T>(route, payload, method);
+      const response = await this.makeHttpRequest<T>(route, payload, method);
+      return this.ngZone.run(() => response);
     } catch (error) {
       console.error('Error:', error);
-      throw error;
+      throw this.ngZone.run(() => error);
     }
   }
 

@@ -2,7 +2,6 @@
   "use strict";
 
   let reinitTimeout = null;
-  let initialRouteHandled = false;
 
   // Objeto global para almacenar nuestras funciones de reinicialización
   window.templateBridge = {
@@ -98,11 +97,10 @@
 
   // Escuchar cambios de ruta en Angular
   window.addEventListener('router-navigation-end', function() {
-    if (!initialRouteHandled) {
-      initialRouteHandled = true;
-      return;
-    }
+    window.initializeComponents();
+  });
 
+  window.addEventListener('template-reinit', function() {
     window.initializeComponents();
   });
 

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { API_ANALYTICS_ROUTES } from '@core/routes/analytics/analytics.routes';
@@ -45,9 +45,10 @@ export class AnalyticsService extends GlobalHttpService {
     httpClient: HttpClient,
     storageMap: StorageMap,
     private readonly i18nService: I18nService,
+    ngZone: NgZone,
     @Inject(PLATFORM_ID) platformId: object,
   ) {
-    super(httpClient, storageMap, platformId);
+    super(httpClient, storageMap, ngZone, platformId);
     this.sessionIdReady = this.initializeSessionId();
   }
 

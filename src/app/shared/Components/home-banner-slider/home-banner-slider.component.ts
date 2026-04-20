@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiHeroSlide } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import {HomeSwiperSlideElementComponent} from '../home-swiper-slide-element/home-swiper-slide-element.component';
+import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
   selector: 'app-home-banner-slider',
@@ -12,7 +13,10 @@ import {HomeSwiperSlideElementComponent} from '../home-swiper-slide-element/home
 export class HomeBannerSliderComponent implements OnInit {
   sliderContentArray: IApiHeroSlide[] = [];
 
-  constructor(private readonly contentService: ContentService) {}
+  constructor(
+    private readonly contentService: ContentService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
+  ) {}
 
   async ngOnInit() {
     try {
@@ -21,6 +25,9 @@ export class HomeBannerSliderComponent implements OnInit {
     } catch (error) {
       console.warn('Failed to load hero slides from API.', error);
       this.sliderContentArray = [];
+    } finally {
+      this.changeDetectorRef.detectChanges();
+      requestTemplateReinit();
     }
   }
 }

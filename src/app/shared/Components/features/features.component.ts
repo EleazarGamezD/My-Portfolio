@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
   selector: 'app-features',
@@ -16,6 +17,7 @@ export class FeaturesComponent implements OnInit {
   constructor(
     public i18nService: I18nService,
     private readonly contentService: ContentService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
@@ -23,6 +25,9 @@ export class FeaturesComponent implements OnInit {
       this.stack = await this.contentService.getTechSkills();
     } catch (error) {
       console.warn('Failed to load tech skills from API.', error);
+    } finally {
+      this.changeDetectorRef.detectChanges();
+      requestTemplateReinit();
     }
   }
 

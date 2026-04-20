@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import {
@@ -22,9 +22,10 @@ export class AdminAuthService extends GlobalHttpService {
   constructor(
     httpClient: HttpClient,
     storageMap: StorageMap,
+    ngZone: NgZone,
     @Inject(PLATFORM_ID) platformId: object,
   ) {
-    super(httpClient, storageMap, platformId);
+    super(httpClient, storageMap, ngZone, platformId);
   }
 
   async login(email: string, password: string) {

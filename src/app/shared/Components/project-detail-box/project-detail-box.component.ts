@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
+import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
   selector: 'app-project-detail-box',
@@ -23,6 +24,7 @@ export class ProjectDetailBoxComponent implements OnInit {
     private readonly projectsService: ProjectsService,
     public i18nService: I18nService,
     private analyticsService: AnalyticsService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -44,6 +46,9 @@ export class ProjectDetailBoxComponent implements OnInit {
         }
       } catch (error) {
         console.warn(`Failed to load project detail for "${projectIdOrSlug}" from API.`, error);
+      } finally {
+        this.changeDetectorRef.detectChanges();
+        requestTemplateReinit();
       }
     });
   }
