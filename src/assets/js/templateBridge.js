@@ -1,6 +1,9 @@
 (function ($) {
   "use strict";
 
+  let reinitTimeout = null;
+  let initialRouteHandled = false;
+
   // Objeto global para almacenar nuestras funciones de reinicialización
   window.templateBridge = {
     // Función principal que se llamará en cada cambio de ruta
@@ -25,9 +28,9 @@
 
       swipers.forEach(function(el, index) {
         try {
-          // Destruir instancia anterior si existe
-          if (el.swiper && typeof el.swiper.destroy === 'function') {
-            el.swiper.destroy(true, true);
+          if (el.swiper) {
+            console.log(`⏭️ Swiper #${index} ya tiene instancia activa, se omite reinicialización`);
+            return;
           }
 
           // Inicializar con opciones
@@ -83,20 +86,24 @@
     }
   };
 
-  // Ejecutar inicialización cuando el DOM esté listo
-  $(document).ready(function() {
-    // Esperar un poco para asegurar que todos los elementos están en el DOM
-    setTimeout(function() {
+  window.initializeComponents = function() {
+    if (reinitTimeout) {
+      clearTimeout(reinitTimeout);
+    }
+
+    reinitTimeout = setTimeout(function() {
       window.templateBridge.reinitAll();
     }, 300);
-  });
+  };
 
   // Escuchar cambios de ruta en Angular
   window.addEventListener('router-navigation-end', function() {
-    // Dar tiempo a Angular para renderizar el DOM
-    setTimeout(function() {
-      window.templateBridge.reinitAll();
-    }, 300);
+    if (!initialRouteHandled) {
+      initialRouteHandled = true;
+      return;
+    }
+
+    window.initializeComponents();
   });
 
 })(jQuery);
