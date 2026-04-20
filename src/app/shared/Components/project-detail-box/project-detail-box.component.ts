@@ -5,6 +5,7 @@ import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.inte
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 
 @Component({
   selector: 'app-project-detail-box',
@@ -116,23 +117,7 @@ export class ProjectDetailBoxComponent implements OnInit {
   }
 
   private resolveProjectAsset(asset?: string | IProjectAsset | null) {
-    if (!asset) {
-      return null;
-    }
-
-    if (typeof asset === 'string') {
-      return asset;
-    }
-
-    if (asset.url) {
-      return asset.url;
-    }
-
-    if (asset.base64 && asset.mimeType) {
-      return `data:${asset.mimeType};base64,${asset.base64}`;
-    }
-
-    return null;
+    return resolveImageAssetUrl(asset);
   }
 
   backToHome() {

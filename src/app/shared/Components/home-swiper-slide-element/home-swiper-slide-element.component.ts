@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { IApiHeroSlide } from '@core/interfaces/content/content.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 
 @Component({
   selector: 'app-home-swiper-slide-element',
@@ -33,26 +34,6 @@ export class HomeSwiperSlideElementComponent {
   }
 
   private resolveImage(asset?: string | IProjectAsset | null) {
-    if (!asset) {
-      return null;
-    }
-
-    if (typeof asset === 'string') {
-      return asset;
-    }
-
-    if (asset.url) {
-      return asset.url;
-    }
-
-    if (asset.base64 && asset.mimeType) {
-      return `data:${asset.mimeType};base64,${asset.base64}`;
-    }
-
-    if (asset.base64) {
-      return asset.base64.startsWith('data:') ? asset.base64 : `data:image/webp;base64,${asset.base64}`;
-    }
-
-    return null;
+    return resolveImageAssetUrl(asset);
   }
 }

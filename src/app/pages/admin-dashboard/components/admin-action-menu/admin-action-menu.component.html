@@ -1,0 +1,10 @@
+<c-dropdown variant="btn-group">
+    <button cButton cDropdownToggle color="primary" size="sm" aria-label="Actions">
+        <svg cIcon name="cilSettings"></svg>
+    </button>
+    <ul cDropdownMenu>
+        <li *ngIf="canEdit"><button cDropdownItem (click)="onAction('edit', $event)">Edit</button></li>
+        <li *ngIf="canDeactivate"><button cDropdownItem (click)="onAction('deactivate', $event)">Deactivate</button></li>
+        <li *ngIf="canDelete"><button cDropdownItem (click)="onAction('delete', $event)">Delete</button></li>
+    </ul>
+</c-dropdown>

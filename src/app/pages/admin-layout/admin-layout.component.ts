@@ -89,7 +89,9 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   private syncSectionFromUrl(url: string): void {
-    const sectionKey = url.split('/').pop() ?? 'overview';
+    const segments = url.split('/').filter(Boolean);
+    const dashboardIndex = segments.indexOf('dashboard');
+    const sectionKey = dashboardIndex >= 0 ? segments[dashboardIndex + 1] ?? 'overview' : 'overview';
 
     if (!isAdminSection(sectionKey)) {
       this.currentSectionLabel = 'Overview';

@@ -5,6 +5,18 @@ import {
   IStoredImageAsset,
 } from '@core/interfaces/media/admin-media.interface';
 
+type ResolvableImageAsset =
+  | string
+  | {
+      url?: string;
+      file?: string;
+      base64?: string;
+      mimeType?: string;
+      extension?: string;
+    }
+  | null
+  | undefined;
+
 const DEFAULT_IMAGE_OPTIONS: Required<IImageCompressionOptions> = {
   maxSizeMb: 2,
   maxWidthOrHeight: 1920,
@@ -54,6 +66,32 @@ export function base64AssetToStoredImage(asset: IBase64ImageAsset): IStoredImage
     mimeType: asset.mimeType,
     fileName: asset.fileName,
   };
+}
+
+export function resolveImageAssetUrl(asset: ResolvableImageAsset): string | null {
+  if (!asset) {
+    return null;
+  }
+
+  if (typeof asset === 'string') {
+    return asset;
+  }
+
+  if (asset.url) {
+    return asset.url;
+  }
+
+  const rawFile = asset.file || asset.base64;
+  if (!rawFile) {
+    return null;
+  }
+
+  if (rawFile.startsWith('data:')) {
+    return rawFile;
+  }
+
+  const mimeType = asset.mimeType || `image/${asset.extension || 'webp'}`;
+  return `data:${mimeType};base64,${rawFile}`;
 }
 
 function stripDataUrlPrefix(dataUrl: string): string {

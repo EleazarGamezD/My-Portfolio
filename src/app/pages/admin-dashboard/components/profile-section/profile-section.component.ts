@@ -4,17 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { IApiProfile, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import {
     ButtonModule,
     CardModule,
     FormModule,
     SpinnerModule,
 } from '@coreui/angular';
+import { AdminImageUploaderComponent } from '../admin-image-uploader/admin-image-uploader.component';
 
 @Component({
     selector: 'app-admin-profile-section',
     standalone: true,
-    imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule],
+    imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, AdminImageUploaderComponent],
     templateUrl: './profile-section.component.html',
     styleUrl: './profile-section.component.scss',
 })
@@ -23,7 +25,8 @@ export class AdminProfileSectionComponent {
     @Input() contentLoading = false;
     @Input() saveLoading = false;
     @Output() saveProfile = new EventEmitter<void>();
-    @Output() heroSlideImageSelected = new EventEmitter<{ index: number; event: Event }>();
+    @Output() heroSlideImageAssetsChange = new EventEmitter<{ index: number; assets: IProjectAsset[] }>();
+    @Output() imageUploadError = new EventEmitter<string>();
 
     constructor(public readonly i18nService: I18nService) { }
 
@@ -60,39 +63,15 @@ export class AdminProfileSectionComponent {
     }
 
     resolveImagePreview(asset?: string | IProjectAsset | null): string | null {
-        if (!asset) {
-            return null;
-        }
-
-        if (typeof asset === 'string') {
-            return asset;
-        }
-
-        if (asset.url) {
-            return asset.url;
-        }
-
-        if (asset.base64 && asset.mimeType) {
-            return `data:${asset.mimeType};base64,${asset.base64}`;
-        }
-
-        if (asset.base64) {
-            return asset.base64.startsWith('data:') ? asset.base64 : `data:image/webp;base64,${asset.base64}`;
-        }
-
-        return null;
+        return resolveImageAssetUrl(asset);
     }
 
-    getImageFieldValue(asset?: string | IProjectAsset | null): string {
-        return typeof asset === 'string' ? asset : '';
-    }
-
-    updateImageField(index: number, value: string): void {
+    getHeroSlideAssets(index: number): IProjectAsset[] {
         const slide = this.profile?.metadata?.heroSlides?.[index];
-        if (!slide) {
-            return;
+        if (!slide?.image) {
+            return [];
         }
 
-        slide.image = value.trim() || null;
+        return [typeof slide.image === 'string' ? { url: slide.image } : slide.image];
     }
 }

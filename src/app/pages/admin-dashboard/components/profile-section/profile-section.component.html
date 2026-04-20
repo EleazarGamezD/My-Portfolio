@@ -116,11 +116,8 @@
                                 <div class="col-md-6">
                                     <textarea cFormControl rows="4" [(ngModel)]="slide.description!.en" placeholder="Description EN"></textarea>
                                 </div>
-                                <div class="col-md-8">
-                                    <input cFormControl sizing="sm" type="text" [ngModel]="getImageFieldValue(slide.image)" (ngModelChange)="updateImageField(index, $event)" placeholder="Image URL or existing asset" />
-                                </div>
-                                <div class="col-md-4">
-                                    <input cFormControl sizing="sm" type="file" accept="image/*" (change)="heroSlideImageSelected.emit({ index, event: $event })" />
+                                <div class="col-12">
+                                    <app-admin-image-uploader [assets]="getHeroSlideAssets(index)" [multiple]="false" [maxItems]="1" title="Slide image" hint="The image is compressed in the admin and persisted as embedded data in MongoDB." buttonLabel="Select slide image" (assetsChange)="heroSlideImageAssetsChange.emit({ index, assets: $event })" (uploadError)="imageUploadError.emit($event)" />
                                 </div>
                                 <div class="col-12" *ngIf="resolveImagePreview(slide.image) as previewImage">
                                     <img [src]="previewImage" [alt]="slide.title?.es || slide.title?.en || 'Hero slide preview'" class="img-fluid rounded border" style="max-height: 160px; object-fit: cover;" />

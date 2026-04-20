@@ -1,0 +1,91 @@
+<section>
+    <div class="admin-page-header">
+        <div>
+            <p class="admin-page-kicker">Projects workflow</p>
+            <h2 class="admin-page-title">{{ pageTitle }}</h2>
+            <p class="admin-page-copy mb-0">{{ pageCopy }}</p>
+        </div>
+        <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/projects']">Back to list</a>
+    </div>
+
+    <c-alert *ngIf="facade.contentError" color="danger">{{ facade.contentError }}</c-alert>
+    <c-alert *ngIf="notFound" color="warning">The requested project could not be found.</c-alert>
+
+    <c-card class="admin-page-surface" *ngIf="!notFound">
+        <c-card-body>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Slug</label>
+                    <input cFormControl type="text" [(ngModel)]="draft.slug" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Title ES</label>
+                    <input cFormControl type="text" [(ngModel)]="draft.title!.es" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Title EN</label>
+                    <input cFormControl type="text" [(ngModel)]="draft.title!.en" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Summary ES</label>
+                    <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.es"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Summary EN</label>
+                    <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.en"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Description ES</label>
+                    <textarea cFormControl rows="5" [(ngModel)]="draft.description!.es"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Description EN</label>
+                    <textarea cFormControl rows="5" [(ngModel)]="draft.description!.en"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Cover image</label>
+                    <app-admin-image-uploader [assets]="coverAssets" [multiple]="false" [maxItems]="1" title="Project cover" hint="Compressed in the dashboard and stored directly in MongoDB." buttonLabel="Select cover" (assetsChange)="onCoverAssetsChange($event)" (uploadError)="onUploadError($event)">
+                    </app-admin-image-uploader>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Gallery</label>
+                    <app-admin-image-uploader [assets]="galleryAssets" [multiple]="true" [maxItems]="8" title="Project gallery" hint="Gallery items use the same embedded image contract." buttonLabel="Add images" (assetsChange)="onGalleryAssetsChange($event)" (uploadError)="onUploadError($event)">
+                    </app-admin-image-uploader>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Stack CSV</label>
+                    <input cFormControl type="text" [(ngModel)]="stackValue" placeholder="Angular, Express, MongoDB" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Project link</label>
+                    <input cFormControl type="text" [(ngModel)]="draft.projectLink" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Code link</label>
+                    <input cFormControl type="text" [(ngModel)]="draft.codeLink" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Status</label>
+                    <input cFormControl type="text" [(ngModel)]="draft.status" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Published at</label>
+                    <input cFormControl type="date" [(ngModel)]="draft.publishedAt" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <label class="form-check-label d-flex align-items-center gap-2">
+                        <input cFormCheckInput type="checkbox" [(ngModel)]="draft.featured" />
+                        Featured
+                    </label>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+                <button cButton color="secondary" variant="outline" type="button" (click)="cancel()">Cancel</button>
+                <button cButton color="primary" type="button" (click)="submit()" [disabled]="facade.actionLoadingKey !== null">
+                    {{ mode === 'create' ? 'Create project' : 'Save changes' }}
+                </button>
+            </div>
+        </c-card-body>
+    </c-card>
+</section>

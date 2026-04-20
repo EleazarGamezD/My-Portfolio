@@ -29,18 +29,10 @@
           <textarea cFormControl sizing="sm" [(ngModel)]="newProject.description!.en" placeholder="Description EN"></textarea>
         </div>
         <div class="col-md-6">
-          <input cFormControl sizing="sm" type="text" [ngModel]="newProjectCoverImageValue" (ngModelChange)="newProjectCoverImageValueChange.emit($event)" placeholder="Cover Image URL" />
+          <app-admin-image-uploader [assets]="getNewProjectCoverAssets()" [multiple]="false" [maxItems]="1" title="Cover image" hint="Compressed and stored as embedded image data for MongoDB." buttonLabel="Select cover" (assetsChange)="newProjectCoverAssetsChange.emit($event)" (uploadError)="imageUploadError.emit($event)" />
         </div>
         <div class="col-md-6">
-          <textarea cFormControl sizing="sm" [ngModel]="newProjectImagesValue" (ngModelChange)="newProjectImagesValueChange.emit($event)" placeholder="Gallery image URLs, one per line"></textarea>
-        </div>
-        <div class="col-md-6">
-          <input cFormControl sizing="sm" type="file" accept="image/*" (change)="newProjectCoverImageSelected.emit($event)" />
-          <div class="small text-body-secondary mt-2" *ngIf="resolveAssetPreview(newProject.coverImage) as coverPreview">Embedded cover image ready.</div>
-        </div>
-        <div class="col-md-6">
-          <input cFormControl sizing="sm" type="file" accept="image/*" multiple (change)="newProjectImagesSelected.emit($event)" />
-          <div class="small text-body-secondary mt-2" *ngIf="(newProject.images?.length || 0) > 0">{{ newProject.images?.length }} gallery asset(s) ready.</div>
+          <app-admin-image-uploader [assets]="getNewProjectGalleryAssets()" [multiple]="true" [maxItems]="8" title="Gallery" hint="Use the same embedded image contract used across the admin dashboard." buttonLabel="Add gallery images" (assetsChange)="newProjectGalleryAssetsChange.emit($event)" (uploadError)="imageUploadError.emit($event)" />
         </div>
         <div class="col-md-4">
           <input cFormControl sizing="sm" type="text" [ngModel]="newProjectStackValue" (ngModelChange)="newProjectStackValueChange.emit($event)" placeholder="Stack CSV" />
@@ -104,12 +96,8 @@
             </td>
             <td>
               <div class="d-flex flex-column gap-2">
-                <input cFormControl sizing="sm" type="text" [ngModel]="getProjectCoverImageValue(project)" (ngModelChange)="projectCoverImageChange.emit({ project, value: $event })" placeholder="Cover image URL" />
-                <textarea cFormControl sizing="sm" [ngModel]="getProjectImagesValue(project)" (ngModelChange)="projectImagesChange.emit({ project, value: $event })" placeholder="Gallery URLs, one per line"></textarea>
-                <input cFormControl sizing="sm" type="file" accept="image/*" (change)="projectCoverImageSelected.emit({ project, event: $event })" />
-                <input cFormControl sizing="sm" type="file" accept="image/*" multiple (change)="projectImagesSelected.emit({ project, event: $event })" />
-                <div class="small text-body-secondary" *ngIf="resolveAssetPreview(project.coverImage)">Embedded cover asset configured.</div>
-                <div class="small text-body-secondary" *ngIf="(project.images?.length || 0) > 0">{{ project.images?.length }} gallery item(s).</div>
+                <app-admin-image-uploader [assets]="getProjectCoverAssets(project)" [multiple]="false" [maxItems]="1" title="Cover" hint="Embedded cover image stored directly in MongoDB." buttonLabel="Replace cover" (assetsChange)="projectCoverAssetsChange.emit({ project, assets: $event })" (uploadError)="imageUploadError.emit($event)" />
+                <app-admin-image-uploader [assets]="getProjectGalleryAssets(project)" [multiple]="true" [maxItems]="8" title="Gallery" hint="Gallery images follow the shared DB image contract." buttonLabel="Update gallery" (assetsChange)="projectGalleryAssetsChange.emit({ project, assets: $event })" (uploadError)="imageUploadError.emit($event)" />
               </div>
             </td>
             <td>

@@ -1,0 +1,28 @@
+<div class="admin-image-uploader">
+    <div class="d-flex justify-content-between align-items-center mb-2 gap-3">
+        <div>
+            <div class="small fw-semibold">{{ title }}</div>
+            <div class="small text-body-secondary">{{ hint }}</div>
+        </div>
+        <label class="mb-0">
+            <input cFormControl class="d-none" type="file" accept="image/*" [multiple]="multiple" (change)="onFileSelection($event)" />
+            <span cButton color="secondary" size="sm" [disabled]="!canAddMore">
+                {{ buttonLabel }}
+            </span>
+        </label>
+    </div>
+
+    <div class="admin-image-dropzone" [class.is-drag-over]="isDragOver" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+        <div class="small text-body-secondary" *ngIf="assets.length === 0">{{ emptyLabel }}</div>
+
+        <div class="admin-image-grid" *ngIf="assets.length > 0">
+            <div class="admin-image-card" *ngFor="let asset of assets; let index = index; trackBy: trackByIndex">
+                <img *ngIf="previewFor(asset) as preview" [src]="preview" [alt]="asset.fileName || title" class="admin-image-preview" />
+                <div class="small text-body-secondary text-truncate" *ngIf="asset.fileName">{{ asset.fileName }}</div>
+                <button cButton color="danger" variant="outline" size="sm" type="button" (click)="removeAsset(index)">
+                    Remove
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

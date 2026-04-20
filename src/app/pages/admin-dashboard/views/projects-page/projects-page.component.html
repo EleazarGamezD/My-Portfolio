@@ -1,11 +1,4 @@
 <section>
-    <div class="admin-page-header">
-        <div>
-            <p class="admin-page-kicker">Content Management</p>
-            <h2 class="admin-page-title">Projects</h2>
-            <p class="admin-page-copy mb-0">Manage project metadata, publication state, links and gallery assets.</p>
-        </div>
-    </div>
-
-    <app-admin-projects-section [projects]="facade.projects" [newProject]="facade.newProject" [newProjectStackValue]="facade.newProjectStackValue" [newProjectCoverImageValue]="facade.newProjectCoverImageValue" [newProjectImagesValue]="facade.newProjectImagesValue" [contentLoading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" (createProject)="facade.createProject()" (saveProject)="facade.saveProject($event)" (deleteProject)="facade.deleteProject($event)" (newProjectStackValueChange)="facade.newProjectStackValue = $event" (newProjectCoverImageValueChange)="facade.newProjectCoverImageValue = $event" (newProjectImagesValueChange)="facade.newProjectImagesValue = $event" (newProjectCoverImageSelected)="facade.onNewProjectCoverImageSelected($event)" (newProjectImagesSelected)="facade.onNewProjectImagesSelected($event)" (projectStackChange)="facade.onProjectStackChange($event.project, $event.value)" (projectCoverImageChange)="facade.onProjectCoverImageChange($event.project, $event.value)" (projectImagesChange)="facade.onProjectImagesChange($event.project, $event.value)" (projectCoverImageSelected)="facade.onProjectCoverImageSelected($event.project, $event.event)" (projectImagesSelected)="facade.onProjectImagesSelected($event.project, $event.event)"></app-admin-projects-section>
+    <app-projects-list [projects]="facade.projects" [loading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" (deleteProject)="facade.deleteProject($event)" (deactivateProject)="facade.deactivateProject($event)">
+    </app-projects-list>
 </section>

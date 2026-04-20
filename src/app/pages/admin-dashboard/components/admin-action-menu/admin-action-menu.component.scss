@@ -1,0 +1,9 @@
+button[cDropdownToggle]::after {
+  display: none !important;
+}
+
+button[cDropdownToggle] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

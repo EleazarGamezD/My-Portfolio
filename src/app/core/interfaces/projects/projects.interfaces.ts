@@ -5,6 +5,7 @@ export interface ILocalizedText {
 
 export interface IProjectAsset {
   url?: string;
+  file?: string;
   base64?: string;
   mimeType?: string;
   fileName?: string;

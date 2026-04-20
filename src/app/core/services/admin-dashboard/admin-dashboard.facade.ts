@@ -8,7 +8,6 @@ import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
-import { createBase64ImageAsset } from '@core/utils/image/admin-image.utils';
 import { ToastrService } from 'ngx-toastr';
 
 export type ContentResourceName = 'techSkills' | 'experience' | 'testimonials' | 'resumes' | 'socialLinks';
@@ -247,8 +246,8 @@ export class AdminDashboardFacade {
         .split(',')
         .map((item) => item.trim())
         .filter(Boolean),
-      coverImage: this.newProject.coverImage ?? this.parseProjectCoverImage(this.newProjectCoverImageValue),
-      images: this.newProject.images?.length ? this.newProject.images : this.parseProjectImages(this.newProjectImagesValue),
+      coverImage: this.newProject.coverImage ?? null,
+      images: this.newProject.images ?? [],
       projectLink: this.newProject.projectLink,
       codeLink: this.newProject.codeLink,
       featured: this.newProject.featured,
@@ -278,6 +277,28 @@ export class AdminDashboardFacade {
           await this.projectsService.deleteProject(project._id!);
           await this.loadContentData();
           this.actionMessage = `Project ${this.getProjectName(project)} deleted.`;
+        });
+      },
+    );
+  }
+
+  async deactivateProject(project: IProject): Promise<void> {
+    if (!project._id) {
+      return;
+    }
+
+    this.openConfirmation(
+      'Deactivate project',
+      `This will move ${this.getProjectName(project)} out of the published flow.`,
+      'Deactivate project',
+      async () => {
+        await this.runContentAction(`project-save-${project._id}`, async () => {
+          await this.projectsService.updateProject(project._id!, {
+            ...project,
+            status: 'archived',
+          });
+          await this.loadContentData();
+          this.actionMessage = `Project ${this.getProjectName(project)} deactivated.`;
         });
       },
     );
@@ -490,75 +511,28 @@ export class AdminDashboardFacade {
       .filter(Boolean);
   }
 
-  onProjectCoverImageChange(project: IProject, value: string): void {
-    project.coverImage = this.parseProjectCoverImage(value);
+  onNewProjectCoverAssetsChange(assets: IProjectAsset[]): void {
+    this.newProject.coverImage = assets[0] ?? null;
+    this.contentError = null;
   }
 
-  onProjectImagesChange(project: IProject, value: string): void {
-    project.images = this.parseProjectImages(value);
+  onNewProjectGalleryAssetsChange(assets: IProjectAsset[]): void {
+    this.newProject.images = assets;
+    this.contentError = null;
   }
 
-  async onNewProjectCoverImageSelected(event: Event): Promise<void> {
-    const file = this.getSelectedFile(event);
-    if (!file) {
-      return;
-    }
-
-    try {
-      this.newProject.coverImage = await this.createProjectAsset(file);
-      this.newProjectCoverImageValue = '';
-      this.contentError = null;
-    } catch (error) {
-      this.handleImageError(error);
-    }
+  onProjectCoverAssetsChange(project: IProject, assets: IProjectAsset[]): void {
+    project.coverImage = assets[0] ?? null;
+    this.contentError = null;
   }
 
-  async onNewProjectImagesSelected(event: Event): Promise<void> {
-    const files = this.getSelectedFiles(event);
-    if (!files.length) {
-      return;
-    }
-
-    try {
-      this.newProject.images = await Promise.all(files.map((file) => this.createProjectAsset(file)));
-      this.newProjectImagesValue = '';
-      this.contentError = null;
-    } catch (error) {
-      this.handleImageError(error);
-    }
+  onProjectGalleryAssetsChange(project: IProject, assets: IProjectAsset[]): void {
+    project.images = assets;
+    this.contentError = null;
   }
 
-  async onProjectCoverImageSelected(project: IProject, event: Event): Promise<void> {
-    const file = this.getSelectedFile(event);
-    if (!file) {
-      return;
-    }
-
-    try {
-      project.coverImage = await this.createProjectAsset(file);
-      this.contentError = null;
-    } catch (error) {
-      this.handleImageError(error);
-    }
-  }
-
-  async onProjectImagesSelected(project: IProject, event: Event): Promise<void> {
-    const files = this.getSelectedFiles(event);
-    if (!files.length) {
-      return;
-    }
-
-    try {
-      project.images = await Promise.all(files.map((file) => this.createProjectAsset(file)));
-      this.contentError = null;
-    } catch (error) {
-      this.handleImageError(error);
-    }
-  }
-
-  async onHeroSlideImageSelected(index: number, event: Event): Promise<void> {
-    const file = this.getSelectedFile(event);
-    if (!file || !this.profile) {
+  onHeroSlideImageAssetsChange(index: number, assets: IProjectAsset[]): void {
+    if (!this.profile) {
       return;
     }
 
@@ -568,12 +542,13 @@ export class AdminDashboardFacade {
       return;
     }
 
-    try {
-      slide.image = await this.createProjectAsset(file);
-      this.contentError = null;
-    } catch (error) {
-      this.handleImageError(error);
-    }
+    slide.image = assets[0] ?? null;
+    this.contentError = null;
+  }
+
+  onImageUploadError(message: string): void {
+    this.contentError = message;
+    this.showErrorToast(message, 'Images');
   }
 
   getContentItems(resourceName: Exclude<ContentResourceName, 'resumes'>): IApiContentItem[] {
@@ -769,39 +744,6 @@ export class AdminDashboardFacade {
   private getSelectedFile(event: Event): File | null {
     const input = event.target as HTMLInputElement | null;
     return input?.files?.[0] ?? null;
-  }
-
-  private getSelectedFiles(event: Event): File[] {
-    const input = event.target as HTMLInputElement | null;
-    return Array.from(input?.files ?? []);
-  }
-
-  private parseProjectCoverImage(value: string): string | null {
-    const normalizedValue = value.trim();
-    return normalizedValue || null;
-  }
-
-  private parseProjectImages(value: string): string[] {
-    return value
-      .split(/\r?\n|,/)
-      .map((item) => item.trim())
-      .filter(Boolean);
-  }
-
-  private async createProjectAsset(file: File): Promise<IProjectAsset> {
-    const asset = await createBase64ImageAsset(file);
-
-    return {
-      base64: asset.base64,
-      mimeType: asset.mimeType,
-      fileName: asset.fileName,
-      extension: asset.extension,
-    };
-  }
-
-  private handleImageError(error: unknown): void {
-    this.contentError = error instanceof Error ? error.message : 'Failed to process image file';
-    this.showErrorToast(this.contentError, 'Images');
   }
 
   private async readFileAsDataUrl(file: File): Promise<string> {

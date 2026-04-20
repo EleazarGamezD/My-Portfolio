@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ILocalizedText, IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import {
     BadgeModule,
     ButtonModule,
@@ -12,6 +13,7 @@ import {
     SpinnerModule,
     TableModule,
 } from '@coreui/angular';
+import { AdminImageUploaderComponent } from '../admin-image-uploader/admin-image-uploader.component';
 
 @Component({
     selector: 'app-admin-projects-section',
@@ -26,6 +28,7 @@ import {
         GridModule,
         SpinnerModule,
         TableModule,
+        AdminImageUploaderComponent,
     ],
     templateUrl: './projects-section.component.html',
     styleUrl: './projects-section.component.scss',
@@ -34,8 +37,6 @@ export class AdminProjectsSectionComponent {
     @Input() projects: IProject[] = [];
     @Input() newProject: Partial<IProject> = {};
     @Input() newProjectStackValue = '';
-    @Input() newProjectCoverImageValue = '';
-    @Input() newProjectImagesValue = '';
     @Input() contentLoading = false;
     @Input() actionLoadingKey: string | null = null;
 
@@ -43,15 +44,12 @@ export class AdminProjectsSectionComponent {
     @Output() saveProject = new EventEmitter<IProject>();
     @Output() deleteProject = new EventEmitter<IProject>();
     @Output() newProjectStackValueChange = new EventEmitter<string>();
-    @Output() newProjectCoverImageValueChange = new EventEmitter<string>();
-    @Output() newProjectImagesValueChange = new EventEmitter<string>();
-    @Output() newProjectCoverImageSelected = new EventEmitter<Event>();
-    @Output() newProjectImagesSelected = new EventEmitter<Event>();
     @Output() projectStackChange = new EventEmitter<{ project: IProject; value: string }>();
-    @Output() projectCoverImageChange = new EventEmitter<{ project: IProject; value: string }>();
-    @Output() projectImagesChange = new EventEmitter<{ project: IProject; value: string }>();
-    @Output() projectCoverImageSelected = new EventEmitter<{ project: IProject; event: Event }>();
-    @Output() projectImagesSelected = new EventEmitter<{ project: IProject; event: Event }>();
+    @Output() newProjectCoverAssetsChange = new EventEmitter<IProjectAsset[]>();
+    @Output() newProjectGalleryAssetsChange = new EventEmitter<IProjectAsset[]>();
+    @Output() projectCoverAssetsChange = new EventEmitter<{ project: IProject; assets: IProjectAsset[] }>();
+    @Output() projectGalleryAssetsChange = new EventEmitter<{ project: IProject; assets: IProjectAsset[] }>();
+    @Output() imageUploadError = new EventEmitter<string>();
 
     constructor(public readonly i18nService: I18nService) { }
 
@@ -59,31 +57,22 @@ export class AdminProjectsSectionComponent {
         return this.actionLoadingKey === actionKey;
     }
 
-    getProjectCoverImageValue(project: IProject): string {
-        const coverImage = project.coverImage;
-
-        if (!coverImage) {
-            return '';
-        }
-
-        if (typeof coverImage === 'string') {
-            return coverImage;
-        }
-
-        return coverImage.url || coverImage.base64 || '';
+    getNewProjectCoverAssets(): IProjectAsset[] {
+        const asset = this.toProjectAsset(this.newProject.coverImage);
+        return asset ? [asset] : [];
     }
 
-    getProjectImagesValue(project: IProject): string {
-        return (project.images || [])
-            .map((image) => {
-                if (typeof image === 'string') {
-                    return image;
-                }
+    getNewProjectGalleryAssets(): IProjectAsset[] {
+        return this.toProjectAssetArray(this.newProject.images);
+    }
 
-                return image.url || image.base64 || '';
-            })
-            .filter(Boolean)
-            .join('\n');
+    getProjectCoverAssets(project: IProject): IProjectAsset[] {
+        const asset = this.toProjectAsset(project.coverImage);
+        return asset ? [asset] : [];
+    }
+
+    getProjectGalleryAssets(project: IProject): IProjectAsset[] {
+        return this.toProjectAssetArray(project.images);
     }
 
     getProjectStackValue(project: IProject): string {
@@ -114,26 +103,20 @@ export class AdminProjectsSectionComponent {
     }
 
     resolveAssetPreview(asset?: string | IProjectAsset | null): string | null {
+        return resolveImageAssetUrl(asset);
+    }
+
+    private toProjectAsset(asset?: string | IProjectAsset | null): IProjectAsset | null {
         if (!asset) {
             return null;
         }
 
-        if (typeof asset === 'string') {
-            return asset;
-        }
+        return typeof asset === 'string' ? { url: asset } : asset;
+    }
 
-        if (asset.url) {
-            return asset.url;
-        }
-
-        if (asset.base64 && asset.mimeType) {
-            return `data:${asset.mimeType};base64,${asset.base64}`;
-        }
-
-        if (asset.base64) {
-            return asset.base64.startsWith('data:') ? asset.base64 : `data:image/webp;base64,${asset.base64}`;
-        }
-
-        return null;
+    private toProjectAssetArray(assets?: Array<string | IProjectAsset> | null): IProjectAsset[] {
+        return (assets || [])
+            .map((asset) => this.toProjectAsset(asset))
+            .filter((asset): asset is IProjectAsset => Boolean(asset));
     }
 }

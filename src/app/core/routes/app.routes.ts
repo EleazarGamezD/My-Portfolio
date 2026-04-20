@@ -78,6 +78,28 @@ export const routes: Routes = [
             ),
       },
       {
+        path: 'dashboard/projects/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/project-form-page/project-form-page.component')
+            .then(
+              (m) => m.AdminProjectFormPageComponent,
+            ),
+        data: {
+          mode: 'create',
+        },
+      },
+      {
+        path: 'dashboard/projects/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/project-form-page/project-form-page.component')
+            .then(
+              (m) => m.AdminProjectFormPageComponent,
+            ),
+        data: {
+          mode: 'edit',
+        },
+      },
+      {
         path: 'dashboard/profile',
         loadComponent: () =>
           import('@pages/admin-dashboard/views/profile-page/profile-page.component')

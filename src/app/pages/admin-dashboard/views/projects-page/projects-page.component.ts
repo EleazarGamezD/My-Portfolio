@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
-import { AdminProjectsSectionComponent } from '@pages/admin-dashboard/components/projects-section/projects-section.component';
 import { AlertModule } from '@coreui/angular';
+import { ProjectsListComponent } from '@pages/admin-dashboard/components/projects-list/projects-list.component';
 
 @Component({
   selector: 'app-admin-projects-page',
   standalone: true,
-  imports: [CommonModule, AlertModule, AdminProjectsSectionComponent],
+  imports: [CommonModule, AlertModule, ProjectsListComponent],
   templateUrl: './projects-page.component.html',
   styleUrl: './projects-page.component.scss',
 })

@@ -1,0 +1,69 @@
+<div class="data-table-container">
+    <div class="data-table-header">
+        <div class="header-top">
+            <div>
+                <p class="admin-page-kicker mb-1">Content Management</p>
+                <h2 class="admin-page-title mb-0">Projects</h2>
+            </div>
+            <a class="btn-create" [routerLink]="['/admin/dashboard/projects/create']">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Create project
+            </a>
+        </div>
+        <p class="admin-page-copy mb-0">Booking-style list view. Create and edit use their own form route instead of inline table editing.</p>
+    </div>
+
+    <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
+        <c-spinner color="primary" size="sm"></c-spinner>
+        <span>Loading projects...</span>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && projects.length === 0">
+        <p>No projects found.</p>
+    </div>
+
+    <div class="table-responsive" *ngIf="!loading && projects.length > 0">
+        <table [striped]="true" [hover]="true" cTable>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Preview</th>
+                    <th>Title</th>
+                    <th>Summary</th>
+                    <th>Status</th>
+                    <th>Stack</th>
+                    <th>Published</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let project of projects; let index = index">
+                    <td>{{ index + 1 }}</td>
+                    <td>
+                        <img *ngIf="getCoverPreview(project) as preview" [src]="preview" [alt]="getProjectTitle(project)" class="project-preview" />
+                        <span *ngIf="!getCoverPreview(project)" class="text-body-secondary small">No image</span>
+                    </td>
+                    <td>
+                        <div class="fw-semibold">{{ getProjectTitle(project) }}</div>
+                        <div class="text-body-secondary small">{{ project.slug || '-' }}</div>
+                    </td>
+                    <td>{{ getSummary(project) }}</td>
+                    <td>
+                        <c-badge [color]="getStatusColor(project.status)">{{ project.status || 'draft' }}</c-badge>
+                    </td>
+                    <td>{{ project.stack?.join(', ') || '-' }}</td>
+                    <td>{{ project.publishedAt || '-' }}</td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                            <a class="btn-action-link" [routerLink]="['/admin/dashboard/projects/edit', project._id]">Edit</a>
+                            <app-admin-action-menu [canEdit]="false" [canDelete]="!isDeleting(project)" [canDeactivate]="!isSaving(project)" (actionSelected)="handleAction(project, $event)" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
