@@ -1,0 +1,116 @@
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0">{{ sectionTitle }}</h5>
+            <span class="badge text-bg-light">{{ items.length }}</span>
+        </div>
+        <div class="dashboard-create-box mb-4">
+            <h6 class="mb-3">{{ createTitle }}</h6>
+            <div class="row g-3">
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="draft.slug" placeholder="Slug" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="draft.label!.es" placeholder="Label ES" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="draft.label!.en" placeholder="Label EN" /></div>
+
+                <ng-container [ngSwitch]="variant">
+                    <ng-container *ngSwitchCase="'skills'">
+                        <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="draft.value" placeholder="Value" /></div>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'experience'">
+                        <div class="col-md-3"><input type="number" class="form-control form-control-sm" [(ngModel)]="draft.order" placeholder="Order" /></div>
+                        <div class="col-md-6"><textarea class="form-control form-control-sm" [(ngModel)]="draft.description!.es" placeholder="Description ES"></textarea></div>
+                        <div class="col-md-6"><textarea class="form-control form-control-sm" [(ngModel)]="draft.description!.en" placeholder="Description EN"></textarea></div>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'testimonials'">
+                        <div class="col-md-3 d-flex align-items-center"><label class="form-check-label d-flex align-items-center gap-2"><input type="checkbox" [(ngModel)]="draft.active" /> Active</label></div>
+                        <div class="col-md-6"><textarea class="form-control form-control-sm" [(ngModel)]="draft.description!.es" placeholder="Description ES"></textarea></div>
+                        <div class="col-md-6"><textarea class="form-control form-control-sm" [(ngModel)]="draft.description!.en" placeholder="Description EN"></textarea></div>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'socialLinks'">
+                        <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="draft.icon" placeholder="Icon" /></div>
+                        <div class="col-md-9"><input type="text" class="form-control form-control-sm" [(ngModel)]="draft.href" placeholder="Href" /></div>
+                    </ng-container>
+                </ng-container>
+
+                <div class="col-12 d-flex justify-content-end"><button class="btn btn-sm btn-primary" type="button" (click)="createItem.emit()" [disabled]="isActionLoading(resourceKey + '-create')">Create</button></div>
+            </div>
+        </div>
+        <div class="table-responsive" *ngIf="!contentLoading">
+            <table class="table table-striped" *ngIf="items.length > 0; else emptyItems">
+                <thead>
+                    <tr [ngSwitch]="variant">
+                        <ng-container *ngSwitchCase="'skills'">
+                            <th>Label</th>
+                            <th>Slug</th>
+                            <th>Value</th>
+                            <th class="text-end">Active</th>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'experience'">
+                            <th>Label</th>
+                            <th>Slug</th>
+                            <th>Description</th>
+                            <th class="text-end">Order</th>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'testimonials'">
+                            <th>Label</th>
+                            <th>Slug</th>
+                            <th>Description</th>
+                            <th class="text-end">Active</th>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'socialLinks'">
+                            <th>Label</th>
+                            <th>Slug</th>
+                            <th>Href</th>
+                            <th class="text-end">Icon</th>
+                        </ng-container>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items" [ngSwitch]="variant">
+                        <ng-container *ngSwitchCase="'skills'">
+                            <td>{{ getContentItemName(item) }}</td>
+                            <td>{{ item.slug || '-' }}</td>
+                            <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.value" /></td>
+                            <td class="text-end"><input type="checkbox" [(ngModel)]="item.active" /></td>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'experience'">
+                            <td>{{ getContentItemName(item) }}</td>
+                            <td>{{ item.slug || '-' }}</td>
+                            <td>{{ getLocalizedText(item.description) }}</td>
+                            <td class="text-end"><input type="number" class="form-control form-control-sm dashboard-number-input" [(ngModel)]="item.order" /></td>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'testimonials'">
+                            <td>{{ getContentItemName(item) }}</td>
+                            <td>{{ item.slug || '-' }}</td>
+                            <td>{{ getLocalizedText(item.description) }}</td>
+                            <td class="text-end"><input type="checkbox" [(ngModel)]="item.active" /></td>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'socialLinks'">
+                            <td>{{ getContentItemName(item) }}</td>
+                            <td>{{ item.slug || '-' }}</td>
+                            <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.href" /></td>
+                            <td class="text-end"><input type="text" class="form-control form-control-sm" [(ngModel)]="item.icon" /></td>
+                        </ng-container>
+
+                        <td class="text-end dashboard-actions-cell">
+                            <button class="btn btn-sm btn-primary" type="button" (click)="saveItem.emit(item)" [disabled]="isActionLoading(resourceKey + '-save-' + item._id)">
+                                Save
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteItem.emit(item)" [disabled]="isActionLoading(resourceKey + '-delete-' + item._id)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ng-template #emptyItems>
+                <p class="text-muted mb-0">{{ emptyMessage }}</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

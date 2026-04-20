@@ -10,8 +10,11 @@ import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
+import { AdminContentSectionComponent } from '@pages/admin-dashboard/components/content-section/content-section.component';
 import { AdminOverviewSectionComponent } from '@pages/admin-dashboard/components/overview-section/overview-section.component';
 import { AdminProfileSectionComponent } from '@pages/admin-dashboard/components/profile-section/profile-section.component';
+import { AdminProjectsSectionComponent } from '@pages/admin-dashboard/components/projects-section/projects-section.component';
+import { AdminResumesSectionComponent } from '@pages/admin-dashboard/components/resumes-section/resumes-section.component';
 import { AdminUsersSectionComponent } from '@pages/admin-dashboard/components/users-section/users-section.component';
 
 type AdminSection =
@@ -30,7 +33,7 @@ type ContentResourceName = 'techSkills' | 'experience' | 'testimonials' | 'resum
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, AdminOverviewSectionComponent, AdminProfileSectionComponent, AdminUsersSectionComponent],
+  imports: [CommonModule, FormsModule, AdminContentSectionComponent, AdminOverviewSectionComponent, AdminProfileSectionComponent, AdminProjectsSectionComponent, AdminResumesSectionComponent, AdminUsersSectionComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss',
 })
@@ -431,37 +434,6 @@ export class AdminDashboardComponent implements OnInit {
 
   getProjectName(project: IProject): string {
     return this.getLocalizedText(project.title);
-  }
-
-  getProjectStackValue(project: IProject): string {
-    return project.stack?.join(', ') || '';
-  }
-
-  getProjectCoverImageValue(project: IProject): string {
-    const coverImage = project.coverImage;
-
-    if (!coverImage) {
-      return '';
-    }
-
-    if (typeof coverImage === 'string') {
-      return coverImage;
-    }
-
-    return coverImage.url || coverImage.base64 || '';
-  }
-
-  getProjectImagesValue(project: IProject): string {
-    return (project.images || [])
-      .map((image) => {
-        if (typeof image === 'string') {
-          return image;
-        }
-
-        return image.url || image.base64 || '';
-      })
-      .filter(Boolean)
-      .join('\n');
   }
 
   isCurrentAdmin(user: IAdminUser): boolean {

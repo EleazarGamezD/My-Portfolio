@@ -1,0 +1,59 @@
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0">Resumes</h5>
+            <span class="badge text-bg-light">{{ resumes.length }}</span>
+        </div>
+        <div class="dashboard-create-box mb-4">
+            <h6 class="mb-3">Create Resume</h6>
+            <div class="row g-3">
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newResume.slug" placeholder="Slug" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newResume.label!.es" placeholder="Label ES" /></div>
+                <div class="col-md-3"><input type="text" class="form-control form-control-sm" [(ngModel)]="newResume.label!.en" placeholder="Label EN" /></div>
+                <div class="col-md-3 d-flex align-items-center"><label class="form-check-label d-flex align-items-center gap-2"><input type="checkbox" [(ngModel)]="newResume.active" /> Active</label></div>
+                <div class="col-md-6"><textarea class="form-control form-control-sm" [(ngModel)]="newResume.description!.es" placeholder="Description ES"></textarea></div>
+                <div class="col-md-6"><textarea class="form-control form-control-sm" [(ngModel)]="newResume.description!.en" placeholder="Description EN"></textarea></div>
+                <div class="col-md-8"><input type="file" class="form-control form-control-sm" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" (change)="newResumeFileSelected.emit($event)" /></div>
+                <div class="col-md-4 d-flex align-items-center"><span class="small text-muted">{{ newResume.fileName || 'No file selected' }}</span></div>
+                <div class="col-12 d-flex justify-content-end"><button class="btn btn-sm btn-primary" type="button" (click)="createResume.emit()" [disabled]="isActionLoading('resumes-create')">Create Resume</button></div>
+            </div>
+        </div>
+        <div class="table-responsive" *ngIf="!contentLoading">
+            <table class="table table-striped" *ngIf="resumes.length > 0; else emptyResumes">
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th>File</th>
+                        <th>Mime Type</th>
+                        <th>Replace File</th>
+                        <th class="text-end">Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of resumes">
+                        <td>{{ getContentItemName(item) }}</td>
+                        <td>{{ item.fileName || '-' }}</td>
+                        <td>{{ item.mimeType || '-' }}</td>
+                        <td>
+                            <input type="file" class="form-control form-control-sm" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" (change)="resumeFileSelected.emit({ item, event: $event })" />
+                        </td>
+                        <td class="text-end">
+                            <input type="checkbox" [(ngModel)]="item.active" />
+                        </td>
+                        <td class="text-end dashboard-actions-cell">
+                            <button class="btn btn-sm btn-primary" type="button" (click)="saveResume.emit(item)" [disabled]="isActionLoading('resumes-save-' + item._id)">
+                                Save
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteResume.emit(item)" [disabled]="isActionLoading('resumes-delete-' + item._id)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ng-template #emptyResumes>
+                <p class="text-muted mb-0">No resumes found.</p>
+            </ng-template>
+        </div>
+    </div>
+</div>
