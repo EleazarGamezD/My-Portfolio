@@ -77,13 +77,7 @@
           </div>
           <div class="header-social-list" aria-label="Social links">
             @for (item of social; track $index) {
-            <a
-              class="header-social-link"
-              [href]="item.href || '#'"
-              target="_blank"
-              rel="noopener noreferrer"
-              [attr.title]="item.label?.[i18nService.currentLanguage()] || item.label?.es || item.label?.en || 'Social link'"
-              [attr.aria-label]="item.label?.[i18nService.currentLanguage()] || item.label?.es || item.label?.en || 'Social link'">
+            <a class="header-social-link" [href]="item.href || '#'" target="_blank" rel="noopener noreferrer" [attr.title]="item.label?.[i18nService.currentLanguage()] || item.label?.es || item.label?.en || 'Social link'" [attr.aria-label]="item.label?.[i18nService.currentLanguage()] || item.label?.es || item.label?.en || 'Social link'">
               <i class="{{ item.icon }}"></i>
               <span class="header-social-text-hidden">{{ item.label?.[i18nService.currentLanguage()] || item.label?.es || item.label?.en || 'Social link' }}</span>
             </a>
