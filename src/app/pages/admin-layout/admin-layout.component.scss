@@ -1,8 +1,11 @@
 :host {
   display: block;
+  min-height: 100vh;
 }
 
 .admin-shell {
+  min-height: 100vh;
+  overflow: visible;
   background:
     radial-gradient(circle at top right, rgba(52, 152, 219, 0.12), transparent 26%),
     linear-gradient(180deg, #f3f6fb 0%, #eef2f7 100%);
@@ -134,6 +137,7 @@
 
 .admin-body {
   min-height: calc(100vh - 9rem);
+  overflow: visible;
 }
 
 .admin-footer {

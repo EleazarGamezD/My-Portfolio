@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   NavigationEnd,
   Router,
@@ -56,7 +56,7 @@ import { adminNavItems } from './admin-layout.nav';
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss',
 })
-export class AdminLayoutComponent implements OnInit {
+export class AdminLayoutComponent implements OnInit, OnDestroy {
   readonly navItems: INavData[] = adminNavItems;
   currentYear = new Date().getFullYear();
   currentSectionLabel = 'Overview';
@@ -68,6 +68,8 @@ export class AdminLayoutComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.enableAdminScrolling();
+
     try {
       await this.facade.ensureCurrentAdmin();
       this.syncSectionFromUrl(this.router.url);
@@ -79,6 +81,10 @@ export class AdminLayoutComponent implements OnInit {
     } catch (error) {
       console.error('Failed to load current admin for layout:', error);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.disableAdminScrolling();
   }
 
   async logout(): Promise<void> {
@@ -100,5 +106,23 @@ export class AdminLayoutComponent implements OnInit {
 
     this.currentSectionLabel =
       ADMIN_SECTIONS.find((section) => section.key === sectionKey)?.label ?? 'Overview';
+  }
+
+  private enableAdminScrolling(): void {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    document.documentElement.classList.add('admin-route-active');
+    document.body.classList.add('admin-route-active');
+  }
+
+  private disableAdminScrolling(): void {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    document.documentElement.classList.remove('admin-route-active');
+    document.body.classList.remove('admin-route-active');
   }
 }
