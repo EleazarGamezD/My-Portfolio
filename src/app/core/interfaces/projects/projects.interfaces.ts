@@ -8,6 +8,7 @@ export interface IProjectAsset {
   base64?: string;
   mimeType?: string;
   fileName?: string;
+  extension?: string;
 }
 
 export interface IProject {

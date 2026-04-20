@@ -50,6 +50,6 @@ export class AdminLoginComponent implements OnInit {
     }
 
     private getRedirectTarget(): string {
-        return this.route.snapshot.queryParamMap.get('redirectTo') || '/admin/dashboard';
+        return this.route.snapshot.queryParamMap.get('redirectTo') || '/admin/dashboard/overview';
     }
 }

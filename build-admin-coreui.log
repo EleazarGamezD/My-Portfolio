@@ -1,0 +1,2296 @@
+
+> my-portfolio@3.1.0 build
+> ng build
+
+[33mÔØ»[39m Building...
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Failed to load header content from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/resumes',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/resumes: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error loading resumes: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/resumes',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/resumes: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/socialLinks',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/socialLinks: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Failed to load header content from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/socialLinks',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/socialLinks: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Failed to load profile content from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/socialLinks',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/socialLinks: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Failed to load header content from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/socialLinks',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/socialLinks: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/experience',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/experience: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Failed to load experience from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/experience',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/experience: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/resumes',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/resumes: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Error loading resumes: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/resumes',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/resumes: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Failed to load profile content from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/techSkills',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/techSkills: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Failed to load tech skills from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/techSkills',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/techSkills: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/testimonials',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/testimonials: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Failed to load testimonials from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/testimonials',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/testimonials: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Failed to load hero slides from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/socialLinks',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/socialLinks: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Failed to load header content from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/socialLinks',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/socialLinks: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/experience',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/experience: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Failed to load experience from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/experience',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/experience: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/techSkills',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/techSkills: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Failed to load tech skills from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/techSkills',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/techSkills: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/socialLinks',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/socialLinks: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Failed to load hero slides from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/testimonials',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/testimonials: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Failed to load testimonials from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/testimonials',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/testimonials: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/projects',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/projects: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Failed to load projects from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/projects',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/projects: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/707f9d5a-8df9-403b-a6ee-27dda198b48b/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/projects',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/projects: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Failed to load projects from API. cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/projects',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/projects: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+Error: cn {
+  headers: e {
+    headers: Map(13) {
+      'access-control-allow-origin' => [Array],
+      'age' => [Array],
+      'cache-control' => [Array],
+      'content-length' => [Array],
+      'content-security-policy' => [Array],
+      'content-type' => [Array],
+      'date' => [Array],
+      'server' => [Array],
+      'strict-transport-security' => [Array],
+      'x-content-type-options' => [Array],
+      'x-powered-by' => [Array],
+      'x-vercel-cache' => [Array],
+      'x-vercel-id' => [Array]
+    },
+    normalizedNames: Map(13) {
+      'access-control-allow-origin' => 'access-control-allow-origin',
+      'age' => 'age',
+      'cache-control' => 'cache-control',
+      'content-length' => 'content-length',
+      'content-security-policy' => 'content-security-policy',
+      'content-type' => 'content-type',
+      'date' => 'date',
+      'server' => 'server',
+      'strict-transport-security' => 'strict-transport-security',
+      'x-content-type-options' => 'x-content-type-options',
+      'x-powered-by' => 'x-powered-by',
+      'x-vercel-cache' => 'x-vercel-cache',
+      'x-vercel-id' => 'x-vercel-id'
+    },
+    lazyInit: undefined,
+    lazyUpdate: null
+  },
+  status: 404,
+  statusText: 'Not Found',
+  url: 'https://mailer-pf.vercel.app/api/content/profile',
+  ok: false,
+  type: undefined,
+  name: 'HttpErrorResponse',
+  message: 'Http failure response for https://mailer-pf.vercel.app/api/content/profile: 404 Not Found',
+  error: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at e.parseBody (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12714)
+      at e.<anonymous> (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:35:12255)
+      at Generator.next (<anonymous>)
+      at f (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-S6KH3LOX.mjs:2:1446)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6715)
+      at Object.onInvoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/chunk-ECOBDCVP.mjs:8:25130)
+      at a.invoke (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:6654)
+      at l.run (file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:3:1985)
+      at file:///D:/programacion/proyectos/PORTFOLIO%20V2%20DINAMIC/My-Portfolio/.angular/prerender-root/c9392f10-952d-42a2-9c4f-e86819aebd6e/polyfills.server.mjs:4:576
+}
+16 rules skipped due to selector errors:
+  .table>>*>* -> Did not expect successive traversals.
+  .table-bordered>>* -> Did not expect successive traversals.
+  .table-bordered>>*>* -> Did not expect successive traversals.
+  .form-floating>~label -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .table>>*>* -> Did not expect successive traversals.
+  .table-sm>>*>* -> Did not expect successive traversals.
+  .table-bordered>>* -> Did not expect successive traversals.
+  .table-bordered>>*>* -> Did not expect successive traversals.
+  .table-borderless>>*>* -> Did not expect successive traversals.
+  .form-floating>~label -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group-vertical>+.btn -> Did not expect successive traversals.
+  0% -> Unmatched selector: %
+16 rules skipped due to selector errors:
+  .table>>*>* -> Did not expect successive traversals.
+  .table-bordered>>* -> Did not expect successive traversals.
+  .table-bordered>>*>* -> Did not expect successive traversals.
+  .form-floating>~label -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .table>>*>* -> Did not expect successive traversals.
+  .table-sm>>*>* -> Did not expect successive traversals.
+  .table-bordered>>* -> Did not expect successive traversals.
+  .table-bordered>>*>* -> Did not expect successive traversals.
+  .table-borderless>>*>* -> Did not expect successive traversals.
+  .form-floating>~label -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group-vertical>+.btn -> Did not expect successive traversals.
+  0% -> Unmatched selector: %
+16 rules skipped due to selector errors:
+  .table>>*>* -> Did not expect successive traversals.
+  .table-bordered>>* -> Did not expect successive traversals.
+  .table-bordered>>*>* -> Did not expect successive traversals.
+  .form-floating>~label -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .table>>*>* -> Did not expect successive traversals.
+  .table-sm>>*>* -> Did not expect successive traversals.
+  .table-bordered>>* -> Did not expect successive traversals.
+  .table-bordered>>*>* -> Did not expect successive traversals.
+  .table-borderless>>*>* -> Did not expect successive traversals.
+  .form-floating>~label -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group-vertical>+.btn -> Did not expect successive traversals.
+  0% -> Unmatched selector: %
+[32mÔ£ö[39m Building...
+[35mBrowser bundles[39m      
+[1mInitial chunk files[22m  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mstyles-DKO4IQLH.css[39m  [2m | [22m[2mstyles[22m                   [2m | [22m  [36m1.56 MB[39m[2m | [22m              [36m142.03 kB[39m
+[32mscripts-JDEXEDQV.js[39m  [2m | [22m[2mscripts[22m                  [2m | [22m[36m690.05 kB[39m[2m | [22m              [36m185.67 kB[39m
+[32mchunk-3VKEWJES.js[39m    [2m | [22m[2m-[22m                        [2m | [22m[36m345.93 kB[39m[2m | [22m               [36m93.84 kB[39m
+[32mmain-TJPB4ZJG.js[39m     [2m | [22m[2mmain[22m                     [2m | [22m [36m80.70 kB[39m[2m | [22m               [36m22.65 kB[39m
+[32mchunk-7IM4OX6F.js[39m    [2m | [22m[2m-[22m                        [2m | [22m [36m43.31 kB[39m[2m | [22m                [36m8.86 kB[39m
+[32mpolyfills-FFHMD2TL.js[39m[2m | [22m[2mpolyfills[22m                [2m | [22m [36m34.52 kB[39m[2m | [22m               [36m11.28 kB[39m
+[32mchunk-4A3W6Z67.js[39m    [2m | [22m[2m-[22m                        [2m | [22m [36m20.40 kB[39m[2m | [22m                [36m5.12 kB[39m
+[32mchunk-XYXY5BD3.js[39m    [2m | [22m[2m-[22m                        [2m | [22m  [36m9.25 kB[39m[2m | [22m                [36m2.77 kB[39m
+[32mchunk-CAAINO5C.js[39m    [2m | [22m[2m-[22m                        [2m | [22m  [36m6.80 kB[39m[2m | [22m                [36m2.09 kB[39m
+[32mchunk-ARSYSWQZ.js[39m    [2m | [22m[2m-[22m                        [2m | [22m  [36m1.79 kB[39m[2m | [22m              [36m459 bytes[39m
+[32mchunk-Z7UZ35TY.js[39m    [2m | [22m[2m-[22m                        [2m | [22m  [36m1.63 kB[39m[2m | [22m              [36m652 bytes[39m
+
+[1m [22m                    [2m | [22m[1mInitial total[22m            [2m | [22m  [1m2.79 MB[22m[2m | [22m              [1m475.42 kB[22m
+
+[1mLazy chunk files[22m     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mchunk-KAFTZUA3.js[39m    [2m | [22m[2madmin-layout-component[22m   [2m | [22m [36m87.73 kB[39m[2m | [22m               [36m18.05 kB[39m
+[32mchunk-WA4KQ5JQ.js[39m    [2m | [22m[2madmin-dashboard-component[22m[2m | [22m [36m82.50 kB[39m[2m | [22m               [36m10.96 kB[39m
+[32mchunk-KJ7223OM.js[39m    [2m | [22m[2mhome-component[22m           [2m | [22m [36m38.39 kB[39m[2m | [22m                [36m8.41 kB[39m
+[32mchunk-GPJK4BBL.js[39m    [2m | [22m[2mproject-details-component[22m[2m | [22m [36m12.35 kB[39m[2m | [22m                [36m3.46 kB[39m
+[32mchunk-Z55PCZLI.js[39m    [2m | [22m[2madmin-login-component[22m    [2m | [22m  [36m4.27 kB[39m[2m | [22m                [36m1.61 kB[39m
+[32mchunk-G4BPYAER.js[39m    [2m | [22m[2m-[22m                        [2m | [22m  [36m2.09 kB[39m[2m | [22m              [36m705 bytes[39m
+[32mchunk-GBQRX5JS.js[39m    [2m | [22m[2m-[22m                        [2m | [22m  [36m1.37 kB[39m[2m | [22m              [36m616 bytes[39m
+[32mchunk-UEP5SEBZ.js[39m    [2m | [22m[2m-[22m                        [2m | [22m[36m960 bytes[39m[2m | [22m              [36m960 bytes[39m
+
+
+[35mServer bundles[39m       
+[1mInitial chunk files[22m  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mserver.mjs[39m           [2m | [22m[2mserver[22m                   [2m | [22m[36m842.07 kB[39m[2m | [22m                       
+[32mchunk-FOS5SKWX.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m[36m509.81 kB[39m[2m | [22m                       
+[32mchunk-ECOBDCVP.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m[36m334.52 kB[39m[2m | [22m                       
+[32mpolyfills.server.mjs[39m [2m | [22m[2mpolyfills.server[22m         [2m | [22m[36m268.60 kB[39m[2m | [22m                       
+[32mchunk-MZ35YRIM.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m [36m43.38 kB[39m[2m | [22m                       
+[32mmain.server.mjs[39m      [2m | [22m[2mmain.server[22m              [2m | [22m [36m21.81 kB[39m[2m | [22m                       
+[32mchunk-OAXVWPXV.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m [36m20.47 kB[39m[2m | [22m                       
+[32mchunk-JAJ2FAYD.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m [36m11.39 kB[39m[2m | [22m                       
+[32mchunk-HRVUTSTY.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m  [36m9.28 kB[39m[2m | [22m                       
+[32mchunk-MTYIAWXE.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m  [36m4.23 kB[39m[2m | [22m                       
+[32mchunk-S6KH3LOX.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m  [36m2.77 kB[39m[2m | [22m                       
+[32mchunk-3UTIXGD5.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m  [36m2.62 kB[39m[2m | [22m                       
+[32mchunk-4JG3YOKO.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m  [36m1.89 kB[39m[2m | [22m                       
+[32mchunk-ZRM2IGND.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m  [36m1.73 kB[39m[2m | [22m                       
+
+[1mLazy chunk files[22m     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mchunk-XJUYHRZE.mjs[39m   [2m | [22m[2madmin-layout-component[22m   [2m | [22m [36m87.87 kB[39m[2m | [22m                       
+[32mchunk-U2QYIYLB.mjs[39m   [2m | [22m[2madmin-dashboard-component[22m[2m | [22m [36m82.60 kB[39m[2m | [22m                       
+[32mchunk-NTKV6JLK.mjs[39m   [2m | [22m[2mhome-component[22m           [2m | [22m [36m38.49 kB[39m[2m | [22m                       
+[32mchunk-Y73MV345.mjs[39m   [2m | [22m[2mproject-details-component[22m[2m | [22m [36m12.45 kB[39m[2m | [22m                       
+[32mchunk-FE3ZEMPP.mjs[39m   [2m | [22m[2mxhr2[22m                     [2m | [22m [36m12.07 kB[39m[2m | [22m                       
+[32mchunk-DTAWLASO.mjs[39m   [2m | [22m[2madmin-login-component[22m    [2m | [22m  [36m4.37 kB[39m[2m | [22m                       
+[32mchunk-SHQSAKKJ.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m  [36m2.18 kB[39m[2m | [22m                       
+[32mchunk-D7STSZZY.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m  [36m1.40 kB[39m[2m | [22m                       
+[32mchunk-VWXD3QC3.mjs[39m   [2m | [22m[2m-[22m                        [2m | [22m  [36m1.06 kB[39m[2m | [22m                       
+
+[35mPrerendered 8 static routes.[39m
+Application bundle generation complete. [15.365 seconds]
+
+Ôû▓ [WARNING] 16 rules skipped due to selector errors:
+  .table>>*>* -> Did not expect successive traversals.
+  .table-bordered>>* -> Did not expect successive traversals.
+  .table-bordered>>*>* -> Did not expect successive traversals.
+  .form-floating>~label -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .table>>*>* -> Did not expect successive traversals.
+  .table-sm>>*>* -> Did not expect successive traversals.
+  .table-bordered>>* -> Did not expect successive traversals.
+  .table-bordered>>*>* -> Did not expect successive traversals.
+  .table-borderless>>*>* -> Did not expect successive traversals.
+  .form-floating>~label -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group>+.btn -> Did not expect successive traversals.
+  .btn-group-vertical>+.btn -> Did not expect successive traversals.
+  0% -> Unmatched selector: %
+
+
+Output location: D:\programacion\proyectos\PORTFOLIO V2 DINAMIC\My-Portfolio\dist\my-portfolio
+

@@ -43,17 +43,37 @@ export const routes: Routes = [
         ),
   },
   {
-    path: 'admin/dashboard',
+    path: 'admin',
     canActivate: [adminAuthGuard],
     loadComponent: () =>
-      import('@pages/admin-dashboard/admin-dashboard.component')
+      import('@pages/admin-layout/admin-layout.component')
         .then(
-          (m) => m.AdminDashboardComponent,
+          (m) => m.AdminLayoutComponent,
         ),
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard/overview',
+        pathMatch: 'full',
+      },
+      {
+        path: 'dashboard',
+        redirectTo: 'dashboard/overview',
+        pathMatch: 'full',
+      },
+      {
+        path: 'dashboard/:section',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/admin-dashboard.component')
+            .then(
+              (m) => m.AdminDashboardComponent,
+            ),
+      },
+    ],
   },
   {
     path: 'admin-dashboard',
-    redirectTo: 'admin/dashboard',
+    redirectTo: 'admin/dashboard/overview',
   },
   localizedRoute('es'),
   localizedRoute('en'),

@@ -1,0 +1,31 @@
+import {
+  cilAccountLogout,
+  cilChartPie,
+  cilCloudDownload,
+  cilCode,
+  cilDescription,
+  cilLayers,
+  cilMenu,
+  cilPeople,
+  cilShareBoxed,
+  cilSpeedometer,
+  cilSpeech,
+  cilStar,
+  cilUser,
+} from '@coreui/icons';
+
+export const adminIconSubset = {
+  cilAccountLogout,
+  cilChartPie,
+  cilCloudDownload,
+  cilCode,
+  cilDescription,
+  cilLayers,
+  cilMenu,
+  cilPeople,
+  cilShareBoxed,
+  cilSpeedometer,
+  cilSpeech,
+  cilStar,
+  cilUser,
+};

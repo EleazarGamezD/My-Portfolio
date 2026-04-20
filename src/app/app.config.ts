@@ -7,6 +7,7 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { routes } from '@core/routes/app.routes';
+import { IconSetService } from '@coreui/icons-angular';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { provideToastr } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
@@ -19,6 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment.reCaptchaSiteKey },
     importProvidersFrom(RecaptchaV3Module),
+    IconSetService,
     provideAnimations(),
     provideToastr(),
   ],
