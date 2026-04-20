@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import {
   IApiContentItem,
@@ -37,6 +38,7 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     public i18nService: I18nService,
     private readonly contentService: ContentService,
+    private readonly destroyRef: DestroyRef,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -58,7 +60,10 @@ export class HeaderComponent implements OnInit {
     }
 
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe((event) => {
         this.i18nService.syncLanguageFromUrl(event.urlAfterRedirects);
         const elementId = this.getScrollToFromUrl(event.urlAfterRedirects);
@@ -70,7 +75,6 @@ export class HeaderComponent implements OnInit {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });
-
   }
 
   navigateTo(route: string) {

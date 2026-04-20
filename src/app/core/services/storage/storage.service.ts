@@ -22,6 +22,7 @@ export class StorageService {
     if (!this.isBrowser) return null; // Skip on server
     return await lastValueFrom(
       this._storage.get(`${environment.appName}-${key}`),
+      { defaultValue: null },
     );
   }
 
@@ -41,7 +42,10 @@ export class StorageService {
 
   async hasStorage(key: string) {
     if (!this.isBrowser) return false; // Skip on server
-    return await lastValueFrom(this._storage.has(`${environment.appName}-${key}`));
+    return await lastValueFrom(
+      this._storage.has(`${environment.appName}-${key}`),
+      { defaultValue: false },
+    );
   }
 
   watchStorage(key: string) {

@@ -36,6 +36,7 @@ Mantener el portfolio publico con su template actual y migrar solo la zona admin
 - El shell admin ya muestra breadcrumb dinamico por seccion y titulo contextual en header.
 - Las paginas `overview`, `projects`, `profile`, `skills`, `experience`, `testimonials`, `resumes`, `socialLinks` y `users` ya empezaron a reemplazar wrappers HTML genericos por `c-alert`, `c-card`, `c-spinner` y `cButton` de CoreUI.
 - El feedback del admin ya usa `ngx-toastr`, reutilizando el mismo toast del UI publico en lugar de banners inline para acciones CRUD y errores operativos.
+- Las secciones internas de `projects`, `users` y `profile` ya migraron formularios, tablas, badges y spinners a modulos CoreUI (`FormModule`, `TableModule`, `CardModule`, `BadgeModule`, `ButtonModule`, `SpinnerModule`).
 - SSR y prerender vuelven a compilar con Angular 21 tras adaptar `main.server.ts` y `app.config.server.ts`.
 - La unica libreria heredada pendiente de reemplazo es `ng-recaptcha`, que no publica soporte oficial para Angular 21.
 
@@ -60,6 +61,8 @@ Mantener el portfolio publico con su template actual y migrar solo la zona admin
 - [x] Reemplazar el nav secundario de botones dentro del dashboard por breadcrumbs o tabs CoreUI.
 - [x] Separar cada seccion en pagina hija para evitar que siempre cargue todo el estado.
 - [~] Usar componentes CoreUI de tablas, formularios y cards donde aporte valor real.
+- [~] Usar componentes CoreUI de tablas, formularios y cards donde aporte valor real.
+  Estado practico: `projects`, `users` y `profile` ya migrados; faltan `content-section` y `resumes-section`.
 - [x] Reutilizar el toast existente del portfolio para feedback de acciones admin.
 - [ ] Añadir modals consistentes para confirmar o editar acciones sensibles.
 

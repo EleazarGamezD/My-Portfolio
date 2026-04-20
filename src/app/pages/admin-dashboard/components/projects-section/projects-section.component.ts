@@ -3,11 +3,30 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ILocalizedText, IProject } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import {
+    BadgeModule,
+    ButtonModule,
+    CardModule,
+    FormModule,
+    GridModule,
+    SpinnerModule,
+    TableModule,
+} from '@coreui/angular';
 
 @Component({
     selector: 'app-admin-projects-section',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        BadgeModule,
+        ButtonModule,
+        CardModule,
+        FormModule,
+        GridModule,
+        SpinnerModule,
+        TableModule,
+    ],
     templateUrl: './projects-section.component.html',
     styleUrl: './projects-section.component.scss',
 })
@@ -74,5 +93,19 @@ export class AdminProjectsSectionComponent {
 
         const currentLanguage = this.i18nService.currentLanguage();
         return value[currentLanguage] || value.es || value.en || '-';
+    }
+
+    getProjectStatusColor(status?: string): 'success' | 'warning' | 'secondary' | 'info' {
+        switch ((status || '').toLowerCase()) {
+            case 'published':
+            case 'active':
+                return 'success';
+            case 'draft':
+                return 'warning';
+            case 'archived':
+                return 'secondary';
+            default:
+                return 'info';
+        }
     }
 }

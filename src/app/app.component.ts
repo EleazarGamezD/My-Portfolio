@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { adminIconSubset } from '@core/icons/admin-icon-subset';
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private i18nService: I18nService,
     private iconSetService: IconSetService,
+    private readonly destroyRef: DestroyRef,
     @Inject(DOCUMENT) private document: Document,
   ) {
     this.iconSetService.icons = { ...adminIconSubset };
@@ -35,6 +37,7 @@ export class AppComponent implements OnInit {
 
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      takeUntilDestroyed(this.destroyRef),
     ).subscribe((event: NavigationEnd) => {
       this.updateSeo(event.urlAfterRedirects);
 

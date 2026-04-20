@@ -3,11 +3,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiProfile, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import {
+    ButtonModule,
+    CardModule,
+    FormModule,
+    SpinnerModule,
+} from '@coreui/angular';
 
 @Component({
     selector: 'app-admin-profile-section',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule],
     templateUrl: './profile-section.component.html',
     styleUrl: './profile-section.component.scss',
 })

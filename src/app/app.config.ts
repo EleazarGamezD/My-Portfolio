@@ -40,7 +40,6 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions(),
     ),
     provideClientHydration(withEventReplay()),
-    provideClientHydration(),
     provideHttpClient(withFetch()),
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment.reCaptchaSiteKey },
     importProvidersFrom(RecaptchaV3Module, StorageModule.forRoot({}), SidebarModule, DropdownModule),
