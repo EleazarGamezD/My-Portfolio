@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
+import { StorageService } from '@core/services/storage/storage.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
-import { AdminImageUploaderComponent } from '@pages/admin-dashboard/components/admin-image-uploader/admin-image-uploader.component';
+import { AddPhotoComponent } from '@pages/admin-dashboard/components/shared/add-photo/add-photo.component';
 
 type ProjectFormMode = 'create' | 'edit';
 
@@ -20,12 +22,12 @@ type ProjectFormMode = 'create' | 'edit';
     ButtonModule,
     CardModule,
     FormModule,
-    AdminImageUploaderComponent,
+    AddPhotoComponent,
   ],
   templateUrl: './project-form-page.component.html',
   styleUrl: './project-form-page.component.scss',
 })
-export class AdminProjectFormPageComponent implements OnInit {
+export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
   mode: ProjectFormMode = 'create';
   draft: Partial<IProject> = this.createEmptyDraft();
   stackValue = '';
@@ -36,6 +38,7 @@ export class AdminProjectFormPageComponent implements OnInit {
     public readonly facade: AdminDashboardFacade,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly storageService: StorageService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -83,6 +86,22 @@ export class AdminProjectFormPageComponent implements OnInit {
     return (this.draft.images || []).map((asset) => (typeof asset === 'string' ? { url: asset } : asset));
   }
 
+  get coverPreviewUrls(): string[] {
+    return this.coverAssets.map((asset) => resolveImageAssetUrl(asset)).filter((url): url is string => Boolean(url));
+  }
+
+  get galleryPreviewUrls(): string[] {
+    return this.galleryAssets.map((asset) => resolveImageAssetUrl(asset)).filter((url): url is string => Boolean(url));
+  }
+
+  get coverStorageKey(): string {
+    return `project-form-${this.mode}-${this.projectId || 'new'}-cover`;
+  }
+
+  get galleryStorageKey(): string {
+    return `project-form-${this.mode}-${this.projectId || 'new'}-gallery`;
+  }
+
   async submit(): Promise<void> {
     this.draft.stack = this.stackValue
       .split(',')
@@ -97,12 +116,18 @@ export class AdminProjectFormPageComponent implements OnInit {
     }
 
     if (!this.facade.contentError) {
+      await this.clearImageDraftStorage();
       await this.router.navigate(['/admin/dashboard/projects']);
     }
   }
 
   async cancel(): Promise<void> {
+    await this.clearImageDraftStorage();
     await this.router.navigate(['/admin/dashboard/projects']);
+  }
+
+  ngOnDestroy(): void {
+    void this.clearImageDraftStorage();
   }
 
   onCoverAssetsChange(assets: IProjectAsset[]): void {
@@ -115,6 +140,13 @@ export class AdminProjectFormPageComponent implements OnInit {
 
   onUploadError(message: string): void {
     this.facade.onImageUploadError(message);
+  }
+
+  private async clearImageDraftStorage(): Promise<void> {
+    await Promise.all([
+      this.storageService.deleteStorage(this.coverStorageKey),
+      this.storageService.deleteStorage(this.galleryStorageKey),
+    ]);
   }
 
   private createEmptyDraft(): Partial<IProject> {

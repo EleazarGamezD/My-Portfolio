@@ -3,7 +3,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ILocalizedText, IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import {
     BadgeModule,
     ButtonModule,
@@ -13,7 +12,8 @@ import {
     SpinnerModule,
     TableModule,
 } from '@coreui/angular';
-import { AdminImageUploaderComponent } from '../admin-image-uploader/admin-image-uploader.component';
+import { AddPhotoComponent } from '../shared/add-photo/add-photo.component';
+import { PhotoEditorComponent } from '../shared/photo-editor/photo-editor.component';
 
 @Component({
     selector: 'app-admin-projects-section',
@@ -28,7 +28,8 @@ import { AdminImageUploaderComponent } from '../admin-image-uploader/admin-image
         GridModule,
         SpinnerModule,
         TableModule,
-        AdminImageUploaderComponent,
+        AddPhotoComponent,
+        PhotoEditorComponent,
     ],
     templateUrl: './projects-section.component.html',
     styleUrl: './projects-section.component.scss',
@@ -75,6 +76,22 @@ export class AdminProjectsSectionComponent {
         return this.toProjectAssetArray(project.images);
     }
 
+    getNewProjectCoverStorageKey(): string {
+        return 'dashboard-new-project-cover';
+    }
+
+    getNewProjectGalleryStorageKey(): string {
+        return 'dashboard-new-project-gallery';
+    }
+
+    getProjectCoverStorageKey(project: IProject): string {
+        return `dashboard-project-${project._id || project.slug || 'draft'}-cover`;
+    }
+
+    getProjectGalleryStorageKey(project: IProject): string {
+        return `dashboard-project-${project._id || project.slug || 'draft'}-gallery`;
+    }
+
     getProjectStackValue(project: IProject): string {
         return project.stack?.join(', ') || '';
     }
@@ -101,11 +118,6 @@ export class AdminProjectsSectionComponent {
                 return 'info';
         }
     }
-
-    resolveAssetPreview(asset?: string | IProjectAsset | null): string | null {
-        return resolveImageAssetUrl(asset);
-    }
-
     private toProjectAsset(asset?: string | IProjectAsset | null): IProjectAsset | null {
         if (!asset) {
             return null;

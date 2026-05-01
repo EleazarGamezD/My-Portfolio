@@ -1,0 +1,61 @@
+<div class="photo-editor">
+  <div class="photo-editor__header">
+    <div>
+      <span class="photo-editor__title">{{ title() }}</span>
+      <p class="photo-editor__subtitle">{{ subTitle() }}</p>
+    </div>
+  </div>
+
+  <input
+    #fileInput
+    type="file"
+    accept="image/*"
+    class="d-none"
+    [attr.multiple]="allowMultipleSelection ? '' : null"
+    (change)="onFileSelected($event)"
+  />
+
+  @if (hasItems) {
+    <div class="photo-editor__body" [class.photo-editor__body--gallery]="isGalleryVariant">
+      <div class="photo-editor__stage">
+        @if (selectedItem; as item) {
+          <img [src]="item.previewUrl" alt="Selected image preview" class="photo-editor__stage-image" />
+        }
+      </div>
+
+      @if (isGalleryVariant) {
+        <div class="photo-editor__thumb-strip">
+          @for (item of items; track trackByItem($index, item); let index = $index) {
+            <button
+              type="button"
+              class="photo-editor__thumb"
+              [class.photo-editor__thumb--active]="selectedIndex === index"
+              (click)="selectItem(index)"
+            >
+              <img [src]="item.previewUrl" alt="Gallery image preview" />
+            </button>
+          }
+        </div>
+      }
+
+      <div class="photo-editor__actions">
+        @if (canAddMore) {
+          <button type="button" class="photo-editor__btn photo-editor__btn--neutral" (click)="openAddDialog()">
+            {{ addButtonLabel() }}
+          </button>
+        }
+        <button type="button" class="photo-editor__btn photo-editor__btn--neutral" (click)="openReplaceDialog()">
+          {{ changeButtonLabel() }}
+        </button>
+        <button type="button" class="photo-editor__btn photo-editor__btn--danger" (click)="removeSelected()">
+          {{ removeButtonLabel() }}
+        </button>
+      </div>
+    </div>
+  } @else {
+    <button type="button" class="photo-editor__empty" (click)="openAddDialog()">
+      <span class="photo-editor__empty-icon">+</span>
+      <span class="photo-editor__empty-label">{{ emptyLabel() }}</span>
+    </button>
+  }
+</div>

@@ -29,10 +29,30 @@
           <textarea cFormControl sizing="sm" [(ngModel)]="newProject.description!.en" placeholder="Description EN"></textarea>
         </div>
         <div class="col-md-6">
-          <app-admin-image-uploader [assets]="getNewProjectCoverAssets()" [multiple]="false" [maxItems]="1" title="Cover image" hint="Compressed and stored as embedded image data for MongoDB." buttonLabel="Select cover" (assetsChange)="newProjectCoverAssetsChange.emit($event)" (uploadError)="imageUploadError.emit($event)" />
+          <app-add-photo
+            [storageKey]="getNewProjectCoverStorageKey()"
+            [maxPhotos]="1"
+            [maxMb]="5"
+            [title]="'Cover image'"
+            [subTitle]="'Selecciona la portada del proyecto'"
+            [label]="'Select cover'"
+            [hint]="'Arrastra o selecciona una imagen'"
+            [urlsPreviews]="[]"
+            (assetsChange)="newProjectCoverAssetsChange.emit($event)"
+            (uploadError)="imageUploadError.emit($event)" />
         </div>
         <div class="col-md-6">
-          <app-admin-image-uploader [assets]="getNewProjectGalleryAssets()" [multiple]="true" [maxItems]="8" title="Gallery" hint="Use the same embedded image contract used across the admin dashboard." buttonLabel="Add gallery images" (assetsChange)="newProjectGalleryAssetsChange.emit($event)" (uploadError)="imageUploadError.emit($event)" />
+          <app-add-photo
+            [storageKey]="getNewProjectGalleryStorageKey()"
+            [maxPhotos]="8"
+            [maxMb]="5"
+            [title]="'Gallery'"
+            [subTitle]="'Agrega imágenes del proyecto'"
+            [label]="'Add gallery images'"
+            [hint]="'Arrastra o selecciona imágenes'"
+            [urlsPreviews]="[]"
+            (assetsChange)="newProjectGalleryAssetsChange.emit($event)"
+            (uploadError)="imageUploadError.emit($event)" />
         </div>
         <div class="col-md-4">
           <input cFormControl sizing="sm" type="text" [ngModel]="newProjectStackValue" (ngModelChange)="newProjectStackValueChange.emit($event)" placeholder="Stack CSV" />
@@ -96,8 +116,30 @@
             </td>
             <td>
               <div class="d-flex flex-column gap-2">
-                <app-admin-image-uploader [assets]="getProjectCoverAssets(project)" [multiple]="false" [maxItems]="1" title="Cover" hint="Embedded cover image stored directly in MongoDB." buttonLabel="Replace cover" (assetsChange)="projectCoverAssetsChange.emit({ project, assets: $event })" (uploadError)="imageUploadError.emit($event)" />
-                <app-admin-image-uploader [assets]="getProjectGalleryAssets(project)" [multiple]="true" [maxItems]="8" title="Gallery" hint="Gallery images follow the shared DB image contract." buttonLabel="Update gallery" (assetsChange)="projectGalleryAssetsChange.emit({ project, assets: $event })" (uploadError)="imageUploadError.emit($event)" />
+                <app-photo-editor
+                  [assets]="getProjectCoverAssets(project)"
+                  [maxPhotos]="1"
+                  [variant]="'single'"
+                  [title]="'Cover image'"
+                  [subTitle]="'Portada actual del proyecto.'"
+                  [emptyLabel]="'Agregar portada'"
+                  [addButtonLabel]="'Agregar'"
+                  [changeButtonLabel]="'Cambiar'"
+                  [removeButtonLabel]="'Eliminar'"
+                  (assetsChange)="projectCoverAssetsChange.emit({ project, assets: $event })"
+                  (uploadError)="imageUploadError.emit($event)"></app-photo-editor>
+                <app-photo-editor
+                  [assets]="getProjectGalleryAssets(project)"
+                  [maxPhotos]="8"
+                  [variant]="'gallery'"
+                  [title]="'Gallery'"
+                  [subTitle]="'Selecciona una foto de la galería y luego agrégala, cámbiala o elimínala.'"
+                  [emptyLabel]="'Agregar imagen a la galería'"
+                  [addButtonLabel]="'Agregar'"
+                  [changeButtonLabel]="'Cambiar'"
+                  [removeButtonLabel]="'Eliminar'"
+                  (assetsChange)="projectGalleryAssetsChange.emit({ project, assets: $event })"
+                  (uploadError)="imageUploadError.emit($event)"></app-photo-editor>
               </div>
             </td>
             <td>

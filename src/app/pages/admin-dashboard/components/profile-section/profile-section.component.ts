@@ -1,26 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiProfile, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import {
     ButtonModule,
     CardModule,
     FormModule,
     SpinnerModule,
 } from '@coreui/angular';
-import { AdminImageUploaderComponent } from '../admin-image-uploader/admin-image-uploader.component';
+import { PhotoEditorComponent } from '../shared/photo-editor/photo-editor.component';
+import { ShowErrorsComponent } from '../shared/show-errors/show-errors.component';
 
 @Component({
     selector: 'app-admin-profile-section',
     standalone: true,
-    imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, AdminImageUploaderComponent],
+    imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, PhotoEditorComponent, ShowErrorsComponent],
     templateUrl: './profile-section.component.html',
     styleUrl: './profile-section.component.scss',
 })
 export class AdminProfileSectionComponent {
+    @ViewChildren('heroSlideCard') private heroSlideCards?: QueryList<ElementRef<HTMLDivElement>>;
+    readonly heroSlideTitleMaxLength = 60;
+    readonly heroSlideDescriptionMaxLength = 350;
     @Input() profile: IApiProfile | null = null;
     @Input() contentLoading = false;
     @Input() saveLoading = false;
@@ -56,14 +59,18 @@ export class AdminProfileSectionComponent {
             description: { es: '', en: '' },
             image: null,
         });
+
+        setTimeout(() => {
+            const lastCard = this.heroSlideCards?.last?.nativeElement;
+            lastCard?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        });
     }
 
     removeHeroSlide(index: number): void {
         this.profile?.metadata?.heroSlides?.splice(index, 1);
-    }
-
-    resolveImagePreview(asset?: string | IProjectAsset | null): string | null {
-        return resolveImageAssetUrl(asset);
     }
 
     getHeroSlideAssets(index: number): IProjectAsset[] {

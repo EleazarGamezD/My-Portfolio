@@ -4,10 +4,11 @@ export interface ILocalizedText {
 }
 
 export interface IProjectAsset {
+  id?: string;
+  name?: string;
   url?: string;
   file?: string;
   base64?: string;
-  mimeType?: string;
   fileName?: string;
   extension?: string;
 }

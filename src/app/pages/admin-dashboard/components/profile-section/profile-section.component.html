@@ -87,7 +87,7 @@
                 <div class="dashboard-detail-card">
                     <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
                         <div>
-                            <span class="dashboard-detail-label">Hero Slides</span>
+                            <span class="dashboard-detail-label">Home Sliders</span>
                             <div class="text-body-secondary small">Update homepage slider copy and image assets directly from the dashboard.</div>
                         </div>
                         <button cButton color="secondary" size="sm" type="button" (click)="addHeroSlide()">
@@ -96,7 +96,7 @@
                     </div>
 
                     <div class="d-flex flex-column gap-3" *ngIf="heroSlides.length; else emptySlides">
-                        <div class="border rounded p-3" *ngFor="let slide of heroSlides; let index = index">
+                        <div #heroSlideCard class="border rounded p-3" *ngFor="let slide of heroSlides; let index = index">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <strong>Slide {{ index + 1 }}</strong>
                                 <button cButton color="danger" variant="outline" size="sm" type="button" (click)="removeHeroSlide(index)">
@@ -104,23 +104,93 @@
                                 </button>
                             </div>
                             <div class="row g-3">
-                                <div class="col-md-6">
-                                    <input cFormControl sizing="sm" type="text" [(ngModel)]="slide.title!.es" placeholder="Title ES" />
-                                </div>
-                                <div class="col-md-6">
-                                    <input cFormControl sizing="sm" type="text" [(ngModel)]="slide.title!.en" placeholder="Title EN" />
-                                </div>
-                                <div class="col-md-6">
-                                    <textarea cFormControl rows="4" [(ngModel)]="slide.description!.es" placeholder="Description ES"></textarea>
-                                </div>
-                                <div class="col-md-6">
-                                    <textarea cFormControl rows="4" [(ngModel)]="slide.description!.en" placeholder="Description EN"></textarea>
-                                </div>
                                 <div class="col-12">
-                                    <app-admin-image-uploader [assets]="getHeroSlideAssets(index)" [multiple]="false" [maxItems]="1" title="Slide image" hint="The image is compressed in the admin and persisted as embedded data in MongoDB." buttonLabel="Select slide image" (assetsChange)="heroSlideImageAssetsChange.emit({ index, assets: $event })" (uploadError)="imageUploadError.emit($event)" />
+                                    <app-photo-editor
+                                      [assets]="getHeroSlideAssets(index)"
+                                      [maxPhotos]="1"
+                                      [variant]="'single'"
+                                      [title]="'Slide image'"
+                                      [subTitle]="'Imagen actual del slider. Puedes agregarla, cambiarla o eliminarla.'"
+                                      [emptyLabel]="'Agregar imagen'"
+                                      [addButtonLabel]="'Agregar'"
+                                      [changeButtonLabel]="'Cambiar'"
+                                      [removeButtonLabel]="'Eliminar'"
+                                      (assetsChange)="heroSlideImageAssetsChange.emit({ index, assets: $event })"
+                                      (uploadError)="imageUploadError.emit($event)" />
                                 </div>
-                                <div class="col-12" *ngIf="resolveImagePreview(slide.image) as previewImage">
-                                    <img [src]="previewImage" [alt]="slide.title?.es || slide.title?.en || 'Hero slide preview'" class="img-fluid rounded border" style="max-height: 160px; object-fit: cover;" />
+                                <div class="col-md-6">
+                                    <label class="dashboard-detail-label d-block mb-2">Titulo en espanol</label>
+                                    <input
+                                      cFormControl
+                                      sizing="sm"
+                                      type="text"
+                                      name="hero-slide-title-es-{{ index }}"
+                                      [(ngModel)]="slide.title!.es"
+                                      required
+                                      [maxlength]="heroSlideTitleMaxLength"
+                                      placeholder="Titulo del slide en espanol"
+                                      #heroSlideTitleEs="ngModel" />
+                                    <app-show-errors
+                                      [control]="heroSlideTitleEs.control"
+                                      [requiredField]="'titulo en espanol'" />
+                                    <div class="text-body-secondary small mt-1">
+                                      {{ slide.title?.es?.length || 0 }}/{{ heroSlideTitleMaxLength }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="dashboard-detail-label d-block mb-2">Title in english</label>
+                                    <input
+                                      cFormControl
+                                      sizing="sm"
+                                      type="text"
+                                      name="hero-slide-title-en-{{ index }}"
+                                      [(ngModel)]="slide.title!.en"
+                                      required
+                                      [maxlength]="heroSlideTitleMaxLength"
+                                      placeholder="Slide title in english"
+                                      #heroSlideTitleEn="ngModel" />
+                                    <app-show-errors
+                                      [control]="heroSlideTitleEn.control"
+                                      [requiredField]="'title in english'" />
+                                    <div class="text-body-secondary small mt-1">
+                                      {{ slide.title?.en?.length || 0 }}/{{ heroSlideTitleMaxLength }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="dashboard-detail-label d-block mb-2">Texto en espanol</label>
+                                    <textarea
+                                      cFormControl
+                                      rows="4"
+                                      name="hero-slide-description-es-{{ index }}"
+                                      [(ngModel)]="slide.description!.es"
+                                      required
+                                      [maxlength]="heroSlideDescriptionMaxLength"
+                                      placeholder="Mensaje del slide en espanol"
+                                      #heroSlideDescriptionEs="ngModel"></textarea>
+                                    <app-show-errors
+                                      [control]="heroSlideDescriptionEs.control"
+                                      [requiredField]="'texto en espanol'" />
+                                    <div class="text-body-secondary small mt-1">
+                                      {{ slide.description?.es?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="dashboard-detail-label d-block mb-2">Text in english</label>
+                                    <textarea
+                                      cFormControl
+                                      rows="4"
+                                      name="hero-slide-description-en-{{ index }}"
+                                      [(ngModel)]="slide.description!.en"
+                                      required
+                                      [maxlength]="heroSlideDescriptionMaxLength"
+                                      placeholder="Slide message in english"
+                                      #heroSlideDescriptionEn="ngModel"></textarea>
+                                    <app-show-errors
+                                      [control]="heroSlideDescriptionEn.control"
+                                      [requiredField]="'text in english'" />
+                                    <div class="text-body-secondary small mt-1">
+                                      {{ slide.description?.en?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}
+                                    </div>
                                 </div>
                             </div>
                         </div>

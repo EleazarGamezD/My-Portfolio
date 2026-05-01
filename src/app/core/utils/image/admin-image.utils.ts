@@ -11,7 +11,6 @@ type ResolvableImageAsset =
       url?: string;
       file?: string;
       base64?: string;
-      mimeType?: string;
       extension?: string;
     }
   | null
@@ -45,8 +44,9 @@ export async function createBase64ImageAsset(
   const extension = getExtension(compressedFile.type, compressedFile.name);
 
   return {
+    id: crypto.randomUUID(),
+    name: compressedFile.name,
     base64: stripDataUrlPrefix(previewUrl),
-    mimeType: compressedFile.type || settings.fileType,
     fileName: withExtension(compressedFile.name, extension),
     extension,
     previewUrl,
@@ -55,15 +55,16 @@ export async function createBase64ImageAsset(
 }
 
 export function storedImageAssetToDataUrl(asset: IStoredImageAsset): string {
-  const mimeType = asset.mimeType || `image/${asset.extension || 'webp'}`;
+  const mimeType = `image/${asset.extension || 'webp'}`;
   return `data:${mimeType};base64,${asset.file}`;
 }
 
 export function base64AssetToStoredImage(asset: IBase64ImageAsset): IStoredImageAsset {
   return {
+    id: asset.id,
+    name: asset.name,
     file: asset.base64,
     extension: asset.extension,
-    mimeType: asset.mimeType,
     fileName: asset.fileName,
   };
 }
@@ -90,7 +91,7 @@ export function resolveImageAssetUrl(asset: ResolvableImageAsset): string | null
     return rawFile;
   }
 
-  const mimeType = asset.mimeType || `image/${asset.extension || 'webp'}`;
+  const mimeType = `image/${asset.extension || 'webp'}`;
   return `data:${mimeType};base64,${rawFile}`;
 }
 
