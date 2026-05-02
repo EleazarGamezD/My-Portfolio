@@ -477,6 +477,64 @@ export class AdminDashboardFacade {
     );
   }
 
+  async reorderExperience(previousIndex: number, currentIndex: number): Promise<void> {
+    if (previousIndex === currentIndex) {
+      return;
+    }
+
+    if (
+      previousIndex < 0 ||
+      currentIndex < 0 ||
+      previousIndex >= this.experience.length ||
+      currentIndex >= this.experience.length
+    ) {
+      return;
+    }
+
+    const reordered = [...this.experience];
+    const [movedItem] = reordered.splice(previousIndex, 1);
+
+    if (!movedItem) {
+      return;
+    }
+
+    reordered.splice(currentIndex, 0, movedItem);
+
+    const itemsToPersist = reordered
+      .map((item, index) => ({
+        ...item,
+        order: index + 1,
+      }))
+      .filter((item) => item._id && item.order !== this.experience.find((current) => current._id === item._id)?.order);
+
+    this.experience = reordered.map((item, index) => ({
+      ...item,
+      order: index + 1,
+    }));
+
+    await this.runContentAction('experience-reorder', async () => {
+      await Promise.all(
+        itemsToPersist.map((item) =>
+          this.contentService.updateContentItem('experience', item._id!, {
+            slug: item.slug,
+            label: item.label,
+            title: item.title,
+            description: item.description,
+            value: item.value,
+            icon: item.icon,
+            href: item.href,
+            order: item.order,
+            active: item.active,
+            metadata: item.metadata,
+          }),
+        ),
+      );
+
+      await this.loadContentData();
+      this.actionMessage = 'Experience order updated.';
+    });
+  }
+
   async saveAdminUser(user: IAdminUser): Promise<void> {
     if (!user._id) {
       this.contentError = 'Admin user id is required to save changes.';

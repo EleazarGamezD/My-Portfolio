@@ -1,0 +1,82 @@
+<div class="experience-shell">
+  <div class="data-table-header">
+    <div class="header-top">
+      <div>
+        <p class="admin-page-kicker mb-1">Timeline Content</p>
+        <h2 class="admin-page-title mb-0">Experiencia laboral</h2>
+      </div>
+      <a class="btn-create" [routerLink]="['/admin/dashboard/experience/create']">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Crear experiencia laboral
+      </a>
+    </div>
+    <p class="admin-page-copy mb-0">Arrastra cada fila para cambiar el orden de visualizacion en el portfolio. Editar y crear se manejan desde su propio formulario.</p>
+  </div>
+
+  <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
+    <c-spinner color="primary" size="sm"></c-spinner>
+    <span>Cargando experiencias...</span>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && items.length === 0">
+    <p>No se encontraron experiencias.</p>
+  </div>
+
+  <div class="experience-surface" *ngIf="!loading && items.length > 0">
+    <div class="reorder-banner" *ngIf="isReordering()">
+      Guardando nuevo orden...
+    </div>
+
+    <div class="table-responsive">
+      <table [striped]="true" [hover]="true" cTable>
+        <thead>
+          <tr>
+            <th class="handle-column">Mover</th>
+            <th>#</th>
+            <th>Etiqueta</th>
+            <th>Slug</th>
+            <th>Descripcion</th>
+            <th>Orden visual</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody cdkDropList [cdkDropListData]="items" (cdkDropListDropped)="onDrop($event)">
+          <tr *ngFor="let item of items; let index = index" cdkDrag>
+            <td class="handle-column">
+              <button type="button" class="drag-handle" cdkDragHandle aria-label="Mover experiencia">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path>
+                </svg>
+              </button>
+            </td>
+            <td>
+              <span class="experience-index">{{ index + 1 }}</span>
+            </td>
+            <td>
+              <div class="experience-title">{{ getItemName(item) }}</div>
+            </td>
+            <td class="experience-slug">{{ item.slug || '-' }}</td>
+            <td class="experience-description">{{ getDescription(item) }}</td>
+            <td>
+              <c-badge color="light" shape="rounded-pill">{{ index + 1 }}</c-badge>
+            </td>
+            <td class="text-center">
+              <div class="d-flex justify-content-center align-items-center">
+                <app-admin-action-menu
+                  [canEdit]="true"
+                  [editLink]="getEditLink(item)"
+                  [canDelete]="true"
+                  [canDeactivate]="false"
+                  (actionSelected)="handleAction(item, $event)">
+                </app-admin-action-menu>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

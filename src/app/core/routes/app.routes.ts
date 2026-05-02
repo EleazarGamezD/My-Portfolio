@@ -140,18 +140,31 @@ export const routes: Routes = [
       {
         path: 'dashboard/experience',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/content-page/content-page.component')
+          import('@pages/admin-dashboard/views/experience-page/experience-page.component')
             .then(
-              (m) => m.AdminContentPageComponent,
+              (m) => m.AdminExperiencePageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/experience/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/experience-form-page/experience-form-page.component')
+            .then(
+              (m) => m.AdminExperienceFormPageComponent,
             ),
         data: {
-          resourceName: 'experience',
-          variant: 'experience',
-          sectionTitle: 'Experience',
-          createTitle: 'Create Experience Item',
-          emptyMessage: 'No experience items found.',
-          kicker: 'Timeline Content',
-          description: 'Edit experience entries that shape the public professional timeline.',
+          mode: 'create',
+        },
+      },
+      {
+        path: 'dashboard/experience/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/experience-form-page/experience-form-page.component')
+            .then(
+              (m) => m.AdminExperienceFormPageComponent,
+            ),
+        data: {
+          mode: 'edit',
         },
       },
       {
