@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { IconDirective } from '@coreui/icons-angular';
 import {
   ButtonDirective,
@@ -16,6 +17,7 @@ export type AdminActionMenuAction = 'edit' | 'delete' | 'deactivate';
   standalone: true,
   imports: [
     CommonModule,
+    RouterLink,
     DropdownComponent,
     ButtonDirective,
     DropdownToggleDirective,
@@ -30,6 +32,7 @@ export class AdminActionMenuComponent {
   @Input() canEdit = true;
   @Input() canDelete = true;
   @Input() canDeactivate = true;
+  @Input() editLink: readonly (string | number)[] | null = null;
   @Output() actionSelected = new EventEmitter<AdminActionMenuAction>();
 
   onAction(action: AdminActionMenuAction, event: Event): void {

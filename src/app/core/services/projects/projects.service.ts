@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
-import { IProject } from '@core/interfaces/projects/projects.interfaces';
+import { IPaginationOptions, IPaginationResponse, IProject } from '@core/interfaces/projects/projects.interfaces';
 import { API_PROJECT_ROUTES } from '@core/routes/projects/projects.routes';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
 
@@ -22,6 +22,32 @@ export class ProjectsService extends GlobalHttpService {
       null,
       RequestMethod.GET,
     );
+  }
+
+  async getProjectsPaginated(options: IPaginationOptions): Promise<IPaginationResponse<IProject>> {
+    const params = new URLSearchParams();
+
+    if (typeof options.page === 'number') {
+      params.set('page', options.page.toString());
+    }
+
+    if (typeof options.limit === 'number') {
+      params.set('limit', options.limit.toString());
+    }
+
+    if (typeof options.sortBy === 'string' && options.sortBy.trim()) {
+      params.set('sortBy', options.sortBy.trim());
+    }
+
+    if (options.sortOrder === 'asc' || options.sortOrder === 'desc') {
+      params.set('sortOrder', options.sortOrder);
+    }
+
+    const route = params.size
+      ? `${API_PROJECT_ROUTES.getProjects}?${params.toString()}`
+      : API_PROJECT_ROUTES.getProjects;
+
+    return this.makeRequest<IPaginationResponse<IProject>, null>(route, null, RequestMethod.GET);
   }
 
   async getProjectByIdOrSlug(idOrSlug: string): Promise<IProject> {

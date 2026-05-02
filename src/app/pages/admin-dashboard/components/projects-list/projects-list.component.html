@@ -1,4 +1,4 @@
-<div class="data-table-container">
+<div class="projects-shell">
     <div class="data-table-header">
         <div class="header-top">
             <div>
@@ -25,7 +25,8 @@
         <p>No projects found.</p>
     </div>
 
-    <div class="table-responsive" *ngIf="!loading && projects.length > 0">
+    <div class="projects-surface" *ngIf="!loading && projects.length > 0">
+        <div class="table-responsive">
         <table [striped]="true" [hover]="true" cTable>
             <thead>
                 <tr>
@@ -41,29 +42,65 @@
             </thead>
             <tbody>
                 <tr *ngFor="let project of projects; let index = index">
-                    <td>{{ index + 1 }}</td>
+                    <td>
+                      <span class="project-index">{{ index + 1 }}</span>
+                    </td>
                     <td>
                         <img *ngIf="getCoverPreview(project) as preview" [src]="preview" [alt]="getProjectTitle(project)" class="project-preview" />
-                        <span *ngIf="!getCoverPreview(project)" class="text-body-secondary small">No image</span>
+                        <span *ngIf="!getCoverPreview(project)" class="project-preview project-preview--empty">No image</span>
                     </td>
                     <td>
-                        <div class="fw-semibold">{{ getProjectTitle(project) }}</div>
-                        <div class="text-body-secondary small">{{ project.slug || '-' }}</div>
+                        <div class="project-title">{{ getProjectTitle(project) }}</div>
                     </td>
-                    <td>{{ getSummary(project) }}</td>
+                    <td class="project-summary-cell">{{ getSummary(project) }}</td>
                     <td>
                         <c-badge [color]="getStatusColor(project.status)">{{ project.status || 'draft' }}</c-badge>
                     </td>
-                    <td>{{ project.stack?.join(', ') || '-' }}</td>
-                    <td>{{ project.publishedAt || '-' }}</td>
+                    <td class="project-stack-cell">{{ project.stack?.join(', ') || '-' }}</td>
+                    <td class="project-date-cell">{{ formatPublishedDate(project.publishedAt) }}</td>
                     <td class="text-center">
-                        <div class="d-flex justify-content-center gap-2 align-items-center">
-                            <a class="btn-action-link" [routerLink]="['/admin/dashboard/projects/edit', project._id]">Edit</a>
-                            <app-admin-action-menu [canEdit]="false" [canDelete]="!isDeleting(project)" [canDeactivate]="!isSaving(project)" (actionSelected)="handleAction(project, $event)" />
+                        <div class="d-flex justify-content-center align-items-center">
+                            <app-admin-action-menu
+                              [canEdit]="true"
+                              [editLink]="['/admin/dashboard/projects/edit', project._id || '']"
+                              [canDelete]="!isDeleting(project)"
+                              [canDeactivate]="!isSaving(project)"
+                              (actionSelected)="handleAction(project, $event)" />
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
+        </div>
+
+        <div class="projects-pagination" *ngIf="pagination.totalPages > 1">
+            <div class="projects-pagination__meta">
+                {{ pagination.totalItems }} projects
+            </div>
+            <div class="projects-pagination__controls">
+                <button
+                  type="button"
+                  class="projects-pagination__button"
+                  [disabled]="!pagination.hasPrevPage"
+                  (click)="changePage(pagination.currentPage - 1)">
+                    Anterior
+                </button>
+                <button
+                  type="button"
+                  class="projects-pagination__button"
+                  *ngFor="let page of visiblePages"
+                  [class.projects-pagination__button--active]="page === pagination.currentPage"
+                  (click)="changePage(page)">
+                    {{ page }}
+                </button>
+                <button
+                  type="button"
+                  class="projects-pagination__button"
+                  [disabled]="!pagination.hasNextPage"
+                  (click)="changePage(pagination.currentPage + 1)">
+                    Siguiente
+                </button>
+            </div>
+        </div>
     </div>
 </div>

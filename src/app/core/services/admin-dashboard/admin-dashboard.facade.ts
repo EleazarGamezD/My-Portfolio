@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { IAdminDashboardFilters, IAdminUser } from '@core/interfaces/admin/admin.interface';
 import { IApiContentItem, IApiHeroSlide, IApiProfile, IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
-import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
+import { IPaginationResponse, IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
@@ -26,6 +26,14 @@ export class AdminDashboardFacade {
   metrics: IDashboardMetrics | null = null;
   profile: IApiProfile | null = null;
   projects: IProject[] = [];
+  projectsPagination: IPaginationResponse<IProject> = {
+    data: [],
+    totalItems: 0,
+    totalPages: 0,
+    currentPage: 1,
+    hasNextPage: false,
+    hasPrevPage: false,
+  };
   techSkills: IApiContentItem[] = [];
   experience: IApiContentItem[] = [];
   testimonials: IApiContentItem[] = [];
@@ -52,6 +60,7 @@ export class AdminDashboardFacade {
   error: string | null = null;
   contentError: string | null = null;
   actionMessage: string | null = null;
+  projectsPageSize = 10;
   readonly confirmationDialog: AdminConfirmationDialog = {
     visible: false,
     title: '',
@@ -146,7 +155,12 @@ export class AdminDashboardFacade {
       this.contentError = null;
 
       const [projects, profile, techSkills, experience, testimonials, socialLinks, resumes, adminUsers] = await Promise.all([
-        this.projectsService.getProjects(),
+        this.projectsService.getProjectsPaginated({
+          page: this.projectsPagination.currentPage,
+          limit: this.projectsPageSize,
+          sortBy: 'createdAt',
+          sortOrder: 'desc',
+        }),
         this.contentService.getProfile(),
         this.contentService.getTechSkills(),
         this.contentService.getExperience(),
@@ -156,7 +170,8 @@ export class AdminDashboardFacade {
         this.adminAuthService.getAdminUsers(),
       ]);
 
-      this.projects = projects;
+      this.projectsPagination = projects;
+      this.projects = projects.data;
       this.profile = this.normalizeProfile(profile);
       this.techSkills = techSkills;
       this.experience = experience;
@@ -257,6 +272,7 @@ export class AdminDashboardFacade {
 
     await this.runContentAction('project-create', async () => {
       await this.projectsService.createProject(payload);
+      this.projectsPagination.currentPage = 1;
       this.resetProjectDraft();
       await this.loadContentData();
       this.actionMessage = 'Project created.';
@@ -276,6 +292,16 @@ export class AdminDashboardFacade {
         await this.runContentAction(`project-delete-${project._id}`, async () => {
           await this.projectsService.deleteProject(project._id!);
           await this.loadContentData();
+
+          if (
+            this.projects.length === 0 &&
+            this.projectsPagination.currentPage > 1 &&
+            this.projectsPagination.totalPages > 0
+          ) {
+            this.projectsPagination.currentPage = this.projectsPagination.totalPages;
+            await this.loadContentData();
+          }
+
           this.actionMessage = `Project ${this.getProjectName(project)} deleted.`;
         });
       },
@@ -445,6 +471,15 @@ export class AdminDashboardFacade {
 
   isActionLoading(actionKey: string): boolean {
     return this.actionLoadingKey === actionKey;
+  }
+
+  async changeProjectsPage(page: number): Promise<void> {
+    if (page < 1 || page === this.projectsPagination.currentPage) {
+      return;
+    }
+
+    this.projectsPagination.currentPage = page;
+    await this.loadContentData();
   }
 
   async onNewResumeFileSelected(event: Event): Promise<void> {

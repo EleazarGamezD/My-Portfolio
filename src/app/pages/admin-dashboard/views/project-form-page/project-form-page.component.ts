@@ -4,10 +4,12 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
+import { ProjectsService } from '@core/services/projects/projects.service';
 import { StorageService } from '@core/services/storage/storage.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
 import { AddPhotoComponent } from '@pages/admin-dashboard/components/shared/add-photo/add-photo.component';
+import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/photo-editor/photo-editor.component';
 
 type ProjectFormMode = 'create' | 'edit';
 
@@ -23,6 +25,7 @@ type ProjectFormMode = 'create' | 'edit';
     CardModule,
     FormModule,
     AddPhotoComponent,
+    PhotoEditorComponent,
   ],
   templateUrl: './project-form-page.component.html',
   styleUrl: './project-form-page.component.scss',
@@ -36,6 +39,7 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
 
   constructor(
     public readonly facade: AdminDashboardFacade,
+    private readonly projectsService: ProjectsService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly storageService: StorageService,
@@ -52,7 +56,15 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
     }
 
     this.projectId = this.route.snapshot.paramMap.get('id') || '';
-    const project = this.facade.projects.find((item) => item._id === this.projectId);
+    let project = this.facade.projects.find((item) => item._id === this.projectId);
+
+    if (!project) {
+      try {
+        project = await this.projectsService.getProjectByIdOrSlug(this.projectId);
+      } catch (error) {
+        console.error('Failed to load project for editing.', error);
+      }
+    }
 
     if (!project) {
       this.notFound = true;

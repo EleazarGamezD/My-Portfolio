@@ -7,3 +7,27 @@ button[cDropdownToggle] {
   align-items: center;
   justify-content: center;
 }
+
+.action-trigger {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(18, 88, 129, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(232, 242, 248, 0.98)),
+    radial-gradient(circle at top left, rgba(33, 110, 154, 0.14), transparent 55%);
+  color: #0d5d88;
+  box-shadow: 0 12px 24px rgba(13, 93, 136, 0.14);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.action-trigger:hover,
+.action-trigger:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(13, 93, 136, 0.28);
+  box-shadow: 0 16px 30px rgba(13, 93, 136, 0.2);
+}

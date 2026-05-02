@@ -29,3 +29,19 @@ export interface IProject {
   status?: string;
   publishedAt?: string;
 }
+
+export interface IPaginationOptions {
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface IPaginationResponse<T> {
+  data: T[];
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
