@@ -58,7 +58,7 @@ export class AdminSkillFormPageComponent implements OnInit {
   }
 
   get pageTitle(): string {
-    return this.mode === 'create' ? 'Create skill' : 'Edit skill';
+    return this.mode === 'create' ? 'Crear skill' : 'Editar skill';
   }
 
   get pageCopy(): string {
@@ -68,7 +68,7 @@ export class AdminSkillFormPageComponent implements OnInit {
   }
 
   get statusLabel(): string {
-    return this.draft.active ? 'Active' : 'Inactive';
+    return this.draft.active ? 'Activa' : 'Inactiva';
   }
 
   get draftLabel(): string {
@@ -105,13 +105,13 @@ export class AdminSkillFormPageComponent implements OnInit {
 
   onUploadError(message: string): void {
     this.error = message;
-    this.toastr.error(message, 'Skills');
+    this.toastr.error(message, 'Dashboard');
   }
 
   async submit(): Promise<void> {
     const normalized = this.normalizeSkillLabel(this.draftLabel);
     if (!normalized) {
-      this.error = 'Skill label is required.';
+      this.error = 'El nombre de la skill es obligatorio.';
       return;
     }
 
@@ -130,16 +130,16 @@ export class AdminSkillFormPageComponent implements OnInit {
 
       if (this.mode === 'create') {
         await this.contentService.createContentItem<IApiTechSkill>('techSkills', payload);
-        this.toastr.success('Skill created.', 'Skills');
+        this.toastr.success('Skill creada.', 'Panel');
       } else if (this.skillId) {
         await this.contentService.updateContentItem<IApiTechSkill>('techSkills', this.skillId, payload);
-        this.toastr.success('Skill updated.', 'Skills');
+        this.toastr.success('Skill actualizada.', 'Panel');
       }
 
       await this.router.navigate(['/admin/dashboard/skills']);
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'Failed to save skill.';
-      this.toastr.error(this.error, 'Skills');
+      this.error = error instanceof Error ? error.message : 'No se pudo guardar la skill.';
+      this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.saving = false;
     }
@@ -159,8 +159,8 @@ export class AdminSkillFormPageComponent implements OnInit {
 
       this.draft = structuredClone(skill);
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'Failed to load skill.';
-      this.toastr.error(this.error, 'Skills');
+      this.error = error instanceof Error ? error.message : 'No se pudo cargar la skill.';
+      this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.loading = false;
     }

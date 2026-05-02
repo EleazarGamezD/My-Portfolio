@@ -2,25 +2,25 @@
     <c-card-body>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                <h5 class="card-title mb-0">Admin Users</h5>
-                <p class="text-muted small mb-0">User creation stays in Swagger through the protected x-api-key endpoint.</p>
+                <h5 class="card-title mb-0">Usuarios administradores</h5>
+                <p class="text-muted small mb-0">La creacion de usuarios se mantiene en Swagger a traves del endpoint protegido con x-api-key.</p>
             </div>
             <c-badge color="light" shape="rounded-pill">{{ adminUsers.length }}</c-badge>
         </div>
         <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
             <c-spinner size="sm" color="primary"></c-spinner>
-            <span>Loading users...</span>
+            <span>Cargando usuarios...</span>
         </div>
         <div class="table-responsive" *ngIf="!contentLoading">
             <table [hover]="true" [striped]="true" cTable *ngIf="adminUsers.length > 0; else emptyAdminUsers">
                 <thead>
                     <tr>
                         <th>Email</th>
-                        <th>Username</th>
-                        <th>Display Name</th>
-                        <th>Role</th>
-                        <th>Last Login</th>
-                        <th class="text-end">Active</th>
+                        <th>Usuario</th>
+                        <th>Nombre visible</th>
+                        <th>Rol</th>
+                        <th>Ultimo acceso</th>
+                        <th class="text-end">Activo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,20 +40,20 @@
                                 </select>
                             </div>
                         </td>
-                        <td>{{ user.lastLoginAt ? (user.lastLoginAt | date:'short') : 'Never' }}</td>
+                        <td>{{ user.lastLoginAt ? (user.lastLoginAt | date:'short') : 'Nunca' }}</td>
                         <td class="text-end">
                             <input cFormCheckInput type="checkbox" [(ngModel)]="user.active" [disabled]="isCurrentAdmin(user)" />
                         </td>
                         <td class="text-end dashboard-actions-cell">
                             <button cButton color="primary" size="sm" type="button" (click)="saveUser.emit(user)" [disabled]="isActionLoading(user)">
-                                Save
+                                Guardar
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <ng-template #emptyAdminUsers>
-                <p class="text-muted mb-0">No admin users found.</p>
+                <p class="text-muted mb-0">No se encontraron usuarios administradores.</p>
             </ng-template>
         </div>
     </c-card-body>

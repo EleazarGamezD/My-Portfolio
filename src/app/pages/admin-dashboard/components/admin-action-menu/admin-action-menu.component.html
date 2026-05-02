@@ -1,11 +1,11 @@
 <c-dropdown variant="btn-group">
-    <button cButton cDropdownToggle class="action-trigger" color="primary" size="sm" aria-label="Actions">
+    <button cButton cDropdownToggle class="action-trigger" color="primary" size="sm" aria-label="Acciones">
         <svg cIcon name="cilSettings"></svg>
     </button>
     <ul cDropdownMenu>
-        <li *ngIf="canEdit && editLink"><a cDropdownItem [routerLink]="editLink">Edit</a></li>
-        <li *ngIf="canEdit && !editLink"><button cDropdownItem (click)="onAction('edit', $event)">Edit</button></li>
-        <li *ngIf="canDeactivate"><button cDropdownItem (click)="onAction('deactivate', $event)">Deactivate</button></li>
-        <li *ngIf="canDelete"><button cDropdownItem (click)="onAction('delete', $event)">Delete</button></li>
+        <li *ngIf="canEdit && editLink"><a cDropdownItem [routerLink]="editLink">Editar</a></li>
+        <li *ngIf="canEdit && !editLink"><button cDropdownItem (click)="onAction('edit', $event)">Editar</button></li>
+        <li *ngIf="canDeactivate"><button cDropdownItem (click)="onAction('deactivate', $event)">Desactivar</button></li>
+        <li *ngIf="canDelete"><button cDropdownItem (click)="onAction('delete', $event)">Eliminar</button></li>
     </ul>
 </c-dropdown>

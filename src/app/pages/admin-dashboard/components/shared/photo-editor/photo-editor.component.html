@@ -19,7 +19,7 @@
     <div class="photo-editor__body" [class.photo-editor__body--gallery]="isGalleryVariant">
       <div class="photo-editor__stage">
         @if (selectedItem; as item) {
-          <img [src]="item.previewUrl" alt="Selected image preview" class="photo-editor__stage-image" />
+          <img [src]="item.previewUrl" alt="Vista previa de la imagen seleccionada" class="photo-editor__stage-image" />
         }
       </div>
 
@@ -32,7 +32,7 @@
               [class.photo-editor__thumb--active]="selectedIndex === index"
               (click)="selectItem(index)"
             >
-              <img [src]="item.previewUrl" alt="Gallery image preview" />
+              <img [src]="item.previewUrl" alt="Vista previa de la imagen de la galeria" />
             </button>
           }
         </div>

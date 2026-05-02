@@ -79,13 +79,13 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
   }
 
   get pageTitle(): string {
-    return this.mode === 'create' ? 'Create project' : 'Edit project';
+    return this.mode === 'create' ? 'Crear proyecto' : 'Editar proyecto';
   }
 
   get pageCopy(): string {
     return this.mode === 'create'
-      ? 'Use a dedicated Booking-style form to create a new portfolio project.'
-      : 'Update project data in a dedicated form instead of editing inside the table.';
+      ? 'Usa un formulario dedicado para crear un nuevo proyecto del portafolio.'
+      : 'Actualiza los datos del proyecto desde un formulario dedicado en lugar de editar dentro de la tabla.';
   }
 
   get availableSkills(): IApiTechSkill[] {

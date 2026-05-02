@@ -1,49 +1,49 @@
 <c-card class="admin-section-card">
     <c-card-body>
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="card-title mb-0">Profile</h5>
+            <h5 class="card-title mb-0">Perfil</h5>
             <button cButton color="primary" size="sm" type="button" (click)="saveProfile.emit()" [disabled]="saveLoading || !profile">
-                Save Profile
+                Guardar perfil
             </button>
         </div>
         <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
             <c-spinner size="sm" color="primary"></c-spinner>
-            <span>Loading profile...</span>
+            <span>Cargando perfil...</span>
         </div>
         <div *ngIf="!contentLoading && profile" class="row g-3">
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Name ES</span>
+                    <span class="dashboard-detail-label">Nombre ES</span>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.label!.es" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Name EN</span>
+                    <span class="dashboard-detail-label">Nombre EN</span>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.label!.en" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Title ES</span>
+                    <span class="dashboard-detail-label">Titulo ES</span>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.title!.es" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Title EN</span>
+                    <span class="dashboard-detail-label">Titulo EN</span>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.title!.en" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Availability</span>
+                    <span class="dashboard-detail-label">Disponibilidad</span>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.availability" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Location</span>
+                    <span class="dashboard-detail-label">Ubicacion</span>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.location" />
                 </div>
             </div>
@@ -55,31 +55,31 @@
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Phone</span>
+                    <span class="dashboard-detail-label">Telefono</span>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.phone" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Description ES</span>
+                    <span class="dashboard-detail-label">Descripcion ES</span>
                     <textarea cFormControl rows="4" [(ngModel)]="profile.description!.es"></textarea>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Description EN</span>
+                    <span class="dashboard-detail-label">Descripcion EN</span>
                     <textarea cFormControl rows="4" [(ngModel)]="profile.description!.en"></textarea>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">About ES</span>
+                    <span class="dashboard-detail-label">Acerca de ES</span>
                     <textarea cFormControl rows="5" [(ngModel)]="profile.metadata!.about!.es"></textarea>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">About EN</span>
+                    <span class="dashboard-detail-label">Acerca de EN</span>
                     <textarea cFormControl rows="5" [(ngModel)]="profile.metadata!.about!.en"></textarea>
                 </div>
             </div>
@@ -88,19 +88,19 @@
                     <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
                         <div>
                             <span class="dashboard-detail-label">Home Sliders</span>
-                            <div class="text-body-secondary small">Update homepage slider copy and image assets directly from the dashboard.</div>
+                            <div class="text-body-secondary small">Actualiza textos e imagenes del slider principal directamente desde el dashboard.</div>
                         </div>
                         <button cButton color="secondary" size="sm" type="button" (click)="addHeroSlide()">
-                            Add Slide
+                            Agregar slider
                         </button>
                     </div>
 
                     <div class="d-flex flex-column gap-3" *ngIf="heroSlides.length; else emptySlides">
                         <div #heroSlideCard class="border rounded p-3" *ngFor="let slide of heroSlides; let index = index">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <strong>Slide {{ index + 1 }}</strong>
+                                <strong>Slider {{ index + 1 }}</strong>
                                 <button cButton color="danger" variant="outline" size="sm" type="button" (click)="removeHeroSlide(index)">
-                                    Remove
+                                    Eliminar
                                 </button>
                             </div>
                             <div class="row g-3">
@@ -109,7 +109,7 @@
                                       [assets]="getHeroSlideAssets(index)"
                                       [maxPhotos]="1"
                                       [variant]="'single'"
-                                      [title]="'Slide image'"
+                                      [title]="'Imagen del slider'"
                                       [subTitle]="'Imagen actual del slider. Puedes agregarla, cambiarla o eliminarla.'"
                                       [emptyLabel]="'Agregar imagen'"
                                       [addButtonLabel]="'Agregar'"
@@ -138,7 +138,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="dashboard-detail-label d-block mb-2">Title in english</label>
+                                    <label class="dashboard-detail-label d-block mb-2">Titulo en ingles</label>
                                     <input
                                       cFormControl
                                       sizing="sm"
@@ -147,11 +147,11 @@
                                       [(ngModel)]="slide.title!.en"
                                       required
                                       [maxlength]="heroSlideTitleMaxLength"
-                                      placeholder="Slide title in english"
+                                      placeholder="Titulo del slide en ingles"
                                       #heroSlideTitleEn="ngModel" />
                                     <app-show-errors
                                       [control]="heroSlideTitleEn.control"
-                                      [requiredField]="'title in english'" />
+                                      [requiredField]="'titulo en ingles'" />
                                     <div class="text-body-secondary small mt-1">
                                       {{ slide.title?.en?.length || 0 }}/{{ heroSlideTitleMaxLength }}
                                     </div>
@@ -175,7 +175,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="dashboard-detail-label d-block mb-2">Text in english</label>
+                                    <label class="dashboard-detail-label d-block mb-2">Texto en ingles</label>
                                     <textarea
                                       cFormControl
                                       rows="4"
@@ -183,11 +183,11 @@
                                       [(ngModel)]="slide.description!.en"
                                       required
                                       [maxlength]="heroSlideDescriptionMaxLength"
-                                      placeholder="Slide message in english"
+                                      placeholder="Mensaje del slide en ingles"
                                       #heroSlideDescriptionEn="ngModel"></textarea>
                                     <app-show-errors
                                       [control]="heroSlideDescriptionEn.control"
-                                      [requiredField]="'text in english'" />
+                                      [requiredField]="'texto en ingles'" />
                                     <div class="text-body-secondary small mt-1">
                                       {{ slide.description?.en?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}
                                     </div>
@@ -197,11 +197,11 @@
                     </div>
 
                     <ng-template #emptySlides>
-                        <p class="text-muted mb-0">No hero slides configured yet.</p>
+                        <p class="text-muted mb-0">Todavia no hay sliders configurados.</p>
                     </ng-template>
                 </div>
             </div>
         </div>
-        <p *ngIf="!contentLoading && !profile" class="text-muted mb-0">No profile found.</p>
+        <p *ngIf="!contentLoading && !profile" class="text-muted mb-0">No se encontro el perfil.</p>
     </c-card-body>
 </c-card>

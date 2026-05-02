@@ -47,7 +47,7 @@ export class PhotoEditorComponent implements OnInit, OnChanges, OnDestroy {
 
   assets = input<ProjectAssetReference[]>([]);
   title = input<string>('Photos');
-  subTitle = input<string>('Manage current images');
+  subTitle = input<string>('Administra las imagenes actuales');
   emptyLabel = input<string>('Agregar imagen');
   addButtonLabel = input<string>('Agregar');
   changeButtonLabel = input<string>('Cambiar');
@@ -278,7 +278,7 @@ export class PhotoEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private showToast(type: 'error' | 'warning', message: string): void {
-    this.toast[type](message, 'Dashboard', {
+    this.toast[type](message, 'Panel', {
       timeOut: 3000,
       progressBar: true,
       closeButton: true,

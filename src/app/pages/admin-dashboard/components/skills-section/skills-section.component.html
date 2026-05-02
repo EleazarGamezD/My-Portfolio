@@ -3,7 +3,7 @@
     <div class="skills-header">
       <div>
         <h5 class="card-title mb-0">{{ sectionTitle }}</h5>
-        <p class="skills-copy mb-0">Label unico, slug automatico e icono persistido.</p>
+        <p class="skills-copy mb-0">Nombre unico, slug automatico e icono persistido.</p>
       </div>
       <c-badge color="light" shape="rounded-pill">{{ totalItems }}</c-badge>
     </div>
@@ -12,13 +12,13 @@
       <div class="skills-create-box__header">
         <div>
           <h6 class="mb-1">{{ createTitle }}</h6>
-          <p class="mb-0">El label se replica a espanol e ingles automaticamente.</p>
+          <p class="mb-0">El nombre se replica a espanol e ingles automaticamente.</p>
         </div>
       </div>
 
       <div class="row g-4 align-items-start">
         <div class="col-lg-5">
-          <label class="form-label">Skill label</label>
+          <label class="form-label">Nombre de la skill</label>
           <input
             cFormControl
             sizing="sm"
@@ -34,7 +34,7 @@
             [storageKey]="draftStorageKey"
             [maxPhotos]="1"
             [maxMb]="3"
-            [title]="'Skill icon'"
+            [title]="'Icono de la skill'"
             [subTitle]="'Sube el icono de la skill'"
             [label]="'Seleccionar icono'"
             [hint]="'Arrastra o selecciona una imagen'"
@@ -51,7 +51,7 @@
             type="button"
             (click)="createSkill.emit()"
             [disabled]="isActionLoading('techSkills-create')">
-            Create skill
+            Crear skill
           </button>
         </div>
       </div>
@@ -59,7 +59,7 @@
 
     <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
       <c-spinner size="sm" color="primary"></c-spinner>
-      <span>Loading skills...</span>
+      <span>Cargando skills...</span>
     </div>
 
     <div class="skills-grid" *ngIf="!contentLoading && skills.length > 0; else emptySkills">
@@ -75,10 +75,10 @@
           </div>
 
           <div class="skill-card__meta">
-            <h6>{{ getSkillLabel(skill) || 'Skill without label' }}</h6>
+            <h6>{{ getSkillLabel(skill) || 'Skill sin nombre' }}</h6>
             <div class="skill-card__badges">
               <c-badge [color]="skill.active ? 'success' : 'secondary'">
-                {{ skill.active ? 'active' : 'inactive' }}
+                {{ skill.active ? 'activa' : 'inactiva' }}
               </c-badge>
             </div>
           </div>
@@ -95,7 +95,7 @@
         <div class="skill-card__editor" *ngIf="isEditing(skill)">
           <div class="row g-4">
             <div class="col-lg-5">
-              <label class="form-label">Skill label</label>
+              <label class="form-label">Nombre de la skill</label>
               <input
                 cFormControl
                 sizing="sm"
@@ -105,12 +105,12 @@
             </div>
 
             <div class="col-lg-4">
-              <label class="form-label">Skill icon</label>
+              <label class="form-label">Icono de la skill</label>
               <app-photo-editor
                 [assets]="getSkillIconAssets(skill)"
                 [maxPhotos]="1"
                 [variant]="'single'"
-                [title]="'Skill icon'"
+                [title]="'Icono de la skill'"
                 [subTitle]="'Agrega, cambia o elimina el icono.'"
                 [emptyLabel]="'Agregar icono'"
                 [addButtonLabel]="'Agregar'"
@@ -121,23 +121,23 @@
             </div>
 
             <div class="col-lg-3">
-              <label class="form-label">Status</label>
+              <label class="form-label">Estado</label>
               <label class="skill-card__toggle">
                 <input cFormCheckInput type="checkbox" [(ngModel)]="skill.active" />
-                Active
+                Activa
               </label>
             </div>
           </div>
 
           <div class="skill-card__actions">
-            <button cButton color="secondary" variant="outline" type="button" (click)="cancelEdit(skill)">Cancel</button>
+            <button cButton color="secondary" variant="outline" type="button" (click)="cancelEdit(skill)">Cancelar</button>
             <button
               cButton
               color="primary"
               type="button"
               (click)="commitEdit(skill)"
               [disabled]="isActionLoading('techSkills-save-' + skill._id)">
-              Save changes
+              Guardar cambios
             </button>
           </div>
         </div>
@@ -150,14 +150,14 @@
 
     <div class="skills-pagination" *ngIf="hasPagination">
       <p class="skills-pagination__summary mb-0">
-        Page {{ currentPage }} of {{ totalPages }}
+        Pagina {{ currentPage }} de {{ totalPages }}
       </p>
       <div class="skills-pagination__actions">
         <button cButton color="secondary" variant="outline" type="button" (click)="changePage(currentPage - 1)">
-          Prev
+          Anterior
         </button>
         <button cButton color="secondary" variant="outline" type="button" (click)="changePage(currentPage + 1)">
-          Next
+          Siguiente
         </button>
       </div>
     </div>

@@ -2,27 +2,27 @@
     <div class="data-table-header">
         <div class="header-top">
             <div>
-                <p class="admin-page-kicker mb-1">Content Management</p>
-                <h2 class="admin-page-title mb-0">Projects</h2>
+                <p class="admin-page-kicker mb-1">Gestion de contenido</p>
+                <h2 class="admin-page-title mb-0">Proyectos</h2>
             </div>
             <a class="btn-create" [routerLink]="['/admin/dashboard/projects/create']">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                Create project
+                Crear proyecto
             </a>
         </div>
-        <p class="admin-page-copy mb-0">Booking-style list view. Create and edit use their own form route instead of inline table editing.</p>
+        <p class="admin-page-copy mb-0">Vista tipo listado para administrar proyectos. Crear y editar usan su propio formulario dedicado.</p>
     </div>
 
     <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
         <c-spinner color="primary" size="sm"></c-spinner>
-        <span>Loading projects...</span>
+        <span>Cargando proyectos...</span>
     </div>
 
     <div class="empty-state" *ngIf="!loading && projects.length === 0">
-        <p>No projects found.</p>
+        <p>No se encontraron proyectos.</p>
     </div>
 
     <div class="projects-surface" *ngIf="!loading && projects.length > 0">
@@ -31,13 +31,13 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Preview</th>
-                    <th>Title</th>
-                    <th>Summary</th>
-                    <th>Status</th>
-                    <th>Stack</th>
-                    <th>Published</th>
-                    <th class="text-center">Actions</th>
+                    <th>Vista previa</th>
+                    <th>Titulo</th>
+                    <th>Resumen</th>
+                    <th>Estado</th>
+                    <th>Tecnologias</th>
+                    <th>Publicado</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,14 +47,14 @@
                     </td>
                     <td>
                         <img *ngIf="getCoverPreview(project) as preview" [src]="preview" [alt]="getProjectTitle(project)" class="project-preview" />
-                        <span *ngIf="!getCoverPreview(project)" class="project-preview project-preview--empty">No image</span>
+                        <span *ngIf="!getCoverPreview(project)" class="project-preview project-preview--empty">Sin imagen</span>
                     </td>
                     <td>
                         <div class="project-title">{{ getProjectTitle(project) }}</div>
                     </td>
                     <td class="project-summary-cell">{{ getSummary(project) }}</td>
                     <td>
-                        <c-badge [color]="getStatusColor(project.status)">{{ project.status || 'draft' }}</c-badge>
+                        <c-badge [color]="getStatusColor(project.status)">{{ project.status || 'borrador' }}</c-badge>
                     </td>
                     <td class="project-stack-cell">{{ project.stack?.join(', ') || '-' }}</td>
                     <td class="project-date-cell">{{ formatPublishedDate(project.publishedAt) }}</td>
@@ -75,7 +75,7 @@
 
         <div class="projects-pagination" *ngIf="pagination.totalPages > 1">
             <div class="projects-pagination__meta">
-                {{ pagination.totalItems }} projects
+                {{ pagination.totalItems }} proyectos
             </div>
             <div class="projects-pagination__controls">
                 <button

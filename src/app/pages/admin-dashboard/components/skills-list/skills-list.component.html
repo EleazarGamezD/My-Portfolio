@@ -2,15 +2,15 @@
   <div class="data-table-header">
     <div class="header-top">
       <div>
-        <p class="admin-page-kicker mb-1">Technical Catalog</p>
-        <h2 class="admin-page-title mb-0">Tech Skills</h2>
+        <p class="admin-page-kicker mb-1">Catalogo tecnico</p>
+        <h2 class="admin-page-title mb-0">Skills tecnicas</h2>
       </div>
       <a class="btn-create" [routerLink]="['/admin/dashboard/skills/create']">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
-        Create skill
+        Crear skill
       </a>
     </div>
     <p class="admin-page-copy mb-0">Administra el catalogo visual de skills que luego se relacionan con los proyectos.</p>
@@ -18,11 +18,11 @@
 
   <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
     <c-spinner color="primary" size="sm"></c-spinner>
-    <span>Loading skills...</span>
+    <span>Cargando skills...</span>
   </div>
 
   <div class="empty-state" *ngIf="!loading && skills.length === 0">
-    <p>No skills found.</p>
+    <p>No se encontraron skills.</p>
   </div>
 
   <div class="skills-surface" *ngIf="!loading && skills.length > 0">
@@ -50,7 +50,7 @@
         <div class="skill-card__body">
           <h3>{{ getSkillLabel(skill) }}</h3>
           <c-badge [color]="skill.active ? 'success' : 'secondary'">
-            {{ skill.active ? 'active' : 'inactive' }}
+            {{ skill.active ? 'activa' : 'inactiva' }}
           </c-badge>
         </div>
       </article>

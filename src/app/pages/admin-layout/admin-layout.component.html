@@ -1,10 +1,10 @@
 <c-sidebar #adminSidebar="cSidebar" class="d-print-none border-end admin-sidebar" colorScheme="dark" id="adminSidebar" visible>
   <c-sidebar-header class="border-bottom admin-sidebar__header">
     <c-sidebar-brand [routerLink]="['/admin/dashboard/overview']" class="admin-sidebar__brand">
-      <span class="admin-sidebar__brand-mark">EG</span>
+      <span class="admin-sidebar__brand-mark">{{ facade.currentAdmin?.displayName?.charAt(0)}}</span>
       <span class="admin-sidebar__brand-copy">
         <strong>Portfolio CMS</strong>
-        <small>CoreUI Admin</small>
+        <small>Made with &hearts; by <a href="https://eleazargamez.dev" target="_blank" rel="noopener noreferrer">Eleazar Gámez</a></small>
       </span>
     </c-sidebar-brand>
   </c-sidebar-header>

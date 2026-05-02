@@ -48,7 +48,7 @@ export class AdminSkillsPageComponent implements OnInit {
 
     try {
       await this.contentService.deleteContentItem('techSkills', skill._id);
-      this.toastr.success(`${skill.label?.es || skill.value || 'Skill'} deleted.`, 'Skills');
+      this.toastr.success(`${skill.label?.es || skill.value || 'Skill'} eliminada.`, 'Panel');
 
       const targetPage =
         this.skills.length === 1 && this.pagination.currentPage > 1
@@ -57,8 +57,8 @@ export class AdminSkillsPageComponent implements OnInit {
 
       await this.loadSkillsPage(targetPage);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to delete skill.';
-      this.toastr.error(message, 'Skills');
+      const message = error instanceof Error ? error.message : 'No se pudo eliminar la skill.';
+      this.toastr.error(message, 'Panel');
     } finally {
       this.deletingSkillId = null;
     }
@@ -78,8 +78,8 @@ export class AdminSkillsPageComponent implements OnInit {
       this.pagination = response;
       this.skills = response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to load skills.';
-      this.toastr.error(message, 'Skills');
+      const message = error instanceof Error ? error.message : 'No se pudieron cargar las skills.';
+      this.toastr.error(message, 'Panel');
     } finally {
       this.loading = false;
     }

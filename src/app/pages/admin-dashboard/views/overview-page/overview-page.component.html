@@ -1,12 +1,12 @@
 <section>
     <div class="admin-page-header">
         <div>
-            <p class="admin-page-kicker">Analytics</p>
-            <h2 class="admin-page-title">Overview</h2>
-            <p class="admin-page-copy mb-0">Core metrics, recent activity and traffic summaries for the portfolio.</p>
+            <p class="admin-page-kicker">Analitica</p>
+            <h2 class="admin-page-title">Resumen</h2>
+            <p class="admin-page-copy mb-0">Metricas principales, actividad reciente y resumenes de trafico del portafolio.</p>
         </div>
         <button cButton color="primary" variant="outline" type="button" (click)="facade.loadMetrics()">
-            Refresh Data
+            Actualizar datos
         </button>
     </div>
 
@@ -14,28 +14,28 @@
         <c-card-body>
             <div class="row g-3 align-items-end">
                 <div class="col-md-2">
-                    <label class="form-label" for="filterYear">Year</label>
+                    <label class="form-label" for="filterYear">Ano</label>
                     <input id="filterYear" type="number" class="form-control" [(ngModel)]="facade.filters.year" min="2000" max="2100" />
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label" for="filterMonth">Month</label>
+                    <label class="form-label" for="filterMonth">Mes</label>
                     <input id="filterMonth" type="number" class="form-control" [(ngModel)]="facade.filters.month" min="1" max="12" />
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label" for="filterDay">Day</label>
+                    <label class="form-label" for="filterDay">Dia</label>
                     <input id="filterDay" type="number" class="form-control" [(ngModel)]="facade.filters.day" min="1" max="31" />
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label" for="filterFrom">From</label>
+                    <label class="form-label" for="filterFrom">Desde</label>
                     <input id="filterFrom" type="datetime-local" class="form-control" [(ngModel)]="facade.filters.from" />
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label" for="filterTo">To</label>
+                    <label class="form-label" for="filterTo">Hasta</label>
                     <input id="filterTo" type="datetime-local" class="form-control" [(ngModel)]="facade.filters.to" />
                 </div>
                 <div class="col-12 d-flex gap-2 justify-content-end">
-                    <button cButton color="secondary" variant="outline" type="button" (click)="facade.clearFilters()">Clear</button>
-                    <button cButton color="primary" type="button" (click)="facade.applyFilters()">Apply filters</button>
+                    <button cButton color="secondary" variant="outline" type="button" (click)="facade.clearFilters()">Limpiar</button>
+                    <button cButton color="primary" type="button" (click)="facade.applyFilters()">Aplicar filtros</button>
                 </div>
             </div>
         </c-card-body>
@@ -46,12 +46,12 @@
     </c-alert>
 
     <div *ngIf="facade.loading" class="text-center py-5">
-        <c-spinner color="primary" label="Loading overview metrics"></c-spinner>
+        <c-spinner color="primary" label="Cargando metricas del resumen"></c-spinner>
     </div>
 
     <app-admin-overview-section *ngIf="!facade.loading && facade.metrics" [metrics]="facade.metrics"></app-admin-overview-section>
 
     <c-alert *ngIf="!facade.loading && !facade.metrics" color="info">
-        No metrics available.
+        No hay metricas disponibles.
     </c-alert>
 </section>
