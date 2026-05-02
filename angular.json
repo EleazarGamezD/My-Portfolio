@@ -122,7 +122,8 @@
               "buildTarget": "My-Portfolio:build:development"
             },
             	"local-development": {
-							"buildTarget": "My-Portfolio:build:local-development"
+							"buildTarget": "My-Portfolio:build:local-development",
+							"proxyConfig": "proxy.conf.local.json"
 						}
           },
           "defaultConfiguration": "local-development"
