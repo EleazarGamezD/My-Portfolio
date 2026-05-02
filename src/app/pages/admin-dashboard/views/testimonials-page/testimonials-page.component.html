@@ -1,0 +1,11 @@
+<c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
+
+<app-testimonials-list
+  [items]="items"
+  [loading]="loading"
+  [actionLoadingKey]="actionLoadingKey"
+  [pagination]="pagination"
+  (deleteItem)="onDelete($event)"
+  (toggleActive)="onToggleActive($event)"
+  (pageChange)="onPageChange($event)">
+</app-testimonials-list>

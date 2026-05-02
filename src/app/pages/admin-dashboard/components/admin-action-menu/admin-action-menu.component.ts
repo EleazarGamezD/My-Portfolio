@@ -32,6 +32,7 @@ export class AdminActionMenuComponent {
   @Input() canEdit = true;
   @Input() canDelete = true;
   @Input() canDeactivate = true;
+  @Input() deactivateLabel = 'Desactivar';
   @Input() editLink: readonly (string | number)[] | null = null;
   @Output() actionSelected = new EventEmitter<AdminActionMenuAction>();
 

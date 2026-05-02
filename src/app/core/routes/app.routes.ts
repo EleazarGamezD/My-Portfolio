@@ -170,18 +170,31 @@ export const routes: Routes = [
       {
         path: 'dashboard/testimonials',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/content-page/content-page.component')
+          import('@pages/admin-dashboard/views/testimonials-page/testimonials-page.component')
             .then(
-              (m) => m.AdminContentPageComponent,
+              (m) => m.AdminTestimonialsPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/testimonials/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/testimonial-form-page/testimonial-form-page.component')
+            .then(
+              (m) => m.AdminTestimonialFormPageComponent,
             ),
         data: {
-          resourceName: 'testimonials',
-          variant: 'testimonials',
-          sectionTitle: 'Testimonials',
-          createTitle: 'Create Testimonial',
-          emptyMessage: 'No testimonials found.',
-          kicker: 'Social Proof',
-          description: 'Maintain testimonial items and their ordering for the portfolio landing experience.',
+          mode: 'create',
+        },
+      },
+      {
+        path: 'dashboard/testimonials/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/testimonial-form-page/testimonial-form-page.component')
+            .then(
+              (m) => m.AdminTestimonialFormPageComponent,
+            ),
+        data: {
+          mode: 'edit',
         },
       },
       {

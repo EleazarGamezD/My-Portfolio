@@ -14,6 +14,28 @@ import { GlobalHttpService } from '@services/globalHttp/global-http.service';
   providedIn: 'root',
 })
 export class ContentService extends GlobalHttpService {
+  private buildPaginatedRoute(baseRoute: string, options: IPaginationOptions): string {
+    const params = new URLSearchParams();
+
+    if (typeof options.page === 'number') {
+      params.set('page', options.page.toString());
+    }
+
+    if (typeof options.limit === 'number') {
+      params.set('limit', options.limit.toString());
+    }
+
+    if (typeof options.sortBy === 'string' && options.sortBy.trim()) {
+      params.set('sortBy', options.sortBy.trim());
+    }
+
+    if (options.sortOrder === 'asc' || options.sortOrder === 'desc') {
+      params.set('sortOrder', options.sortOrder);
+    }
+
+    return params.size ? `${baseRoute}?${params.toString()}` : baseRoute;
+  }
+
   async createContentItem<T extends IApiContentItem | IApiResume>(
     resourceName: string,
     payload: Partial<T>,
@@ -50,28 +72,7 @@ export class ContentService extends GlobalHttpService {
   }
 
   async getTechSkillsPaginated(options: IPaginationOptions): Promise<IPaginationResponse<IApiTechSkill>> {
-    const params = new URLSearchParams();
-
-    if (typeof options.page === 'number') {
-      params.set('page', options.page.toString());
-    }
-
-    if (typeof options.limit === 'number') {
-      params.set('limit', options.limit.toString());
-    }
-
-    if (typeof options.sortBy === 'string' && options.sortBy.trim()) {
-      params.set('sortBy', options.sortBy.trim());
-    }
-
-    if (options.sortOrder === 'asc' || options.sortOrder === 'desc') {
-      params.set('sortOrder', options.sortOrder);
-    }
-
-    const route = params.size
-      ? `${API_CONTENT_ROUTES.getTechSkills}?${params.toString()}`
-      : API_CONTENT_ROUTES.getTechSkills;
-
+    const route = this.buildPaginatedRoute(API_CONTENT_ROUTES.getTechSkills, options);
     return this.makeRequest<IPaginationResponse<IApiTechSkill>, null>(route, null, RequestMethod.GET);
   }
 
@@ -89,6 +90,11 @@ export class ContentService extends GlobalHttpService {
       null,
       RequestMethod.GET,
     );
+  }
+
+  async getTestimonialsPaginated(options: IPaginationOptions): Promise<IPaginationResponse<IApiContentItem>> {
+    const route = this.buildPaginatedRoute(API_CONTENT_ROUTES.getTestimonials, options);
+    return this.makeRequest<IPaginationResponse<IApiContentItem>, null>(route, null, RequestMethod.GET);
   }
 
   async getSocialLinks(): Promise<IApiContentItem[]> {

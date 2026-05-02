@@ -5,7 +5,7 @@
     <ul cDropdownMenu>
         <li *ngIf="canEdit && editLink"><a cDropdownItem [routerLink]="editLink">Editar</a></li>
         <li *ngIf="canEdit && !editLink"><button cDropdownItem (click)="onAction('edit', $event)">Editar</button></li>
-        <li *ngIf="canDeactivate"><button cDropdownItem (click)="onAction('deactivate', $event)">Desactivar</button></li>
+        <li *ngIf="canDeactivate"><button cDropdownItem (click)="onAction('deactivate', $event)">{{ deactivateLabel }}</button></li>
         <li *ngIf="canDelete"><button cDropdownItem (click)="onAction('delete', $event)">Eliminar</button></li>
     </ul>
 </c-dropdown>
