@@ -14,116 +14,121 @@
     <c-card class="admin-page-surface" *ngIf="!notFound">
         <c-card-body>
             <div class="project-form">
-                <section class="project-form__section">
-                    <div class="project-form__section-head">
-                        <h3>Base Content</h3>
-                        <p>Core project identity in both languages. El slug se genera automaticamente.</p>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Titulo en espanol</label>
-                            <input cFormControl type="text" [(ngModel)]="draft.title!.es" />
+                <section>
+                    <div class="project-form__section">
+                        <div class="project-form__section-head">
+                            <h3>Base Content</h3>
+                            <p>Core project identity in both languages. El slug se genera automaticamente.</p>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Title in english</label>
-                            <input cFormControl type="text" [(ngModel)]="draft.title!.en" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Resumen en espanol</label>
-                            <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.es"></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Summary in english</label>
-                            <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.en"></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Descripcion en espanol</label>
-                            <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es"></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Description in english</label>
-                            <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en"></textarea>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="project-form__section">
-                    <div class="project-form__section-head">
-                        <h3>Media</h3>
-                        <p>Portada y galeria del proyecto.</p>
-                    </div>
-                    <div class="row g-4">
-                        <div class="col-lg-6">
-                            <label class="form-label">Cover image</label>
-                            <ng-container *ngIf="mode === 'create'; else editCover">
-                                <app-add-photo
-                                  [storageKey]="coverStorageKey"
-                                  [maxPhotos]="1"
-                                  [maxMb]="5"
-                                  [title]="'Project cover'"
-                                  [subTitle]="'Selecciona la portada del proyecto'"
-                                  [label]="'Select cover'"
-                                  [hint]="'Arrastra o selecciona una imagen'"
-                                  [urlsPreviews]="coverPreviewUrls"
-                                  (assetsChange)="onCoverAssetsChange($event)"
-                                  (uploadError)="onUploadError($event)">
-                                </app-add-photo>
-                            </ng-container>
-                            <ng-template #editCover>
-                                <app-photo-editor
-                                  [assets]="coverAssets"
-                                  [maxPhotos]="1"
-                                  [variant]="'single'"
-                                  [title]="'Project cover'"
-                                  [subTitle]="'Portada actual del proyecto.'"
-                                  [emptyLabel]="'Agregar portada'"
-                                  [addButtonLabel]="'Agregar'"
-                                  [changeButtonLabel]="'Cambiar'"
-                                  [removeButtonLabel]="'Eliminar'"
-                                  (assetsChange)="onCoverAssetsChange($event)"
-                                  (uploadError)="onUploadError($event)"></app-photo-editor>
-                            </ng-template>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-label">Gallery</label>
-                            <ng-container *ngIf="mode === 'create'; else editGallery">
-                                <app-add-photo
-                                  [storageKey]="galleryStorageKey"
-                                  [maxPhotos]="8"
-                                  [maxMb]="5"
-                                  [title]="'Project gallery'"
-                                  [subTitle]="'Agrega las imágenes del proyecto'"
-                                  [label]="'Add images'"
-                                  [hint]="'Arrastra o selecciona imágenes'"
-                                  [urlsPreviews]="galleryPreviewUrls"
-                                  (assetsChange)="onGalleryAssetsChange($event)"
-                                  (uploadError)="onUploadError($event)">
-                                </app-add-photo>
-                            </ng-container>
-                            <ng-template #editGallery>
-                                <app-photo-editor
-                                  [assets]="galleryAssets"
-                                  [maxPhotos]="8"
-                                  [variant]="'gallery'"
-                                  [title]="'Project gallery'"
-                                  [subTitle]="'Administra la galeria existente con acciones directas.'"
-                                  [emptyLabel]="'Agregar imagen a la galeria'"
-                                  [addButtonLabel]="'Agregar'"
-                                  [changeButtonLabel]="'Cambiar'"
-                                  [removeButtonLabel]="'Eliminar'"
-                                  (assetsChange)="onGalleryAssetsChange($event)"
-                                  (uploadError)="onUploadError($event)"></app-photo-editor>
-                            </ng-template>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Titulo en espanol</label>
+                                <input cFormControl type="text" [(ngModel)]="draft.title!.es" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Title in english</label>
+                                <input cFormControl type="text" [(ngModel)]="draft.title!.en" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Resumen en espanol</label>
+                                <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.es"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Summary in english</label>
+                                <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.en"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Descripcion en espanol</label>
+                                <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Description in english</label>
+                                <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en"></textarea>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                <section class="project-form__section">
-                    <div class="project-form__section-head">
-                        <h3>Delivery</h3>
-                        <p>Skills relacionadas, skill principal, links y estado de publicacion.</p>
+                <section>
+                    <div class="project-form__section">
+                        <div class="project-form__section-head">
+                            <h3>Media</h3>
+                            <p>Portada y galeria del proyecto.</p>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <label class="form-label">Cover image</label>
+                                <ng-container *ngIf="mode === 'create'; else editCover">
+                                    <app-add-photo
+                                      [storageKey]="coverStorageKey"
+                                      [maxPhotos]="1"
+                                      [maxMb]="5"
+                                      [title]="'Project cover'"
+                                      [subTitle]="'Selecciona la portada del proyecto'"
+                                      [label]="'Select cover'"
+                                      [hint]="'Arrastra o selecciona una imagen'"
+                                      [urlsPreviews]="coverPreviewUrls"
+                                      (assetsChange)="onCoverAssetsChange($event)"
+                                      (uploadError)="onUploadError($event)">
+                                    </app-add-photo>
+                                </ng-container>
+                                <ng-template #editCover>
+                                    <app-photo-editor
+                                      [assets]="coverAssets"
+                                      [maxPhotos]="1"
+                                      [variant]="'single'"
+                                      [title]="'Project cover'"
+                                      [subTitle]="'Portada actual del proyecto.'"
+                                      [emptyLabel]="'Agregar portada'"
+                                      [addButtonLabel]="'Agregar'"
+                                      [changeButtonLabel]="'Cambiar'"
+                                      [removeButtonLabel]="'Eliminar'"
+                                      (assetsChange)="onCoverAssetsChange($event)"
+                                      (uploadError)="onUploadError($event)"></app-photo-editor>
+                                </ng-template>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label">Gallery</label>
+                                <ng-container *ngIf="mode === 'create'; else editGallery">
+                                    <app-add-photo
+                                      [storageKey]="galleryStorageKey"
+                                      [maxPhotos]="8"
+                                      [maxMb]="5"
+                                      [title]="'Project gallery'"
+                                      [subTitle]="'Agrega las imágenes del proyecto'"
+                                      [label]="'Add images'"
+                                      [hint]="'Arrastra o selecciona imágenes'"
+                                      [urlsPreviews]="galleryPreviewUrls"
+                                      (assetsChange)="onGalleryAssetsChange($event)"
+                                      (uploadError)="onUploadError($event)">
+                                    </app-add-photo>
+                                </ng-container>
+                                <ng-template #editGallery>
+                                    <app-photo-editor
+                                      [assets]="galleryAssets"
+                                      [maxPhotos]="8"
+                                      [variant]="'gallery'"
+                                      [title]="'Project gallery'"
+                                      [subTitle]="'Administra la galeria existente con acciones directas.'"
+                                      [emptyLabel]="'Agregar imagen a la galeria'"
+                                      [addButtonLabel]="'Agregar'"
+                                      [changeButtonLabel]="'Cambiar'"
+                                      [removeButtonLabel]="'Eliminar'"
+                                      (assetsChange)="onGalleryAssetsChange($event)"
+                                      (uploadError)="onUploadError($event)"></app-photo-editor>
+                                </ng-template>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row g-3">
+                </section>
+
+                <section>
+                    <div class="project-form__section">
+                        <div class="project-form__section-head">
+                            <h3>Delivery</h3>
+                            <p>Skills relacionadas, skill principal, links y estado de publicacion.</p>
+                        </div>
+                        <div class="row g-3">
                         <div class="col-12">
                             <div class="project-skills-panel">
                                 <div class="project-skills-panel__header">
@@ -224,6 +229,7 @@
                               (skillIconAssetsChange)="facade.onTechSkillIconAssetsChange($event.skill, $event.assets)"
                               (imageUploadError)="facade.onImageUploadError($event)">
                             </app-admin-skills-section>
+                        </div>
                         </div>
                     </div>
                 </section>

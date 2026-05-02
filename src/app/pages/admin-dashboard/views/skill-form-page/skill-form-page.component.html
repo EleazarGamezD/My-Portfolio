@@ -19,122 +19,111 @@
       </div>
 
       <div class="skill-editor" *ngIf="!loading">
-        <section class="skill-hero">
-          <div class="skill-hero__copy">
-            <span class="skill-hero__eyebrow">{{ mode === 'create' ? 'New skill' : 'Skill editor' }}</span>
-            <h3>{{ draftLabel || 'Define the next technology in your catalog' }}</h3>
-            <p>
-              Usa un nombre claro, decide si debe estar activa y carga un icono consistente para reutilizarlo en
-              proyectos, filtros y vistas públicas.
-            </p>
+        <section>
+          <div class="skill-hero p-2">
+            <div class="skill-hero__topbar">
+              <span class="skill-hero__eyebrow">{{ mode === 'create' ? 'Nueva Tecnología' : 'Editar Tecnología' }}</span>
 
-            <div class="skill-hero__meta">
-              <div class="skill-hero__meta-card">
-                <span class="skill-hero__meta-label">Sync</span>
-                <strong>ES + EN unified</strong>
-                <small>El mismo label se replica en ambos idiomas.</small>
-              </div>
-
-              <div class="skill-hero__meta-card">
-                <span class="skill-hero__meta-label">Slug</span>
-                <strong>Auto generated</strong>
-                <small>El backend lo crea al guardar, no lo editas aquí.</small>
+              <div class="skill-status-pill" [class.skill-status-pill--inactive]="!draft.active">
+                <span class="skill-status-pill__dot"></span>
+                {{ statusLabel }}
               </div>
             </div>
+
+            <div class="skill-hero__copy">
+              <h3>{{ draftLabel || 'Define la próxima tecnología en tu catálogo' }}</h3>
+              <p>
+                Usa un nombre claro, decide si debe estar activa y carga un icono consistente para reutilizarlo en
+                proyectos, filtros y vistas públicas.
+              </p>
+
+              <div class="skill-hero__meta">
+                <div class="skill-hero__meta-card">
+                  <span class="skill-hero__meta-label">Sync</span>
+                  <strong>ES + EN unificado</strong>
+                  <small>El mismo label se replica en ambos idiomas.</small>
+                </div>
+
+                <div class="skill-hero__meta-card">
+                  <span class="skill-hero__meta-label">Slug</span>
+                  <strong>Auto generado</strong>
+                  <small>El backend lo crea al guardar, no lo editas aquí.</small>
+                </div>
+              </div>
+            </div>
+
+            <aside class="skill-hero__preview">
+              <div class="skill-preview-card">
+                <p class="skill-preview-card__eyebrow">Live preview</p>
+
+                <div class="skill-preview-card__tile">
+                  <div class="skill-preview-card__icon">
+                    <ng-container *ngIf="previewUrls[0] as previewUrl; else previewFallback">
+                      <img [src]="previewUrl" [alt]="draftLabel || 'Skill preview'" />
+                    </ng-container>
+                    <ng-template #previewFallback>
+                      <span>{{ draftLabel.charAt(0) || '?' }}</span>
+                    </ng-template>
+                  </div>
+
+                  <div class="skill-preview-card__copy">
+                    <strong>{{ draftLabel || 'Skill label' }}</strong>
+                    <span>{{ statusLabel }}</span>
+                  </div>
+                </div>
+              </div>
+            </aside>
           </div>
 
-          <aside class="skill-hero__preview">
-            <div class="skill-status-pill" [class.skill-status-pill--inactive]="!draft.active">
-              <span class="skill-status-pill__dot"></span>
-              {{ statusLabel }}
-            </div>
-
-            <div class="skill-preview-card">
-              <p class="skill-preview-card__eyebrow">Live preview</p>
-
-              <div class="skill-preview-card__tile">
-                <div class="skill-preview-card__icon">
-                  <ng-container *ngIf="previewUrls[0] as previewUrl; else previewFallback">
-                    <img [src]="previewUrl" [alt]="draftLabel || 'Skill preview'" />
-                  </ng-container>
-                  <ng-template #previewFallback>
-                    <span>{{ draftLabel.charAt(0) || '?' }}</span>
-                  </ng-template>
-                </div>
-
-                <div class="skill-preview-card__copy">
-                  <strong>{{ draftLabel || 'Skill label' }}</strong>
-                  <span>{{ statusLabel }}</span>
-                </div>
-              </div>
-            </div>
-          </aside>
         </section>
 
         <div class="skill-editor__grid">
-          <section class="skill-panel skill-panel--form">
-            <div class="skill-panel__head">
-              <h3>Core data</h3>
-              <p>La base de la skill queda concentrada en un solo label y un estado simple.</p>
-            </div>
-
-            <div class="skill-field-stack">
-              <div>
-                <label class="form-label">Skill label</label>
-                <input cFormControl type="text" [ngModel]="draftLabel" (ngModelChange)="onLabelChange($event)" placeholder="Angular" />
+          <section>
+            <div class="skill-panel skill-panel--form">
+              <div class="skill-panel__head">
+                <h3>Core data</h3>
+                <p>La base de la skill queda concentrada en un solo label y un estado simple.</p>
               </div>
 
-              <div class="skill-toggle-card">
+              <div class="skill-field-stack">
                 <div>
-                  <span class="skill-toggle-card__label">Visibility</span>
-                  <strong>{{ draft.active ? 'Available for projects' : 'Hidden from selection' }}</strong>
-                  <p>{{ draft.active ? 'Se puede usar en proyectos y vistas públicas.' : 'Se conserva en catálogo pero no se propone en la interfaz.' }}</p>
+                  <label class="form-label">Skill label</label>
+                  <input cFormControl type="text" [ngModel]="draftLabel" (ngModelChange)="onLabelChange($event)" placeholder="Angular" />
                 </div>
 
-                <label class="skill-form__check">
-                  <input cFormCheckInput type="checkbox" [(ngModel)]="draft.active" />
-                  Active
-                </label>
+                <div class="skill-toggle-card">
+                  <div>
+                    <span class="skill-toggle-card__label">Visibility</span>
+                    <strong>{{ draft.active ? 'Available for projects' : 'Hidden from selection' }}</strong>
+                    <p>{{ draft.active ? 'Se puede usar en proyectos y vistas públicas.' : 'Se conserva en catálogo pero no se propone en la interfaz.' }}</p>
+                  </div>
+
+                  <label class="skill-form__check">
+                    <input cFormCheckInput type="checkbox" [(ngModel)]="draft.active" />
+                    Active
+                  </label>
+                </div>
               </div>
             </div>
           </section>
 
-          <section class="skill-panel skill-panel--media">
-            <div class="skill-panel__head">
-              <h3>Icon asset</h3>
-              <p>Sube un icono limpio y reconocible. Esta misma pieza se reutiliza en tarjetas, filtros y detalles.</p>
+          <section>
+            <div class="skill-panel skill-panel--media">
+              <div class="skill-panel__head">
+                <h3>Icon asset</h3>
+                <p>Sube un icono limpio y reconocible. Esta misma pieza se reutiliza en tarjetas, filtros y detalles.</p>
+              </div>
+
+              <ng-container *ngIf="mode === 'create'; else editIcon">
+                <app-add-photo [storageKey]="iconStorageKey" [maxPhotos]="1" [maxMb]="3" [title]="'Skill icon'" [subTitle]="'Usa una imagen clara, centrada y facil de reconocer.'" [label]="'Seleccionar icono'" [hint]="'Arrastra o selecciona una imagen'" [urlsPreviews]="previewUrls" (assetsChange)="onIconAssetsChange($event)" (uploadError)="onUploadError($event)">
+                </app-add-photo>
+              </ng-container>
+
+              <ng-template #editIcon>
+                <app-photo-editor [assets]="iconAssets" [maxPhotos]="1" [variant]="'single'" [title]="'Skill icon'" [subTitle]="'Agrega, cambia o elimina el icono principal.'" [emptyLabel]="'Agregar icono'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Eliminar'" (assetsChange)="onIconAssetsChange($event)" (uploadError)="onUploadError($event)">
+                </app-photo-editor>
+              </ng-template>
             </div>
-
-            <ng-container *ngIf="mode === 'create'; else editIcon">
-              <app-add-photo
-                [storageKey]="iconStorageKey"
-                [maxPhotos]="1"
-                [maxMb]="3"
-                [title]="'Skill icon'"
-                [subTitle]="'Usa una imagen clara, centrada y facil de reconocer.'"
-                [label]="'Seleccionar icono'"
-                [hint]="'Arrastra o selecciona una imagen'"
-                [urlsPreviews]="previewUrls"
-                (assetsChange)="onIconAssetsChange($event)"
-                (uploadError)="onUploadError($event)">
-              </app-add-photo>
-            </ng-container>
-
-            <ng-template #editIcon>
-              <app-photo-editor
-                [assets]="iconAssets"
-                [maxPhotos]="1"
-                [variant]="'single'"
-                [title]="'Skill icon'"
-                [subTitle]="'Agrega, cambia o elimina el icono principal.'"
-                [emptyLabel]="'Agregar icono'"
-                [addButtonLabel]="'Agregar'"
-                [changeButtonLabel]="'Cambiar'"
-                [removeButtonLabel]="'Eliminar'"
-                (assetsChange)="onIconAssetsChange($event)"
-                (uploadError)="onUploadError($event)">
-              </app-photo-editor>
-            </ng-template>
           </section>
         </div>
       </div>
