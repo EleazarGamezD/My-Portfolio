@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { ProjectsService } from '@core/services/projects/projects.service';
 import { StorageService } from '@core/services/storage/storage.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
+import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/skills-section/skills-section.component';
 import { AddPhotoComponent } from '@pages/admin-dashboard/components/shared/add-photo/add-photo.component';
 import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/photo-editor/photo-editor.component';
 
@@ -24,6 +26,7 @@ type ProjectFormMode = 'create' | 'edit';
     ButtonModule,
     CardModule,
     FormModule,
+    AdminSkillsSectionComponent,
     AddPhotoComponent,
     PhotoEditorComponent,
   ],
@@ -33,9 +36,9 @@ type ProjectFormMode = 'create' | 'edit';
 export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
   mode: ProjectFormMode = 'create';
   draft: Partial<IProject> = this.createEmptyDraft();
-  stackValue = '';
   projectId = '';
   notFound = false;
+  showSkillsLibrary = false;
 
   constructor(
     public readonly facade: AdminDashboardFacade,
@@ -51,7 +54,7 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
 
     if (this.mode === 'create') {
       this.draft = this.facade.newProject;
-      this.stackValue = this.facade.newProjectStackValue;
+      this.syncDraftSkills();
       return;
     }
 
@@ -72,7 +75,7 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
     }
 
     this.draft = structuredClone(project);
-    this.stackValue = project.stack?.join(', ') || '';
+    this.syncDraftSkills();
   }
 
   get pageTitle(): string {
@@ -83,6 +86,34 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
     return this.mode === 'create'
       ? 'Use a dedicated Booking-style form to create a new portfolio project.'
       : 'Update project data in a dedicated form instead of editing inside the table.';
+  }
+
+  get availableSkills(): IApiTechSkill[] {
+    return this.facade.techSkills;
+  }
+
+  get selectedSkills(): IApiTechSkill[] {
+    const selectedIds = this.draft.skillIds ?? [];
+    if (selectedIds.length === 0) {
+      return [];
+    }
+
+    const skillMap = new Map(
+      this.availableSkills
+        .filter((skill): skill is IApiTechSkill & { _id: string } => typeof skill._id === 'string' && Boolean(skill._id))
+        .map((skill) => [skill._id, skill]),
+    );
+
+    const orderedSkills: IApiTechSkill[] = [];
+
+    for (const id of selectedIds) {
+      const skill = skillMap.get(id);
+      if (skill) {
+        orderedSkills.push(skill);
+      }
+    }
+
+    return orderedSkills;
   }
 
   get coverAssets(): IProjectAsset[] {
@@ -115,13 +146,12 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
   }
 
   async submit(): Promise<void> {
-    this.draft.stack = this.stackValue
-      .split(',')
-      .map((item) => item.trim())
-      .filter(Boolean);
+    this.syncDraftSkills();
+    this.draft.stack = this.selectedSkills
+      .map((skill) => this.getSkillLabel(skill))
+      .filter((value): value is string => Boolean(value));
 
     if (this.mode === 'create') {
-      this.facade.newProjectStackValue = this.stackValue;
       await this.facade.createProject();
     } else {
       await this.facade.saveProject(this.draft as IProject);
@@ -154,6 +184,48 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
     this.facade.onImageUploadError(message);
   }
 
+  toggleSkillSelection(skillId: string): void {
+    const currentIds = new Set(this.draft.skillIds ?? []);
+
+    if (currentIds.has(skillId)) {
+      currentIds.delete(skillId);
+    } else {
+      currentIds.add(skillId);
+    }
+
+    this.draft.skillIds = Array.from(currentIds);
+    this.syncDraftSkills();
+  }
+
+  setPrimarySkill(skillId: string): void {
+    if (!this.isSkillSelected(skillId)) {
+      return;
+    }
+
+    this.draft.primarySkillId = skillId;
+    this.syncDraftSkills();
+  }
+
+  isSkillSelected(skillId: string): boolean {
+    return (this.draft.skillIds ?? []).includes(skillId);
+  }
+
+  isPrimarySkill(skillId: string): boolean {
+    return this.draft.primarySkillId === skillId;
+  }
+
+  getSkillLabel(skill: IApiTechSkill): string {
+    return skill.label?.es || skill.label?.en || skill.value || '';
+  }
+
+  getSkillIconUrl(skill: IApiTechSkill): string | null {
+    return resolveImageAssetUrl(skill.icon ?? null);
+  }
+
+  toggleSkillsLibrary(): void {
+    this.showSkillsLibrary = !this.showSkillsLibrary;
+  }
+
   private async clearImageDraftStorage(): Promise<void> {
     await Promise.all([
       this.storageService.deleteStorage(this.coverStorageKey),
@@ -163,11 +235,14 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
 
   private createEmptyDraft(): Partial<IProject> {
     return {
-      slug: '',
       title: { es: '', en: '' },
       summary: { es: '', en: '' },
       description: { es: '', en: '' },
       stack: [],
+      skillIds: [],
+      primarySkillId: null,
+      skills: [],
+      primarySkill: null,
       images: [],
       coverImage: null,
       projectLink: '',
@@ -176,5 +251,26 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
       status: 'draft',
       publishedAt: '',
     };
+  }
+
+  private syncDraftSkills(): void {
+    const availableSkillIds = new Set(
+      this.availableSkills
+        .filter((skill): skill is IApiTechSkill & { _id: string } => typeof skill._id === 'string' && Boolean(skill._id))
+        .map((skill) => skill._id),
+    );
+
+    const derivedIds =
+      this.draft.skillIds?.filter((id): id is string => typeof id === 'string' && availableSkillIds.has(id)) ??
+      [];
+
+    this.draft.skillIds = [...new Set(derivedIds)];
+    this.draft.skills = this.selectedSkills;
+
+    if (!this.draft.primarySkillId || !this.draft.skillIds.includes(this.draft.primarySkillId)) {
+      this.draft.primarySkillId = this.draft.skillIds[0] ?? null;
+    }
+
+    this.draft.primarySkill = this.selectedSkills.find((skill) => skill._id === this.draft.primarySkillId) ?? null;
   }
 }

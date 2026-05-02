@@ -17,18 +17,14 @@
                 <section class="project-form__section">
                     <div class="project-form__section-head">
                         <h3>Base Content</h3>
-                        <p>Core project identity in both languages.</p>
+                        <p>Core project identity in both languages. El slug se genera automaticamente.</p>
                     </div>
                     <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Slug</label>
-                            <input cFormControl type="text" [(ngModel)]="draft.slug" />
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Titulo en espanol</label>
                             <input cFormControl type="text" [(ngModel)]="draft.title!.es" />
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Title in english</label>
                             <input cFormControl type="text" [(ngModel)]="draft.title!.en" />
                         </div>
@@ -125,12 +121,70 @@
                 <section class="project-form__section">
                     <div class="project-form__section-head">
                         <h3>Delivery</h3>
-                        <p>Stack, links y estado de publicacion.</p>
+                        <p>Skills relacionadas, skill principal, links y estado de publicacion.</p>
                     </div>
                     <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Stack CSV</label>
-                            <input cFormControl type="text" [(ngModel)]="stackValue" placeholder="Angular, Express, MongoDB" />
+                        <div class="col-12">
+                            <div class="project-skills-panel">
+                                <div class="project-skills-panel__header">
+                                    <div>
+                                        <label class="form-label mb-1">Project skills</label>
+                                        <p class="project-skills-panel__copy mb-0">
+                                            Selecciona skills existentes y marca una como principal.
+                                        </p>
+                                    </div>
+
+                                    <button
+                                      cButton
+                                      color="secondary"
+                                      variant="outline"
+                                      type="button"
+                                      (click)="toggleSkillsLibrary()">
+                                        {{ showSkillsLibrary ? 'Hide skills manager' : 'Manage skills library' }}
+                                    </button>
+                                </div>
+
+                                <div class="project-skills-grid" *ngIf="availableSkills.length > 0; else noSkillsState">
+                                    <div
+                                      class="project-skill-card"
+                                      *ngFor="let skill of availableSkills"
+                                      [class.is-selected]="skill._id && isSkillSelected(skill._id)"
+                                      [class.is-primary]="skill._id && isPrimarySkill(skill._id)"
+                                      role="button"
+                                      tabindex="0"
+                                      (click)="skill._id && toggleSkillSelection(skill._id)">
+                                        <div class="project-skill-card__icon">
+                                            <ng-container *ngIf="getSkillIconUrl(skill) as iconUrl; else skillFallbackIcon">
+                                                <img [src]="iconUrl" [alt]="getSkillLabel(skill)" />
+                                            </ng-container>
+                                            <ng-template #skillFallbackIcon>
+                                                <span>{{ getSkillLabel(skill).charAt(0) || '?' }}</span>
+                                            </ng-template>
+                                        </div>
+
+                                        <div class="project-skill-card__body">
+                                            <strong>{{ getSkillLabel(skill) || 'Skill' }}</strong>
+                                            <span *ngIf="skill._id && isPrimarySkill(skill._id)">Primary skill</span>
+                                        </div>
+
+                                        <div class="project-skill-card__actions" *ngIf="skill._id && isSkillSelected(skill._id)">
+                                            <button
+                                              type="button"
+                                              class="project-skill-card__primary"
+                                              [class.is-active]="isPrimarySkill(skill._id)"
+                                              (click)="$event.stopPropagation(); setPrimarySkill(skill._id)">
+                                                Main
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <ng-template #noSkillsState>
+                                    <div class="project-skills-empty">
+                                        <p class="mb-0">No hay skills creadas todavia. Abre el gestor y crea la primera.</p>
+                                    </div>
+                                </ng-template>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Project link</label>
@@ -153,6 +207,23 @@
                                 <input cFormCheckInput type="checkbox" [(ngModel)]="draft.featured" />
                                 Featured
                             </label>
+                        </div>
+                        <div class="col-12" *ngIf="showSkillsLibrary">
+                            <app-admin-skills-section
+                              [sectionTitle]="'Skills library'"
+                              [createTitle]="'Create skill'"
+                              [emptyMessage]="'No skills found.'"
+                              [skills]="facade.techSkills"
+                              [draft]="facade.newContentItems.techSkills"
+                              [contentLoading]="facade.contentLoading"
+                              [actionLoadingKey]="facade.actionLoadingKey"
+                              (createSkill)="facade.createContentItem('techSkills')"
+                              (saveSkill)="facade.saveContentItem('techSkills', $event)"
+                              (deleteSkill)="facade.deleteContentItem('techSkills', $event)"
+                              (draftIconAssetsChange)="facade.onTechSkillDraftIconAssetsChange($event)"
+                              (skillIconAssetsChange)="facade.onTechSkillIconAssetsChange($event.skill, $event.assets)"
+                              (imageUploadError)="facade.onImageUploadError($event)">
+                            </app-admin-skills-section>
                         </div>
                     </div>
                 </section>

@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { IAdminDashboardFilters, IAdminUser } from '@core/interfaces/admin/admin.interface';
-import { IApiContentItem, IApiHeroSlide, IApiProfile, IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
+import { IApiContentItem, IApiHeroSlide, IApiProfile, IApiResume, IApiTechSkill, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse, IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
@@ -34,7 +34,7 @@ export class AdminDashboardFacade {
     hasNextPage: false,
     hasPrevPage: false,
   };
-  techSkills: IApiContentItem[] = [];
+  techSkills: IApiTechSkill[] = [];
   experience: IApiContentItem[] = [];
   testimonials: IApiContentItem[] = [];
   socialLinks: IApiContentItem[] = [];
@@ -48,7 +48,7 @@ export class AdminDashboardFacade {
   newProjectImagesValue = '';
   readonly newResume: Partial<IApiResume> = this.createEmptyResumeDraft();
   readonly newContentItems: Record<Exclude<ContentResourceName, 'resumes'>, Partial<IApiContentItem>> = {
-    techSkills: this.createEmptyContentDraft(),
+    techSkills: this.createEmptySkillDraft(),
     experience: this.createEmptyContentDraft(),
     testimonials: this.createEmptyContentDraft(),
     socialLinks: this.createEmptyContentDraft(),
@@ -196,11 +196,12 @@ export class AdminDashboardFacade {
     }
 
     const payload: Partial<IProject> = {
-      slug: project.slug,
       title: project.title,
       summary: project.summary,
       description: project.description,
       stack: project.stack,
+      skillIds: project.skillIds,
+      primarySkillId: project.primarySkillId,
       images: project.images,
       coverImage: project.coverImage,
       projectLink: project.projectLink,
@@ -246,21 +247,19 @@ export class AdminDashboardFacade {
 
   async createProject(): Promise<void> {
     const title = this.getLocalizedText(this.newProject.title);
-    if (!this.newProject.slug || title === '-') {
-      this.contentError = 'Project slug and title are required.';
+    if (title === '-') {
+      this.contentError = 'Project title is required.';
       this.showErrorToast(this.contentError, 'Projects');
       return;
     }
 
     const payload: Partial<IProject> = {
-      slug: this.newProject.slug,
       title: this.newProject.title,
       summary: this.newProject.summary ?? { es: '', en: '' },
       description: this.newProject.description ?? { es: '', en: '' },
-      stack: this.newProjectStackValue
-        .split(',')
-        .map((item) => item.trim())
-        .filter(Boolean),
+      stack: this.newProject.stack ?? [],
+      skillIds: this.newProject.skillIds ?? [],
+      primarySkillId: this.newProject.primarySkillId ?? null,
       coverImage: this.newProject.coverImage ?? null,
       images: this.newProject.images ?? [],
       projectLink: this.newProject.projectLink,
@@ -358,6 +357,33 @@ export class AdminDashboardFacade {
     const draft = this.newContentItems[resourceName];
     const name = this.getLocalizedText(draft.label || draft.title);
 
+    if (resourceName === 'techSkills') {
+      const normalizedLabel = this.normalizeSkillLabel(draft.label?.es || draft.label?.en || draft.value || '');
+
+      if (!normalizedLabel) {
+        this.contentError = 'Skill label is required.';
+        this.showErrorToast(this.contentError, 'Skills');
+        return;
+      }
+
+      const payload: Partial<IApiTechSkill> = {
+        label: { es: normalizedLabel, en: normalizedLabel },
+        title: { es: normalizedLabel, en: normalizedLabel },
+        value: normalizedLabel,
+        icon: draft.icon ?? null,
+        order: draft.order,
+        active: draft.active ?? true,
+      };
+
+      await this.runContentAction(`${resourceName}-create`, async () => {
+        await this.contentService.createContentItem(resourceName, payload);
+        this.resetContentDraft(resourceName);
+        await this.loadContentData();
+        this.actionMessage = `${resourceName} item created.`;
+      });
+      return;
+    }
+
     if (!draft.slug || name === '-') {
       this.contentError = `Slug and label are required to create ${resourceName}.`;
       this.showErrorToast(this.contentError, 'Content');
@@ -421,7 +447,9 @@ export class AdminDashboardFacade {
       return;
     }
 
-    const payload = this.getContentPayload(item);
+    const payload = resourceName === 'techSkills'
+      ? this.getTechSkillPayload(item as IApiTechSkill)
+      : this.getContentPayload(item);
 
     await this.runContentAction(`${resourceName}-save-${item._id}`, async () => {
       await this.contentService.updateContentItem(resourceName, item._id!, payload);
@@ -556,6 +584,17 @@ export class AdminDashboardFacade {
     this.contentError = null;
   }
 
+  onTechSkillDraftIconAssetsChange(assets: IProjectAsset[]): void {
+    const draft = this.newContentItems.techSkills as Partial<IApiTechSkill>;
+    draft.icon = assets[0] ?? null;
+    this.contentError = null;
+  }
+
+  onTechSkillIconAssetsChange(skill: IApiTechSkill, assets: IProjectAsset[]): void {
+    skill.icon = assets[0] ?? null;
+    this.contentError = null;
+  }
+
   onProjectCoverAssetsChange(project: IProject, assets: IProjectAsset[]): void {
     project.coverImage = assets[0] ?? null;
     this.contentError = null;
@@ -620,11 +659,14 @@ export class AdminDashboardFacade {
 
   private createEmptyProjectDraft(): Partial<IProject> {
     return {
-      slug: '',
       title: { es: '', en: '' },
       summary: { es: '', en: '' },
       description: { es: '', en: '' },
       stack: [],
+      skillIds: [],
+      primarySkillId: null,
+      skills: [],
+      primarySkill: null,
       images: [],
       coverImage: null,
       projectLink: '',
@@ -644,6 +686,18 @@ export class AdminDashboardFacade {
       value: '',
       icon: '',
       href: '',
+      order: 0,
+      active: true,
+      metadata: {},
+    };
+  }
+
+  private createEmptySkillDraft(): Partial<IApiTechSkill> {
+    return {
+      label: { es: '', en: '' },
+      title: { es: '', en: '' },
+      value: '',
+      icon: null,
       order: 0,
       active: true,
       metadata: {},
@@ -723,6 +777,30 @@ export class AdminDashboardFacade {
       mimeType: 'mimeType' in item ? item.mimeType : undefined,
       base64: 'base64' in item ? item.base64 : undefined,
     };
+  }
+
+  private getTechSkillPayload(item: IApiTechSkill): Partial<IApiTechSkill> {
+    const normalizedLabel = this.normalizeSkillLabel(item.label?.es || item.label?.en || item.value || '');
+
+    return {
+      label: { es: normalizedLabel, en: normalizedLabel },
+      title: { es: normalizedLabel, en: normalizedLabel },
+      value: normalizedLabel,
+      icon: item.icon ?? null,
+      order: item.order,
+      active: item.active,
+      metadata: item.metadata,
+    };
+  }
+
+  private normalizeSkillLabel(value: string): string {
+    return value
+      .trim()
+      .replace(/\s+/g, ' ')
+      .split(' ')
+      .filter(Boolean)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ');
   }
 
   private async runContentAction(actionKey: string, callback: () => Promise<void>): Promise<void> {

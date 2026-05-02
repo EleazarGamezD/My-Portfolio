@@ -7,13 +7,10 @@
     <div class="dashboard-create-box mb-4">
       <h6 class="mb-3">Create Project</h6>
       <div class="row g-3">
-        <div class="col-md-4">
-          <input cFormControl sizing="sm" type="text" [(ngModel)]="newProject.slug" placeholder="Slug" />
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <input cFormControl sizing="sm" type="text" [(ngModel)]="newProject.title!.es" placeholder="Title ES" />
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <input cFormControl sizing="sm" type="text" [(ngModel)]="newProject.title!.en" placeholder="Title EN" />
         </div>
         <div class="col-md-6">
@@ -88,7 +85,6 @@
         <thead>
           <tr>
             <th>Title</th>
-            <th>Slug</th>
             <th>Links</th>
             <th>Media</th>
             <th>Status</th>
@@ -104,9 +100,6 @@
                 <input cFormControl sizing="sm" type="text" [(ngModel)]="project.title!.es" placeholder="Title ES" />
                 <input cFormControl sizing="sm" type="text" [(ngModel)]="project.title!.en" placeholder="Title EN" />
               </div>
-            </td>
-            <td>
-              <input cFormControl sizing="sm" type="text" [(ngModel)]="project.slug" />
             </td>
             <td>
               <div class="d-flex flex-column gap-2">

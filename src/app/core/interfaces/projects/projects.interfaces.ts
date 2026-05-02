@@ -1,3 +1,5 @@
+import type { IApiTechSkill } from '@core/interfaces/content/content.interface';
+
 export interface ILocalizedText {
   es?: string;
   en?: string;
@@ -20,6 +22,10 @@ export interface IProject {
   summary?: ILocalizedText;
   description?: ILocalizedText;
   stack?: string[];
+  skillIds?: string[];
+  primarySkillId?: string | null;
+  skills?: IApiTechSkill[];
+  primarySkill?: IApiTechSkill | null;
   images?: Array<string | IProjectAsset>;
   coverImage?: string | IProjectAsset | null;
   projectLink?: string;

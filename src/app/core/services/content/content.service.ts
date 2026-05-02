@@ -4,7 +4,9 @@ import {
   IApiContentItem,
   IApiProfile,
   IApiResume,
+  IApiTechSkill,
 } from '@core/interfaces/content/content.interface';
+import { IPaginationOptions, IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
 
@@ -39,12 +41,38 @@ export class ContentService extends GlobalHttpService {
     );
   }
 
-  async getTechSkills(): Promise<IApiContentItem[]> {
-    return this.makeRequest<IApiContentItem[], null>(
+  async getTechSkills(): Promise<IApiTechSkill[]> {
+    return this.makeRequest<IApiTechSkill[], null>(
       API_CONTENT_ROUTES.getTechSkills,
       null,
       RequestMethod.GET,
     );
+  }
+
+  async getTechSkillsPaginated(options: IPaginationOptions): Promise<IPaginationResponse<IApiTechSkill>> {
+    const params = new URLSearchParams();
+
+    if (typeof options.page === 'number') {
+      params.set('page', options.page.toString());
+    }
+
+    if (typeof options.limit === 'number') {
+      params.set('limit', options.limit.toString());
+    }
+
+    if (typeof options.sortBy === 'string' && options.sortBy.trim()) {
+      params.set('sortBy', options.sortBy.trim());
+    }
+
+    if (options.sortOrder === 'asc' || options.sortOrder === 'desc') {
+      params.set('sortOrder', options.sortOrder);
+    }
+
+    const route = params.size
+      ? `${API_CONTENT_ROUTES.getTechSkills}?${params.toString()}`
+      : API_CONTENT_ROUTES.getTechSkills;
+
+    return this.makeRequest<IPaginationResponse<IApiTechSkill>, null>(route, null, RequestMethod.GET);
   }
 
   async getExperience(): Promise<IApiContentItem[]> {

@@ -1,0 +1,165 @@
+<c-card class="admin-section-card">
+  <c-card-body>
+    <div class="skills-header">
+      <div>
+        <h5 class="card-title mb-0">{{ sectionTitle }}</h5>
+        <p class="skills-copy mb-0">Label unico, slug automatico e icono persistido.</p>
+      </div>
+      <c-badge color="light" shape="rounded-pill">{{ totalItems }}</c-badge>
+    </div>
+
+    <div class="dashboard-create-box skills-create-box">
+      <div class="skills-create-box__header">
+        <div>
+          <h6 class="mb-1">{{ createTitle }}</h6>
+          <p class="mb-0">El label se replica a espanol e ingles automaticamente.</p>
+        </div>
+      </div>
+
+      <div class="row g-4 align-items-start">
+        <div class="col-lg-5">
+          <label class="form-label">Skill label</label>
+          <input
+            cFormControl
+            sizing="sm"
+            type="text"
+            [ngModel]="draftLabel"
+            (ngModelChange)="onDraftLabelChange($event)"
+            placeholder="Angular" />
+        </div>
+
+        <div class="col-lg-4">
+          <label class="form-label">Skill icon</label>
+          <app-add-photo
+            [storageKey]="draftStorageKey"
+            [maxPhotos]="1"
+            [maxMb]="3"
+            [title]="'Skill icon'"
+            [subTitle]="'Sube el icono de la skill'"
+            [label]="'Seleccionar icono'"
+            [hint]="'Arrastra o selecciona una imagen'"
+            [urlsPreviews]="draftIconPreviewUrls"
+            (assetsChange)="draftIconAssetsChange.emit($event)"
+            (uploadError)="imageUploadError.emit($event)">
+          </app-add-photo>
+        </div>
+
+        <div class="col-lg-3 skills-create-box__actions">
+          <button
+            cButton
+            color="primary"
+            type="button"
+            (click)="createSkill.emit()"
+            [disabled]="isActionLoading('techSkills-create')">
+            Create skill
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
+      <c-spinner size="sm" color="primary"></c-spinner>
+      <span>Loading skills...</span>
+    </div>
+
+    <div class="skills-grid" *ngIf="!contentLoading && skills.length > 0; else emptySkills">
+      <article class="skill-card" *ngFor="let skill of skills">
+        <div class="skill-card__summary">
+          <div class="skill-card__media">
+            <ng-container *ngIf="getSkillIconAssets(skill)[0] as iconAsset; else iconPlaceholder">
+              <img [src]="iconAsset.url || iconAsset.file || ''" [alt]="getSkillLabel(skill)" />
+            </ng-container>
+            <ng-template #iconPlaceholder>
+              <span>{{ getSkillLabel(skill).charAt(0) || '?' }}</span>
+            </ng-template>
+          </div>
+
+          <div class="skill-card__meta">
+            <h6>{{ getSkillLabel(skill) || 'Skill without label' }}</h6>
+            <div class="skill-card__badges">
+              <c-badge [color]="skill.active ? 'success' : 'secondary'">
+                {{ skill.active ? 'active' : 'inactive' }}
+              </c-badge>
+            </div>
+          </div>
+
+          <app-admin-action-menu
+            [canDeactivate]="false"
+            [canEdit]="true"
+            [canDelete]="true"
+            [editLink]="null"
+            (actionSelected)="onSkillAction(skill, $event)">
+          </app-admin-action-menu>
+        </div>
+
+        <div class="skill-card__editor" *ngIf="isEditing(skill)">
+          <div class="row g-4">
+            <div class="col-lg-5">
+              <label class="form-label">Skill label</label>
+              <input
+                cFormControl
+                sizing="sm"
+                type="text"
+                [ngModel]="getSkillLabel(skill)"
+                (ngModelChange)="onSkillLabelChange(skill, $event)" />
+            </div>
+
+            <div class="col-lg-4">
+              <label class="form-label">Skill icon</label>
+              <app-photo-editor
+                [assets]="getSkillIconAssets(skill)"
+                [maxPhotos]="1"
+                [variant]="'single'"
+                [title]="'Skill icon'"
+                [subTitle]="'Agrega, cambia o elimina el icono.'"
+                [emptyLabel]="'Agregar icono'"
+                [addButtonLabel]="'Agregar'"
+                [changeButtonLabel]="'Cambiar'"
+                [removeButtonLabel]="'Eliminar'"
+                (assetsChange)="skillIconAssetsChange.emit({ skill, assets: $event })"
+                (uploadError)="imageUploadError.emit($event)"></app-photo-editor>
+            </div>
+
+            <div class="col-lg-3">
+              <label class="form-label">Status</label>
+              <label class="skill-card__toggle">
+                <input cFormCheckInput type="checkbox" [(ngModel)]="skill.active" />
+                Active
+              </label>
+            </div>
+          </div>
+
+          <div class="skill-card__actions">
+            <button cButton color="secondary" variant="outline" type="button" (click)="cancelEdit(skill)">Cancel</button>
+            <button
+              cButton
+              color="primary"
+              type="button"
+              (click)="commitEdit(skill)"
+              [disabled]="isActionLoading('techSkills-save-' + skill._id)">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <ng-template #emptySkills>
+      <p class="text-muted mb-0" *ngIf="!contentLoading">{{ emptyMessage }}</p>
+    </ng-template>
+
+    <div class="skills-pagination" *ngIf="hasPagination">
+      <p class="skills-pagination__summary mb-0">
+        Page {{ currentPage }} of {{ totalPages }}
+      </p>
+      <div class="skills-pagination__actions">
+        <button cButton color="secondary" variant="outline" type="button" (click)="changePage(currentPage - 1)">
+          Prev
+        </button>
+        <button cButton color="secondary" variant="outline" type="button" (click)="changePage(currentPage + 1)">
+          Next
+        </button>
+      </div>
+    </div>
+  </c-card-body>
+</c-card>

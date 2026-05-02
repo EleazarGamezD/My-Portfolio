@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -85,11 +86,15 @@ export class ProjectDetailBoxComponent implements OnInit {
     if (!this.project) {
       return [];
     }
-    return Array.isArray(this.project.stack) ? this.project.stack : [];
+    return Array.isArray(this.project.skills) ? this.project.skills : [];
   }
 
-  get projectSlug() {
-    return this.project?.slug || this.project?._id || '';
+  get projectTechnologyLabels() {
+    if (this.projectTechnologies.length > 0) {
+      return this.projectTechnologies.map((skill) => this.getSkillLabel(skill)).filter(Boolean);
+    }
+
+    return Array.isArray(this.project?.stack) ? this.project.stack : [];
   }
 
   get galleryImages() {
@@ -119,6 +124,21 @@ export class ProjectDetailBoxComponent implements OnInit {
 
   selectImage(image: string) {
     this.activeImage = image;
+  }
+
+  getSkillLabel(skill: IApiTechSkill): string {
+    return this.i18nService.selectText(
+      skill.label?.es || skill.value || '',
+      skill.label?.en || skill.label?.es || skill.value || '',
+    );
+  }
+
+  getSkillIcon(skill: IApiTechSkill): string | null {
+    return resolveImageAssetUrl(skill.icon ?? null);
+  }
+
+  isPrimarySkill(skill: IApiTechSkill): boolean {
+    return Boolean(skill._id && this.project?.primarySkill?._id === skill._id);
   }
 
   private resolveProjectAsset(asset?: string | IProjectAsset | null) {

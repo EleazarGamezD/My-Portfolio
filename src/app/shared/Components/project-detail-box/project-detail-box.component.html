@@ -40,19 +40,28 @@
             <div class="project-meta-list">
               <div class="project-meta-item">
                 <span class="project-meta-label">{{ t('project.details.technologies') }}</span>
-                <div class="project-chip-list">
-                  @for (technology of projectTechnologies; track technology) {
-                    <span class="project-chip">{{ technology }}</span>
-                  }
-                </div>
+                @if (projectTechnologies.length > 0) {
+                  <div class="project-skill-list">
+                    @for (skill of projectTechnologies; track skill._id || skill.slug || $index) {
+                      <div class="project-skill-chip" [class.is-primary]="isPrimarySkill(skill)">
+                        @if (getSkillIcon(skill); as skillIcon) {
+                          <img [src]="skillIcon" [alt]="getSkillLabel(skill)" />
+                        }
+                        <span>{{ getSkillLabel(skill) }}</span>
+                        @if (isPrimarySkill(skill)) {
+                          <small>Main</small>
+                        }
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <div class="project-chip-list">
+                    @for (technology of projectTechnologyLabels; track technology) {
+                      <span class="project-chip">{{ technology }}</span>
+                    }
+                  </div>
+                }
               </div>
-
-              @if (projectSlug) {
-                <div class="project-meta-item">
-                  <span class="project-meta-label">Slug</span>
-                  <span class="project-meta-value">{{ projectSlug }}</span>
-                </div>
-              }
             </div>
 
             <div class="project-description-block">

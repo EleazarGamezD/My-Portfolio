@@ -1,4 +1,4 @@
-import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
+import type { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 
 export interface ILocalizedText {
   es?: string;
@@ -18,11 +18,16 @@ export interface IApiContentItem {
   title?: ILocalizedText;
   description?: ILocalizedText;
   value?: string;
-  icon?: string | null;
+  icon?: string | IProjectAsset | null;
   href?: string;
   order?: number;
   active?: boolean;
   metadata?: Record<string, unknown>;
+}
+
+export interface IApiTechSkill extends IApiContentItem {
+  icon?: string | IProjectAsset | null;
+  value?: string;
 }
 
 export interface IApiResume extends IApiContentItem {

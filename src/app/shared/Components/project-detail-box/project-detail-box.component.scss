@@ -152,6 +152,12 @@ section {
   gap: 10px;
 }
 
+.project-skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .project-chip {
   padding: 10px 14px;
   border-radius: 999px;
@@ -159,6 +165,40 @@ section {
   color: #fff;
   font-size: 0.92rem;
   line-height: 1;
+}
+
+.project-skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  border-radius: 1rem;
+  background: rgba(24, 24, 24, 0.04);
+  border: 1px solid rgba(24, 24, 24, 0.08);
+  color: #181818;
+
+  img {
+    width: 1.8rem;
+    height: 1.8rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+
+  small {
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(239, 99, 44, 0.14);
+    color: #b14b21;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &.is-primary {
+    border-color: rgba(239, 99, 44, 0.26);
+    background: rgba(239, 99, 44, 0.08);
+  }
 }
 
 .project-description-block {

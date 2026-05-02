@@ -110,18 +110,31 @@ export const routes: Routes = [
       {
         path: 'dashboard/skills',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/content-page/content-page.component')
+          import('@pages/admin-dashboard/views/skills-page/skills-page.component')
             .then(
-              (m) => m.AdminContentPageComponent,
+              (m) => m.AdminSkillsPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/skills/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/skill-form-page/skill-form-page.component')
+            .then(
+              (m) => m.AdminSkillFormPageComponent,
             ),
         data: {
-          resourceName: 'techSkills',
-          variant: 'skills',
-          sectionTitle: 'Tech Skills',
-          createTitle: 'Create Skill',
-          emptyMessage: 'No skills found.',
-          kicker: 'Technical Catalog',
-          description: 'Manage skill labels, ordering and supporting metadata displayed on the public site.',
+          mode: 'create',
+        },
+      },
+      {
+        path: 'dashboard/skills/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/skill-form-page/skill-form-page.component')
+            .then(
+              (m) => m.AdminSkillFormPageComponent,
+            ),
+        data: {
+          mode: 'edit',
         },
       },
       {
