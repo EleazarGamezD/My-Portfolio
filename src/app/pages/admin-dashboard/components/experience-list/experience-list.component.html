@@ -61,12 +61,7 @@
             <td class="experience-description">{{ getDescription(item) }}</td>
             <td class="text-center">
               <div class="d-flex justify-content-center align-items-center">
-                <app-admin-action-menu
-                  [canEdit]="true"
-                  [editLink]="getEditLink(item)"
-                  [canDelete]="true"
-                  [canDeactivate]="false"
-                  (actionSelected)="handleAction(item, $event)">
+                <app-admin-action-menu [canEdit]="true" [editLink]="getEditLink(item)" [canDelete]="true" [canDeactivate]="false" (actionSelected)="handleAction(item, $event)">
                 </app-admin-action-menu>
               </div>
             </td>

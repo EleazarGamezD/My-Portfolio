@@ -105,8 +105,35 @@
   gap: 1rem;
 }
 
+.experience-field-grid--base {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.experience-field--wide {
+  grid-column: 1 / -1;
+}
+
 .experience-field-grid--textareas {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.experience-current-toggle--inline {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.experience-form__check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 3rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(188, 205, 216, 0.7);
+  font-weight: 700;
+  color: #17202a;
 }
 
 .experience-form__footer {

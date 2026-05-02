@@ -57,6 +57,22 @@ export class AdminExperienceFormPageComponent implements OnInit {
     return this.draft.period?.current === true;
   }
 
+  get companyName(): string {
+    return this.draft.label?.es?.trim() || this.draft.label?.en?.trim() || '';
+  }
+
+  onCompanyNameChange(value: string): void {
+    const normalized = value.trimStart();
+
+    this.draft.label ??= { es: '', en: '' };
+    this.draft.title ??= { es: '', en: '' };
+
+    this.draft.label.es = normalized;
+    this.draft.label.en = normalized;
+    this.draft.title.es = normalized;
+    this.draft.title.en = normalized;
+  }
+
   onCurrentRoleChange(value: boolean): void {
     this.draft.period ??= {};
     this.draft.period.current = value;
@@ -67,15 +83,13 @@ export class AdminExperienceFormPageComponent implements OnInit {
   }
 
   async submit(): Promise<void> {
-    const slug = this.draft.slug?.trim();
-    const labelEs = this.draft.label?.es?.trim();
-    const labelEn = this.draft.label?.en?.trim();
+    const companyName = this.companyName.trim();
     const periodStart = this.draft.period?.start?.trim() || '';
     const periodEnd = this.draft.period?.end?.trim() || '';
     const periodCurrent = this.draft.period?.current === true;
 
-    if (!slug || !labelEs || !labelEn || !periodStart || (!periodCurrent && !periodEnd)) {
-      this.error = 'Slug, etiquetas y periodo son obligatorios.';
+    if (!companyName || !periodStart || (!periodCurrent && !periodEnd)) {
+      this.error = 'Nombre de la empresa y periodo son obligatorios.';
       return;
     }
 
@@ -91,14 +105,13 @@ export class AdminExperienceFormPageComponent implements OnInit {
       }
 
       const payload: Partial<IApiContentItem> = {
-        slug,
         label: {
-          es: labelEs,
-          en: labelEn,
+          es: companyName,
+          en: companyName,
         },
         title: {
-          es: labelEs,
-          en: labelEn,
+          es: companyName,
+          en: companyName,
         },
         description: {
           es: this.draft.description?.es?.trim() || '',
@@ -155,7 +168,6 @@ export class AdminExperienceFormPageComponent implements OnInit {
 
   private createEmptyDraft(): Partial<IApiContentItem> {
     return {
-      slug: '',
       label: { es: '', en: '' },
       title: { es: '', en: '' },
       description: { es: '', en: '' },

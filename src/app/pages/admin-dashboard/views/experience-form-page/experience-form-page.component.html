@@ -19,101 +19,88 @@
       </div>
 
       <div class="experience-editor" *ngIf="!loading">
-        <section class="experience-hero">
-          <div class="experience-hero__copy">
-            <span class="experience-hero__eyebrow">{{ mode === 'create' ? 'Nueva experiencia' : 'Edicion puntual' }}</span>
-            <h3>{{ draft.label?.es || 'Define la proxima experiencia laboral' }}</h3>
-            <p>
-              Completa labels bilingues, slug y descripcion. El orden de aparicion no se edita aqui:
-              se organiza desde el listado arrastrando filas.
-            </p>
-          </div>
+        <section>
+          <div class="experience-hero">
+            <div class="experience-hero__copy">
+              <span class="experience-hero__eyebrow">{{ mode === 'create' ? 'Nueva experiencia' : 'Edicion puntual' }}</span>
+              <h3>{{ draft.label?.es || 'Define la proxima experiencia laboral' }}</h3>
+              <p>
+                Completa labels bilingues, slug y descripcion. El orden de aparicion no se edita aqui:
+                se organiza desde el listado arrastrando filas.
+              </p>
+            </div>
 
-          <div class="experience-hero__meta">
-            <div class="experience-meta-card">
-              <span>Orden</span>
-              <strong>{{ mode === 'create' ? 'Se agrega al final' : 'Se conserva hasta que lo muevas' }}</strong>
-            </div>
-            <div class="experience-meta-card">
-              <span>Estado</span>
-              <strong>Visible en portfolio</strong>
-            </div>
-            <div class="experience-meta-card">
-              <span>Periodo</span>
-              <strong>
-                {{ draft.period?.start || 'Inicio' }} - {{ draft.period?.current ? 'Actual' : (draft.period?.end || 'Fin') }}
-              </strong>
+            <div class="experience-hero__meta">
+              <div class="experience-meta-card">
+                <span>Orden</span>
+                <strong>{{ mode === 'create' ? 'Se agrega al final' : 'Se conserva hasta que lo muevas' }}</strong>
+              </div>
+              <div class="experience-meta-card">
+                <span>Estado</span>
+                <strong>Visible en portfolio</strong>
+              </div>
+              <div class="experience-meta-card">
+                <span>Periodo</span>
+                <strong>
+                  {{ draft.period?.start || 'Inicio' }} - {{ draft.period?.current ? 'Actual' : (draft.period?.end || 'Fin') }}
+                </strong>
+              </div>
             </div>
           </div>
         </section>
 
         <div class="experience-editor__grid">
-          <section class="experience-panel">
-            <div class="experience-panel__head">
-              <h3>Datos base</h3>
-              <p>Slug estable y labels visibles en ambos idiomas.</p>
-            </div>
-
-            <div class="experience-field-grid">
-              <div>
-                <label class="form-label">Slug</label>
-                <input cFormControl type="text" [(ngModel)]="draft.slug" placeholder="l4-ventures-llc" />
+          <section>
+            <div class="experience-panel">
+              <div class="experience-panel__head">
+                <h3>Datos base</h3>
+                <p>Nombre de la empresa y rango del cargo. El slug se genera automaticamente en backend.</p>
               </div>
 
-              <div>
-                <label class="form-label">Etiqueta ES</label>
-                <input cFormControl type="text" [(ngModel)]="draft.label!.es" placeholder="L4 Ventures LLC" />
-              </div>
+              <div class="experience-field-grid experience-field-grid--base">
+                <div class="experience-field experience-field--wide">
+                  <label class="form-label">Nombre de la empresa</label>
+                  <input cFormControl type="text" [ngModel]="companyName" (ngModelChange)="onCompanyNameChange($event)" placeholder="L4 Ventures LLC" />
+                </div>
 
-              <div>
-                <label class="form-label">Etiqueta EN</label>
-                <input cFormControl type="text" [(ngModel)]="draft.label!.en" placeholder="L4 Ventures LLC" />
-              </div>
+                <div>
+                  <label class="form-label">Inicio</label>
+                  <input cFormControl type="text" [(ngModel)]="draft.period!.start" placeholder="2025" />
+                </div>
 
-              <div>
-                <label class="form-label">Inicio</label>
-                <input cFormControl type="text" [(ngModel)]="draft.period!.start" placeholder="2025" />
-              </div>
-            </div>
-          </section>
+                <div>
+                  <label class="form-label">Fin</label>
+                  <input cFormControl type="text" [(ngModel)]="draft.period!.end" [disabled]="isCurrentRole" placeholder="2026" />
+                </div>
 
-          <section class="experience-panel">
-            <div class="experience-panel__head">
-              <h3>Periodo</h3>
-              <p>Define el rango de tiempo y marca si la posicion sigue activa.</p>
-            </div>
-
-            <div class="experience-field-grid experience-field-grid--textareas">
-              <div>
-                <label class="form-label">Fin</label>
-                <input cFormControl type="text" [(ngModel)]="draft.period!.end" [disabled]="isCurrentRole" placeholder="2026" />
-              </div>
-
-              <div class="experience-current-toggle">
-                <label class="form-label d-block">Estado del cargo</label>
-                <label class="experience-form__check">
-                  <input cFormCheckInput type="checkbox" [ngModel]="isCurrentRole" (ngModelChange)="onCurrentRoleChange($event)" />
-                  Trabajo actual
-                </label>
+                <div class="experience-current-toggle experience-current-toggle--inline">
+                  <label class="form-label d-block">Estado del cargo</label>
+                  <label class="experience-form__check">
+                    <input cFormCheckInput type="checkbox" [ngModel]="isCurrentRole" (ngModelChange)="onCurrentRoleChange($event)" />
+                    Trabajo actual
+                  </label>
+                </div>
               </div>
             </div>
           </section>
 
-          <section class="experience-panel">
-            <div class="experience-panel__head">
-              <h3>Descripcion</h3>
-              <p>Resume el rol y el impacto de forma clara para la timeline publica.</p>
-            </div>
-
-            <div class="experience-field-grid experience-field-grid--textareas">
-              <div>
-                <label class="form-label">Descripcion ES</label>
-                <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es" placeholder="Desarrollador Fullstack, desarrollo de aplicaciones web."></textarea>
+          <section>
+            <div class="experience-panel">
+              <div class="experience-panel__head">
+                <h3>Descripcion</h3>
+                <p>Resume el rol y el impacto de forma clara para la timeline publica.</p>
               </div>
 
-              <div>
-                <label class="form-label">Descripcion EN</label>
-                <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en" placeholder="Fullstack Developer focused on web applications."></textarea>
+              <div class="experience-field-grid experience-field-grid--textareas">
+                <div>
+                  <label class="form-label">Descripcion ES</label>
+                  <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es" placeholder="Desarrollador Fullstack, desarrollo de aplicaciones web."></textarea>
+                </div>
+
+                <div>
+                  <label class="form-label">Descripcion EN</label>
+                  <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en" placeholder="Fullstack Developer focused on web applications."></textarea>
+                </div>
               </div>
             </div>
           </section>
