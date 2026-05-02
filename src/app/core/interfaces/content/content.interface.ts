@@ -5,6 +5,12 @@ export interface ILocalizedText {
   en?: string;
 }
 
+export interface IApiExperiencePeriod {
+  start?: string;
+  end?: string | null;
+  current?: boolean;
+}
+
 export interface IApiHeroSlide {
   title?: ILocalizedText;
   description?: ILocalizedText;
@@ -18,6 +24,7 @@ export interface IApiContentItem {
   title?: ILocalizedText;
   description?: ILocalizedText;
   value?: string;
+  period?: IApiExperiencePeriod;
   icon?: string | IProjectAsset | null;
   href?: string;
   order?: number;

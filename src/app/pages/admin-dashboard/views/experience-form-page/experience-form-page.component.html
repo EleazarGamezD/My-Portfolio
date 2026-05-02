@@ -38,6 +38,12 @@
               <span>Estado</span>
               <strong>Visible en portfolio</strong>
             </div>
+            <div class="experience-meta-card">
+              <span>Periodo</span>
+              <strong>
+                {{ draft.period?.start || 'Inicio' }} - {{ draft.period?.current ? 'Actual' : (draft.period?.end || 'Fin') }}
+              </strong>
+            </div>
           </div>
         </section>
 
@@ -62,6 +68,33 @@
               <div>
                 <label class="form-label">Etiqueta EN</label>
                 <input cFormControl type="text" [(ngModel)]="draft.label!.en" placeholder="L4 Ventures LLC" />
+              </div>
+
+              <div>
+                <label class="form-label">Inicio</label>
+                <input cFormControl type="text" [(ngModel)]="draft.period!.start" placeholder="2025" />
+              </div>
+            </div>
+          </section>
+
+          <section class="experience-panel">
+            <div class="experience-panel__head">
+              <h3>Periodo</h3>
+              <p>Define el rango de tiempo y marca si la posicion sigue activa.</p>
+            </div>
+
+            <div class="experience-field-grid experience-field-grid--textareas">
+              <div>
+                <label class="form-label">Fin</label>
+                <input cFormControl type="text" [(ngModel)]="draft.period!.end" [disabled]="isCurrentRole" placeholder="2026" />
+              </div>
+
+              <div class="experience-current-toggle">
+                <label class="form-label d-block">Estado del cargo</label>
+                <label class="experience-form__check">
+                  <input cFormCheckInput type="checkbox" [ngModel]="isCurrentRole" (ngModelChange)="onCurrentRoleChange($event)" />
+                  Trabajo actual
+                </label>
               </div>
             </div>
           </section>

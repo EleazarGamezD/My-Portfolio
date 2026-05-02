@@ -46,6 +46,18 @@ export class CareerPathComponent implements OnInit {
     );
   }
 
+  getPeriod(item: IApiContentItem) {
+    if (item.period?.start) {
+      if (item.period.current || !item.period.end) {
+        return `${item.period.start} - Actual`;
+      }
+
+      return `${item.period.start} - ${item.period.end}`;
+    }
+
+    return item.value ?? '';
+  }
+
   t(key: string) {
     return this.i18nService.t(key);
   }

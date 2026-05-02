@@ -53,13 +53,29 @@ export class AdminExperienceFormPageComponent implements OnInit {
       : 'Actualiza el contenido de la experiencia. El orden visual se administra desde el listado con drag and drop.';
   }
 
+  get isCurrentRole(): boolean {
+    return this.draft.period?.current === true;
+  }
+
+  onCurrentRoleChange(value: boolean): void {
+    this.draft.period ??= {};
+    this.draft.period.current = value;
+
+    if (value) {
+      this.draft.period.end = null;
+    }
+  }
+
   async submit(): Promise<void> {
     const slug = this.draft.slug?.trim();
     const labelEs = this.draft.label?.es?.trim();
     const labelEn = this.draft.label?.en?.trim();
+    const periodStart = this.draft.period?.start?.trim() || '';
+    const periodEnd = this.draft.period?.end?.trim() || '';
+    const periodCurrent = this.draft.period?.current === true;
 
-    if (!slug || !labelEs || !labelEn) {
-      this.error = 'Slug, etiqueta ES y etiqueta EN son obligatorios.';
+    if (!slug || !labelEs || !labelEn || !periodStart || (!periodCurrent && !periodEnd)) {
+      this.error = 'Slug, etiquetas y periodo son obligatorios.';
       return;
     }
 
@@ -87,6 +103,12 @@ export class AdminExperienceFormPageComponent implements OnInit {
         description: {
           es: this.draft.description?.es?.trim() || '',
           en: this.draft.description?.en?.trim() || '',
+        },
+        value: periodCurrent ? `${periodStart} - Actual` : `${periodStart} - ${periodEnd}`,
+        period: {
+          start: periodStart,
+          end: periodCurrent ? null : periodEnd,
+          current: periodCurrent,
         },
         order,
         active: true,
@@ -137,6 +159,12 @@ export class AdminExperienceFormPageComponent implements OnInit {
       label: { es: '', en: '' },
       title: { es: '', en: '' },
       description: { es: '', en: '' },
+      value: '',
+      period: {
+        start: '',
+        end: null,
+        current: false,
+      },
       order: 0,
       active: true,
       metadata: {},

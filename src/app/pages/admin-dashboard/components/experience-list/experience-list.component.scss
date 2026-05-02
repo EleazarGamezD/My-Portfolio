@@ -145,18 +145,23 @@ tbody td {
 }
 
 .experience-title {
+  min-width: 16rem;
   font-weight: 700;
   color: #17202a;
   line-height: 1.35;
 }
 
-.experience-slug {
-  color: #516273;
-  min-width: 12rem;
+.experience-period {
+  min-width: 10rem;
+  color: #243645;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .experience-description {
-  max-width: 32rem;
+  width: 100%;
+  min-width: 24rem;
+  max-width: 40rem;
   color: #334155;
 }
 

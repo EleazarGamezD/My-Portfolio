@@ -37,9 +37,8 @@
             <th class="handle-column">Mover</th>
             <th>#</th>
             <th>Etiqueta</th>
-            <th>Slug</th>
+            <th>Periodo</th>
             <th>Descripcion</th>
-            <th>Orden visual</th>
             <th class="text-center">Acciones</th>
           </tr>
         </thead>
@@ -58,11 +57,8 @@
             <td>
               <div class="experience-title">{{ getItemName(item) }}</div>
             </td>
-            <td class="experience-slug">{{ item.slug || '-' }}</td>
+            <td class="experience-period">{{ getPeriod(item) }}</td>
             <td class="experience-description">{{ getDescription(item) }}</td>
-            <td>
-              <c-badge color="light" shape="rounded-pill">{{ index + 1 }}</c-badge>
-            </td>
             <td class="text-center">
               <div class="d-flex justify-content-center align-items-center">
                 <app-admin-action-menu

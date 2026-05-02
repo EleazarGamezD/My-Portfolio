@@ -51,6 +51,18 @@ export class ExperienceListComponent {
     ) || '-';
   }
 
+  getPeriod(item: IApiContentItem): string {
+    if (item.period?.start) {
+      if (item.period.current || !item.period.end) {
+        return `${item.period.start} - Actual`;
+      }
+
+      return `${item.period.start} - ${item.period.end}`;
+    }
+
+    return typeof item.value === 'string' && item.value.trim() ? item.value.trim() : '-';
+  }
+
   getEditLink(item: IApiContentItem): readonly (string | number)[] {
     return ['/admin/dashboard/experience/edit', item._id || ''];
   }
