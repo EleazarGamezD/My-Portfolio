@@ -54,7 +54,7 @@ export class CvComponent implements OnInit {
       return;
     }
 
-    const fileName = resume.fileName || this.getResumeFileName(resume);
+    const fileName = this.getResumeDownloadFileName(resume);
     const mimeType = resume.mimeType || 'application/pdf';
     const filePath = `data:${mimeType};base64,${resume.base64}`;
 
@@ -80,9 +80,34 @@ export class CvComponent implements OnInit {
     );
   }
 
-  private getResumeFileName(resume: IApiResume) {
-    const title = this.getResumeTitle(resume).trim().replace(/\s+/g, '-').toLowerCase();
-    return `${title || 'resume'}.pdf`;
+  private getResumeDownloadFileName(resume: IApiResume): string {
+    const baseName = this.getResumeTitle(resume)
+      .trim()
+      .replace(/[\\/:*?"<>|]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const extension = this.getResumeFileExtension(resume);
+    return `${baseName || 'resume'}.${extension}`;
+  }
+
+  private getResumeFileExtension(resume: IApiResume): string {
+    const fileName = resume.fileName?.trim() || '';
+    const extensionMatch = fileName.match(/\.([a-z0-9]+)$/i);
+
+    if (extensionMatch?.[1]) {
+      return extensionMatch[1].toLowerCase();
+    }
+
+    switch (resume.mimeType) {
+      case 'application/msword':
+        return 'doc';
+      case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+        return 'docx';
+      case 'application/pdf':
+      default:
+        return 'pdf';
+    }
   }
 
   t(key: string) {
