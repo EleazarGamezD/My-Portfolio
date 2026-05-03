@@ -54,4 +54,16 @@ export class AdminContentSectionComponent {
     isActionLoading(actionKey: string): boolean {
         return this.actionLoadingKey === actionKey;
     }
+
+    get shouldShowCreateBox(): boolean {
+        return this.variant !== 'socialLinks';
+    }
+
+    get shouldShowDeleteAction(): boolean {
+        return this.variant !== 'socialLinks';
+    }
+
+    getIconClass(item: IApiContentItem): string {
+        return typeof item.icon === 'string' && item.icon.trim() ? item.icon.trim() : 'fa-solid fa-link';
+    }
 }

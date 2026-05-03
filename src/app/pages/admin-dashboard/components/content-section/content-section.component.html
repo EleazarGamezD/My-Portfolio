@@ -4,7 +4,8 @@
       <h5 class="card-title mb-0">{{ sectionTitle }}</h5>
       <c-badge color="light" shape="rounded-pill">{{ items.length }}</c-badge>
     </div>
-    <div class="dashboard-create-box mb-4">
+
+    <div class="dashboard-create-box mb-4" *ngIf="shouldShowCreateBox">
       <h6 class="mb-3">{{ createTitle }}</h6>
       <div class="row g-3">
         <div class="col-md-3"><input cFormControl sizing="sm" type="text" [(ngModel)]="draft.slug" placeholder="Slug" /></div>
@@ -30,17 +31,19 @@
 
           <ng-container *ngSwitchCase="'socialLinks'">
             <div class="col-md-3"><input cFormControl sizing="sm" type="text" [(ngModel)]="draft.icon" placeholder="Icono" /></div>
-            <div class="col-md-9"><input cFormControl sizing="sm" type="text" [(ngModel)]="draft.href" placeholder="Href" /></div>
+            <div class="col-md-9"><input cFormControl sizing="sm" type="text" [(ngModel)]="draft.href" placeholder="Link" /></div>
           </ng-container>
         </ng-container>
 
         <div class="col-12 d-flex justify-content-end"><button cButton color="primary" size="sm" type="button" (click)="createItem.emit()" [disabled]="isActionLoading(resourceKey + '-create')">Crear</button></div>
       </div>
     </div>
+
     <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
       <c-spinner size="sm" color="primary"></c-spinner>
       <span>Cargando {{ sectionTitle.toLowerCase() }}...</span>
     </div>
+
     <div class="table-responsive" *ngIf="!contentLoading">
       <table [hover]="true" [striped]="true" cTable *ngIf="items.length > 0; else emptyItems">
         <thead>
@@ -51,26 +54,29 @@
               <th>Valor</th>
               <th class="text-end">Activo</th>
             </ng-container>
+
             <ng-container *ngSwitchCase="'experience'">
               <th>Etiqueta</th>
               <th>Slug</th>
               <th>Descripcion</th>
               <th class="text-end">Orden</th>
             </ng-container>
+
             <ng-container *ngSwitchCase="'testimonials'">
               <th>Etiqueta</th>
               <th>Slug</th>
               <th>Descripcion</th>
               <th class="text-end">Activo</th>
             </ng-container>
+
             <ng-container *ngSwitchCase="'socialLinks'">
-              <th>Etiqueta</th>
-              <th>Slug</th>
-              <th>Href</th>
-              <th class="text-end">Icono</th>
+              <th>Icono</th>
+              <th>Red social</th>
+              <th>Link</th>
             </ng-container>
           </tr>
         </thead>
+
         <tbody>
           <tr *ngFor="let item of items" [ngSwitch]="variant">
             <ng-container *ngSwitchCase="'skills'">
@@ -95,23 +101,31 @@
             </ng-container>
 
             <ng-container *ngSwitchCase="'socialLinks'">
-              <td>{{ getContentItemName(item) }}</td>
-              <td>{{ item.slug || '-' }}</td>
-              <td><input cFormControl sizing="sm" type="text" [(ngModel)]="item.href" /></td>
-              <td class="text-end"><input cFormControl sizing="sm" type="text" [(ngModel)]="item.icon" /></td>
+              <td class="social-links-icon-cell">
+                <span class="social-links-icon-preview">
+                  <i [class]="getIconClass(item)"></i>
+                </span>
+              </td>
+              <td>
+                <div class="social-links-name">{{ getContentItemName(item) }}</div>
+              </td>
+              <td>
+                <input cFormControl sizing="sm" type="text" [(ngModel)]="item.href" placeholder="Link" />
+              </td>
             </ng-container>
 
             <td class="text-end dashboard-actions-cell">
               <button cButton color="primary" size="sm" type="button" (click)="saveItem.emit(item)" [disabled]="isActionLoading(resourceKey + '-save-' + item._id)">
                 Guardar
               </button>
-              <button cButton color="danger" variant="outline" size="sm" type="button" (click)="deleteItem.emit(item)" [disabled]="isActionLoading(resourceKey + '-delete-' + item._id)">
+              <button *ngIf="shouldShowDeleteAction" cButton color="danger" variant="outline" size="sm" type="button" (click)="deleteItem.emit(item)" [disabled]="isActionLoading(resourceKey + '-delete-' + item._id)">
                 Eliminar
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+
       <ng-template #emptyItems>
         <p class="text-muted mb-0">{{ emptyMessage }}</p>
       </ng-template>
