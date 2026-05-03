@@ -5,7 +5,6 @@ import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { BadgeModule, ButtonModule, SpinnerModule, TableModule } from '@coreui/angular';
-import { AdminActionMenuAction, AdminActionMenuComponent } from '../admin-action-menu/admin-action-menu.component';
 
 @Component({
   selector: 'app-testimonials-list',
@@ -17,7 +16,6 @@ import { AdminActionMenuAction, AdminActionMenuComponent } from '../admin-action
     ButtonModule,
     BadgeModule,
     SpinnerModule,
-    AdminActionMenuComponent,
   ],
   templateUrl: './testimonials-list.component.html',
   styleUrl: './testimonials-list.component.scss',
@@ -25,7 +23,6 @@ import { AdminActionMenuAction, AdminActionMenuComponent } from '../admin-action
 export class TestimonialsListComponent {
   @Input() items: IApiContentItem[] = [];
   @Input() loading = false;
-  @Input() actionLoadingKey: string | null = null;
   @Input() pagination: IPaginationResponse<IApiContentItem> = {
     data: [],
     totalItems: 0,
@@ -34,8 +31,6 @@ export class TestimonialsListComponent {
     hasNextPage: false,
     hasPrevPage: false,
   };
-  @Output() deleteItem = new EventEmitter<IApiContentItem>();
-  @Output() toggleActive = new EventEmitter<IApiContentItem>();
   @Output() pageChange = new EventEmitter<number>();
 
   constructor(private readonly i18nService: I18nService) {}
@@ -79,30 +74,8 @@ export class TestimonialsListComponent {
     return typeof value === 'string' && value.trim() ? value : '-';
   }
 
-  getTestimonial(item: IApiContentItem): string {
-    return this.i18nService.selectText(
-      item.description?.es || '',
-      item.description?.en || item.description?.es || '',
-    ) || '-';
-  }
-
   getActiveColor(item: IApiContentItem): 'success' | 'secondary' {
     return item.active ? 'success' : 'secondary';
-  }
-
-  getDeactivateLabel(item: IApiContentItem): string {
-    return item.active ? 'Desactivar' : 'Activar';
-  }
-
-  handleAction(item: IApiContentItem, action: AdminActionMenuAction): void {
-    if (action === 'delete') {
-      this.deleteItem.emit(item);
-      return;
-    }
-
-    if (action === 'deactivate') {
-      this.toggleActive.emit(item);
-    }
   }
 
   changePage(page: number): void {

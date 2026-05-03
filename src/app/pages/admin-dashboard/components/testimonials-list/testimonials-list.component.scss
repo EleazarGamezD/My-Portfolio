@@ -109,10 +109,18 @@ tbody td {
   color: #516273;
 }
 
-.testimonial-copy {
-  min-width: 26rem;
-  max-width: 40rem;
-  color: #334155;
+.testimonial-detail-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 7.75rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(188, 205, 216, 0.84);
+  background: #f6fafc;
+  color: #0e5f8d;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .testimonials-pagination {

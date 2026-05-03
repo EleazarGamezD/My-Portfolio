@@ -34,9 +34,8 @@
             <th>Nombre</th>
             <th>Cargo</th>
             <th>Empresa</th>
-            <th>Testimonio</th>
             <th>Estado</th>
-            <th class="text-center">Acciones</th>
+            <th class="text-center">Detalle</th>
           </tr>
         </thead>
         <tbody>
@@ -49,21 +48,13 @@
             </td>
             <td class="testimonial-meta">{{ getPosition(item) }}</td>
             <td class="testimonial-meta">{{ getCompany(item) }}</td>
-            <td class="testimonial-copy">{{ getTestimonial(item) }}</td>
             <td>
               <c-badge [color]="getActiveColor(item)">{{ item.active ? 'Activo' : 'Inactivo' }}</c-badge>
             </td>
             <td class="text-center">
-              <div class="d-flex justify-content-center align-items-center">
-                <app-admin-action-menu
-                  [canEdit]="true"
-                  [editLink]="['/admin/dashboard/testimonials/edit', item._id || '']"
-                  [canDelete]="true"
-                  [canDeactivate]="true"
-                  [deactivateLabel]="getDeactivateLabel(item)"
-                  (actionSelected)="handleAction(item, $event)">
-                </app-admin-action-menu>
-              </div>
+              <a class="testimonial-detail-link" [routerLink]="['/admin/dashboard/testimonials', item._id || '']">
+                Ver detalles
+              </a>
             </td>
           </tr>
         </tbody>

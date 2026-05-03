@@ -198,6 +198,14 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'dashboard/testimonials/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/testimonial-details-page/testimonial-details-page.component')
+            .then(
+              (m) => m.AdminTestimonialDetailsPageComponent,
+            ),
+      },
+      {
         path: 'dashboard/resumes',
         loadComponent: () =>
           import('@pages/admin-dashboard/views/resumes-page/resumes-page.component')
