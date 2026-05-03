@@ -1,5 +1,6 @@
 import { Route, Routes } from '@angular/router';
-import { DEFAULT_LANGUAGE, AppLanguage } from '@core/i18n/i18n.config';
+import { adminAuthGuard } from '@core/guards/admin-auth.guard';
+import { AppLanguage, DEFAULT_LANGUAGE } from '@core/i18n/i18n.config';
 import { MainLayoutComponent } from '@layouts/main-layout/main-layout.component';
 
 function localizedRoute(lang: AppLanguage): Route {
@@ -32,6 +33,224 @@ export const routes: Routes = [
     path: '',
     redirectTo: DEFAULT_LANGUAGE,
     pathMatch: 'full',
+  },
+  {
+    path: 'admin/login',
+    loadComponent: () =>
+      import('@pages/admin-login/admin-login.component')
+        .then(
+          (m) => m.AdminLoginComponent,
+        ),
+  },
+  {
+    path: 'admin',
+    canActivate: [adminAuthGuard],
+    loadComponent: () =>
+      import('@pages/admin-layout/admin-layout.component')
+        .then(
+          (m) => m.AdminLayoutComponent,
+        ),
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard/overview',
+        pathMatch: 'full',
+      },
+      {
+        path: 'dashboard',
+        redirectTo: 'dashboard/overview',
+        pathMatch: 'full',
+      },
+      {
+        path: 'dashboard/overview',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/overview-page/overview-page.component')
+            .then(
+              (m) => m.AdminOverviewPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/projects',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/projects-page/projects-page.component')
+            .then(
+              (m) => m.AdminProjectsPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/projects/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/project-form-page/project-form-page.component')
+            .then(
+              (m) => m.AdminProjectFormPageComponent,
+            ),
+        data: {
+          mode: 'create',
+        },
+      },
+      {
+        path: 'dashboard/projects/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/project-form-page/project-form-page.component')
+            .then(
+              (m) => m.AdminProjectFormPageComponent,
+            ),
+        data: {
+          mode: 'edit',
+        },
+      },
+      {
+        path: 'dashboard/profile',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/profile-page/profile-page.component')
+            .then(
+              (m) => m.AdminProfilePageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/media',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/portfolio-media-page/portfolio-media-page.component')
+            .then(
+              (m) => m.AdminPortfolioMediaPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/skills',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/skills-page/skills-page.component')
+            .then(
+              (m) => m.AdminSkillsPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/skills/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/skill-form-page/skill-form-page.component')
+            .then(
+              (m) => m.AdminSkillFormPageComponent,
+            ),
+        data: {
+          mode: 'create',
+        },
+      },
+      {
+        path: 'dashboard/skills/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/skill-form-page/skill-form-page.component')
+            .then(
+              (m) => m.AdminSkillFormPageComponent,
+            ),
+        data: {
+          mode: 'edit',
+        },
+      },
+      {
+        path: 'dashboard/experience',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/experience-page/experience-page.component')
+            .then(
+              (m) => m.AdminExperiencePageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/experience/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/experience-form-page/experience-form-page.component')
+            .then(
+              (m) => m.AdminExperienceFormPageComponent,
+            ),
+        data: {
+          mode: 'create',
+        },
+      },
+      {
+        path: 'dashboard/experience/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/experience-form-page/experience-form-page.component')
+            .then(
+              (m) => m.AdminExperienceFormPageComponent,
+            ),
+        data: {
+          mode: 'edit',
+        },
+      },
+      {
+        path: 'dashboard/testimonials',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/testimonials-page/testimonials-page.component')
+            .then(
+              (m) => m.AdminTestimonialsPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/testimonials/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/testimonial-form-page/testimonial-form-page.component')
+            .then(
+              (m) => m.AdminTestimonialFormPageComponent,
+            ),
+        data: {
+          mode: 'create',
+        },
+      },
+      {
+        path: 'dashboard/testimonials/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/testimonial-form-page/testimonial-form-page.component')
+            .then(
+              (m) => m.AdminTestimonialFormPageComponent,
+            ),
+        data: {
+          mode: 'edit',
+        },
+      },
+      {
+        path: 'dashboard/testimonials/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/testimonial-details-page/testimonial-details-page.component')
+            .then(
+              (m) => m.AdminTestimonialDetailsPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/resumes',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/resumes-page/resumes-page.component')
+            .then(
+              (m) => m.AdminResumesPageComponent,
+            ),
+      },
+      {
+        path: 'dashboard/socialLinks',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/content-page/content-page.component')
+            .then(
+              (m) => m.AdminContentPageComponent,
+            ),
+        data: {
+          resourceName: 'socialLinks',
+          variant: 'socialLinks',
+          sectionTitle: 'Social Links',
+          createTitle: 'Create Social Link',
+          emptyMessage: 'No social links found.',
+          kicker: 'Distribution Channels',
+          description: 'Control outbound networks, labels and URLs surfaced through the public portfolio.',
+        },
+      },
+      {
+        path: 'dashboard/users',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/users-page/users-page.component')
+            .then(
+              (m) => m.AdminUsersPageComponent,
+            ),
+      },
+    ],
+  },
+  {
+    path: 'admin-dashboard',
+    redirectTo: 'admin/dashboard/overview',
   },
   localizedRoute('es'),
   localizedRoute('en'),

@@ -2,6 +2,7 @@ export interface ISendEmail {
   subject: string;
   name: string;
   contactEmail: string;
+  phone: string;
   message: string;
 }
 

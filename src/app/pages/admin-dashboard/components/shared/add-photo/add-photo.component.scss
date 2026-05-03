@@ -1,0 +1,293 @@
+.photo-upload-container {
+  border-radius: 18px;
+
+  padding: 22px 24px 18px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.photo-upload-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  h2 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+}
+
+.photo-board {
+  border: 1px solid #dcdcdc;
+  border-radius: 16px;
+  background: #fdfdfd;
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.drop-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px dashed #474747;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #080808;
+  font-weight: 600;
+  pointer-events: none;
+
+  i {
+    font-size: 18px;
+  }
+}
+
+.photo-upload-item {
+  position: relative;
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  background: #fafafa;
+  aspect-ratio: 1 / 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  animation: fadeInUp 180ms ease;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+}
+
+.photo-upload-item.drop-tile {
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  color: #3f3f3f;
+  cursor: pointer;
+  flex-direction: column;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.1s ease;
+  animation: none;
+  border-radius: 20px;
+
+  &.dragover {
+    background: #f9f9f9;
+    border-color: #494648;
+  }
+
+  &:hover {
+    background: #f9f9f9;
+    border-color: #494648;
+  }
+}
+
+.drop-icon {
+  font-size: 56px;
+  font-weight: 200;
+  line-height: 1;
+  color: #000000;
+}
+
+.remove-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: blue;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  svg {
+    color: #fff;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background: blue;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@media (max-width: 1024px) {
+  .photo-upload-container {
+    padding: 18px 20px 16px;
+  }
+
+  .photo-upload-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .photo-upload-container {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .photo-upload-header {
+    gap: 10px;
+
+    h2 {
+      font-size: 16px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .photo-upload-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+  }
+
+  .photo-board {
+    padding: 12px;
+  }
+
+  .photo-upload-item {
+    min-height: 120px;
+  }
+
+  .drop-icon {
+    font-size: 42px;
+  }
+
+  .main-title {
+    font-size: 1.25rem;
+  }
+
+  .subtitle-text {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-upload-container {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .photo-upload-header {
+    gap: 8px;
+
+    h2 {
+      font-size: 14px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .photo-upload-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+  }
+
+  .photo-board {
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .photo-upload-item {
+    min-height: 100px;
+    border-radius: 12px;
+  }
+
+  .drop-icon {
+    font-size: 36px;
+  }
+
+  .remove-btn {
+    width: 28px;
+    height: 28px;
+    top: -6px;
+    right: -6px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .main-title {
+    font-size: 1.1rem;
+  }
+
+  .subtitle-text {
+    font-size: 0.75rem;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.main-title {
+  color: #575757;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: left;
+  margin: 0;
+}
+
+.subtitle-text {
+  color: #575757;
+  font-size: 0.875rem;
+  text-align: left;
+}
+

@@ -1,0 +1,47 @@
+@use '../../admin-dashboard.shared' as *;
+
+.users-section-card {
+  overflow: hidden;
+}
+
+.users-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.users-table {
+  min-width: 920px;
+}
+
+.users-table__identity,
+.users-table__role-stack,
+.users-table__last-access {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.users-table__identity strong,
+.users-table__last-access strong {
+  color: #0f172a;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.users-table__identity span,
+.users-table__last-access span {
+  color: #64748b;
+  font-size: 0.92rem;
+}
+
+.users-table__display-name-cell {
+  min-width: 220px;
+}
+
+@media (max-width: 767.98px) {
+  .users-section__header {
+    flex-direction: column;
+  }
+}
