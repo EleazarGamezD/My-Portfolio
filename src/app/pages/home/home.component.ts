@@ -8,6 +8,7 @@ import {HomeBannerSliderComponent} from '../../shared/Components/home-banner-sli
 import {SliderProjectsComponent} from '../../shared/Components/slider-projects/slider-projects.component';
 import {SmallAboutResumeComponent} from '../../shared/Components/small-about-resume/small-about-resume.component';
 import {WorkReferencesComponent} from '../../shared/Components/work-references/work-references.component';
+import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
   selector: 'app-home',
@@ -38,11 +39,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
-    if (typeof window !== 'undefined' && typeof (window as any).initializeComponents === 'function') {
-      setTimeout(() => {
-        (window as any).initializeComponents();
-      }, 200);
-    }
+    requestTemplateReinit();
   }
 }

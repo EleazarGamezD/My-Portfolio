@@ -1,0 +1,57 @@
+<div class="photo-upload-container">
+  <div class="photo-upload-header">
+    <div class="title-row mb-1">
+      <div>
+        <span class="main-title">{{ title() }}</span>
+        <div class="subtitle-text">{{ subTitle() }}</div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="photo-board"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
+    @if (isDragOver) {
+      <div class="drop-overlay">
+        <i class="pi pi-cloud-upload"></i>
+        <span>Suelta para añadir</span>
+      </div>
+    }
+    <div class="photo-upload-grid">
+      @for (img of images; track trackByImage($index, img); let i = $index) {
+        <div class="photo-upload-item">
+          @if (!img.isVideo) {
+            <img [src]="img.objectURL" alt="preview" />
+          }
+          <button class="remove-btn" type="button" (click)="removeImage(i)" title="Eliminar imagen">
+            <svg cIcon name="cil-trash" size="sm"></svg>
+          </button>
+        </div>
+      }
+
+      @if (images.length < maxPhotos()) {
+        <div
+          class="photo-upload-item drop-tile"
+          [class.dragover]="isDragOver"
+          (click)="fileInput.click()"
+          role="button"
+          tabindex="0"
+        >
+          <input
+            #fileInput
+            type="file"
+            accept="image/*"
+            multiple
+            class="d-none"
+            (change)="onFileSelect($event)"
+          />
+          <span class="label-text">{{ label() }}</span>
+          <div class="drop-icon">+</div>
+          <span class="hint-text text-center">{{ hint() }} (máx. {{ maxPhotos() }})</span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

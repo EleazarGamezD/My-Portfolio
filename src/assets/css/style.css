@@ -3160,14 +3160,6 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
   z-index: 1;
 }
 /* Move it (define the animation) */
-@-moz-keyframes example1 {
-  0% {
-    -moz-transform: translateX(100%);
-  }
-  100% {
-    -moz-transform: translateX(-100%);
-  }
-}
 @-webkit-keyframes example1 {
   0% {
     -webkit-transform: translateX(100%);

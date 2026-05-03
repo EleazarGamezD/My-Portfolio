@@ -1,8 +1,11 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { adminIconSubset } from '@core/icons/admin-icon-subset';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { IconSetService } from '@coreui/icons-angular';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -18,8 +21,12 @@ export class AppComponent implements OnInit {
     private titleService: Title,
     private router: Router,
     private i18nService: I18nService,
+    private iconSetService: IconSetService,
+    private readonly destroyRef: DestroyRef,
     @Inject(DOCUMENT) private document: Document,
-  ) { }
+  ) {
+    this.iconSetService.icons = { ...adminIconSubset };
+  }
 
   ngOnInit(): void {
     this.meta.addTag({ name: 'author', content: 'Eleazar Gamez' });
@@ -30,6 +37,7 @@ export class AppComponent implements OnInit {
 
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      takeUntilDestroyed(this.destroyRef),
     ).subscribe((event: NavigationEnd) => {
       this.updateSeo(event.urlAfterRedirects);
 
@@ -45,6 +53,10 @@ export class AppComponent implements OnInit {
 
   private getRouteTitle(url: string): string {
     const normalizedPath = this.i18nService.stripLanguageFromUrl(url);
+
+    if (normalizedPath.startsWith('/admin')) {
+      return 'Portfolio Admin';
+    }
 
     if (normalizedPath === '/' || normalizedPath === '/home') {
       return this.i18nService.t('page.home');

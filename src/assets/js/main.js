@@ -1,5 +1,5 @@
 /* -------------------------------------------------------
- 
+
  Theme Name: Crafto - The Multipurpose HTML5 Template
  Theme URL: https://craftohtml.themezaa.com/
  Description: Elevate your online presence with Crafto - a modern, versatile, multipurpose Bootstrap 5 responsive HTML5, SCSS template using highly creative 52+ ready demos.
@@ -7,13 +7,13 @@
  Author ThemeForest URL: https://themeforest.net/user/themezaa
  Copyright(c) 2024 themezaa.com
  Version: 2.0
- 
+
  ------------------------------------------------------- */
 
 (function ($) {
   "use strict";
   /* ===================================
-     Change variables value as per your need 
+     Change variables value as per your need
      ====================================== */
 
   var menuBreakPoint = 991;
@@ -965,7 +965,7 @@
     });
 
   /* ===================================
-     Image gallery 
+     Image gallery
      ====================================== */
 
   // Image gallery isotope filter
@@ -2905,6 +2905,26 @@
     var swipers = document.querySelectorAll(
       "[data-slider-options]:not(.instafeed-wrapper)"
     );
+
+    function getActiveSlideContext(swiperInstance) {
+      if (!swiperInstance || !swiperInstance.slides || !swiperInstance.slides.length) {
+        return null;
+      }
+
+      var activeIndex = typeof swiperInstance.activeIndex === "number" ? swiperInstance.activeIndex : 0;
+      var currentSlide = swiperInstance.slides[activeIndex];
+
+      if (!currentSlide) {
+        return null;
+      }
+
+      return {
+        currentSlide: currentSlide,
+        animeElements: currentSlide.querySelectorAll("[data-anime]"),
+        fancyElements: currentSlide.querySelectorAll("[data-fancy-text]"),
+      };
+    }
+
     swipers.forEach(function (swiperItem) {
       var _this = $(swiperItem),
         sliderOptions = _this.attr("data-slider-options");
@@ -3016,11 +3036,13 @@
 
         sliderOptions["on"] = {
           init: function () {
-            let slides = this.slides;
-            let activeIndex = this.activeIndex,
-              current_slide = this.slides[activeIndex],
-              anime_el = current_slide.querySelectorAll("[data-anime]"),
-              fancy_el = current_slide.querySelectorAll("[data-fancy-text]");
+            var slideContext = getActiveSlideContext(this);
+
+            if (!slideContext) {
+              return;
+            }
+
+            let anime_el = slideContext.animeElements;
 
             if (getWindowWidth() > animeBreakPoint) {
               if (anime_el) {
@@ -3047,12 +3069,14 @@
             }
           },
           slideChange: function () {
-            // Get active slide
-            let slides = this.slides;
-            let activeIndex = this.activeIndex,
-              current_slide = this.slides[activeIndex],
-              anime_el = current_slide.querySelectorAll("[data-anime]"),
-              fancy_el = current_slide.querySelectorAll("[data-fancy-text]");
+            var slideContext = getActiveSlideContext(this);
+
+            if (!slideContext) {
+              return;
+            }
+
+            let anime_el = slideContext.animeElements;
+            let fancy_el = slideContext.fancyElements;
 
             if (getWindowWidth() > animeBreakPoint) {
               if (fancy_el) {
@@ -3246,6 +3270,12 @@
 
         if (typeof Swiper === "function") {
           _this.imagesLoaded(function () {
+            var swiperWrapper = swiperItem.querySelector(".swiper-wrapper");
+
+            if (!swiperWrapper || swiperWrapper.querySelectorAll(".swiper-slide").length === 0) {
+              return;
+            }
+
             var swiperObj = new Swiper(swiperItem, sliderOptions);
             swiperObjs.push(swiperObj);
           });

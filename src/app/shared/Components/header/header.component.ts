@@ -1,8 +1,16 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
+import {
+  IApiContentItem,
+  IApiProfile,
+} from '@core/interfaces/content/content.interface';
 import { AppLanguage } from '@core/i18n/i18n.config';
+import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
+import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -13,14 +21,17 @@ import { filter } from 'rxjs/operators';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
-  social = [
+  profileContent: IApiProfile | null = null;
+  social: IApiContentItem[] = [
     {
+      label: { es: 'GitHub', en: 'GitHub' },
       icon: 'fa-brands fa-github',
-      url: 'https://github.com/EleazarGamezD',
+      href: 'https://github.com/',
     },
     {
+      label: { es: 'LinkedIn', en: 'LinkedIn' },
       icon: 'fa-brands fa-linkedin',
-      url: 'https://www.linkedin.com/in/eleazar-gamez/',
+      href: 'https://www.linkedin.com/',
     },
   ];
   isBrowser: boolean;
@@ -28,16 +39,33 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     public i18nService: I18nService,
+    private readonly contentService: ContentService,
+    private readonly destroyRef: DestroyRef,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.i18nService.syncLanguageFromUrl(this.router.url);
 
+    try {
+      const [socialLinks, profile] = await Promise.all([
+        this.contentService.getSocialLinks(),
+        this.contentService.getProfile(),
+      ]);
+
+      this.social = socialLinks;
+      this.profileContent = profile;
+    } catch (error) {
+      console.warn('Failed to load header content from API.', error);
+    }
+
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe((event) => {
         this.i18nService.syncLanguageFromUrl(event.urlAfterRedirects);
         const elementId = this.getScrollToFromUrl(event.urlAfterRedirects);
@@ -49,12 +77,15 @@ export class HeaderComponent implements OnInit {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });
-
   }
 
   navigateTo(route: string) {
     const normalizedRoute = route === 'home' ? '' : route;
     this.router.navigateByUrl(this.i18nService.localizedPath(normalizedRoute));
+  }
+
+  navigateToAdminLogin() {
+    this.router.navigateByUrl('/admin/login');
   }
 
   scrollTo(elementId: string) {
@@ -87,6 +118,13 @@ export class HeaderComponent implements OnInit {
 
   t(key: Parameters<I18nService['t']>[0]) {
     return this.i18nService.t(key);
+  }
+
+  get headerLogo() {
+    return (
+      resolveImageAssetUrl(this.profileContent?.metadata?.portfolioMedia?.headerLogo) ||
+      createPortfolioPlaceholder('Logo', 640, 240)
+    );
   }
 
   private getScrollToFromUrl(url: string): string | null {

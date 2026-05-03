@@ -1,0 +1,11 @@
+<section>
+    <div class="admin-page-header">
+        <div>
+            <p class="admin-page-kicker">Configuracion del perfil</p>
+            <h2 class="admin-page-title">Perfil</h2>
+            <p class="admin-page-copy mb-0">Actualiza la informacion publica del propietario del portafolio.</p>
+        </div>
+    </div>
+
+    <app-admin-profile-section [profile]="facade.profile" [contentLoading]="facade.contentLoading" [saveLoading]="facade.isActionLoading('profile-save')" (saveProfile)="facade.saveProfile()" (heroSlideImageAssetsChange)="facade.onHeroSlideImageAssetsChange($event.index, $event.assets)" (imageUploadError)="facade.onImageUploadError($event)"></app-admin-profile-section>
+</section>

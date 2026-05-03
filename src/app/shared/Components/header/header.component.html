@@ -10,12 +10,11 @@
           </a>
         </div>
         <a class="navbar-brand" (click)="navigateTo('home')">
-          <img src="/assets/images/home/logo-yo-bh.webp" alt="brand-logo" class="default-logo" />
+          <img [src]="headerLogo" alt="brand-logo" class="default-logo" />
         </a>
       </div>
       <div class="col-auto col-lg-8 menu-order">
-        <button class="navbar-toggler float-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-label="Toggle navigation">
+        <button class="navbar-toggler float-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
           <span class="navbar-toggler-line"></span>
           <span class="navbar-toggler-line"></span>
           <span class="navbar-toggler-line"></span>
@@ -58,32 +57,36 @@
                 {{ t('nav.cv') }}
               </button>
             </li>
+            <li class="nav-item d-lg-none d-flex admin-mobile-item">
+              <button type="button" class="nav-link admin-mobile-link" (click)="navigateToAdminLogin()" aria-label="Admin access">
+                <span>Admin Panel</span>
+                <i class="fa-solid fa-gear" aria-hidden="true"></i>
+              </button>
+            </li>
           </ul>
         </div>
       </div>
       <div class="col-auto col-lg-2 text-end">
-        <div class="header-icon">
+        <div class="header-actions">
           <div class="language-switcher">
-            <button
-              type="button"
-              class="lang-btn"
-              [class.active]="i18nService.currentLanguage() === 'es'"
-              (click)="switchLanguage('es')">
+            <button type="button" class="lang-btn" [class.active]="i18nService.currentLanguage() === 'es'" (click)="switchLanguage('es')">
               ES
             </button>
-            <button
-              type="button"
-              class="lang-btn"
-              [class.active]="i18nService.currentLanguage() === 'en'"
-              (click)="switchLanguage('en')">
+            <button type="button" class="lang-btn" [class.active]="i18nService.currentLanguage() === 'en'" (click)="switchLanguage('en')">
               EN
             </button>
           </div>
-          <div class="header-social-icon icon">
+          <div class="header-social-list" aria-label="Social links">
             @for (item of social; track $index) {
-            <a href="{{ item.url }}" target="_blank"><i class="{{ item.icon }}"></i></a>
+            <a class="header-social-link" [href]="item.href || '#'" target="_blank" rel="noopener noreferrer" [attr.title]="item.label?.[i18nService.currentLanguage()] || item.label?.es || item.label?.en || 'Social link'" [attr.aria-label]="item.label?.[i18nService.currentLanguage()] || item.label?.es || item.label?.en || 'Social link'">
+              <i class="{{ item.icon }}"></i>
+              <span class="header-social-text-hidden">{{ item.label?.[i18nService.currentLanguage()] || item.label?.es || item.label?.en || 'Social link' }}</span>
+            </a>
             }
           </div>
+          <button type="button" class="admin-trigger admin-trigger-desktop" (click)="navigateToAdminLogin()" aria-label="Admin access" title="Admin access">
+            <i class="fa-solid fa-gear" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
     </div>
