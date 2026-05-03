@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
+import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 
 @Component({
   selector: 'app-slider-project-item',
@@ -43,7 +44,7 @@ export class SliderProjectItemComponent {
       return coverImage;
     }
 
-    return '/assets/images/shared/backgrounds/desktop-v3.webp';
+    return createPortfolioPlaceholder('Project Cover', 1200, 900);
   }
 
   get summary() {

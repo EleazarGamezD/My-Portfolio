@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import {SideIcons} from '@core/constants/sideIcons';
-import { IApiContentItem } from '@core/interfaces/content/content.interface';
+import { IApiContentItem, IApiProfile } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
+import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
@@ -12,7 +13,7 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   styleUrl: './work-references.component.scss'
 })
 export class WorkReferencesComponent implements OnInit {
-  Icons = SideIcons;
+  profile: IApiProfile | null = null;
   workReferences: IApiContentItem[] = [];
   downSideIcons: {url: string}[] = [];
 
@@ -24,7 +25,16 @@ export class WorkReferencesComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      this.workReferences = await this.contentService.getTestimonials();
+      const [testimonials, profile] = await Promise.all([
+        this.contentService.getTestimonials(),
+        this.contentService.getProfile(),
+      ]);
+      this.workReferences = testimonials;
+      this.profile = profile;
+      this.downSideIcons = (profile.metadata?.portfolioMedia?.testimonialLogos ?? [])
+        .map((asset) => resolveImageAssetUrl(asset))
+        .filter((url): url is string => Boolean(url))
+        .map((url) => ({ url }));
     } catch (error) {
       console.warn('Failed to load testimonials from API.', error);
     } finally {
@@ -54,5 +64,12 @@ export class WorkReferencesComponent implements OnInit {
 
   t(key: string) {
     return this.i18nService.t(key);
+  }
+
+  get serverIcon() {
+    return (
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeServerIcon) ||
+      createPortfolioPlaceholder('Server Icon', 360, 360)
+    );
   }
 }

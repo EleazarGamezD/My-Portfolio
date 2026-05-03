@@ -9,6 +9,8 @@ import {
 import { AppLanguage } from '@core/i18n/i18n.config';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
+import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -24,12 +26,12 @@ export class HeaderComponent implements OnInit {
     {
       label: { es: 'GitHub', en: 'GitHub' },
       icon: 'fa-brands fa-github',
-      href: 'https://github.com/EleazarGamezD',
+      href: 'https://github.com/',
     },
     {
       label: { es: 'LinkedIn', en: 'LinkedIn' },
       icon: 'fa-brands fa-linkedin',
-      href: 'https://www.linkedin.com/in/eleazar-gamez/',
+      href: 'https://www.linkedin.com/',
     },
   ];
   isBrowser: boolean;
@@ -116,6 +118,13 @@ export class HeaderComponent implements OnInit {
 
   t(key: Parameters<I18nService['t']>[0]) {
     return this.i18nService.t(key);
+  }
+
+  get headerLogo() {
+    return (
+      resolveImageAssetUrl(this.profileContent?.metadata?.portfolioMedia?.headerLogo) ||
+      createPortfolioPlaceholder('Logo', 640, 240)
+    );
   }
 
   private getScrollToFromUrl(url: string): string | null {

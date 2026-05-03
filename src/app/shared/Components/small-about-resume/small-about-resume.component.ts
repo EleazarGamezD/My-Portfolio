@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiProfile } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
+import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
@@ -55,6 +57,20 @@ export class SmallAboutResumeComponent implements OnInit {
           this.profile.metadata?.about?.en ?? this.profile.metadata?.about?.es ?? '',
         )
       : '';
+  }
+
+  get primaryImage() {
+    return (
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutPrimaryImage) ||
+      createPortfolioPlaceholder('About Photo A', 900, 1100)
+    );
+  }
+
+  get secondaryImage() {
+    return (
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSecondaryImage) ||
+      createPortfolioPlaceholder('About Photo B', 900, 1100)
+    );
   }
 
   t(key: string) {

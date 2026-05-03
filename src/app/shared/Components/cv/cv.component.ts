@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { SideIcons } from '@core/constants/sideIcons';
-import { IApiResume } from '@core/interfaces/content/content.interface';
+import { IApiProfile, IApiResume } from '@core/interfaces/content/content.interface';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
+import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
@@ -14,8 +15,8 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   styleUrl: './cv.component.scss',
 })
 export class CvComponent implements OnInit {
-  Icons = SideIcons
   resumes: IApiResume[] = [];
+  profile: IApiProfile | null = null;
   loading = true;
   error: string | null = null;
 
@@ -34,10 +35,14 @@ export class CvComponent implements OnInit {
     try {
       this.loading = true;
       this.error = null;
-      const resumes = await this.contentService.getResumes();
+      const [resumes, profile] = await Promise.all([
+        this.contentService.getResumes(),
+        this.contentService.getProfile(),
+      ]);
       this.resumes = Array.isArray(resumes)
         ? resumes.filter((resume) => resume.active !== false)
         : [];
+      this.profile = profile;
     } catch (err) {
       console.error('Error loading resumes:', err);
       this.error = 'Error loading resumes';
@@ -112,5 +117,33 @@ export class CvComponent implements OnInit {
 
   t(key: string) {
     return this.i18nService.t(key);
+  }
+
+  get cvHeroBackground() {
+    return (
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.cvHeroBackground) ||
+      createPortfolioPlaceholder('CV Hero', 1600, 900)
+    );
+  }
+
+  get cvSectionBackground() {
+    return (
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.cvSectionBackground) ||
+      createPortfolioPlaceholder('CV Section', 1600, 900)
+    );
+  }
+
+  get cloudIcon() {
+    return (
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeCloudIcon) ||
+      createPortfolioPlaceholder('Cloud Icon', 420, 420)
+    );
+  }
+
+  get webDevelopmentIcon() {
+    return (
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeWebDevelopmentIcon) ||
+      createPortfolioPlaceholder('Web Dev Icon', 420, 420)
+    );
   }
 }

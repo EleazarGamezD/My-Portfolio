@@ -7,6 +7,8 @@ import {
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { Router } from '@angular/router';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
+import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 
 @Component({
   selector: 'app-footer',
@@ -21,12 +23,12 @@ export class FooterComponent implements OnInit {
     {
       label: { es: 'GitHub', en: 'GitHub' },
       icon: 'fa-brands fa-github',
-      href: 'https://github.com/EleazarGamezD',
+      href: 'https://github.com/',
     },
     {
       label: { es: 'LinkedIn', en: 'LinkedIn' },
       icon: 'fa-brands fa-linkedin',
-      href: 'https://www.linkedin.com/in/eleazar-gamez/',
+      href: 'https://www.linkedin.com/',
     },
   ];
 
@@ -66,6 +68,17 @@ export class FooterComponent implements OnInit {
 
   t(key: Parameters<I18nService['t']>[0]) {
     return this.i18nService.t(key);
+  }
+
+  get footerCenterImage() {
+    return (
+      resolveImageAssetUrl(this.profileContent?.metadata?.portfolioMedia?.footerCenterImage) ||
+      createPortfolioPlaceholder('Footer Badge', 480, 480)
+    );
+  }
+
+  get profileOwnerName() {
+    return this.profileContent?.label?.es || this.profileContent?.label?.en || 'Portfolio Owner';
   }
 
   private scrollToElement(elementId: string) {

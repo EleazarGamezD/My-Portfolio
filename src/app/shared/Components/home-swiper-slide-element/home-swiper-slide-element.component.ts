@@ -3,6 +3,7 @@ import { IApiHeroSlide } from '@core/interfaces/content/content.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
+import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 
 @Component({
   selector: 'app-home-swiper-slide-element',
@@ -30,7 +31,7 @@ export class HomeSwiperSlideElementComponent {
   }
 
   get backgroundImage() {
-    return this.resolveImage(this.sliderContent.image) || '/assets/images/shared/backgrounds/bg-1.webp';
+    return this.resolveImage(this.sliderContent.image) || createPortfolioPlaceholder('Hero Slide', 1600, 900);
   }
 
   private resolveImage(asset?: string | IProjectAsset | null) {

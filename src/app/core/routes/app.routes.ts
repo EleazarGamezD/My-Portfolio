@@ -108,6 +108,14 @@ export const routes: Routes = [
             ),
       },
       {
+        path: 'dashboard/media',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/portfolio-media-page/portfolio-media-page.component')
+            .then(
+              (m) => m.AdminPortfolioMediaPageComponent,
+            ),
+      },
+      {
         path: 'dashboard/skills',
         loadComponent: () =>
           import('@pages/admin-dashboard/views/skills-page/skills-page.component')

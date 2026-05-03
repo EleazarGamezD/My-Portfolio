@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, Inject, NgZone, PLATFORM_ID } from '@angular/core';
 import { IAdminDashboardFilters, IAdminUser } from '@core/interfaces/admin/admin.interface';
-import { IApiContentItem, IApiHeroSlide, IApiProfile, IApiResume, IApiTechSkill, ILocalizedText } from '@core/interfaces/content/content.interface';
+import { IApiContentItem, IApiHeroSlide, IApiPortfolioMedia, IApiProfile, IApiResume, IApiTechSkill, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse, IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
@@ -824,6 +824,7 @@ export class AdminDashboardFacade {
         heroSlides: Array.isArray(metadata.heroSlides)
           ? metadata.heroSlides.map((slide) => this.normalizeHeroSlide(slide))
           : [],
+        portfolioMedia: this.normalizePortfolioMedia(metadata.portfolioMedia),
       },
     };
   }
@@ -844,6 +845,28 @@ export class AdminDashboardFacade {
     this.profile.metadata ??= {};
     this.profile.metadata.about ??= { es: '', en: '' };
     this.profile.metadata.heroSlides ??= [];
+    this.profile.metadata.portfolioMedia ??= this.normalizePortfolioMedia();
+  }
+
+  private normalizePortfolioMedia(media?: IApiPortfolioMedia | null): IApiPortfolioMedia {
+    return {
+      headerLogo: media?.headerLogo ?? null,
+      aboutPrimaryImage: media?.aboutPrimaryImage ?? null,
+      aboutSecondaryImage: media?.aboutSecondaryImage ?? null,
+      footerCenterImage: media?.footerCenterImage ?? null,
+      cvHeroBackground: media?.cvHeroBackground ?? null,
+      cvSectionBackground: media?.cvSectionBackground ?? null,
+      heroSlideFallbackImage: media?.heroSlideFallbackImage ?? null,
+      projectFallbackImage: media?.projectFallbackImage ?? null,
+      decorativeCloudIcon: media?.decorativeCloudIcon ?? null,
+      decorativeWebDevelopmentIcon: media?.decorativeWebDevelopmentIcon ?? null,
+      decorativeMultitaskIcon: media?.decorativeMultitaskIcon ?? null,
+      decorativeApiIcon: media?.decorativeApiIcon ?? null,
+      decorativeServerIcon: media?.decorativeServerIcon ?? null,
+      decorativeRainDigits: media?.decorativeRainDigits ?? null,
+      decorativeWebBackground: media?.decorativeWebBackground ?? null,
+      testimonialLogos: Array.isArray(media?.testimonialLogos) ? [...media!.testimonialLogos] : [],
+    };
   }
 
   private getContentPayload(item: IApiContentItem | IApiResume): Partial<IApiContentItem & IApiResume> {

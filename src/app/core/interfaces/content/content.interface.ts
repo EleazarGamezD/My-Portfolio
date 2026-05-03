@@ -17,6 +17,31 @@ export interface IApiHeroSlide {
   image?: string | IProjectAsset | null;
 }
 
+export interface IApiPortfolioMedia {
+  headerLogo?: string | IProjectAsset | null;
+  aboutPrimaryImage?: string | IProjectAsset | null;
+  aboutSecondaryImage?: string | IProjectAsset | null;
+  footerCenterImage?: string | IProjectAsset | null;
+  cvHeroBackground?: string | IProjectAsset | null;
+  cvSectionBackground?: string | IProjectAsset | null;
+  heroSlideFallbackImage?: string | IProjectAsset | null;
+  projectFallbackImage?: string | IProjectAsset | null;
+  decorativeCloudIcon?: string | IProjectAsset | null;
+  decorativeWebDevelopmentIcon?: string | IProjectAsset | null;
+  decorativeMultitaskIcon?: string | IProjectAsset | null;
+  decorativeApiIcon?: string | IProjectAsset | null;
+  decorativeServerIcon?: string | IProjectAsset | null;
+  decorativeRainDigits?: string | IProjectAsset | null;
+  decorativeWebBackground?: string | IProjectAsset | null;
+  testimonialLogos?: Array<string | IProjectAsset>;
+}
+
+export interface IApiProfileMetadata {
+  about?: ILocalizedText;
+  heroSlides?: IApiHeroSlide[];
+  portfolioMedia?: IApiPortfolioMedia;
+}
+
 export interface IApiContentItem {
   _id?: string;
   slug?: string;
@@ -54,8 +79,5 @@ export interface IApiProfile {
   availability?: string;
   email?: string;
   phone?: string;
-  metadata?: {
-    about?: ILocalizedText;
-    heroSlides?: IApiHeroSlide[];
-  };
+  metadata?: IApiProfileMetadata;
 }

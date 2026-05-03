@@ -2,6 +2,7 @@ export type AdminSection =
   | 'overview'
   | 'projects'
   | 'profile'
+  | 'media'
   | 'skills'
   | 'experience'
   | 'testimonials'
@@ -13,6 +14,7 @@ export const ADMIN_SECTIONS: Array<{ key: AdminSection; label: string; icon: str
   { key: 'overview', label: 'Resumen', icon: 'cilSpeedometer' },
   { key: 'projects', label: 'Proyectos', icon: 'cilCode' },
   { key: 'profile', label: 'Perfil', icon: 'cilUser' },
+  { key: 'media', label: 'Media', icon: 'cilImage' },
   { key: 'skills', label: 'Skills', icon: 'cilStar' },
   { key: 'experience', label: 'Experiencia', icon: 'cilDescription' },
   { key: 'testimonials', label: 'Testimonios', icon: 'cilSpeech' },
