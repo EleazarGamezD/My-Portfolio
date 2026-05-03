@@ -1,33 +1,7 @@
-import {
-  cilAccountLogout,
-  cilChartPie,
-  cilCloudDownload,
-  cilCode,
-  cilDescription,
-  cilLayers,
-  cilMenu,
-  cilPeople,
-  cilSettings,
-  cilShareBoxed,
-  cilSpeedometer,
-  cilSpeech,
-  cilStar,
-  cilUser,
-} from '@coreui/icons';
+import { brandSet, flagSet, freeSet } from '@coreui/icons';
 
 export const adminIconSubset = {
-  cilAccountLogout,
-  cilChartPie,
-  cilCloudDownload,
-  cilCode,
-  cilDescription,
-  cilLayers,
-  cilMenu,
-  cilPeople,
-  cilSettings,
-  cilShareBoxed,
-  cilSpeedometer,
-  cilSpeech,
-  cilStar,
-  cilUser,
+  ...freeSet,
+  ...brandSet,
+  ...flagSet,
 };
