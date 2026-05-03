@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
@@ -30,6 +30,7 @@ export class AdminExperienceFormPageComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly toastr: ToastrService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -142,6 +143,7 @@ export class AdminExperienceFormPageComponent implements OnInit {
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.saving = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -163,6 +165,7 @@ export class AdminExperienceFormPageComponent implements OnInit {
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 

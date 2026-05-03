@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
@@ -44,6 +44,7 @@ export class AdminSkillFormPageComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly toastr: ToastrService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -142,6 +143,7 @@ export class AdminSkillFormPageComponent implements OnInit {
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.saving = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -163,6 +165,7 @@ export class AdminSkillFormPageComponent implements OnInit {
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 

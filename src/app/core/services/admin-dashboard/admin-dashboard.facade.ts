@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, NgZone, PLATFORM_ID } from '@angular/core';
 import { IAdminDashboardFilters, IAdminUser } from '@core/interfaces/admin/admin.interface';
 import { IApiContentItem, IApiHeroSlide, IApiProfile, IApiResume, IApiTechSkill, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse, IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
@@ -87,6 +87,7 @@ export class AdminDashboardFacade {
     private readonly projectsService: ProjectsService,
     private readonly i18nService: I18nService,
     private readonly toastr: ToastrService,
+    private readonly ngZone: NgZone,
     @Inject(PLATFORM_ID) private readonly platformId: object,
   ) {}
 
@@ -124,15 +125,25 @@ export class AdminDashboardFacade {
 
   async loadMetrics(): Promise<void> {
     try {
-      this.loading = true;
-      this.error = null;
-      this.metrics = await this.adminAuthService.getDashboardMetrics(this.filters);
+      this.ngZone.run(() => {
+        this.loading = true;
+        this.error = null;
+      });
+      const metrics = await this.adminAuthService.getDashboardMetrics(this.filters);
+      this.ngZone.run(() => {
+        this.metrics = metrics;
+      });
     } catch (err) {
-      this.error = err instanceof Error ? err.message : 'Failed to load metrics';
-      this.showErrorToast(this.error, 'Analytics');
+      const message = err instanceof Error ? err.message : 'Failed to load metrics';
+      this.ngZone.run(() => {
+        this.error = message;
+      });
+      this.showErrorToast(message, 'Analytics');
       console.error('Error loading metrics:', err);
     } finally {
-      this.loading = false;
+      this.ngZone.run(() => {
+        this.loading = false;
+      });
     }
   }
 
@@ -151,8 +162,10 @@ export class AdminDashboardFacade {
 
   async loadContentData(): Promise<void> {
     try {
-      this.contentLoading = true;
-      this.contentError = null;
+      this.ngZone.run(() => {
+        this.contentLoading = true;
+        this.contentError = null;
+      });
 
       const [projects, profile, techSkills, experience, testimonials, socialLinks, resumes, adminUsers] = await Promise.all([
         this.projectsService.getProjectsPaginated({
@@ -170,21 +183,28 @@ export class AdminDashboardFacade {
         this.adminAuthService.getAdminUsers(),
       ]);
 
-      this.projectsPagination = projects;
-      this.projects = projects.data;
-      this.profile = this.normalizeProfile(profile);
-      this.techSkills = techSkills;
-      this.experience = experience;
-      this.testimonials = testimonials;
-      this.socialLinks = socialLinks;
-      this.resumes = resumes;
-      this.adminUsers = adminUsers;
+      this.ngZone.run(() => {
+        this.projectsPagination = projects;
+        this.projects = projects.data;
+        this.profile = this.normalizeProfile(profile);
+        this.techSkills = techSkills;
+        this.experience = experience;
+        this.testimonials = testimonials;
+        this.socialLinks = socialLinks;
+        this.resumes = resumes;
+        this.adminUsers = adminUsers;
+      });
     } catch (err) {
-      this.contentError = err instanceof Error ? err.message : 'Failed to load admin content';
-      this.showErrorToast(this.contentError, 'Admin content');
+      const message = err instanceof Error ? err.message : 'Failed to load admin content';
+      this.ngZone.run(() => {
+        this.contentError = message;
+      });
+      this.showErrorToast(message, 'Admin content');
       console.error('Error loading admin content:', err);
     } finally {
-      this.contentLoading = false;
+      this.ngZone.run(() => {
+        this.contentLoading = false;
+      });
     }
   }
 
@@ -871,19 +891,26 @@ export class AdminDashboardFacade {
 
   private async runContentAction(actionKey: string, callback: () => Promise<void>): Promise<void> {
     try {
-      this.actionLoadingKey = actionKey;
-      this.actionMessage = null;
-      this.contentError = null;
+      this.ngZone.run(() => {
+        this.actionLoadingKey = actionKey;
+        this.actionMessage = null;
+        this.contentError = null;
+      });
       await callback();
       if (this.actionMessage) {
         this.showSuccessToast(this.actionMessage, 'Admin updated');
       }
     } catch (error) {
-      this.contentError = error instanceof Error ? error.message : 'Failed to apply admin action';
-      this.showErrorToast(this.contentError, 'Admin action');
+      const message = error instanceof Error ? error.message : 'Failed to apply admin action';
+      this.ngZone.run(() => {
+        this.contentError = message;
+      });
+      this.showErrorToast(message, 'Admin action');
       console.error('Admin action failed:', error);
     } finally {
-      this.actionLoadingKey = null;
+      this.ngZone.run(() => {
+        this.actionLoadingKey = null;
+      });
     }
   }
 

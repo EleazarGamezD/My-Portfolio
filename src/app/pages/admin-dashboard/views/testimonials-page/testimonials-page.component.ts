@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
@@ -27,7 +27,10 @@ export class AdminTestimonialsPageComponent implements OnInit {
 
   private readonly pageSize = 10;
 
-  constructor(private readonly contentService: ContentService) {}
+  constructor(
+    private readonly contentService: ContentService,
+    private readonly cdr: ChangeDetectorRef,
+  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.loadPage(1);
@@ -56,6 +59,7 @@ export class AdminTestimonialsPageComponent implements OnInit {
       this.items = [];
     } finally {
       this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 }

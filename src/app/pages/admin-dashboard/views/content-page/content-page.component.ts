@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IApiContentItem, IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
@@ -50,6 +50,7 @@ export class AdminContentPageComponent implements OnInit {
     public readonly facade: AdminDashboardFacade,
     private readonly route: ActivatedRoute,
     private readonly contentService: ContentService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -57,10 +58,12 @@ export class AdminContentPageComponent implements OnInit {
     if (this.config.variant === 'skills') {
       await this.loadSkillPage();
       await this.facade.ensureContentReady();
+      this.cdr.detectChanges();
       return;
     }
 
     await this.facade.ensureContentReady();
+    this.cdr.detectChanges();
   }
 
   get items(): IApiContentItem[] {
@@ -116,6 +119,7 @@ export class AdminContentPageComponent implements OnInit {
       });
     } finally {
       this.facade.contentLoading = false;
+      this.cdr.detectChanges();
     }
   }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
@@ -29,6 +29,7 @@ export class AdminSkillsPageComponent implements OnInit {
   constructor(
     private readonly contentService: ContentService,
     private readonly toastr: ToastrService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -61,6 +62,7 @@ export class AdminSkillsPageComponent implements OnInit {
       this.toastr.error(message, 'Panel');
     } finally {
       this.deletingSkillId = null;
+      this.cdr.detectChanges();
     }
   }
 
@@ -82,6 +84,7 @@ export class AdminSkillsPageComponent implements OnInit {
       this.toastr.error(message, 'Panel');
     } finally {
       this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 }

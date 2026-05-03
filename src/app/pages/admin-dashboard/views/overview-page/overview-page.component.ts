@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { AdminOverviewSectionComponent } from '@pages/admin-dashboard/components/overview-section/overview-section.component';
@@ -26,9 +26,13 @@ import {
   styleUrl: './overview-page.component.scss',
 })
 export class AdminOverviewPageComponent implements OnInit {
-  constructor(public readonly facade: AdminDashboardFacade) {}
+  constructor(
+    public readonly facade: AdminDashboardFacade,
+    private readonly cdr: ChangeDetectorRef,
+  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.facade.ensureOverviewReady();
+    this.cdr.detectChanges();
   }
 }

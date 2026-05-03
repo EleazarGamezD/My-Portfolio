@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
@@ -46,15 +46,18 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly storageService: StorageService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.mode = (this.route.snapshot.data['mode'] as ProjectFormMode) || 'create';
     await this.facade.ensureContentReady();
+    this.cdr.detectChanges();
 
     if (this.mode === 'create') {
       this.draft = this.facade.newProject;
       this.syncDraftSkills();
+      this.cdr.detectChanges();
       return;
     }
 
@@ -71,11 +74,13 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
 
     if (!project) {
       this.notFound = true;
+      this.cdr.detectChanges();
       return;
     }
 
     this.draft = structuredClone(project);
     this.syncDraftSkills();
+    this.cdr.detectChanges();
   }
 
   get pageTitle(): string {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
@@ -28,6 +28,7 @@ export class AdminTestimonialDetailsPageComponent implements OnInit {
     private readonly router: Router,
     private readonly i18nService: I18nService,
     private readonly toastr: ToastrService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -95,6 +96,7 @@ export class AdminTestimonialDetailsPageComponent implements OnInit {
       this.toastr.error(message, 'Dashboard');
     } finally {
       this.actionLoading = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -114,6 +116,7 @@ export class AdminTestimonialDetailsPageComponent implements OnInit {
       this.toastr.error(message, 'Dashboard');
     } finally {
       this.actionLoading = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -132,6 +135,7 @@ export class AdminTestimonialDetailsPageComponent implements OnInit {
       this.error = error instanceof Error ? error.message : 'No se pudo cargar el testimonio.';
     } finally {
       this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 }
