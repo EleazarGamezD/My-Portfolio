@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = dirname(__dirname);
-const environmentDir = join(projectRoot, 'src', 'environment');
+const environmentDir = join(projectRoot, 'src', 'environments');
 
 const requireEnv = (name, fallback = '') => {
   const value = process.env[name] ?? fallback;
@@ -20,14 +20,10 @@ const requireEnv = (name, fallback = '') => {
 const writeEnvironmentFile = (filename, production) => {
   const content = `export const environment = {
   production: ${production},
-  appName: '${process.env.APP_NAME ?? 'technical-challenge'}',
-  url: '${requireEnv('FRONTEND_API_URL', 'http://localhost:3000')}',
-  firebase: {
-    apiKey: '${requireEnv('FIREBASE_API_KEY')}',
-    authDomain: '${requireEnv('FIREBASE_AUTH_DOMAIN')}',
-    projectId: '${requireEnv('FIREBASE_PROJECT_ID')}',
-    appId: '${requireEnv('FIREBASE_APP_ID')}',
-  },
+  appName: '${process.env.APP_NAME ?? 'PORTFOLIO'}',
+  apiUrl: '${requireEnv('FRONTEND_API_URL')}',
+  backendApiKey: '${requireEnv('BACKEND_API_KEY')}',
+  reCaptchaSiteKey: '${requireEnv('RECAPTCHA_SITE_KEY')}',
 };
 `;
 
