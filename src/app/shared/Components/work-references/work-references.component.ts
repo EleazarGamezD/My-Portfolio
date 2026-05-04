@@ -29,7 +29,9 @@ export class WorkReferencesComponent implements OnInit {
         this.contentService.getTestimonials(),
         this.contentService.getProfile(),
       ]);
-      this.workReferences = testimonials;
+      this.workReferences = Array.isArray(testimonials)
+        ? testimonials.filter((item): item is IApiContentItem => Boolean(item))
+        : [];
       this.profile = profile;
       this.downSideIcons = (profile.metadata?.portfolioMedia?.testimonialLogos ?? [])
         .map((asset) => resolveImageAssetUrl(asset))
@@ -43,22 +45,36 @@ export class WorkReferencesComponent implements OnInit {
     }
   }
 
-  getTestimonial(item: IApiContentItem) {
+  getTestimonial(item: IApiContentItem | null | undefined) {
     return this.i18nService.selectText(
-      item.description?.es ?? '',
-      item.description?.en ?? item.description?.es ?? '',
+      item?.description?.es ?? '',
+      item?.description?.en ?? item?.description?.es ?? '',
     );
   }
 
-  getMetadataText(item: IApiContentItem, key: string) {
-    const value = item.metadata?.[key];
-    return typeof value === 'string' ? value : '';
+  getMetadataText(item: IApiContentItem | null | undefined, key: 'position' | 'company') {
+    const value = item?.[key];
+    if (typeof value === 'string' && value.trim()) {
+      return value;
+    }
+
+    const metadataValue = item?.metadata?.[key];
+    return typeof metadataValue === 'string' ? metadataValue : '';
   }
 
-  getName(item: IApiContentItem) {
-    return this.getMetadataText(item, 'name') || this.i18nService.selectText(
-      item.label?.es ?? '',
-      item.label?.en ?? item.label?.es ?? '',
+  getName(item: IApiContentItem | null | undefined) {
+    if (typeof item?.name === 'string' && item.name.trim()) {
+      return item.name;
+    }
+
+    const metadataName = item?.metadata?.['name'];
+    if (typeof metadataName === 'string' && metadataName.trim()) {
+      return metadataName;
+    }
+
+    return this.i18nService.selectText(
+      item?.label?.es ?? '',
+      item?.label?.en ?? item?.label?.es ?? '',
     );
   }
 

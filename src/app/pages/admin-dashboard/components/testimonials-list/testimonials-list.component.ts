@@ -53,6 +53,10 @@ export class TestimonialsListComponent {
   }
 
   getName(item: IApiContentItem): string {
+    if (typeof item.name === 'string' && item.name.trim()) {
+      return item.name;
+    }
+
     const metadataName = item.metadata?.['name'];
     if (typeof metadataName === 'string' && metadataName.trim()) {
       return metadataName;
@@ -65,12 +69,12 @@ export class TestimonialsListComponent {
   }
 
   getPosition(item: IApiContentItem): string {
-    const value = item.metadata?.['position'];
+    const value = item.position ?? item.metadata?.['position'];
     return typeof value === 'string' && value.trim() ? value : '-';
   }
 
   getCompany(item: IApiContentItem): string {
-    const value = item.metadata?.['company'];
+    const value = item.company ?? item.metadata?.['company'];
     return typeof value === 'string' && value.trim() ? value : '-';
   }
 

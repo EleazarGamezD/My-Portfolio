@@ -8,7 +8,7 @@
     <div class="swiper-wrapper">
       @for (sliderContent of sliderContentArray; track $index) {
         <div class="swiper-slide">
-          <app-home-swiper-slide-element [sliderContent]="sliderContent" />
+          <app-home-swiper-slide-element [sliderContent]="sliderContent" [priority]="$index === 0" />
         </div>
       }
     </div>
