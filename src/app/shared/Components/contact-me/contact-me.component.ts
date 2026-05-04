@@ -85,6 +85,7 @@ export class ContactMeComponent implements OnInit {
             subject: this.contactForm.value.subject,
             name: this.contactForm.value.name,
             contactEmail: this.contactForm.value.email,
+            phone: this.contactForm.value.phone,
             message: this.contactForm.value.message,
           };
 

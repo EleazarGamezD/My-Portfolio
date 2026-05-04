@@ -1,13 +1,44 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
-import { catchError, from, lastValueFrom, map } from 'rxjs';
+import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
+import { StorageMap } from '@ngx-pwa/local-storage';
+import { StorageService } from '@services/storage/storage.service';
+import { catchError, defaultIfEmpty, lastValueFrom, map, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GlobalHttpService {
-  constructor(public httpService: HttpClient) {}
+export class GlobalHttpService extends StorageService {
+  constructor(
+    public _http: HttpClient,
+    storageMap: StorageMap,
+    private readonly ngZone: NgZone,
+    @Inject(PLATFORM_ID) platformId: object,
+  ) {
+    super(storageMap, platformId);
+  }
+
+  /**
+    * Returns a promise that resolves to an HttpHeaders object containing the Authorization header with a valid bearer token.
+    * If the user is not logged in, an empty HttpHeaders object is returned.
+    * @returns {Promise<HttpHeaders>} A promise that resolves to an HttpHeaders object containing the Authorization header with a valid bearer token.
+    */
+  public async getAuthHeaders(): Promise<HttpHeaders> {
+    const token = (await this.getStorage(NgStorage.TOKEN)) as string;
+    let headers = new HttpHeaders();
+
+    if (environment.backendApiKey) {
+      headers = headers.set('x-api-key', environment.backendApiKey);
+    }
+
+    if (token) {
+      return headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    return headers;
+  }
 
   /**
    * Performs a HTTP request.
@@ -22,15 +53,13 @@ export class GlobalHttpService {
     payload: P,
     method: string = RequestMethod.GET,
   ): Promise<T> {
-    return lastValueFrom(
-      from(this.makeHttpRequest<T>(route, payload, method)).pipe(
-        map((res: T) => res),
-        catchError((error: HttpErrorResponse) => {
-          console.error('Error:', error);
-          throw error;
-        }),
-      ),
-    );
+    try {
+      const response = await this.makeHttpRequest<T>(route, payload, method);
+      return this.ngZone.run(() => response);
+    } catch (error) {
+      console.error('Error:', error);
+      throw this.ngZone.run(() => error);
+    }
   }
 
   /**
@@ -46,13 +75,20 @@ export class GlobalHttpService {
     options: unknown = {},
     method: string = RequestMethod.GET,
   ): Promise<T> {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = await this.getAuthHeaders();
     const requestOptions: object =
       method === RequestMethod.GET ? { headers } : { body: options, headers };
+
     return lastValueFrom(
-      this.httpService
+      this._http
         .request<T>(method, url, requestOptions)
-        .pipe(map((response) => response as T)),
+        .pipe(
+          map((response) => response as T),
+          defaultIfEmpty(null as T),
+          catchError((error: HttpErrorResponse) =>
+            throwError(() => error),
+          ),
+        ),
     );
   }
 }

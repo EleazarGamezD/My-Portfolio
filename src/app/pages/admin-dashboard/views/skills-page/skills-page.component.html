@@ -1,0 +1,10 @@
+<section>
+  <app-skills-list
+    [skills]="skills"
+    [loading]="loading"
+    [deletingSkillId]="deletingSkillId"
+    [pagination]="pagination"
+    (pageChange)="changePage($event)"
+    (deleteSkill)="deleteSkill($event)">
+  </app-skills-list>
+</section>

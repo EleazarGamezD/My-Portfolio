@@ -1,0 +1,17 @@
+<section>
+  <div class="admin-page-header">
+    <div>
+      <p class="admin-page-kicker">Media del portfolio</p>
+      <h2 class="admin-page-title">Assets visuales</h2>
+      <p class="admin-page-copy mb-0">Controla logo, fotos, fondos e ilustraciones decorativas de la experiencia publica.</p>
+    </div>
+  </div>
+
+  <app-admin-portfolio-media-section
+    [profile]="facade.profile"
+    [contentLoading]="facade.contentLoading"
+    [saveLoading]="facade.isActionLoading('profile-save')"
+    (saveProfile)="facade.saveProfile()"
+    (imageUploadError)="facade.onImageUploadError($event)">
+  </app-admin-portfolio-media-section>
+</section>

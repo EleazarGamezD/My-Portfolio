@@ -1,0 +1,169 @@
+<c-card class="admin-section-card">
+  <c-card-body>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="card-title mb-0">Projects</h5>
+      <c-badge color="light" shape="rounded-pill">{{ projects.length }}</c-badge>
+    </div>
+    <div class="dashboard-create-box mb-4">
+      <h6 class="mb-3">Create Project</h6>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="newProject.title!.es" placeholder="Title ES" />
+        </div>
+        <div class="col-md-6">
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="newProject.title!.en" placeholder="Title EN" />
+        </div>
+        <div class="col-md-6">
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="newProject.summary!.es" placeholder="Summary ES" />
+        </div>
+        <div class="col-md-6">
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="newProject.summary!.en" placeholder="Summary EN" />
+        </div>
+        <div class="col-md-6">
+          <textarea cFormControl sizing="sm" [(ngModel)]="newProject.description!.es" placeholder="Description ES"></textarea>
+        </div>
+        <div class="col-md-6">
+          <textarea cFormControl sizing="sm" [(ngModel)]="newProject.description!.en" placeholder="Description EN"></textarea>
+        </div>
+        <div class="col-md-6">
+          <app-add-photo
+            [storageKey]="getNewProjectCoverStorageKey()"
+            [maxPhotos]="1"
+            [maxMb]="5"
+            [title]="'Cover image'"
+            [subTitle]="'Selecciona la portada del proyecto'"
+            [label]="'Select cover'"
+            [hint]="'Arrastra o selecciona una imagen'"
+            [urlsPreviews]="[]"
+            (assetsChange)="newProjectCoverAssetsChange.emit($event)"
+            (uploadError)="imageUploadError.emit($event)" />
+        </div>
+        <div class="col-md-6">
+          <app-add-photo
+            [storageKey]="getNewProjectGalleryStorageKey()"
+            [maxPhotos]="8"
+            [maxMb]="5"
+            [title]="'Gallery'"
+            [subTitle]="'Agrega imágenes del proyecto'"
+            [label]="'Add gallery images'"
+            [hint]="'Arrastra o selecciona imágenes'"
+            [urlsPreviews]="[]"
+            (assetsChange)="newProjectGalleryAssetsChange.emit($event)"
+            (uploadError)="imageUploadError.emit($event)" />
+        </div>
+        <div class="col-md-4">
+          <input cFormControl sizing="sm" type="text" [ngModel]="newProjectStackValue" (ngModelChange)="newProjectStackValueChange.emit($event)" placeholder="Stack CSV" />
+        </div>
+        <div class="col-md-4">
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="newProject.projectLink" placeholder="Project Link" />
+        </div>
+        <div class="col-md-4">
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="newProject.codeLink" placeholder="Code Link" />
+        </div>
+        <div class="col-md-3">
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="newProject.status" placeholder="Status" />
+        </div>
+        <div class="col-md-3">
+          <input cFormControl sizing="sm" type="date" [(ngModel)]="newProject.publishedAt" />
+        </div>
+        <div class="col-md-2 d-flex align-items-center">
+          <label class="form-check-label d-flex align-items-center gap-2">
+            <input cFormCheckInput type="checkbox" [(ngModel)]="newProject.featured" /> Featured
+          </label>
+        </div>
+        <div class="col-12 d-flex justify-content-end">
+          <button cButton color="primary" size="sm" type="button" (click)="createProject.emit()" [disabled]="isActionLoading('project-create')">Create Project</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
+      <c-spinner size="sm" color="primary"></c-spinner>
+      <span>Loading projects...</span>
+    </div>
+    <div class="table-responsive" *ngIf="!contentLoading">
+      <table [hover]="true" [striped]="true" cTable *ngIf="projects.length > 0; else emptyProjects">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Links</th>
+            <th>Media</th>
+            <th>Status</th>
+            <th>Stack</th>
+            <th>Published</th>
+            <th class="text-end">Featured</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let project of projects">
+            <td>
+              <div class="d-flex flex-column gap-2">
+                <input cFormControl sizing="sm" type="text" [(ngModel)]="project.title!.es" placeholder="Title ES" />
+                <input cFormControl sizing="sm" type="text" [(ngModel)]="project.title!.en" placeholder="Title EN" />
+              </div>
+            </td>
+            <td>
+              <div class="d-flex flex-column gap-2">
+                <input cFormControl sizing="sm" type="text" [(ngModel)]="project.projectLink" placeholder="Project URL" />
+                <input cFormControl sizing="sm" type="text" [(ngModel)]="project.codeLink" placeholder="Code URL" />
+              </div>
+            </td>
+            <td>
+              <div class="d-flex flex-column gap-2">
+                <app-photo-editor
+                  [assets]="getProjectCoverAssets(project)"
+                  [maxPhotos]="1"
+                  [variant]="'single'"
+                  [title]="'Cover image'"
+                  [subTitle]="'Portada actual del proyecto.'"
+                  [emptyLabel]="'Agregar portada'"
+                  [addButtonLabel]="'Agregar'"
+                  [changeButtonLabel]="'Cambiar'"
+                  [removeButtonLabel]="'Eliminar'"
+                  (assetsChange)="projectCoverAssetsChange.emit({ project, assets: $event })"
+                  (uploadError)="imageUploadError.emit($event)"></app-photo-editor>
+                <app-photo-editor
+                  [assets]="getProjectGalleryAssets(project)"
+                  [maxPhotos]="8"
+                  [variant]="'gallery'"
+                  [title]="'Gallery'"
+                  [subTitle]="'Selecciona una foto de la galería y luego agrégala, cámbiala o elimínala.'"
+                  [emptyLabel]="'Agregar imagen a la galería'"
+                  [addButtonLabel]="'Agregar'"
+                  [changeButtonLabel]="'Cambiar'"
+                  [removeButtonLabel]="'Eliminar'"
+                  (assetsChange)="projectGalleryAssetsChange.emit({ project, assets: $event })"
+                  (uploadError)="imageUploadError.emit($event)"></app-photo-editor>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex flex-column gap-2">
+                <c-badge [color]="getProjectStatusColor(project.status)" class="align-self-start">{{ project.status || 'draft' }}</c-badge>
+                <input cFormControl sizing="sm" type="text" [(ngModel)]="project.status" />
+              </div>
+            </td>
+            <td>
+              <input cFormControl sizing="sm" type="text" [ngModel]="getProjectStackValue(project)" (ngModelChange)="projectStackChange.emit({ project, value: $event })" placeholder="react, node, mongo" />
+            </td>
+            <td>
+              <input cFormControl sizing="sm" type="date" [(ngModel)]="project.publishedAt" />
+            </td>
+            <td class="text-end">
+              <input cFormCheckInput type="checkbox" [(ngModel)]="project.featured" />
+            </td>
+            <td class="text-end dashboard-actions-cell">
+              <button cButton color="primary" size="sm" type="button" (click)="saveProject.emit(project)" [disabled]="isActionLoading('project-save-' + project._id)">
+                Save
+              </button>
+              <button cButton color="danger" variant="outline" size="sm" type="button" (click)="deleteProject.emit(project)" [disabled]="isActionLoading('project-delete-' + project._id)">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #emptyProjects>
+        <p class="text-muted mb-0">No projects found.</p>
+      </ng-template>
+    </div>
+  </c-card-body>
+</c-card>

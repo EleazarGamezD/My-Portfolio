@@ -41,6 +41,7 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@coreui/coreui/dist/css/coreui.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/swiper/swiper-bundle.min.css",
               "src/assets/css/icon.min.css",
@@ -74,7 +75,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "3MB",
-                  "maximumError": "5MB"
+                  "maximumError": "9MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -121,7 +122,8 @@
               "buildTarget": "My-Portfolio:build:development"
             },
             	"local-development": {
-							"buildTarget": "My-Portfolio:build:local-development"
+							"buildTarget": "My-Portfolio:build:local-development",
+							"proxyConfig": "proxy.conf.local.json"
 						}
           },
           "defaultConfiguration": "development"
