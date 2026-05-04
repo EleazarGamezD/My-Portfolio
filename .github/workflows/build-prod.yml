@@ -16,6 +16,12 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: Production
+    env:
+      APP_NAME: ${{ secrets.APP_NAME }}
+      BACKEND_API_URL: ${{ secrets.BACKEND_API_URL }}
+      BACKEND_API_KEY: ${{ secrets.BACKEND_API_KEY }}
+      RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
 
     strategy:
       matrix:
@@ -43,6 +49,9 @@ jobs:
 
       - name: Install Angular CLI
         run: npm install -g @angular/cli --force
+
+      - name: Generate Angular environment files
+        run: npm run config
 
       # Uncomment the following lines to run tests
       # - name: Run Tests

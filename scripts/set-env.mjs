@@ -17,13 +17,15 @@ const requireEnv = (name, fallback = '') => {
   return value;
 };
 
+const literal = (value) => JSON.stringify(value);
+
 const writeEnvironmentFile = (filename, production) => {
   const content = `export const environment = {
   production: ${production},
-  appName: '${process.env.APP_NAME ?? 'PORTFOLIO'}',
-  apiUrl: '${requireEnv('FRONTEND_API_URL')}',
-  backendApiKey: '${requireEnv('BACKEND_API_KEY')}',
-  reCaptchaSiteKey: '${requireEnv('RECAPTCHA_SITE_KEY')}',
+  appName: ${literal(process.env.APP_NAME ?? 'PORTFOLIO')},
+  apiUrl: ${literal(requireEnv('BACKEND_API_URL'))},
+  backendApiKey: ${literal(requireEnv('BACKEND_API_KEY'))},
+  reCaptchaSiteKey: ${literal(requireEnv('RECAPTCHA_SITE_KEY'))},
 };
 `;
 
@@ -32,6 +34,6 @@ const writeEnvironmentFile = (filename, production) => {
 
 mkdirSync(environmentDir, { recursive: true });
 writeEnvironmentFile('environment.ts', false);
-writeEnvironmentFile('environment.production.ts', true);
+writeEnvironmentFile('environment.prod.ts', true);
 
 console.log('Angular environment files generated successfully.');
