@@ -41,7 +41,7 @@ export class AdminTestimonialDetailsPageComponent implements OnInit {
       return '';
     }
 
-    const value = this.item.metadata?.['name'];
+    const value = this.item.name ?? this.item.metadata?.['name'];
     if (typeof value === 'string' && value.trim()) {
       return value;
     }
@@ -53,12 +53,12 @@ export class AdminTestimonialDetailsPageComponent implements OnInit {
   }
 
   get personPosition(): string {
-    const value = this.item?.metadata?.['position'];
+    const value = this.item?.position ?? this.item?.metadata?.['position'];
     return typeof value === 'string' ? value : '';
   }
 
   get personCompany(): string {
-    const value = this.item?.metadata?.['company'];
+    const value = this.item?.company ?? this.item?.metadata?.['company'];
     return typeof value === 'string' ? value : '';
   }
 

@@ -55,35 +55,41 @@ export class AdminTestimonialFormPageComponent implements OnInit {
   }
 
   get personName(): string {
-    const value = this.draft.metadata?.['name'];
+    const value = this.draft.name ?? this.draft.metadata?.['name'];
     return typeof value === 'string' ? value : '';
   }
 
   get personPosition(): string {
-    const value = this.draft.metadata?.['position'];
+    const value = this.draft.position ?? this.draft.metadata?.['position'];
     return typeof value === 'string' ? value : '';
   }
 
   get personCompany(): string {
-    const value = this.draft.metadata?.['company'];
+    const value = this.draft.company ?? this.draft.metadata?.['company'];
     return typeof value === 'string' ? value : '';
   }
 
   onNameChange(value: string): void {
+    const nextValue = value.trimStart();
     this.ensureMetadata();
-    this.draft.metadata!['name'] = value.trimStart();
-    this.draft.label = { es: value.trimStart(), en: value.trimStart() };
-    this.draft.title = { es: value.trimStart(), en: value.trimStart() };
+    this.draft.name = nextValue;
+    this.draft.metadata!['name'] = nextValue;
+    this.draft.label = { es: nextValue, en: nextValue };
+    this.draft.title = { es: nextValue, en: nextValue };
   }
 
   onPositionChange(value: string): void {
+    const nextValue = value.trimStart();
     this.ensureMetadata();
-    this.draft.metadata!['position'] = value.trimStart();
+    this.draft.position = nextValue;
+    this.draft.metadata!['position'] = nextValue;
   }
 
   onCompanyChange(value: string): void {
+    const nextValue = value.trimStart();
     this.ensureMetadata();
-    this.draft.metadata!['company'] = value.trimStart();
+    this.draft.company = nextValue;
+    this.draft.metadata!['company'] = nextValue;
   }
 
   async submit(): Promise<void> {
@@ -116,6 +122,9 @@ export class AdminTestimonialFormPageComponent implements OnInit {
           es: descriptionEs,
           en: descriptionEn,
         },
+        name,
+        position,
+        company,
         active: this.draft.active ?? true,
         order,
         metadata: {
@@ -171,6 +180,9 @@ export class AdminTestimonialFormPageComponent implements OnInit {
       label: { es: '', en: '' },
       title: { es: '', en: '' },
       description: { es: '', en: '' },
+      name: '',
+      position: '',
+      company: '',
       active: true,
       order: 0,
       metadata: {

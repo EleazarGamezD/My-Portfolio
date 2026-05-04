@@ -1,6 +1,6 @@
 <article class="project-card-shell cursor-pointer" (click)="navigateToProject()">
   <div class="project-card-media">
-    <img [src]="previewImage" [alt]="title" class="project-card-image" />
+    <img [src]="previewImage" [alt]="title" class="project-card-image" loading="lazy" decoding="async" />
     <span class="project-card-index">{{ projectIndex + 1 }}</span>
   </div>
 

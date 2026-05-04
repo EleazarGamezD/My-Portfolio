@@ -49,6 +49,10 @@ export interface IApiContentItem {
   title?: ILocalizedText;
   description?: ILocalizedText;
   value?: string;
+  name?: string;
+  position?: string;
+  company?: string;
+  language?: string;
   period?: IApiExperiencePeriod;
   icon?: string | IProjectAsset | null;
   href?: string;

@@ -16,34 +16,34 @@
               <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.name.label') }}</label>
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-emoji-smile text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail1" type="text" formControlName="name" [placeholder]="t('home.contactForm.name.placeholder')" />
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail1" type="text" formControlName="name" [placeholder]="t('home.contactForm.name.placeholder')" [attr.aria-label]="t('home.contactForm.name.label')" />
               </div>
             </div>
             <div class="col-md-6">
               <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.email.label') }}</label>
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-envelope text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail2" type="email" formControlName="email" [placeholder]="t('home.contactForm.email.placeholder')" />
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail2" type="email" formControlName="email" [placeholder]="t('home.contactForm.email.placeholder')" [attr.aria-label]="t('home.contactForm.email.label')" />
               </div>
             </div>
             <div class="col-md-6">
               <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.phone.label') }}</label>
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-telephone text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail3" type="tel" formControlName="phone" [placeholder]="t('home.contactForm.phone.placeholder')" />
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail3" type="tel" formControlName="phone" [placeholder]="t('home.contactForm.phone.placeholder')" [attr.aria-label]="t('home.contactForm.phone.label')" />
               </div>
             </div>
             <div class="col-md-6">
               <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">{{ t('home.contactForm.subject.label') }}</label>
               <div class="position-relative form-group mb-25px">
                 <span class="form-icon"><i class="bi bi-journals text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail4" type="text" formControlName="subject" [placeholder]="t('home.contactForm.subject.placeholder')" />
+                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail4" type="text" formControlName="subject" [placeholder]="t('home.contactForm.subject.placeholder')" [attr.aria-label]="t('home.contactForm.subject.label')" />
               </div>
             </div>
             <div class="col-12 mb-35px">
               <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">{{ t('home.contactForm.message.label') }}</label>
               <div class="position-relative form-group form-textarea mb-0">
-                <textarea class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" formControlName="message" [placeholder]="t('home.contactForm.message.placeholder')" rows="4"></textarea>
+                <textarea class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" formControlName="message" [placeholder]="t('home.contactForm.message.placeholder')" rows="4" [attr.aria-label]="t('home.contactForm.message.label')"></textarea>
                 <span class="form-icon"><i class="bi bi-chat-square-dots text-dark-gray"></i></span>
               </div>
             </div>
