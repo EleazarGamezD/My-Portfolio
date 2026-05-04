@@ -1,80 +1,80 @@
 <c-card class="admin-section-card users-section-card">
-    <c-card-body>
-        <div class="users-section__header">
-            <div>
-                <h5 class="card-title mb-0">Usuarios administradores</h5>
-                <p class="text-muted small mb-0">
-                    La creacion de usuarios sigue en Swagger mediante el endpoint protegido con <code>x-api-key</code>.
-                </p>
-            </div>
-            <c-badge color="light" shape="rounded-pill">{{ adminUsers.length }}</c-badge>
-        </div>
+  <c-card-body>
+    <div class="users-section__header">
+      <div>
+        <h5 class="card-title mb-0">Usuarios administradores</h5>
+        <p class="text-muted small mb-0">
+          La creacion de usuarios sigue en Swagger mediante el endpoint protegido con <code>x-api-key</code>.
+        </p>
+      </div>
+      <c-badge color="light" shape="rounded-pill">{{ adminUsers.length }}</c-badge>
+    </div>
 
-        <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
-            <c-spinner size="sm" color="primary"></c-spinner>
-            <span>Cargando usuarios...</span>
-        </div>
+    <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
+      <c-spinner size="sm" color="primary"></c-spinner>
+      <span>Cargando usuarios...</span>
+    </div>
 
-        <div class="table-responsive" *ngIf="!contentLoading">
-            <table [hover]="true" [striped]="true" cTable *ngIf="adminUsers.length > 0; else emptyAdminUsers" class="users-table">
-                <thead>
-                    <tr>
-                        <th>Cuenta</th>
-                        <th>Nombre visible</th>
-                        <th>Rol</th>
-                        <th>Ultimo acceso</th>
-                        <th class="text-center">Activo</th>
-                        <th class="text-end">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let user of adminUsers">
-                        <td>
-                            <div class="users-table__identity">
-                                <strong>{{ user.email }}</strong>
-                                <span>@{{ user.username }}</span>
-                                <c-badge *ngIf="isCurrentAdmin(user)" color="info" shape="rounded-pill">Sesion actual</c-badge>
-                            </div>
-                        </td>
+    <div class="table-responsive" *ngIf="!contentLoading">
+      <table [hover]="true" [striped]="true" cTable *ngIf="adminUsers.length > 0; else emptyAdminUsers" class="users-table">
+        <thead>
+          <tr>
+            <th>Cuenta</th>
+            <th>Nombre visible</th>
+            <th>Rol</th>
+            <th>Ultimo acceso</th>
+            <th class="text-center">Activo</th>
+            <th class="text-end">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of adminUsers">
+            <td>
+              <div class="users-table__identity">
+                <strong>{{ user.email }}</strong>
+                <span>{{ '@' }}{{ user.username }}</span>
+                <c-badge *ngIf="isCurrentAdmin(user)" color="info" shape="rounded-pill">Sesion actual</c-badge>
+              </div>
+            </td>
 
-                        <td class="users-table__display-name-cell">
-                            <input cFormControl sizing="sm" type="text" [(ngModel)]="user.displayName" />
-                        </td>
+            <td class="users-table__display-name-cell">
+              <input cFormControl sizing="sm" type="text" [(ngModel)]="user.displayName" />
+            </td>
 
-                        <td>
-                            <div class="users-table__role-stack">
-                                <c-badge [color]="getRoleColor(user.role)" class="align-self-start">{{ user.role }}</c-badge>
-                                <select cFormControl [(ngModel)]="user.role" [disabled]="isCurrentAdmin(user)">
-                                    <option value="super_admin">super_admin</option>
-                                    <option value="admin">admin</option>
-                                    <option value="editor">editor</option>
-                                </select>
-                            </div>
-                        </td>
+            <td>
+              <div class="users-table__role-stack">
+                <c-badge [color]="getRoleColor(user.role)" class="align-self-start">{{ user.role }}</c-badge>
+                <select cFormControl [(ngModel)]="user.role" [disabled]="isCurrentAdmin(user)">
+                  <option value="super_admin">super_admin</option>
+                  <option value="admin">admin</option>
+                  <option value="editor">editor</option>
+                </select>
+              </div>
+            </td>
 
-                        <td>
-                            <div class="users-table__last-access">
-                                <strong>{{ user.lastLoginAt ? (user.lastLoginAt | date:'mediumDate') : 'Nunca' }}</strong>
-                                <span>{{ user.lastLoginAt ? (user.lastLoginAt | date:'shortTime') : 'Sin acceso previo' }}</span>
-                            </div>
-                        </td>
+            <td>
+              <div class="users-table__last-access">
+                <strong>{{ user.lastLoginAt ? (user.lastLoginAt | date:'mediumDate') : 'Nunca' }}</strong>
+                <span>{{ user.lastLoginAt ? (user.lastLoginAt | date:'shortTime') : 'Sin acceso previo' }}</span>
+              </div>
+            </td>
 
-                        <td class="text-center">
-                            <input cFormCheckInput type="checkbox" [(ngModel)]="user.active" [disabled]="isCurrentAdmin(user)" />
-                        </td>
+            <td class="text-center">
+              <input cFormCheckInput type="checkbox" [(ngModel)]="user.active" [disabled]="isCurrentAdmin(user)" />
+            </td>
 
-                        <td class="text-end dashboard-actions-cell">
-                            <button cButton color="primary" size="sm" type="button" (click)="saveUser.emit(user)" [disabled]="isActionLoading(user)">
-                                Guardar
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <td class="text-end dashboard-actions-cell">
+              <button cButton color="primary" size="sm" type="button" (click)="saveUser.emit(user)" [disabled]="isActionLoading(user)">
+                Guardar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-            <ng-template #emptyAdminUsers>
-                <p class="text-muted mb-0">No se encontraron usuarios administradores.</p>
-            </ng-template>
-        </div>
-    </c-card-body>
+      <ng-template #emptyAdminUsers>
+        <p class="text-muted mb-0">No se encontraron usuarios administradores.</p>
+      </ng-template>
+    </div>
+  </c-card-body>
 </c-card>

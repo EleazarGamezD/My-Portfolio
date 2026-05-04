@@ -2,7 +2,6 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   ApplicationConfig,
   importProvidersFrom,
-  provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import {
   provideClientHydration,
@@ -25,7 +24,6 @@ import { environment } from 'src/environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
     provideRouter(
       routes,
       withRouterConfig({

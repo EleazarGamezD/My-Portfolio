@@ -63,7 +63,7 @@ export class ExperienceListComponent {
     return typeof item.value === 'string' && item.value.trim() ? item.value.trim() : '-';
   }
 
-  getEditLink(item: IApiContentItem): readonly (string | number)[] {
+  getEditLink(item: IApiContentItem): (string | number)[] {
     return ['/admin/dashboard/experience/edit', item._id || ''];
   }
 

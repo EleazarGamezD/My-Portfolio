@@ -15,12 +15,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/my-portfolio",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": ["zone.js", "@angular/localize/init"],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -113,7 +113,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "My-Portfolio:build:production"
@@ -126,13 +126,13 @@
 							"proxyConfig": "proxy.conf.local.json"
 						}
           },
-          "defaultConfiguration": "local-development"
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
