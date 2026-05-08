@@ -1,4 +1,4 @@
-<img class="hero-slide-preload" [src]="backgroundImage" [alt]="title || 'Hero slide'" [attr.fetchpriority]="priority ? 'high' : 'auto'" [attr.loading]="priority ? 'eager' : 'lazy'" decoding="async" (load)="onImageLoad()" />
+<img class="hero-slide-preload" data-loader-critical="true" [src]="backgroundImage" [alt]="title || 'Hero slide'" [attr.fetchpriority]="priority ? 'high' : 'auto'" [attr.loading]="priority ? 'eager' : 'lazy'" decoding="async" (load)="onImageLoad()" />
 <div class="position-absolute left-0px top-0px w-100 h-100 cover-background" style="background-image: url('{{ backgroundImage }}');" data-anime='{ "translateY": [0, 0], "opacity": [1,1], "scale": [1,1.1], "duration": 7000, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'></div>
 <div class="opacity-light bg-gradient-nero-grey-brown"></div>
 <div class="container h-100">

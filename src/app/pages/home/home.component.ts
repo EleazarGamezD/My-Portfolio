@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('portfolioView', { static: true }) private portfolioView?: ElementRef<HTMLElement>;
 
   private destroyed = false;
+  private readonly criticalImageTimeoutMs = 4000;
 
   constructor(private readonly storageService: StorageService) {}
 
@@ -61,7 +62,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     await this.waitForNextPaint();
     await requestTemplateReinit();
     await this.waitForFonts();
-    await this.waitForImages(this.portfolioView?.nativeElement);
+    await this.waitForCriticalImages(this.portfolioView?.nativeElement);
 
     if (this.destroyed) {
       return;
@@ -91,31 +92,35 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     await (document.fonts as FontFaceSet).ready.catch(() => undefined);
   }
 
-  private async waitForImages(root?: HTMLElement): Promise<void> {
+  private async waitForCriticalImages(root?: HTMLElement): Promise<void> {
     if (!root) {
       return;
     }
 
-    const images = Array.from(root.querySelectorAll('img')).filter((image) => !image.complete);
+    const images = Array.from(
+      root.querySelectorAll<HTMLImageElement>('img[data-loader-critical="true"], img.hero-slide-preload'),
+    ).filter((image) => !image.complete);
 
     if (!images.length) {
       return;
     }
 
-    await Promise.all(
-      images.map(
-        (image) =>
-          new Promise<void>((resolve) => {
-            const finish = () => {
-              image.removeEventListener('load', finish);
-              image.removeEventListener('error', finish);
-              resolve();
-            };
+    await Promise.all(images.map((image) => this.waitForImage(image)));
+  }
 
-            image.addEventListener('load', finish, { once: true });
-            image.addEventListener('error', finish, { once: true });
-          }),
-      ),
-    );
+  private waitForImage(image: HTMLImageElement): Promise<void> {
+    return new Promise((resolve) => {
+      const timeoutId = globalThis.setTimeout(finish, this.criticalImageTimeoutMs);
+
+      function finish(): void {
+        globalThis.clearTimeout(timeoutId);
+        image.removeEventListener('load', finish);
+        image.removeEventListener('error', finish);
+        resolve();
+      }
+
+      image.addEventListener('load', finish, { once: true });
+      image.addEventListener('error', finish, { once: true });
+    });
   }
 }

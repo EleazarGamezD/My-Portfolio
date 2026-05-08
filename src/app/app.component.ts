@@ -3,8 +3,10 @@ import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { adminIconSubset } from '@core/icons/admin-icon-subset';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { StorageService } from '@core/services/storage/storage.service';
 import { IconSetService } from '@coreui/icons-angular';
 import { filter } from 'rxjs/operators';
 
@@ -21,6 +23,7 @@ export class AppComponent implements OnInit {
     private titleService: Title,
     private router: Router,
     private i18nService: I18nService,
+    private readonly storageService: StorageService,
     private iconSetService: IconSetService,
     private readonly destroyRef: DestroyRef,
     @Inject(DOCUMENT) private document: Document,
@@ -32,6 +35,7 @@ export class AppComponent implements OnInit {
     this.meta.addTag({ name: 'author', content: 'Eleazar Gamez' });
     this.i18nService.syncLanguageFromUrl(this.router.url);
     this.updateSeo(this.router.url);
+    this.syncGlobalLoader(this.router.url);
 
     this.meta.updateTag({ name: 'robots', content: 'index, follow' });
 
@@ -40,6 +44,7 @@ export class AppComponent implements OnInit {
       takeUntilDestroyed(this.destroyRef),
     ).subscribe((event: NavigationEnd) => {
       this.updateSeo(event.urlAfterRedirects);
+      this.syncGlobalLoader(event.urlAfterRedirects);
 
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('router-navigation-end', {
@@ -76,5 +81,13 @@ export class AppComponent implements OnInit {
     this.titleService.setTitle(`${routeTitle} | ${siteTitle}`);
     this.meta.updateTag({ name: 'description', content: this.i18nService.t('meta.description') });
     this.document.documentElement.lang = this.i18nService.currentLanguage();
+  }
+
+  private syncGlobalLoader(url: string): void {
+    if (this.i18nService.isHomeUrl(url)) {
+      return;
+    }
+
+    void this.storageService.setStorage(NgStorage.LOADER, false);
   }
 }
