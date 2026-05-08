@@ -1,4 +1,5 @@
-import { environment } from 'src/environments/environment';
+import { environment } from "../../../../environments/environment.example";
+
 
 export const API_CONTENT_ROUTES = {
   getProfile: `${environment.apiUrl}/content/profile`,

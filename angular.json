@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "My-Portfolio": {
+    "Portfolio_frontend_v2": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/my-portfolio",
+            "outputPath": "dist/Portfolio_frontend_v2",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -116,14 +116,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "My-Portfolio:build:production"
+              "buildTarget": "Portfolio_frontend_v2:build:production"
             },
             "development": {
-              "buildTarget": "My-Portfolio:build:development"
+              "buildTarget": "Portfolio_frontend_v2:build:development"
             },
-            	"local-development": {
-							"buildTarget": "My-Portfolio:build:local-development",
-							"proxyConfig": "proxy.conf.local.json"
+            "local-development": {
+							"buildTarget": "Portfolio_frontend_v2:build:local-development"
 						}
           },
           "defaultConfiguration": "development"

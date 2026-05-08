@@ -1,11 +1,12 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {PagesBannerComponent} from '../../shared/Components/pages-banner/pages-banner.component';
-import {ProjectDetailGroupComponent} from '../../shared/Components/project-detail-group/project-detail-group.component';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
+import { PagesBannerComponent } from '../pages-banner/pages-banner.component';
+import { ProjectDetailGroupComponent } from '../project-detail-group/project-detail-group.component';
+
 
 @Component({
   selector: 'app-project-details',
-  standalone: true, // Asegúrate de que sea standalone
+  standalone: true,
   imports: [PagesBannerComponent, ProjectDetailGroupComponent],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss',

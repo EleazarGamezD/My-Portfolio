@@ -7,12 +7,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { I18nService } from '@core/services/i18n/i18n.service';
 import { EmailService } from '@services/email/email.service';
 import { RecaptchaService } from '@services/recaptcha/recaptcha.service';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
-import { I18nService } from '@core/services/i18n/i18n.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment.example';
+
 
 @Component({
   selector: 'app-contact-me',

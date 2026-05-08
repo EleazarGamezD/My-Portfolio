@@ -1,4 +1,5 @@
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment.example';
+
 
 export const API_ADMIN_ROUTES = {
   login: `${environment.apiUrl}/admin/auth/login`,

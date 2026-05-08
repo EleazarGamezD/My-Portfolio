@@ -19,7 +19,7 @@ function localizedRoute(lang: AppLanguage): Route {
       {
         path: 'projectDetails/:id',
         loadComponent: () =>
-          import('@pages/project-details/project-details.component')
+          import('@shared/Components/project-details/project-details.component')
             .then(
               (m) => m.ProjectDetailsComponent,
             ),

@@ -5,7 +5,8 @@ import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { StorageService } from '@services/storage/storage.service';
 import { catchError, defaultIfEmpty, lastValueFrom, map, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment.example';
+
 
 @Injectable({
   providedIn: 'root',
