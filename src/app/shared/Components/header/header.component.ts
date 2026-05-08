@@ -81,6 +81,14 @@ export class HeaderComponent implements OnInit {
 
   navigateTo(route: string) {
     const normalizedRoute = route === 'home' ? '' : route;
+
+    if (!normalizedRoute && this.i18nService.isHomeUrl(this.router.url)) {
+      if (this.isBrowser) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
     this.router.navigateByUrl(this.i18nService.localizedPath(normalizedRoute));
   }
 

@@ -1,14 +1,31 @@
+.loader-circle-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  height: 100vh;
+  padding-top: calc(100vh / 2);
+  background: var(--white-color, #fff);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 320ms ease,
+    visibility 320ms ease;
+}
+
+.loader-circle-overlay--visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
 .min-box {
   min-height: 140px;
 }
 
 #wifi-loader {
-/*   --background: #9e3e84;
-  --front-color: #842c6b;
-  --back-color: #c3c8de;
-  --text-color: #414856; */
-  width: 64px;
-  height: 64px;
+  width: 94px;
+  height: 94px;
   border-radius: 50px;
   position: relative;
   display: flex;

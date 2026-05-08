@@ -5,6 +5,8 @@ type TranslationKey = string;
 
 const TRANSLATIONS: Record<AppLanguage, Record<TranslationKey, string>> = {
   es: {
+    'common.loading': 'Cargando...',
+
     'nav.home': 'Inicio',
     'nav.about': 'Sobre mi',
     'nav.skills': 'Habilidades',
@@ -88,6 +90,8 @@ const TRANSLATIONS: Record<AppLanguage, Record<TranslationKey, string>> = {
     'project.details.notFound': 'No se encontro el proyecto seleccionado.',
   },
   en: {
+    'common.loading': 'Loading...',
+
     'nav.home': 'Home',
     'nav.about': 'About me',
     'nav.skills': 'Skills',
