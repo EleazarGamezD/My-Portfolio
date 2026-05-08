@@ -1,4 +1,4 @@
-import { environment } from "../../../../environments/environment.example";
+import { environment } from "../../../../environments/environment";
 
 
 export const API_EMAIL_ROUTES = {

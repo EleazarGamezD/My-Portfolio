@@ -20,7 +20,7 @@ import { IconSetService } from '@coreui/icons-angular';
 import { StorageModule } from '@ngx-pwa/local-storage';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { provideToastr } from 'ngx-toastr';
-import { environment } from '../environments/environment.example';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { lastValueFrom } from 'rxjs';
-import { environment } from '../../../../environments/environment.example';
+import { environment } from '../../../../environments/environment';
 
 
 @Injectable({

@@ -1,4 +1,4 @@
-import { environment } from '../../../../environments/environment.example';
+import { environment } from '../../../../environments/environment';
 
 
 export const API_ADMIN_ROUTES = {

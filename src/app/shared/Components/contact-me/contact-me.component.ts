@@ -12,7 +12,7 @@ import { EmailService } from '@services/email/email.service';
 import { RecaptchaService } from '@services/recaptcha/recaptcha.service';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../../environments/environment.example';
+import { environment } from '../../../../environments/environment';
 
 
 @Component({
