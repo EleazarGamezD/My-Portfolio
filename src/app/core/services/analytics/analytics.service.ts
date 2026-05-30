@@ -22,8 +22,9 @@ export interface IDashboardMetrics {
   filters?: Record<string, unknown>;
   groupedTotals: Array<{ _id: string; total: number }>;
   groupedByPath: Array<{ _id: string; total: number }>;
-  groupedByProject: Array<{ _id: string | null; total: number }>;
+  groupedByProject: Array<{ _id: string | null; projectName: string; total: number }>;
   groupedByLanguage: Array<{ _id: string; total: number }>;
+  groupedByDay: Array<{ _id: string; total: number }>;
   recentEvents: Array<{
     _id?: string;
     type: string;
