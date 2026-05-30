@@ -1,4 +1,4 @@
-<div class="skills-shell">
+<div>
   <div class="data-table-header">
     <div class="header-top">
       <div>
@@ -29,12 +29,7 @@
     <div class="skills-grid">
       <article class="skill-card" *ngFor="let skill of skills">
         <div class="skill-card__menu">
-          <app-admin-action-menu
-            [canEdit]="true"
-            [editLink]="['/admin/dashboard/skills/edit', skill._id || '']"
-            [canDelete]="!isDeleting(skill)"
-            [canDeactivate]="false"
-            (actionSelected)="handleAction(skill, $event)">
+          <app-admin-action-menu [canEdit]="true" [editLink]="['/admin/dashboard/skills/edit', skill._id || '']" [canDelete]="!isDeleting(skill)" [canDeactivate]="false" (actionSelected)="handleAction(skill, $event)">
           </app-admin-action-menu>
         </div>
 
@@ -64,12 +59,7 @@
         <button type="button" class="skills-pagination__button" [disabled]="!pagination.hasPrevPage" (click)="changePage(pagination.currentPage - 1)">
           Anterior
         </button>
-        <button
-          type="button"
-          class="skills-pagination__button"
-          *ngFor="let page of visiblePages"
-          [class.skills-pagination__button--active]="page === pagination.currentPage"
-          (click)="changePage(page)">
+        <button type="button" class="skills-pagination__button" *ngFor="let page of visiblePages" [class.skills-pagination__button--active]="page === pagination.currentPage" (click)="changePage(page)">
           {{ page }}
         </button>
         <button type="button" class="skills-pagination__button" [disabled]="!pagination.hasNextPage" (click)="changePage(pagination.currentPage + 1)">

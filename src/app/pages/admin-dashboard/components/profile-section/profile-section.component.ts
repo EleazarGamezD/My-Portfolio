@@ -12,7 +12,7 @@ import {
 } from '@coreui/angular';
 import { PhotoEditorComponent } from '../shared/photo-editor/photo-editor.component';
 import { ShowErrorsComponent } from '../shared/show-errors/show-errors.component';
-import { TranslateButtonComponent } from '../shared/translate-button/translate-button.component';
+import { Language, TranslateButtonComponent } from '../shared/translate-button/translate-button.component';
 
 @Component({
     selector: 'app-admin-profile-section',
@@ -23,6 +23,7 @@ import { TranslateButtonComponent } from '../shared/translate-button/translate-b
 })
 export class AdminProfileSectionComponent {
     @ViewChildren('heroSlideCard') private heroSlideCards?: QueryList<ElementRef<HTMLDivElement>>;
+    readonly Language = Language;
     readonly heroSlideTitleMaxLength = 60;
     readonly heroSlideDescriptionMaxLength = 350;
     @Input() profile: IApiProfile | null = null;

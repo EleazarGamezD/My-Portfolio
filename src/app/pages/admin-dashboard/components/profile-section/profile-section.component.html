@@ -1,247 +1,194 @@
 <c-card class="admin-section-card">
-    <c-card-body>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="card-title mb-0">Perfil</h5>
-            <button cButton color="primary" size="sm" type="button" (click)="saveProfile.emit()" [disabled]="saveLoading || !profile">
-                Guardar perfil
+  <c-card-body>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="card-title mb-0">Perfil</h5>
+      <button cButton color="primary" size="sm" type="button" (click)="saveProfile.emit()" [disabled]="saveLoading || !profile">
+        Guardar perfil
+      </button>
+    </div>
+    <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
+      <c-spinner size="sm" color="primary"></c-spinner>
+      <span>Cargando perfil...</span>
+    </div>
+    <div *ngIf="!contentLoading && profile" class="row g-3">
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="dashboard-detail-label">Nombre ES</span>
+            <app-translate-button [fromText]="profile.label!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="profile.label!.en = $event; translateErrors['labelEs'] = ''" (translationError)="translateErrors['labelEs'] = $event" />
+          </div>
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.label!.es" />
+          <small *ngIf="translateErrors['labelEs']" class="translate-error">{{ translateErrors['labelEs'] }}</small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="dashboard-detail-label">Nombre EN</span>
+            <app-translate-button [fromText]="profile.label!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="profile.label!.es = $event; translateErrors['labelEn'] = ''" (translationError)="translateErrors['labelEn'] = $event" />
+          </div>
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.label!.en" />
+          <small *ngIf="translateErrors['labelEn']" class="translate-error">{{ translateErrors['labelEn'] }}</small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="dashboard-detail-label">Titulo ES</span>
+            <app-translate-button [fromText]="profile.title!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="profile.title!.en = $event; translateErrors['titleEs'] = ''" (translationError)="translateErrors['titleEs'] = $event" />
+          </div>
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.title!.es" />
+          <small *ngIf="translateErrors['titleEs']" class="translate-error">{{ translateErrors['titleEs'] }}</small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="dashboard-detail-label">Titulo EN</span>
+            <app-translate-button [fromText]="profile.title!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="profile.title!.es = $event; translateErrors['titleEn'] = ''" (translationError)="translateErrors['titleEn'] = $event" />
+          </div>
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.title!.en" />
+          <small *ngIf="translateErrors['titleEn']" class="translate-error">{{ translateErrors['titleEn'] }}</small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <span class="dashboard-detail-label">Disponibilidad</span>
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.availability" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <span class="dashboard-detail-label">Ubicacion</span>
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.location" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <span class="dashboard-detail-label">Email</span>
+          <input cFormControl sizing="sm" type="email" [(ngModel)]="profile.email" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <span class="dashboard-detail-label">Telefono</span>
+          <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.phone" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="dashboard-detail-label">Descripcion ES</span>
+            <app-translate-button [fromText]="profile.description!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="profile.description!.en = $event; translateErrors['descEs'] = ''" (translationError)="translateErrors['descEs'] = $event" />
+          </div>
+          <textarea cFormControl rows="4" [(ngModel)]="profile.description!.es"></textarea>
+          <small *ngIf="translateErrors['descEs']" class="translate-error">{{ translateErrors['descEs'] }}</small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="dashboard-detail-label">Descripcion EN</span>
+            <app-translate-button [fromText]="profile.description!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="profile.description!.es = $event; translateErrors['descEn'] = ''" (translationError)="translateErrors['descEn'] = $event" />
+          </div>
+          <textarea cFormControl rows="4" [(ngModel)]="profile.description!.en"></textarea>
+          <small *ngIf="translateErrors['descEn']" class="translate-error">{{ translateErrors['descEn'] }}</small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="dashboard-detail-label">Acerca de ES</span>
+            <app-translate-button [fromText]="profile.metadata!.about!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="profile.metadata!.about!.en = $event; translateErrors['aboutEs'] = ''" (translationError)="translateErrors['aboutEs'] = $event" />
+          </div>
+          <textarea cFormControl rows="5" [(ngModel)]="profile.metadata!.about!.es"></textarea>
+          <small *ngIf="translateErrors['aboutEs']" class="translate-error">{{ translateErrors['aboutEs'] }}</small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dashboard-detail-card">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="dashboard-detail-label">Acerca de EN</span>
+            <app-translate-button [fromText]="profile.metadata!.about!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="profile.metadata!.about!.es = $event; translateErrors['aboutEn'] = ''" (translationError)="translateErrors['aboutEn'] = $event" />
+          </div>
+          <textarea cFormControl rows="5" [(ngModel)]="profile.metadata!.about!.en"></textarea>
+          <small *ngIf="translateErrors['aboutEn']" class="translate-error">{{ translateErrors['aboutEn'] }}</small>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="dashboard-detail-card">
+          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+            <div>
+              <span class="dashboard-detail-label">Home Sliders</span>
+              <div class="text-body-secondary small">Actualiza textos e imagenes del slider principal directamente desde el dashboard.</div>
+            </div>
+            <button cButton color="secondary" size="sm" type="button" (click)="addHeroSlide()">
+              Agregar slider
             </button>
-        </div>
-        <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
-            <c-spinner size="sm" color="primary"></c-spinner>
-            <span>Cargando perfil...</span>
-        </div>
-        <div *ngIf="!contentLoading && profile" class="row g-3">
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="dashboard-detail-label">Nombre ES</span>
-                        <app-translate-button [fromText]="profile.label!.es || ''" fromLang="es" toLang="en" (translated)="profile.label!.en = $event; translateErrors['labelEs'] = ''" (translationError)="translateErrors['labelEs'] = $event" />
-                    </div>
-                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.label!.es" />
-                    <small *ngIf="translateErrors['labelEs']" class="translate-error">{{ translateErrors['labelEs'] }}</small>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="dashboard-detail-label">Nombre EN</span>
-                        <app-translate-button [fromText]="profile.label!.en || ''" fromLang="en" toLang="es" (translated)="profile.label!.es = $event; translateErrors['labelEn'] = ''" (translationError)="translateErrors['labelEn'] = $event" />
-                    </div>
-                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.label!.en" />
-                    <small *ngIf="translateErrors['labelEn']" class="translate-error">{{ translateErrors['labelEn'] }}</small>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="dashboard-detail-label">Titulo ES</span>
-                        <app-translate-button [fromText]="profile.title!.es || ''" fromLang="es" toLang="en" (translated)="profile.title!.en = $event; translateErrors['titleEs'] = ''" (translationError)="translateErrors['titleEs'] = $event" />
-                    </div>
-                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.title!.es" />
-                    <small *ngIf="translateErrors['titleEs']" class="translate-error">{{ translateErrors['titleEs'] }}</small>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="dashboard-detail-label">Titulo EN</span>
-                        <app-translate-button [fromText]="profile.title!.en || ''" fromLang="en" toLang="es" (translated)="profile.title!.es = $event; translateErrors['titleEn'] = ''" (translationError)="translateErrors['titleEn'] = $event" />
-                    </div>
-                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.title!.en" />
-                    <small *ngIf="translateErrors['titleEn']" class="translate-error">{{ translateErrors['titleEn'] }}</small>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Disponibilidad</span>
-                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.availability" />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Ubicacion</span>
-                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.location" />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Email</span>
-                    <input cFormControl sizing="sm" type="email" [(ngModel)]="profile.email" />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Telefono</span>
-                    <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.phone" />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="dashboard-detail-label">Descripcion ES</span>
-                        <app-translate-button [fromText]="profile.description!.es || ''" fromLang="es" toLang="en" (translated)="profile.description!.en = $event; translateErrors['descEs'] = ''" (translationError)="translateErrors['descEs'] = $event" />
-                    </div>
-                    <textarea cFormControl rows="4" [(ngModel)]="profile.description!.es"></textarea>
-                    <small *ngIf="translateErrors['descEs']" class="translate-error">{{ translateErrors['descEs'] }}</small>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="dashboard-detail-label">Descripcion EN</span>
-                        <app-translate-button [fromText]="profile.description!.en || ''" fromLang="en" toLang="es" (translated)="profile.description!.es = $event; translateErrors['descEn'] = ''" (translationError)="translateErrors['descEn'] = $event" />
-                    </div>
-                    <textarea cFormControl rows="4" [(ngModel)]="profile.description!.en"></textarea>
-                    <small *ngIf="translateErrors['descEn']" class="translate-error">{{ translateErrors['descEn'] }}</small>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="dashboard-detail-label">Acerca de ES</span>
-                        <app-translate-button [fromText]="profile.metadata!.about!.es || ''" fromLang="es" toLang="en" (translated)="profile.metadata!.about!.en = $event; translateErrors['aboutEs'] = ''" (translationError)="translateErrors['aboutEs'] = $event" />
-                    </div>
-                    <textarea cFormControl rows="5" [(ngModel)]="profile.metadata!.about!.es"></textarea>
-                    <small *ngIf="translateErrors['aboutEs']" class="translate-error">{{ translateErrors['aboutEs'] }}</small>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-detail-card">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="dashboard-detail-label">Acerca de EN</span>
-                        <app-translate-button [fromText]="profile.metadata!.about!.en || ''" fromLang="en" toLang="es" (translated)="profile.metadata!.about!.es = $event; translateErrors['aboutEn'] = ''" (translationError)="translateErrors['aboutEn'] = $event" />
-                    </div>
-                    <textarea cFormControl rows="5" [(ngModel)]="profile.metadata!.about!.en"></textarea>
-                    <small *ngIf="translateErrors['aboutEn']" class="translate-error">{{ translateErrors['aboutEn'] }}</small>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="dashboard-detail-card">
-                    <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-                        <div>
-                            <span class="dashboard-detail-label">Home Sliders</span>
-                            <div class="text-body-secondary small">Actualiza textos e imagenes del slider principal directamente desde el dashboard.</div>
-                        </div>
-                        <button cButton color="secondary" size="sm" type="button" (click)="addHeroSlide()">
-                            Agregar slider
-                        </button>
-                    </div>
+          </div>
 
-                    <div class="d-flex flex-column gap-3" *ngIf="heroSlides.length; else emptySlides">
-                        <div #heroSlideCard class="border rounded p-3" *ngFor="let slide of heroSlides; let index = index">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <strong>Slider {{ index + 1 }}</strong>
-                                <button cButton color="danger" variant="outline" size="sm" type="button" (click)="removeHeroSlide(index)">
-                                    Eliminar
-                                </button>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <app-photo-editor
-                                      [assets]="getHeroSlideAssets(index)"
-                                      [maxPhotos]="1"
-                                      [variant]="'single'"
-                                      [title]="'Imagen del slider'"
-                                      [subTitle]="'Imagen actual del slider. Puedes agregarla, cambiarla o eliminarla.'"
-                                      [emptyLabel]="'Agregar imagen'"
-                                      [addButtonLabel]="'Agregar'"
-                                      [changeButtonLabel]="'Cambiar'"
-                                      [removeButtonLabel]="'Eliminar'"
-                                      (assetsChange)="heroSlideImageAssetsChange.emit({ index, assets: $event })"
-                                      (uploadError)="imageUploadError.emit($event)" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="dashboard-detail-label d-block mb-2">Titulo en espanol</label>
-                                    <input
-                                      cFormControl
-                                      sizing="sm"
-                                      type="text"
-                                      name="hero-slide-title-es-{{ index }}"
-                                      [(ngModel)]="slide.title!.es"
-                                      required
-                                      [maxlength]="heroSlideTitleMaxLength"
-                                      placeholder="Titulo del slide en espanol"
-                                      #heroSlideTitleEs="ngModel" />
-                                    <app-show-errors
-                                      [control]="heroSlideTitleEs.control"
-                                      [requiredField]="'titulo en espanol'" />
-                                    <div class="d-flex justify-content-between align-items-center mt-1">
-                                        <span class="text-body-secondary small">{{ slide.title?.es?.length || 0 }}/{{ heroSlideTitleMaxLength }}</span>
-                                        <app-translate-button [fromText]="slide.title!.es || ''" fromLang="es" toLang="en" (translated)="slide.title!.en = $event; translateErrors['slide_'+index+'_titleEs'] = ''" (translationError)="translateErrors['slide_'+index+'_titleEs'] = $event" />
-                                    </div>
-                                    <small *ngIf="translateErrors['slide_'+index+'_titleEs']" class="translate-error">{{ translateErrors['slide_'+index+'_titleEs'] }}</small>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="dashboard-detail-label d-block mb-2">Titulo en ingles</label>
-                                    <input
-                                      cFormControl
-                                      sizing="sm"
-                                      type="text"
-                                      name="hero-slide-title-en-{{ index }}"
-                                      [(ngModel)]="slide.title!.en"
-                                      required
-                                      [maxlength]="heroSlideTitleMaxLength"
-                                      placeholder="Titulo del slide en ingles"
-                                      #heroSlideTitleEn="ngModel" />
-                                    <app-show-errors
-                                      [control]="heroSlideTitleEn.control"
-                                      [requiredField]="'titulo en ingles'" />
-                                    <div class="d-flex justify-content-between align-items-center mt-1">
-                                        <span class="text-body-secondary small">{{ slide.title?.en?.length || 0 }}/{{ heroSlideTitleMaxLength }}</span>
-                                        <app-translate-button [fromText]="slide.title!.en || ''" fromLang="en" toLang="es" (translated)="slide.title!.es = $event; translateErrors['slide_'+index+'_titleEn'] = ''" (translationError)="translateErrors['slide_'+index+'_titleEn'] = $event" />
-                                    </div>
-                                    <small *ngIf="translateErrors['slide_'+index+'_titleEn']" class="translate-error">{{ translateErrors['slide_'+index+'_titleEn'] }}</small>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="dashboard-detail-label d-block mb-2">Texto en espanol</label>
-                                    <textarea
-                                      cFormControl
-                                      rows="4"
-                                      name="hero-slide-description-es-{{ index }}"
-                                      [(ngModel)]="slide.description!.es"
-                                      required
-                                      [maxlength]="heroSlideDescriptionMaxLength"
-                                      placeholder="Mensaje del slide en espanol"
-                                      #heroSlideDescriptionEs="ngModel"></textarea>
-                                    <app-show-errors
-                                      [control]="heroSlideDescriptionEs.control"
-                                      [requiredField]="'texto en espanol'" />
-                                    <div class="d-flex justify-content-between align-items-center mt-1">
-                                        <span class="text-body-secondary small">{{ slide.description?.es?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}</span>
-                                        <app-translate-button [fromText]="slide.description!.es || ''" fromLang="es" toLang="en" (translated)="slide.description!.en = $event; translateErrors['slide_'+index+'_descEs'] = ''" (translationError)="translateErrors['slide_'+index+'_descEs'] = $event" />
-                                    </div>
-                                    <small *ngIf="translateErrors['slide_'+index+'_descEs']" class="translate-error">{{ translateErrors['slide_'+index+'_descEs'] }}</small>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="dashboard-detail-label d-block mb-2">Texto en ingles</label>
-                                    <textarea
-                                      cFormControl
-                                      rows="4"
-                                      name="hero-slide-description-en-{{ index }}"
-                                      [(ngModel)]="slide.description!.en"
-                                      required
-                                      [maxlength]="heroSlideDescriptionMaxLength"
-                                      placeholder="Mensaje del slide en ingles"
-                                      #heroSlideDescriptionEn="ngModel"></textarea>
-                                    <app-show-errors
-                                      [control]="heroSlideDescriptionEn.control"
-                                      [requiredField]="'texto en ingles'" />
-                                    <div class="d-flex justify-content-between align-items-center mt-1">
-                                        <span class="text-body-secondary small">{{ slide.description?.en?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}</span>
-                                        <app-translate-button [fromText]="slide.description!.en || ''" fromLang="en" toLang="es" (translated)="slide.description!.es = $event; translateErrors['slide_'+index+'_descEn'] = ''" (translationError)="translateErrors['slide_'+index+'_descEn'] = $event" />
-                                    </div>
-                                    <small *ngIf="translateErrors['slide_'+index+'_descEn']" class="translate-error">{{ translateErrors['slide_'+index+'_descEn'] }}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <ng-template #emptySlides>
-                        <p class="text-muted mb-0">Todavia no hay sliders configurados.</p>
-                    </ng-template>
+          <div class="d-flex flex-column gap-3" *ngIf="heroSlides.length; else emptySlides">
+            <div #heroSlideCard class="border rounded p-3" *ngFor="let slide of heroSlides; let index = index">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <strong>Slider {{ index + 1 }}</strong>
+                <button cButton color="danger" variant="outline" size="sm" type="button" (click)="removeHeroSlide(index)">
+                  Eliminar
+                </button>
+              </div>
+              <div class="row g-3">
+                <div class="col-12">
+                  <app-photo-editor [assets]="getHeroSlideAssets(index)" [maxPhotos]="1" [variant]="'single'" [title]="'Imagen del slider'" [subTitle]="'Imagen actual del slider. Puedes agregarla, cambiarla o eliminarla.'" [emptyLabel]="'Agregar imagen'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Eliminar'" (assetsChange)="heroSlideImageAssetsChange.emit({ index, assets: $event })" (uploadError)="imageUploadError.emit($event)" />
                 </div>
+                <div class="col-md-6">
+                  <label class="dashboard-detail-label d-block mb-2">Titulo en espanol</label>
+                  <input cFormControl sizing="sm" type="text" name="hero-slide-title-es-{{ index }}" [(ngModel)]="slide.title!.es" required [maxlength]="heroSlideTitleMaxLength" placeholder="Titulo del slide en espanol" #heroSlideTitleEs="ngModel" />
+                  <app-show-errors [control]="heroSlideTitleEs.control" [requiredField]="'titulo en espanol'" />
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <span class="text-body-secondary small">{{ slide.title?.es?.length || 0 }}/{{ heroSlideTitleMaxLength }}</span>
+                    <app-translate-button [fromText]="slide.title!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="slide.title!.en = $event; translateErrors['slide_'+index+'_titleEs'] = ''" (translationError)="translateErrors['slide_'+index+'_titleEs'] = $event" />
+                  </div>
+                  <small *ngIf="translateErrors['slide_'+index+'_titleEs']" class="translate-error">{{ translateErrors['slide_'+index+'_titleEs'] }}</small>
+                </div>
+                <div class="col-md-6">
+                  <label class="dashboard-detail-label d-block mb-2">Titulo en ingles</label>
+                  <input cFormControl sizing="sm" type="text" name="hero-slide-title-en-{{ index }}" [(ngModel)]="slide.title!.en" required [maxlength]="heroSlideTitleMaxLength" placeholder="Titulo del slide en ingles" #heroSlideTitleEn="ngModel" />
+                  <app-show-errors [control]="heroSlideTitleEn.control" [requiredField]="'titulo en ingles'" />
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <span class="text-body-secondary small">{{ slide.title?.en?.length || 0 }}/{{ heroSlideTitleMaxLength }}</span>
+                    <app-translate-button [fromText]="slide.title!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="slide.title!.es = $event; translateErrors['slide_'+index+'_titleEn'] = ''" (translationError)="translateErrors['slide_'+index+'_titleEn'] = $event" />
+                  </div>
+                  <small *ngIf="translateErrors['slide_'+index+'_titleEn']" class="translate-error">{{ translateErrors['slide_'+index+'_titleEn'] }}</small>
+                </div>
+                <div class="col-md-6">
+                  <label class="dashboard-detail-label d-block mb-2">Texto en espanol</label>
+                  <textarea cFormControl rows="4" name="hero-slide-description-es-{{ index }}" [(ngModel)]="slide.description!.es" required [maxlength]="heroSlideDescriptionMaxLength" placeholder="Mensaje del slide en espanol" #heroSlideDescriptionEs="ngModel"></textarea>
+                  <app-show-errors [control]="heroSlideDescriptionEs.control" [requiredField]="'texto en espanol'" />
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <span class="text-body-secondary small">{{ slide.description?.es?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}</span>
+                    <app-translate-button [fromText]="slide.description!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="slide.description!.en = $event; translateErrors['slide_'+index+'_descEs'] = ''" (translationError)="translateErrors['slide_'+index+'_descEs'] = $event" />
+                  </div>
+                  <small *ngIf="translateErrors['slide_'+index+'_descEs']" class="translate-error">{{ translateErrors['slide_'+index+'_descEs'] }}</small>
+                </div>
+                <div class="col-md-6">
+                  <label class="dashboard-detail-label d-block mb-2">Texto en ingles</label>
+                  <textarea cFormControl rows="4" name="hero-slide-description-en-{{ index }}" [(ngModel)]="slide.description!.en" required [maxlength]="heroSlideDescriptionMaxLength" placeholder="Mensaje del slide en ingles" #heroSlideDescriptionEn="ngModel"></textarea>
+                  <app-show-errors [control]="heroSlideDescriptionEn.control" [requiredField]="'texto en ingles'" />
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <span class="text-body-secondary small">{{ slide.description?.en?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}</span>
+                    <app-translate-button [fromText]="slide.description!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="slide.description!.es = $event; translateErrors['slide_'+index+'_descEn'] = ''" (translationError)="translateErrors['slide_'+index+'_descEn'] = $event" />
+                  </div>
+                  <small *ngIf="translateErrors['slide_'+index+'_descEn']" class="translate-error">{{ translateErrors['slide_'+index+'_descEn'] }}</small>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <ng-template #emptySlides>
+            <p class="text-muted mb-0">Todavia no hay sliders configurados.</p>
+          </ng-template>
         </div>
-        <p *ngIf="!contentLoading && !profile" class="text-muted mb-0">No se encontro el perfil.</p>
-    </c-card-body>
+      </div>
+    </div>
+    <p *ngIf="!contentLoading && !profile" class="text-muted mb-0">No se encontro el perfil.</p>
+  </c-card-body>
 </c-card>

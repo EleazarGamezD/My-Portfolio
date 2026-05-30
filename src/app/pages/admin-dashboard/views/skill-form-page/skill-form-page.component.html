@@ -48,7 +48,7 @@
                   <div class="skill-hero__meta-card">
                     <span class="skill-hero__meta-label">Slug</span>
                     <strong>Auto generado</strong>
-                    <small>El backend lo crea al guardar, no lo editas aquí.</small>
+                    <small>El backend lo crea al guardar, no lo editas aquí.</small>s
                   </div>
                 </div>
               </div>
@@ -60,7 +60,7 @@
                   <div class="skill-preview-card__tile">
                     <div class="skill-preview-card__icon">
                       <ng-container *ngIf="previewUrls[0] as previewUrl; else previewFallback">
-                        <img [src]="previewUrl" [alt]="draftLabel || 'Vista previa de skill'" />
+                        <img [src]="previewUrl" [alt]="draftLabel || 'Vista previa de skill'" aria-label="Vista previa de skill" />
                       </ng-container>
                       <ng-template #previewFallback>
                         <span>{{ draftLabel.charAt(0) || '?' }}</span>

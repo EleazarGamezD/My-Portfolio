@@ -1,14 +1,5 @@
 @use '../../views/admin-page.shared' as *;
 
-.skills-shell {
-  width: 100%;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 200px);
-  gap: 1.5rem;
-}
-
 .header-top {
   display: flex;
   justify-content: space-between;
@@ -167,11 +158,6 @@
 }
 
 @media (max-width: 768px) {
-  .skills-shell {
-    padding: 1rem;
-    min-height: auto;
-  }
-
   .header-top,
   .skills-pagination {
     flex-direction: column;

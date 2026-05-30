@@ -1,126 +1,128 @@
 <section>
-  <div class="admin-page-header">
-    <div>
-      <p class="admin-page-kicker">Timeline Content</p>
-      <h2 class="admin-page-title">{{ pageTitle }}</h2>
-      <p class="admin-page-copy mb-0">{{ pageCopy }}</p>
+  <div class='base-shell'>
+    <div class="admin-page-header">
+      <div>
+        <p class="admin-page-kicker">Timeline Content</p>
+        <h2 class="admin-page-title">{{ pageTitle }}</h2>
+        <p class="admin-page-copy mb-0">{{ pageCopy }}</p>
+      </div>
+      <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/experience']">Volver al listado</a>
     </div>
-    <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/experience']">Volver al listado</a>
-  </div>
 
-  <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
-  <c-alert *ngIf="notFound" color="warning">No se encontro la experiencia solicitada.</c-alert>
+    <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
+    <c-alert *ngIf="notFound" color="warning">No se encontro la experiencia solicitada.</c-alert>
 
-  <c-card class="admin-page-surface experience-form-shell" *ngIf="!notFound">
-    <c-card-body>
-      <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-        <span class="spinner-border spinner-border-sm"></span>
-        <span>Cargando experiencia...</span>
-      </div>
-
-      <div class="experience-editor" *ngIf="!loading">
-        <section>
-          <div class="experience-hero">
-            <div class="experience-hero__copy">
-              <span class="experience-hero__eyebrow">{{ mode === 'create' ? 'Nueva experiencia' : 'Edicion puntual' }}</span>
-              <h3>{{ draft.label?.es || 'Define la proxima experiencia laboral' }}</h3>
-              <p>
-                Completa labels bilingues, slug y descripcion. El orden de aparicion no se edita aqui:
-                se organiza desde el listado arrastrando filas.
-              </p>
-            </div>
-
-            <div class="experience-hero__meta">
-              <div class="experience-meta-card">
-                <span>Orden</span>
-                <strong>{{ mode === 'create' ? 'Se agrega al final' : 'Se conserva hasta que lo muevas' }}</strong>
-              </div>
-              <div class="experience-meta-card">
-                <span>Estado</span>
-                <strong>Visible en portfolio</strong>
-              </div>
-              <div class="experience-meta-card">
-                <span>Periodo</span>
-                <strong>
-                  {{ draft.period?.start || 'Inicio' }} - {{ draft.period?.current ? 'Actual' : (draft.period?.end || 'Fin') }}
-                </strong>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div class="experience-editor__grid">
-          <section>
-            <div class="experience-panel">
-              <div class="experience-panel__head">
-                <h3>Datos base</h3>
-                <p>Nombre de la empresa y rango del cargo. El slug se genera automaticamente en backend.</p>
-              </div>
-
-              <div class="experience-field-grid experience-field-grid--base">
-                <div class="experience-field experience-field--wide">
-                  <label class="form-label">Nombre de la empresa</label>
-                  <input cFormControl type="text" [ngModel]="companyName" (ngModelChange)="onCompanyNameChange($event)" placeholder="L4 Ventures LLC" />
-                </div>
-
-                <div>
-                  <label class="form-label">Inicio</label>
-                  <input cFormControl type="text" [(ngModel)]="draft.period!.start" placeholder="2025" />
-                </div>
-
-                <div>
-                  <label class="form-label">Fin</label>
-                  <input cFormControl type="text" [(ngModel)]="draft.period!.end" [disabled]="isCurrentRole" placeholder="2026" />
-                </div>
-
-                <div class="experience-current-toggle experience-current-toggle--inline">
-                  <label class="form-label d-block">Estado del cargo</label>
-                  <label class="experience-form__check">
-                    <input cFormCheckInput type="checkbox" [ngModel]="isCurrentRole" (ngModelChange)="onCurrentRoleChange($event)" />
-                    Trabajo actual
-                  </label>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <div class="experience-panel">
-              <div class="experience-panel__head">
-                <h3>Descripcion</h3>
-                <p>Resume el rol y el impacto de forma clara para la timeline publica.</p>
-              </div>
-
-              <div class="experience-field-grid experience-field-grid--textareas">
-                <div>
-                  <label class="form-label">Descripcion ES</label>
-                  <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es" placeholder="Desarrollador Fullstack, desarrollo de aplicaciones web."></textarea>
-                  <div class="d-flex justify-content-between align-items-center mt-1">
-                    <app-translate-button [fromText]="draft.description!.es || ''" fromLang="es" toLang="en" (translated)="draft.description!.en = $event; translateErrors['descEs'] = ''" (translationError)="translateErrors['descEs'] = $event" />
-                    <small *ngIf="translateErrors['descEs']" class="translate-error">{{ translateErrors['descEs'] }}</small>
-                  </div>
-                </div>
-
-                <div>
-                  <label class="form-label">Descripcion EN</label>
-                  <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en" placeholder="Fullstack Developer focused on web applications."></textarea>
-                  <div class="d-flex justify-content-between align-items-center mt-1">
-                    <app-translate-button [fromText]="draft.description!.en || ''" fromLang="en" toLang="es" (translated)="draft.description!.es = $event; translateErrors['descEn'] = ''" (translationError)="translateErrors['descEn'] = $event" />
-                    <small *ngIf="translateErrors['descEn']" class="translate-error">{{ translateErrors['descEn'] }}</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+    <c-card class="admin-page-surface experience-form-shell" *ngIf="!notFound">
+      <c-card-body>
+        <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
+          <span class="spinner-border spinner-border-sm"></span>
+          <span>Cargando experiencia...</span>
         </div>
-      </div>
 
-      <div class="experience-form__footer" *ngIf="!loading">
-        <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/experience']">Cancelar</a>
-        <button cButton color="primary" type="button" (click)="submit()" [disabled]="saving">
-          {{ mode === 'create' ? 'Crear experiencia' : 'Guardar cambios' }}
-        </button>
-      </div>
-    </c-card-body>
-  </c-card>
+        <div class="experience-editor" *ngIf="!loading">
+          <section>
+            <div class="experience-hero">
+              <div class="experience-hero__copy">
+                <span class="experience-hero__eyebrow">{{ mode === 'create' ? 'Nueva experiencia' : 'Edicion puntual' }}</span>
+                <h3>{{ draft.label?.es || 'Define la proxima experiencia laboral' }}</h3>
+                <p>
+                  Completa labels bilingues, slug y descripcion. El orden de aparicion no se edita aqui:
+                  se organiza desde el listado arrastrando filas.
+                </p>
+              </div>
+
+              <div class="experience-hero__meta">
+                <div class="experience-meta-card">
+                  <span>Orden</span>
+                  <strong>{{ mode === 'create' ? 'Se agrega al final' : 'Se conserva hasta que lo muevas' }}</strong>
+                </div>
+                <div class="experience-meta-card">
+                  <span>Estado</span>
+                  <strong>Visible en portfolio</strong>
+                </div>
+                <div class="experience-meta-card">
+                  <span>Periodo</span>
+                  <strong>
+                    {{ draft.period?.start || 'Inicio' }} - {{ draft.period?.current ? 'Actual' : (draft.period?.end || 'Fin') }}
+                  </strong>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="experience-editor__grid">
+            <section>
+              <div class="experience-panel">
+                <div class="experience-panel__head">
+                  <h3>Datos base</h3>
+                  <p>Nombre de la empresa y rango del cargo. El slug se genera automaticamente en backend.</p>
+                </div>
+
+                <div class="experience-field-grid experience-field-grid--base">
+                  <div class="experience-field experience-field--wide">
+                    <label class="form-label">Nombre de la empresa</label>
+                    <input cFormControl type="text" [ngModel]="companyName" (ngModelChange)="onCompanyNameChange($event)" placeholder="L4 Ventures LLC" />
+                  </div>
+
+                  <div>
+                    <label class="form-label">Inicio</label>
+                    <input cFormControl type="text" [(ngModel)]="draft.period!.start" placeholder="2025" />
+                  </div>
+
+                  <div>
+                    <label class="form-label">Fin</label>
+                    <input cFormControl type="text" [(ngModel)]="draft.period!.end" [disabled]="isCurrentRole" placeholder="2026" />
+                  </div>
+
+                  <div class="experience-current-toggle experience-current-toggle--inline">
+                    <label class="form-label d-block">Estado del cargo</label>
+                    <label class="experience-form__check">
+                      <input cFormCheckInput type="checkbox" [ngModel]="isCurrentRole" (ngModelChange)="onCurrentRoleChange($event)" />
+                      Trabajo actual
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section>
+              <div class="experience-panel">
+                <div class="experience-panel__head">
+                  <h3>Descripcion</h3>
+                  <p>Resume el rol y el impacto de forma clara para la timeline publica.</p>
+                </div>
+
+                <div class="experience-field-grid experience-field-grid--textareas">
+                  <div>
+                    <label class="form-label">Descripcion ES</label>
+                    <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es" placeholder="Desarrollador Fullstack, desarrollo de aplicaciones web."></textarea>
+                    <div class="d-flex justify-content-between align-items-center mt-1">
+                      <app-translate-button [fromText]="draft.description!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.description!.en = $event; translateErrors['descEs'] = ''" (translationError)="translateErrors['descEs'] = $event" />
+                      <small *ngIf="translateErrors['descEs']" class="translate-error">{{ translateErrors['descEs'] }}</small>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="form-label">Descripcion EN</label>
+                    <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en" placeholder="Fullstack Developer focused on web applications."></textarea>
+                    <div class="d-flex justify-content-between align-items-center mt-1">
+                      <app-translate-button [fromText]="draft.description!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.description!.es = $event; translateErrors['descEn'] = ''" (translationError)="translateErrors['descEn'] = $event" />
+                      <small *ngIf="translateErrors['descEn']" class="translate-error">{{ translateErrors['descEn'] }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="experience-form__footer" *ngIf="!loading">
+          <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/experience']">Cancelar</a>
+          <button cButton color="primary" type="button" (click)="submit()" [disabled]="saving">
+            {{ mode === 'create' ? 'Crear experiencia' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </c-card-body>
+    </c-card>
+  </div>
 </section>

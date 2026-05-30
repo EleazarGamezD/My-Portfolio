@@ -1,32 +1,18 @@
 <section>
+  <div class='base-shell'>
     <div class="admin-page-header">
-        <div>
-            <p class="admin-page-kicker">{{ config.kicker }}</p>
-            <h2 class="admin-page-title">{{ config.sectionTitle }}</h2>
-            <p class="admin-page-copy mb-0">{{ config.description }}</p>
-        </div>
+      <div>
+        <p class="admin-page-kicker">{{ config.kicker }}</p>
+        <h2 class="admin-page-title">{{ config.sectionTitle }}</h2>
+        <p class="admin-page-copy mb-0">{{ config.description }}</p>
+      </div>
     </div>
 
-    <app-admin-skills-section
-      *ngIf="config.variant === 'skills'; else genericContentSection"
-      [sectionTitle]="config.sectionTitle"
-      [createTitle]="config.createTitle"
-      [emptyMessage]="config.emptyMessage"
-      [skills]="skillItems"
-      [draft]="skillDraft"
-      [contentLoading]="facade.contentLoading"
-      [actionLoadingKey]="facade.actionLoadingKey"
-      [pagination]="skillPagination"
-      (createSkill)="createSkill()"
-      (saveSkill)="saveSkill($event)"
-      (deleteSkill)="deleteSkill($event)"
-      (draftIconAssetsChange)="facade.onTechSkillDraftIconAssetsChange($event)"
-      (skillIconAssetsChange)="facade.onTechSkillIconAssetsChange($event.skill, $event.assets)"
-      (imageUploadError)="facade.onImageUploadError($event)"
-      (pageChange)="changeSkillPage($event)">
+    <app-admin-skills-section *ngIf="config.variant === 'skills'; else genericContentSection" [sectionTitle]="config.sectionTitle" [createTitle]="config.createTitle" [emptyMessage]="config.emptyMessage" [skills]="skillItems" [draft]="skillDraft" [contentLoading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" [pagination]="skillPagination" (createSkill)="createSkill()" (saveSkill)="saveSkill($event)" (deleteSkill)="deleteSkill($event)" (draftIconAssetsChange)="facade.onTechSkillDraftIconAssetsChange($event)" (skillIconAssetsChange)="facade.onTechSkillIconAssetsChange($event.skill, $event.assets)" (imageUploadError)="facade.onImageUploadError($event)" (pageChange)="changeSkillPage($event)">
     </app-admin-skills-section>
 
     <ng-template #genericContentSection>
       <app-admin-content-section [sectionTitle]="config.sectionTitle" [createTitle]="config.createTitle" [emptyMessage]="config.emptyMessage" [resourceKey]="config.resourceName" [variant]="config.variant" [items]="items" [draft]="draft" [contentLoading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" (createItem)="facade.createContentItem(config.resourceName)" (saveItem)="facade.saveContentItem(config.resourceName, $event)" (deleteItem)="facade.deleteContentItem(config.resourceName, $event)"></app-admin-content-section>
     </ng-template>
+  </div>
 </section>

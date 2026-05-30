@@ -62,7 +62,7 @@
                 <div class="resume-slot-card__grid">
                   <div class="resume-slot-card__field resume-slot-card__field--wide">
                     <label class="form-label">Nombre visible</label>
-                    <input cFormControl type="text" [(ngModel)]="slot.title" [placeholder]="slot.heading === 'CV Español' ? 'Eleazar Gamez - CV Español' : 'Eleazar Gamez - CV English'" />
+                    <input cFormControl type="text" [(ngModel)]="slot.title" [placeholder]="slot.heading === 'CV Español' ? 'Eleazar Gamez - CV Español' : 'Eleazar Gamez - CV English'" [attr.aria-label]="slot.heading === 'CV Español' ? 'Eleazar Gamez - CV Español' : 'Eleazar Gamez - CV English'" />
                     <small class="text-body-secondary">
                       Este mismo nombre se usa como etiqueta publica y como nombre del archivo descargado.
                     </small>
@@ -70,12 +70,12 @@
 
                   <div class="resume-slot-card__field resume-slot-card__field--wide">
                     <label class="form-label">Descripcion visible</label>
-                    <textarea cFormControl rows="4" [(ngModel)]="slot.description" [placeholder]="slot.heading === 'CV Español' ? 'Curriculum profesional en español.' : 'Professional resume in English.'"></textarea>
+                    <textarea cFormControl rows="4" [(ngModel)]="slot.description" [placeholder]="slot.heading === 'CV Español' ? 'Curriculum profesional en español.' : 'Professional resume in English.'" [attr.aria-label]="slot.heading === 'CV Español' ? 'Curriculum profesional en español.' : 'Professional resume in English.'"></textarea>
                   </div>
 
                   <div class="resume-slot-card__field resume-slot-card__field--wide">
                     <label class="form-label">Archivo</label>
-                    <input cFormControl type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" (change)="onFileSelected(slot, $event)" />
+                    <input cFormControl type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" (change)="onFileSelected(slot, $event)" [attr.aria-label]="'Seleccionar archivo para ' + slot.heading" />
                     <small class="text-body-secondary">{{ getCurrentFileLabel(slot) }}</small>
                   </div>
                 </div>

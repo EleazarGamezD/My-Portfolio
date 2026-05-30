@@ -1,9 +1,6 @@
 <section>
-  <app-experience-list
-    [items]="facade.experience"
-    [loading]="facade.contentLoading"
-    [actionLoadingKey]="facade.actionLoadingKey"
-    (deleteExperience)="facade.deleteContentItem('experience', $event)"
-    (reorderExperience)="facade.reorderExperience($event.previousIndex, $event.currentIndex)">
-  </app-experience-list>
+  <div class='base-shell'>
+    <app-experience-list [items]="facade.experience" [loading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" (deleteExperience)="facade.deleteContentItem('experience', $event)" (reorderExperience)="facade.reorderExperience($event.previousIndex, $event.currentIndex)">
+    </app-experience-list>
+  </div>
 </section>

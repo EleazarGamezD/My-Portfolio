@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
 import { ContentService } from '@core/services/content/content.service';
-import { TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
+import { Language, TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
 import { ToastrService } from 'ngx-toastr';
 
 type TestimonialFormMode = 'create' | 'edit';
@@ -18,6 +18,7 @@ type TestimonialFormMode = 'create' | 'edit';
   styleUrl: './testimonial-form-page.component.scss',
 })
 export class AdminTestimonialFormPageComponent implements OnInit {
+  readonly Language = Language;
   mode: TestimonialFormMode = 'create';
   testimonialId = '';
   loading = false;

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
 import { ContentService } from '@core/services/content/content.service';
-import { TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
+import { Language, TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
 import { ToastrService } from 'ngx-toastr';
 
 type ExperienceFormMode = 'create' | 'edit';
@@ -18,6 +18,7 @@ type ExperienceFormMode = 'create' | 'edit';
   styleUrl: './experience-form-page.component.scss',
 })
 export class AdminExperienceFormPageComponent implements OnInit {
+  readonly Language = Language;
   mode: ExperienceFormMode = 'create';
   experienceId = '';
   loading = false;

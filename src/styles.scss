@@ -32,5 +32,17 @@ body.admin-route-active {
     border-color: var(--cui-btn-active-border-color, var(--bs-btn-active-border-color)) !important;
     color: var(--cui-btn-active-color, var(--bs-btn-active-color)) !important;
   }
+
+  app-admin-layout .base-shell {
+    width: 100%;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 0;
+    padding-right: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 200px);
+    gap: 1.5rem;
+  }
 }
 

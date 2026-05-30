@@ -8,7 +8,6 @@ import {
 } from '@angular/router';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
-import { IconDirective } from '@coreui/icons-angular';
 import {
   BreadcrumbModule,
   ButtonModule,
@@ -25,6 +24,7 @@ import {
   SidebarToggleDirective,
   SidebarTogglerDirective,
 } from '@coreui/angular';
+import { IconDirective } from '@coreui/icons-angular';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { filter } from 'rxjs';
 import { ADMIN_SECTIONS, isAdminSection } from '../admin-dashboard/admin-sections';
@@ -65,7 +65,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     private readonly adminAuthService: AdminAuthService,
     private readonly router: Router,
     public readonly facade: AdminDashboardFacade,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     this.enableAdminScrolling();

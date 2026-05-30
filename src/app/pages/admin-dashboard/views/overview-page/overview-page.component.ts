@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
-import { AdminOverviewSectionComponent } from '@pages/admin-dashboard/components/overview-section/overview-section.component';
 import {
   AlertModule,
   ButtonModule,
   CardModule,
   SpinnerModule,
 } from '@coreui/angular';
+import { AdminOverviewSectionComponent } from '@pages/admin-dashboard/components/overview-section/overview-section.component';
 
 @Component({
   selector: 'app-admin-overview-page',
@@ -29,7 +29,7 @@ export class AdminOverviewPageComponent implements OnInit {
   constructor(
     public readonly facade: AdminDashboardFacade,
     private readonly cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.facade.ensureOverviewReady();

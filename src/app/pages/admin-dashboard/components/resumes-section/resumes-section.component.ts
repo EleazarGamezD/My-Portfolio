@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import { TranslateButtonComponent } from '../shared/translate-button/translate-button.component';
+import { Language, TranslateButtonComponent } from '../shared/translate-button/translate-button.component';
 import {
     BadgeModule,
     ButtonModule,
@@ -21,6 +21,7 @@ import {
     styleUrl: './resumes-section.component.scss',
 })
 export class AdminResumesSectionComponent {
+    readonly Language = Language;
     @Input() resumes: IApiResume[] = [];
     @Input() newResume: Partial<IApiResume> = {};
     @Input() contentLoading = false;

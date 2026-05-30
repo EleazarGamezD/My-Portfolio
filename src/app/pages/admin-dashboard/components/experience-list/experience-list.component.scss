@@ -1,14 +1,5 @@
 @use '../../views/admin-page.shared' as *;
 
-.experience-shell {
-  width: 100%;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 200px);
-  gap: 1.5rem;
-}
-
 .data-table-header {
   margin-bottom: 0;
 }
@@ -175,11 +166,6 @@ tbody td {
 }
 
 @media (max-width: 768px) {
-  .experience-shell {
-    padding: 1rem;
-    min-height: auto;
-  }
-
   .header-top {
     flex-direction: column;
     align-items: stretch;
