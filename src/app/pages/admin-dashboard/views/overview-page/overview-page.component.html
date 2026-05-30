@@ -11,18 +11,6 @@
     <c-card class="admin-page-surface mb-4">
       <c-card-body>
         <div class="row g-3 align-items-end">
-          <div class="col-md-2">
-            <label class="form-label" for="filterYear">Ano</label>
-            <input id="filterYear" type="number" class="form-control" [(ngModel)]="facade.filters.year" min="2000" max="2100" />
-          </div>
-          <div class="col-md-2">
-            <label class="form-label" for="filterMonth">Mes</label>
-            <input id="filterMonth" type="number" class="form-control" [(ngModel)]="facade.filters.month" min="1" max="12" />
-          </div>
-          <div class="col-md-2">
-            <label class="form-label" for="filterDay">Dia</label>
-            <input id="filterDay" type="number" class="form-control" [(ngModel)]="facade.filters.day" min="1" max="31" />
-          </div>
           <div class="col-md-3">
             <label class="form-label" for="filterFrom">Desde</label>
             <input id="filterFrom" type="datetime-local" class="form-control" [(ngModel)]="facade.filters.from" />
