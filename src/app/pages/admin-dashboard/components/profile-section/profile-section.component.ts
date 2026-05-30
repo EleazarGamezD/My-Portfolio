@@ -32,6 +32,9 @@ export class AdminProfileSectionComponent {
     @Output() heroSlideImageAssetsChange = new EventEmitter<{ index: number; assets: IProjectAsset[] }>();
     @Output() imageUploadError = new EventEmitter<string>();
 
+    /** Tracks translation errors per field key, shown below each input/textarea. */
+    translateErrors: Record<string, string> = {};
+
     constructor(public readonly i18nService: I18nService) { }
 
     getLocalizedText(value?: ILocalizedText): string {
