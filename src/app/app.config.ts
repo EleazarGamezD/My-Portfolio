@@ -41,6 +41,11 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(RecaptchaV3Module, StorageModule.forRoot({}), SidebarModule, DropdownModule),
     IconSetService,
     provideAnimations(),
-    provideToastr(),
+    provideToastr({
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      timeOut: 4000,
+      extendedTimeOut: 1500,
+    }),
   ],
 };
