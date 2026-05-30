@@ -1,7 +1,13 @@
+@use '../admin-page.shared' as *;
+
 :host {
   .legend {
     small {
       font-size: x-small;
     }
   }
+}
+
+.base-shell {
+    min-height: 0px !important;
 }

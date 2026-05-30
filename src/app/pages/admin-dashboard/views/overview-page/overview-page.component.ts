@@ -1,20 +1,24 @@
-import { DOCUMENT, NgStyle } from '@angular/common';
+import { CommonModule, DOCUMENT, NgStyle } from '@angular/common';
 import { ChangeDetectorRef, Component, DestroyRef, effect, inject, OnInit, Renderer2, signal, WritableSignal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import {
+  AlertModule,
   AvatarComponent,
   ButtonDirective,
   ButtonGroupComponent,
+  ButtonModule,
   CardBodyComponent,
   CardComponent,
   CardFooterComponent,
   CardHeaderComponent,
+  CardModule,
   ColComponent,
   FormCheckLabelDirective,
   GutterDirective,
   ProgressComponent,
   RowComponent,
+  SpinnerModule,
   TableDirective
 } from '@coreui/angular';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
@@ -41,6 +45,7 @@ interface IUser {
   templateUrl: 'overview-page.component.html',
   styleUrls: ['overview-page.component.scss'],
   imports: [
+    CommonModule,
     CardComponent,
     CardBodyComponent,
     RowComponent,
@@ -57,7 +62,13 @@ interface IUser {
     ProgressComponent,
     CardHeaderComponent,
     TableDirective,
-    AvatarComponent
+    AvatarComponent,
+    CommonModule,
+    FormsModule,
+    AlertModule,
+    ButtonModule,
+    CardModule,
+    SpinnerModule,
   ]
 })
 export class AdminOverviewPageComponent implements OnInit {
