@@ -6,14 +6,8 @@
     </button>
     <c-header-nav class="d-none d-md-flex">
       <c-nav-item>
-        <a cNavLink routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        <a cNavLink routerLink="/admin/dashboard/overview" routerLinkActive="active">Dashboard</a>
       </c-nav-item>
-      <!--       <c-nav-item>
-        <a cNavLink>{{ loggerUser()?.userName }}</a>
-      </c-nav-item>
-      <c-nav-item>
-        <a cNavLink>{{ loggerUser()?.role }}</a>
-      </c-nav-item> -->
     </c-header-nav>
 
     <c-header-nav class="d-none d-md-flex ms-auto">
@@ -43,7 +37,12 @@
     </c-header-nav>
   </c-container>
   <c-container [fluid]="true" class="px-4">
-    <c-breadcrumb-router />
+    <c-breadcrumb class="mb-0">
+      <c-breadcrumb-item>
+        <a [routerLink]="['/admin/dashboard/overview']">Dashboard</a>
+      </c-breadcrumb-item>
+      <c-breadcrumb-item [active]="true">{{ currentSectionLabel() }}</c-breadcrumb-item>
+    </c-breadcrumb>
   </c-container>
 </ng-container>
 <!--</c-header>-->
@@ -51,7 +50,7 @@
 <ng-template #userDropdown>
   <c-dropdown [popperOptions]="{ placement: 'bottom-start' }" variant="nav-item">
     <button [caret]="false" cDropdownToggle class="py-0 pe-0" aria-label="Open user menu">
-      <!--  <c-avatar shape="rounded-1" size="md" [src]="loggerUser()?.image ?? undefined" status="success" textColor="primary" alt="User avatar" /> -->
+      <span class="admin-user-trigger">{{ userInitials }}</span>
     </button>
     <ul cDropdownMenu class="pt-0 w-auto">
       <li>
@@ -60,32 +59,10 @@
         </h6>
       </li>
       <li>
-        <a cDropdownItem routerLink="">
-          <svg cIcon class="me-2" name="cilBell"></svg>
-          Updates
-          <c-badge class="ms-2 float-end" color="info"> 42</c-badge>
-        </a>
-      </li>
-      <li>
-        <a cDropdownItem routerLink="/apps/email/inbox">
-          <svg cIcon class="me-2" name="cilEnvelopeOpen"></svg>
-          Messages
-          <c-badge class="ms-2 float-end" color="success"> 42 </c-badge>
-        </a>
-      </li>
-      <li>
-        <a cDropdownItem routerLink="">
-          <svg cIcon class="me-2" name="cilTask"></svg>
-          Tasks
-          <c-badge class="ms-2 float-end" color="danger"> 42</c-badge>
-        </a>
-      </li>
-      <li>
-        <a cDropdownItem routerLink="">
-          <svg cIcon class="me-2" name="cilCommentSquare"></svg>
-          Comments
-          <c-badge class="ms-auto" color="warning"> 42</c-badge>
-        </a>
+        <div class="admin-user-meta">
+          <strong>{{ currentAdminName }}</strong>
+          <small>{{ currentAdminRole }}</small>
+        </div>
       </li>
       <li>
         <h6 cDropdownHeader class="bg-body-secondary text-body-secondary fw-semibold py-2">
@@ -94,29 +71,21 @@
       </li>
       <li></li>
       <li>
-        <a cDropdownItem routerLink="/profile">
+        <a cDropdownItem [routerLink]="['/admin/dashboard/profile']">
           <svg cIcon class="me-2" name="cilUser"></svg>
           Mi Perfil
         </a>
       </li>
       <li>
-        <a cDropdownItem routerLink="">
-          <svg cIcon class="me-2" name="cilSettings"></svg>
-          Settings
+        <a cDropdownItem [routerLink]="['/admin/dashboard/themes']">
+          <svg cIcon class="me-2" name="cilPaint"></svg>
+          Temas
         </a>
       </li>
       <li>
-        <a cDropdownItem routerLink="">
-          <svg cIcon class="me-2" name="cilCreditCard"></svg>
-          Payments
-          <c-badge class="ms-2 float-end" color="secondary"> 42 </c-badge>
-        </a>
-      </li>
-      <li>
-        <a cDropdownItem routerLink="">
-          <svg cIcon class="me-2" name="cilFile"></svg>
-          Projects
-          <c-badge class="ms-2 float-end" color="primary"> 42 </c-badge>
+        <a cDropdownItem [routerLink]="['/admin/dashboard/resumes']">
+          <svg cIcon class="me-2" name="cilDescription"></svg>
+          Hojas de vida
         </a>
       </li>
       <li>

@@ -1,5 +1,6 @@
 :host {
-  // Breadcrumb siempre en blanco (claro/oscuro)
+  display: block;
+
   .breadcrumb {
     color: #ffffff;
     --cui-breadcrumb-divider-color: rgba(255, 255, 255, 0.7);
@@ -18,5 +19,35 @@
   .nav-link:hover,
   .nav-link.active {
     color: rgba(255, 255, 255, 0.9);
+  }
+
+  .admin-user-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--base-color, #c84b31) 76%, white 24%);
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  }
+
+  .admin-user-meta {
+    padding: 0.8rem 1rem 0.25rem;
+    min-width: 15rem;
+
+    strong,
+    small {
+      display: block;
+    }
+
+    small {
+      color: #64748b;
+      text-transform: capitalize;
+    }
   }
 }

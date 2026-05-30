@@ -3,17 +3,20 @@
 
 body {
   background-color: var(--cui-tertiary-bg);
+  font-family: var(--primary-font, "Jost", sans-serif);
 }
 
 :root {
-  --cui-body-bg: #f3f7f9;
-  --cui-body-color: #0c2230;
-  --cui-link-color: #0a8fbf;
-  --cui-link-hover-color: #0879a3;
-  --cui-header-bg: #06506b;
-  --cui-sidebar-bg: #04384d;
-  --cui-sidebar-color: #d6ecf6;
-  --cui-secondary-color: #0c0c0c;
+  --cui-primary: var(--base-color, #c84b31);
+  --cui-info: var(--base-color, #c84b31);
+  --cui-body-bg: var(--very-light-gray, #ecf0f1);
+  --cui-body-color: var(--dark-gray, #2e4052);
+  --cui-link-color: var(--base-color, #c84b31);
+  --cui-link-hover-color: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
+  --cui-header-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 76%, var(--base-color, #c84b31) 24%);
+  --cui-sidebar-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 88%, black 12%);
+  --cui-sidebar-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 86%, white 14%);
+  --cui-secondary-color: var(--dark-gray, #2e4052);
 }
 
 .wrapper {
@@ -57,21 +60,30 @@ body {
 }
 
 .sidebar {
-  --cui-sidebar-nav-link-color: #cddfea;
+  --cui-sidebar-nav-link-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 82%, var(--base-color, #c84b31) 18%);
   --cui-sidebar-nav-link-hover-color: #ffffff;
-  --cui-sidebar-nav-link-active-bg: #0a8fbf;
+  --cui-sidebar-nav-link-active-bg: var(--base-color, #c84b31);
   --cui-sidebar-nav-link-active-color: #ffffff;
   --cui-sidebar-border: rgba(255, 255, 255, 0.06);
-  background: linear-gradient(180deg, #04384d 0%, #06506b 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 92%, black 8%) 0%,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 78%, var(--base-color, #c84b31) 22%) 100%
+  );
 }
 
 .header {
   --cui-header-color: #f5f7fb;
-  --cui-header-nav-link-color: #d6ecf6;
+  --cui-header-nav-link-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 88%, white 12%);
   --cui-header-nav-link-hover-color: #ffffff;
   --cui-header-nav-link-active-color: #ffffff;
   --cui-header-toggler-icon-color: #ffffff;
-  background: linear-gradient(90deg, #04384d 0%, #06506b 50%, #0a8fbf 100%);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 92%, black 8%) 0%,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 70%, var(--base-color, #c84b31) 30%) 54%,
+    var(--base-color, #c84b31) 100%
+  );
   color: #f5f7fb;
 
   .nav-link {
@@ -104,13 +116,13 @@ body {
 
 @include color-mode(dark) {
   :root {
-    --cui-body-bg: #0b1a24;
-    --cui-body-color: #d4e6f0;
-    --cui-link-color: #4cc2f0;
-    --cui-link-hover-color: #7bd9ff;
-    --cui-header-bg: #04384d;
-    --cui-sidebar-bg: #031a24;
-    --cui-sidebar-color: #c3d8e8;
+    --cui-body-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 84%, black 16%);
+    --cui-body-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 88%, white 12%);
+    --cui-link-color: color-mix(in srgb, var(--base-color, #c84b31) 78%, white 22%);
+    --cui-link-hover-color: color-mix(in srgb, var(--base-color, #c84b31) 62%, white 38%);
+    --cui-header-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 72%, var(--base-color, #c84b31) 28%);
+    --cui-sidebar-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 90%, black 10%);
+    --cui-sidebar-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 82%, white 18%);
   }
 
   body {
@@ -118,21 +130,31 @@ body {
   }
 
   .sidebar {
-    --cui-sidebar-nav-link-color: #c3d8e8;
+    --cui-sidebar-nav-link-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 82%, var(--base-color, #c84b31) 18%);
     --cui-sidebar-nav-link-hover-color: #ffffff;
-    --cui-sidebar-nav-link-active-bg: #0a8fbf;
+    --cui-sidebar-nav-link-active-bg: var(--base-color, #c84b31);
     --cui-sidebar-nav-link-active-color: #ffffff;
     --cui-sidebar-border: rgba(255, 255, 255, 0.04);
-    background: linear-gradient(180deg, #031a24 0%, #043245 60%, #06506b 100%);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--dark-gray, #2e4052) 92%, black 8%) 0%,
+      color-mix(in srgb, var(--dark-gray, #2e4052) 76%, var(--base-color, #c84b31) 24%) 60%,
+      color-mix(in srgb, var(--base-color, #c84b31) 64%, black 36%) 100%
+    );
   }
 
   .header {
-    --cui-header-color: #d4e6f0;
-    --cui-header-nav-link-color: #c3d8e8;
+    --cui-header-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 88%, white 12%);
+    --cui-header-nav-link-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 78%, white 22%);
     --cui-header-nav-link-hover-color: #ffffff;
     --cui-header-nav-link-active-color: #ffffff;
     --cui-header-toggler-icon-color: #ffffff;
-    background: linear-gradient(90deg, #031a24 0%, #04384d 40%, #0a8fbf 100%);
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--dark-gray, #2e4052) 92%, black 8%) 0%,
+      color-mix(in srgb, var(--dark-gray, #2e4052) 72%, var(--base-color, #c84b31) 28%) 42%,
+      color-mix(in srgb, var(--base-color, #c84b31) 84%, white 16%) 100%
+    );
 
     .nav-link {
       color: #ffffff !important;
