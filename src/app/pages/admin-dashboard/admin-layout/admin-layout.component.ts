@@ -12,7 +12,6 @@ import {
   BreadcrumbModule,
   ButtonModule,
   ContainerComponent,
-  HeaderTogglerDirective,
   INavData,
   ModalModule,
   ShadowOnScrollDirective,
@@ -24,11 +23,12 @@ import {
   SidebarToggleDirective,
   SidebarTogglerDirective,
 } from '@coreui/angular';
-import { IconDirective } from '@coreui/icons-angular';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { filter } from 'rxjs';
-import { ADMIN_SECTIONS, isAdminSection } from '../admin-dashboard/admin-sections';
+import { ADMIN_SECTIONS, isAdminSection } from '../admin-sections';
 import { adminNavItems } from './admin-layout.nav';
+import { DefaultFooterComponent } from './default-footer/default-footer.component';
+import { DefaultHeaderComponent } from './default-header/default-header.component';
 
 @Component({
   selector: 'app-admin-layout',
@@ -37,7 +37,6 @@ import { adminNavItems } from './admin-layout.nav';
     CommonModule,
     RouterOutlet,
     RouterLink,
-    IconDirective,
     BreadcrumbModule,
     ButtonModule,
     ModalModule,
@@ -49,15 +48,17 @@ import { adminNavItems } from './admin-layout.nav';
     SidebarToggleDirective,
     SidebarTogglerDirective,
     ContainerComponent,
-    HeaderTogglerDirective,
     ShadowOnScrollDirective,
     NgScrollbar,
+    DefaultHeaderComponent,
+    DefaultFooterComponent,
   ],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss',
 })
 export class AdminLayoutComponent implements OnInit, OnDestroy {
   readonly navItems: INavData[] = adminNavItems;
+  private readonly adminStylesheetId = 'admin-coreui-stylesheet';
   currentYear = new Date().getFullYear();
   currentSectionLabel = 'Overview';
 
@@ -68,6 +69,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit(): Promise<void> {
+    this.enableAdminThemeStyles();
     this.enableAdminScrolling();
 
     try {
@@ -85,6 +87,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.disableAdminScrolling();
+    this.disableAdminThemeStyles();
   }
 
   async logout(): Promise<void> {
@@ -124,5 +127,30 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
     document.documentElement.classList.remove('admin-route-active');
     document.body.classList.remove('admin-route-active');
+  }
+
+  private enableAdminThemeStyles(): void {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    const existingLink = document.getElementById(this.adminStylesheetId) as HTMLLinkElement | null;
+    if (existingLink) {
+      return;
+    }
+
+    const link = document.createElement('link');
+    link.id = this.adminStylesheetId;
+    link.rel = 'stylesheet';
+    link.href = 'admin-coreui.css';
+    document.head.appendChild(link);
+  }
+
+  private disableAdminThemeStyles(): void {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    document.getElementById(this.adminStylesheetId)?.remove();
   }
 }

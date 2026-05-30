@@ -8,8 +8,7 @@ import {
   CardModule,
   SpinnerModule,
 } from '@coreui/angular';
-import { AdminOverviewSectionComponent } from '@pages/admin-dashboard/components/overview-section/overview-section.component';
-
+import { AdminOverviewSectionComponent } from '../../components/overview-section/overview-section.component';
 @Component({
   selector: 'app-admin-overview-page',
   standalone: true,

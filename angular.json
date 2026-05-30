@@ -41,7 +41,11 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@coreui/coreui/dist/css/coreui.min.css",
+              {
+                "input": "src/app/core/core-ui-scss/core-ui-styles.scss",
+                "bundleName": "admin-coreui",
+                "inject": false
+              },
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/swiper/swiper-bundle.min.css",
               "src/assets/css/icon.min.css",

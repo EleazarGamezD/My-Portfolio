@@ -18,8 +18,8 @@
   </c-sidebar-footer>
 </c-sidebar>
 
-<div class="wrapper d-flex flex-column min-vh-100 admin-shell">
-  <header [cShadowOnScroll]="'sm'" class="header header-sticky p-0 shadow-sm admin-header" position="sticky">
+<div class="wrapper d-flex flex-column min-vh-100">
+  <!--   <header [cShadowOnScroll]="'sm'" class="header header-sticky p-0 shadow-sm admin-header" position="sticky">
     <c-container breakpoint="xl" class="px-4 admin-header__container">
       <button cHeaderToggler cSidebarToggle="adminSidebar" class="btn btn-ghost-dark admin-header__toggle" type="button">
         <svg cIcon name="cilMenu" size="lg" title="Open navigation"></svg>
@@ -47,22 +47,22 @@
         </button>
       </div>
     </c-container>
-  </header>
-
-  <div class="body flex-grow-1 admin-body">
-    <c-container breakpoint="xl" class="h-auto px-4">
+  </header> -->
+  <app-default-header [cShadowOnScroll]="'sm'" class="mb-4 d-print-none header header-sticky p-0 shadow-sm" position="sticky" sidebarId="sidebar1" />
+  <div class="body flex-grow-1">
+    <c-container breakpoint="lg" class="h-auto px-4">
       <router-outlet />
     </c-container>
   </div>
-
-  <footer class="footer px-4 py-3 admin-footer">
+  <!--  <footer class="footer px-4 py-3 admin-footer">
     <div>
       <strong>Portfolio CMS</strong>
       <span class="text-body-secondary"> Made with &hearts; by <a href="https://eleazargamez.dev" target="_blank" rel="noopener noreferrer">Eleazar Gámez</a>
       </span>
     </div>
     <div class="ms-auto text-body-secondary">{{ currentYear }}</div>
-  </footer>
+  </footer> -->
+  <app-default-footer />
 </div>
 
 <c-modal alignment="center" backdrop="static" [visible]="facade.confirmationDialog.visible" (visibleChange)="facade.onConfirmationVisibleChange($event)">

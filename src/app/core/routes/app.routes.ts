@@ -37,7 +37,7 @@ export const routes: Routes = [
   {
     path: 'admin/login',
     loadComponent: () =>
-      import('@pages/admin-login/admin-login.component')
+      import('@pages/admin-dashboard/admin-login/admin-login.component')
         .then(
           (m) => m.AdminLoginComponent,
         ),
@@ -46,7 +46,7 @@ export const routes: Routes = [
     path: 'admin',
     canActivate: [adminAuthGuard],
     loadComponent: () =>
-      import('@pages/admin-layout/admin-layout.component')
+      import('@pages/admin-dashboard/admin-layout/admin-layout.component')
         .then(
           (m) => m.AdminLayoutComponent,
         ),

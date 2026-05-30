@@ -1,0 +1,22 @@
+:host {
+  // Breadcrumb siempre en blanco (claro/oscuro)
+  .breadcrumb {
+    color: #ffffff;
+    --cui-breadcrumb-divider-color: rgba(255, 255, 255, 0.7);
+    --cui-breadcrumb-item-active-color: rgba(255, 255, 255, 0.85);
+  }
+
+  .breadcrumb a {
+    color: #ffffff;
+  }
+
+  // Links de navegación del header en blanco
+  .nav-link {
+    color: #ffffff;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
