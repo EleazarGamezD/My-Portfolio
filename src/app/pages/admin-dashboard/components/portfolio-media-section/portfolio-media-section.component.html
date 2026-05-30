@@ -166,16 +166,6 @@
         (assetsChange)="setSingleAsset('decorativeWebBackground', $event)"
         (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getTestimonialLogos()"
-        [maxPhotos]="8"
-        [variant]="'gallery'"
-        [title]="'Logos de testimonios'"
-        [subTitle]="'Franja opcional de logos bajo el carrusel de referencias.'"
-        [emptyLabel]="'Agregar logos'"
-        [addButtonLabel]="'Agregar logo'"
-        (assetsChange)="setTestimonialLogos($event)"
-        (uploadError)="imageUploadError.emit($event)" />
     </div>
 
     <p *ngIf="!contentLoading && !profile" class="text-muted mb-0">No se encontro el perfil.</p>

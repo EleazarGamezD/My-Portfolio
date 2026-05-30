@@ -2,4 +2,41 @@
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+
+  // Each photo-editor fills its cell as a flex column
+  ::ng-deep app-photo-editor {
+    display: flex;
+    flex-direction: column;
+  }
+
+  ::ng-deep .photo-editor {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  // Fixed header height so title+subtitle never push the image down unevenly
+  ::ng-deep .photo-editor__header {
+    min-height: 5rem;
+    align-items: flex-start;
+  }
+
+  // Fixed image area height — uniform across all cards
+  ::ng-deep .photo-editor__stage {
+    min-height: 0;
+    height: 200px;
+  }
+
+  ::ng-deep .photo-editor__stage-image {
+    min-height: 0;
+    max-height: none;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  ::ng-deep .photo-editor__empty {
+    min-height: 0;
+    height: 200px;
+  }
 }
