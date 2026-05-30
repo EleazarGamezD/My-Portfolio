@@ -254,6 +254,14 @@ export const routes: Routes = [
               (m) => m.AdminThemesPageComponent,
             ),
       },
+      {
+        path: 'dashboard/dangerZone',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/danger-zone-page/danger-zone-page.component')
+            .then(
+              (m) => m.DangerZonePageComponent,
+            ),
+      },
     ],
   },
   {

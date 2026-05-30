@@ -172,3 +172,20 @@
     align-items: stretch;
   }
 }
+
+// Danger Zone nav item styling
+::ng-deep .admin-sidebar .nav-item--danger {
+  > .nav-link {
+    color: #fca5a5 !important;
+
+    &:hover {
+      color: #fff !important;
+      background: rgba(239, 68, 68, 0.2) !important;
+    }
+
+    &.active {
+      color: #fff !important;
+      background: rgba(239, 68, 68, 0.35) !important;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ITheme } from '@core/interfaces/theme/theme.interface';
+import { DEFAULT_THEME_COLORS, FONT_OPTIONS, ITheme, IThemeColors } from '@core/interfaces/theme/theme.interface';
 import { ThemeService } from '@core/services/theme/theme.service';
 import {
   BadgeComponent,
@@ -11,6 +11,10 @@ import {
 } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
 
+function blankColors(): IThemeColors {
+  return { ...DEFAULT_THEME_COLORS };
+}
+
 @Component({
   selector: 'app-admin-themes-page',
   standalone: true,
@@ -19,17 +23,19 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './themes-page.component.scss',
 })
 export class AdminThemesPageComponent implements OnInit {
+  readonly fontOptions = FONT_OPTIONS;
+
   themes: ITheme[] = [];
   loading = true;
   actionLoadingId: string | null = null;
 
   showCreateForm = false;
   newThemeName = '';
-  newThemeColor = '#2946f3';
+  newThemeColors: IThemeColors = blankColors();
 
   editingId: string | null = null;
   editName = '';
-  editColor = '';
+  editColors: IThemeColors = blankColors();
 
   constructor(
     private readonly themeService: ThemeService,
@@ -54,16 +60,16 @@ export class AdminThemesPageComponent implements OnInit {
   }
 
   async createTheme(): Promise<void> {
-    if (!this.newThemeName.trim() || !this.newThemeColor.trim()) return;
+    if (!this.newThemeName.trim() || !this.newThemeColors.baseColor.trim()) return;
     this.actionLoadingId = 'create';
     try {
       await this.themeService.createTheme({
         name: this.newThemeName.trim(),
-        colors: { baseColor: this.newThemeColor.trim() },
+        colors: { ...this.newThemeColors },
       });
       this.toastr.success('Tema creado.', 'Panel');
       this.newThemeName = '';
-      this.newThemeColor = '#2946f3';
+      this.newThemeColors = blankColors();
       this.showCreateForm = false;
       await this.loadThemes();
     } catch {
@@ -77,7 +83,7 @@ export class AdminThemesPageComponent implements OnInit {
   startEdit(theme: ITheme): void {
     this.editingId = theme._id ?? null;
     this.editName = theme.name;
-    this.editColor = theme.colors.baseColor;
+    this.editColors = { ...DEFAULT_THEME_COLORS, ...theme.colors };
   }
 
   cancelEdit(): void {
@@ -90,7 +96,7 @@ export class AdminThemesPageComponent implements OnInit {
     try {
       await this.themeService.updateTheme(theme._id, {
         name: this.editName.trim(),
-        colors: { baseColor: this.editColor.trim() },
+        colors: { ...this.editColors },
       });
       this.toastr.success('Tema actualizado.', 'Panel');
       this.editingId = null;

@@ -11,41 +11,88 @@
   </div>
 
   @if (showCreateForm) {
-    <div class="admin-page-surface p-3 mb-4 themes-create-box">
+    <div class="admin-page-surface p-3 mb-4">
       <h5 class="mb-3">Crear nuevo tema</h5>
-      <div class="row g-3 align-items-end">
-        <div class="col-12 col-sm-5">
-          <label class="form-label">Nombre</label>
+      <div class="row g-3">
+        <div class="col-12 col-sm-6">
+          <label class="form-label">Nombre del tema</label>
           <input class="form-control" [(ngModel)]="newThemeName" placeholder="Ej: Azul Eléctrico" />
         </div>
-        <div class="col-12 col-sm-4">
-          <label class="form-label">Color base</label>
+      </div>
+
+      <p class="themes-section-label mt-3 mb-2">Colores</p>
+      <div class="row g-3">
+        <div class="col-12 col-sm-6 col-lg-4">
+          <label class="form-label">Color base <small class="text-muted">(--base-color)</small></label>
           <div class="d-flex gap-2 align-items-center">
-            <input type="color" class="form-control form-control-color" [(ngModel)]="newThemeColor" />
-            <input class="form-control" [(ngModel)]="newThemeColor" placeholder="#2946f3" />
+            <input type="color" class="form-control form-control-color" [(ngModel)]="newThemeColors.baseColor" />
+            <input class="form-control form-control-sm" [(ngModel)]="newThemeColors.baseColor" />
           </div>
         </div>
-        <div class="col-12 col-sm-3">
-          <div class="d-flex gap-2">
-            <button cButton color="primary" type="button" [disabled]="actionLoadingId === 'create'" (click)="createTheme()">
-              @if (actionLoadingId === 'create') {
-                <c-spinner size="sm" class="me-1" />
-              }
-              Crear
-            </button>
-            <button cButton color="secondary" variant="outline" type="button" (click)="showCreateForm = false">
-              Cancelar
-            </button>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <label class="form-label">Gris muy claro <small class="text-muted">(--very-light-gray)</small></label>
+          <div class="d-flex gap-2 align-items-center">
+            <input type="color" class="form-control form-control-color" [(ngModel)]="newThemeColors.veryLightGray" />
+            <input class="form-control form-control-sm" [(ngModel)]="newThemeColors.veryLightGray" />
           </div>
         </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <label class="form-label">Gris oscuro <small class="text-muted">(--dark-gray)</small></label>
+          <div class="d-flex gap-2 align-items-center">
+            <input type="color" class="form-control form-control-color" [(ngModel)]="newThemeColors.darkGray" />
+            <input class="form-control form-control-sm" [(ngModel)]="newThemeColors.darkGray" />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <label class="form-label">Gris medio <small class="text-muted">(--medium-gray)</small></label>
+          <div class="d-flex gap-2 align-items-center">
+            <input type="color" class="form-control form-control-color" [(ngModel)]="newThemeColors.mediumGray" />
+            <input class="form-control form-control-sm" [(ngModel)]="newThemeColors.mediumGray" />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <label class="form-label">Gris claro-medio <small class="text-muted">(--light-medium-gray)</small></label>
+          <div class="d-flex gap-2 align-items-center">
+            <input type="color" class="form-control form-control-color" [(ngModel)]="newThemeColors.lightMediumGray" />
+            <input class="form-control form-control-sm" [(ngModel)]="newThemeColors.lightMediumGray" />
+          </div>
+        </div>
+      </div>
+
+      <p class="themes-section-label mt-3 mb-2">Tipografías</p>
+      <div class="row g-3">
+        <div class="col-12 col-sm-6">
+          <label class="form-label">Fuente alternativa <small class="text-muted">(--alt-font)</small></label>
+          <select class="form-select" [(ngModel)]="newThemeColors.altFont">
+            @for (f of fontOptions; track f.value) {
+              <option [value]="f.value">{{ f.label }}</option>
+            }
+          </select>
+          <small class="text-muted" [style.font-family]="newThemeColors.altFont">Vista previa: Portfolio Profesional</small>
+        </div>
+        <div class="col-12 col-sm-6">
+          <label class="form-label">Fuente principal <small class="text-muted">(--primary-font)</small></label>
+          <select class="form-select" [(ngModel)]="newThemeColors.primaryFont">
+            @for (f of fontOptions; track f.value) {
+              <option [value]="f.value">{{ f.label }}</option>
+            }
+          </select>
+          <small class="text-muted" [style.font-family]="newThemeColors.primaryFont">Vista previa: Texto principal del sitio</small>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mt-3">
+        <button cButton color="primary" type="button" [disabled]="actionLoadingId === 'create'" (click)="createTheme()">
+          @if (actionLoadingId === 'create') { <c-spinner size="sm" class="me-1" /> }
+          Crear tema
+        </button>
+        <button cButton color="secondary" variant="outline" type="button" (click)="showCreateForm = false">Cancelar</button>
       </div>
     </div>
   }
 
   @if (loading) {
-    <div class="d-flex justify-content-center py-5">
-      <c-spinner />
-    </div>
+    <div class="d-flex justify-content-center py-5"><c-spinner /></div>
   } @else {
     <div class="themes-grid">
       @for (theme of themes; track theme._id) {
@@ -55,15 +102,67 @@
             @if (editingId === theme._id) {
               <div class="themes-edit-row">
                 <input class="form-control form-control-sm mb-2" [(ngModel)]="editName" placeholder="Nombre" />
-                <div class="d-flex gap-2 align-items-center mb-2">
-                  <input type="color" class="form-control form-control-color form-control-sm" [(ngModel)]="editColor" />
-                  <input class="form-control form-control-sm" [(ngModel)]="editColor" placeholder="#000000" />
+
+                <p class="themes-section-label mb-1">Colores</p>
+                <div class="row g-2 mb-2">
+                  <div class="col-12">
+                    <label class="form-label form-label-sm mb-0">Color base</label>
+                    <div class="d-flex gap-1 align-items-center">
+                      <input type="color" class="form-control form-control-color form-control-sm" style="width:36px;height:32px;" [(ngModel)]="editColors.baseColor" />
+                      <input class="form-control form-control-sm" [(ngModel)]="editColors.baseColor" />
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label form-label-sm mb-0">Gris muy claro</label>
+                    <div class="d-flex gap-1 align-items-center">
+                      <input type="color" class="form-control form-control-color form-control-sm" style="width:36px;height:32px;" [(ngModel)]="editColors.veryLightGray" />
+                      <input class="form-control form-control-sm" [(ngModel)]="editColors.veryLightGray" />
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label form-label-sm mb-0">Gris oscuro</label>
+                    <div class="d-flex gap-1 align-items-center">
+                      <input type="color" class="form-control form-control-color form-control-sm" style="width:36px;height:32px;" [(ngModel)]="editColors.darkGray" />
+                      <input class="form-control form-control-sm" [(ngModel)]="editColors.darkGray" />
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label form-label-sm mb-0">Gris medio</label>
+                    <div class="d-flex gap-1 align-items-center">
+                      <input type="color" class="form-control form-control-color form-control-sm" style="width:36px;height:32px;" [(ngModel)]="editColors.mediumGray" />
+                      <input class="form-control form-control-sm" [(ngModel)]="editColors.mediumGray" />
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label form-label-sm mb-0">Gris claro-medio</label>
+                    <div class="d-flex gap-1 align-items-center">
+                      <input type="color" class="form-control form-control-color form-control-sm" style="width:36px;height:32px;" [(ngModel)]="editColors.lightMediumGray" />
+                      <input class="form-control form-control-sm" [(ngModel)]="editColors.lightMediumGray" />
+                    </div>
+                  </div>
                 </div>
+
+                <p class="themes-section-label mb-1">Tipografías</p>
+                <div class="mb-2">
+                  <label class="form-label form-label-sm mb-0">Fuente alternativa</label>
+                  <select class="form-select form-select-sm" [(ngModel)]="editColors.altFont">
+                    @for (f of fontOptions; track f.value) {
+                      <option [value]="f.value">{{ f.label }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label form-label-sm mb-0">Fuente principal</label>
+                  <select class="form-select form-select-sm" [(ngModel)]="editColors.primaryFont">
+                    @for (f of fontOptions; track f.value) {
+                      <option [value]="f.value">{{ f.label }}</option>
+                    }
+                  </select>
+                </div>
+
                 <div class="d-flex gap-2">
                   <button cButton color="primary" size="sm" type="button" [disabled]="actionLoadingId === theme._id" (click)="saveEdit(theme)">
-                    @if (actionLoadingId === theme._id) {
-                      <c-spinner size="sm" class="me-1" />
-                    }
+                    @if (actionLoadingId === theme._id) { <c-spinner size="sm" class="me-1" /> }
                     Guardar
                   </button>
                   <button cButton color="secondary" variant="outline" size="sm" type="button" (click)="cancelEdit()">Cancelar</button>
@@ -73,18 +172,20 @@
               <div class="themes-card__info">
                 <span class="themes-card__name">{{ theme.name }}</span>
                 <span class="themes-card__hex">{{ theme.colors.baseColor }}</span>
+                <div class="themes-card__palette mt-1">
+                  <span class="themes-swatch" [title]="'very-light-gray: ' + (theme.colors.veryLightGray || '')" [style.background]="theme.colors.veryLightGray || '#ecf0f1'"></span>
+                  <span class="themes-swatch" [title]="'dark-gray: ' + (theme.colors.darkGray || '')" [style.background]="theme.colors.darkGray || '#2e4052'"></span>
+                  <span class="themes-swatch" [title]="'medium-gray: ' + (theme.colors.mediumGray || '')" [style.background]="theme.colors.mediumGray || '#7f8c8d'"></span>
+                  <span class="themes-swatch" [title]="'light-medium-gray: ' + (theme.colors.lightMediumGray || '')" [style.background]="theme.colors.lightMediumGray || '#bdc3c7'"></span>
+                </div>
               </div>
               <div class="themes-card__badges">
-                @if (theme.active) {
-                  <c-badge color="success">Activo</c-badge>
-                }
+                @if (theme.active) { <c-badge color="success">Activo</c-badge> }
               </div>
               <div class="themes-card__actions">
                 @if (!theme.active) {
                   <button cButton color="success" variant="outline" size="sm" type="button" [disabled]="!!actionLoadingId" (click)="activateTheme(theme)">
-                    @if (actionLoadingId === theme._id) {
-                      <c-spinner size="sm" class="me-1" />
-                    }
+                    @if (actionLoadingId === theme._id) { <c-spinner size="sm" class="me-1" /> }
                     Activar
                   </button>
                 }

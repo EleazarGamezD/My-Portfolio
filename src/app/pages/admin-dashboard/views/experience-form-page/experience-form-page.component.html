@@ -95,11 +95,19 @@
                 <div>
                   <label class="form-label">Descripcion ES</label>
                   <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es" placeholder="Desarrollador Fullstack, desarrollo de aplicaciones web."></textarea>
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <app-translate-button [fromText]="draft.description!.es || ''" fromLang="es" toLang="en" (translated)="draft.description!.en = $event; translateErrors['descEs'] = ''" (translationError)="translateErrors['descEs'] = $event" />
+                    <small *ngIf="translateErrors['descEs']" class="translate-error">{{ translateErrors['descEs'] }}</small>
+                  </div>
                 </div>
 
                 <div>
                   <label class="form-label">Descripcion EN</label>
                   <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en" placeholder="Fullstack Developer focused on web applications."></textarea>
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <app-translate-button [fromText]="draft.description!.en || ''" fromLang="en" toLang="es" (translated)="draft.description!.es = $event; translateErrors['descEn'] = ''" (translationError)="translateErrors['descEn'] = $event" />
+                    <small *ngIf="translateErrors['descEn']" class="translate-error">{{ translateErrors['descEn'] }}</small>
+                  </div>
                 </div>
               </div>
             </div>

@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { TranslateButtonComponent } from '../shared/translate-button/translate-button.component';
 import {
     BadgeModule,
     ButtonModule,
@@ -15,7 +16,7 @@ import {
 @Component({
     selector: 'app-admin-resumes-section',
     standalone: true,
-    imports: [CommonModule, FormsModule, BadgeModule, ButtonModule, CardModule, FormModule, SpinnerModule, TableModule],
+    imports: [CommonModule, FormsModule, BadgeModule, ButtonModule, CardModule, FormModule, SpinnerModule, TableModule, TranslateButtonComponent],
     templateUrl: './resumes-section.component.html',
     styleUrl: './resumes-section.component.scss',
 })
@@ -29,6 +30,8 @@ export class AdminResumesSectionComponent {
     @Output() deleteResume = new EventEmitter<IApiResume>();
     @Output() newResumeFileSelected = new EventEmitter<Event>();
     @Output() resumeFileSelected = new EventEmitter<{ item: IApiResume; event: Event }>();
+
+    translateErrors: Record<string, string> = {};
 
     constructor(public readonly i18nService: I18nService) { }
 

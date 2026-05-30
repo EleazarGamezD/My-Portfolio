@@ -1,7 +1,7 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
-import { ITheme } from '@core/interfaces/theme/theme.interface';
+import { ITheme, IThemeColors } from '@core/interfaces/theme/theme.interface';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
 import { environment } from '../../../../environments/environment';
 
@@ -45,9 +45,38 @@ export class ThemeService extends GlobalHttpService {
     return this.makeRequest<ITheme, object>(`${BASE}/themes/${id}/activate`, {}, RequestMethod.POST);
   }
 
-  applyTheme(colors: ITheme['colors']): void {
+  async runSeedThemes(force = false): Promise<{ seeded: boolean; count?: number; reason?: string }> {
+    return this.makeRequest(`${BASE}/admin/seed-themes?force=${force}`, {}, RequestMethod.POST);
+  }
+
+  applyTheme(colors: IThemeColors): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    document.documentElement.style.setProperty('--base-color', colors.baseColor);
+    const root = document.documentElement.style;
+    root.setProperty('--base-color', colors.baseColor || '');
+    if (colors.veryLightGray) root.setProperty('--very-light-gray', colors.veryLightGray);
+    if (colors.darkGray) root.setProperty('--dark-gray', colors.darkGray);
+    if (colors.mediumGray) root.setProperty('--medium-gray', colors.mediumGray);
+    if (colors.lightMediumGray) root.setProperty('--light-medium-gray', colors.lightMediumGray);
+    if (colors.altFont) {
+      root.setProperty('--alt-font', colors.altFont);
+      this.loadGoogleFont(colors.altFont);
+    }
+    if (colors.primaryFont) {
+      root.setProperty('--primary-font', colors.primaryFont);
+      this.loadGoogleFont(colors.primaryFont);
+    }
+  }
+
+  private loadGoogleFont(fontValue: string): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const name = fontValue.split(',')[0].trim().replace(/['"]/g, '');
+    const id = `gf-${name.replace(/\s+/g, '-').toLowerCase()}`;
+    if (document.getElementById(id)) return;
+    const link = document.createElement('link');
+    link.id = id;
+    link.rel = 'stylesheet';
+    link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(name)}:wght@300;400;500;600;700;800&display=swap`;
+    document.head.appendChild(link);
   }
 
   resetApplied(): void {

@@ -4,9 +4,17 @@
   max-width: 700px;
 }
 
+.themes-section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+}
+
 .themes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.25rem;
 }
 
@@ -53,6 +61,20 @@
   font-size: 0.78rem;
   color: #64748b;
   font-family: monospace;
+}
+
+.themes-card__palette {
+  display: flex;
+  gap: 4px;
+}
+
+.themes-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.15);
+  cursor: help;
 }
 
 .themes-card__badges {
