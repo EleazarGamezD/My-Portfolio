@@ -2,7 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TranslateService } from '@core/services/translate/translate.service';
 import { ButtonModule, SpinnerComponent } from '@coreui/angular';
-
+export enum Language {
+  ES = 'es',
+  EN = 'en',
+}
+export enum LanguageLabel {
+  ES = 'Español',
+  EN = 'Inglés',
+}
 @Component({
   selector: 'app-translate-button',
   standalone: true,
@@ -12,17 +19,17 @@ import { ButtonModule, SpinnerComponent } from '@coreui/angular';
 })
 export class TranslateButtonComponent implements OnChanges {
   @Input() fromText = '';
-  @Input() fromLang: 'es' | 'en' = 'es';
-  @Input() toLang: 'es' | 'en' = 'en';
+  @Input() fromLang: Language = Language.ES;
+  @Input() toLang: Language = Language.EN;
   @Output() translated = new EventEmitter<string>();
   /** Emits the error message on failure, or empty string on success/reset. */
   @Output() translationError = new EventEmitter<string>();
 
   loading = false;
 
-  readonly langLabels: Record<string, string> = { es: 'ES', en: 'EN' };
+  readonly langLabels: Record<Language, string> = { [Language.ES]: LanguageLabel.ES, [Language.EN]: LanguageLabel.EN };
 
-  constructor(private readonly translateService: TranslateService) {}
+  constructor(private readonly translateService: TranslateService) { }
 
   ngOnChanges(): void {
     this.translationError.emit('');
@@ -33,7 +40,7 @@ export class TranslateButtonComponent implements OnChanges {
   }
 
   async translate(): Promise<void> {
-    if (!this.fromText?.trim() || this.loading) return;
+    if (!this.fromText.trim() || this.loading) return;
     this.loading = true;
     this.translationError.emit('');
     try {
