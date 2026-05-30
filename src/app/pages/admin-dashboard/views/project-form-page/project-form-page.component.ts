@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
@@ -9,10 +9,10 @@ import { ProjectsService } from '@core/services/projects/projects.service';
 import { StorageService } from '@core/services/storage/storage.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
-import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/skills-section/skills-section.component';
 import { AddPhotoComponent } from '@pages/admin-dashboard/components/shared/add-photo/add-photo.component';
 import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/photo-editor/photo-editor.component';
-import { TranslateButtonComponent, Language } from '@pages/admin-dashboard/components/shared/translate-button/translate-button.component';
+import { Language, TranslateButtonComponent } from '@pages/admin-dashboard/components/shared/translate-button/translate-button.component';
+import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/skills-section/skills-section.component';
 
 type ProjectFormMode = 'create' | 'edit';
 
@@ -51,7 +51,7 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly storageService: StorageService,
     private readonly cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     this.mode = (this.route.snapshot.data['mode'] as ProjectFormMode) || 'create';
@@ -139,11 +139,18 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
   }
 
   get coverPreviewUrls(): string[] {
-    return this.coverAssets.map((asset) => resolveImageAssetUrl(asset)).filter((url): url is string => Boolean(url));
+    // Only pass server-side URLs (assets with a .url property).
+    // Base64/file assets are managed internally by add-photo via storage — feeding
+    // them back as urlsPreviews would trigger an infinite ngOnChanges → syncImages loop.
+    return this.coverAssets
+      .filter((asset): asset is { url: string } => typeof asset !== 'string' && Boolean(asset.url))
+      .map((asset) => asset.url);
   }
 
   get galleryPreviewUrls(): string[] {
-    return this.galleryAssets.map((asset) => resolveImageAssetUrl(asset)).filter((url): url is string => Boolean(url));
+    return this.galleryAssets
+      .filter((asset): asset is { url: string } => typeof asset !== 'string' && Boolean(asset.url))
+      .map((asset) => asset.url);
   }
 
   get coverStorageKey(): string {

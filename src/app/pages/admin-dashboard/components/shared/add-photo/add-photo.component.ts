@@ -60,28 +60,45 @@ export class AddPhotoComponent implements OnInit, OnChanges {
   isDragOver: boolean = false;
   maxSizeMb: number = this.maxMb();
   nextId = 1;
-  previewUrls: string[] = this.urlsPreviews();
+  previewUrls: string[] = [];
 
   // Dependencies
   _storage = inject(StorageService);
   _toast = inject(ToastrService);
   _cdr = inject(ChangeDetectorRef);
 
-  async ngOnInit() {
-    await this.syncImages();
+  async ngOnInit(): Promise<void> {
+    // Read urlsPreviews exactly ONCE during init to seed the initial state.
+    // After this, the component owns its internal image state completely.
+    // We intentionally do NOT react to future urlsPreviews changes to prevent
+    // the parent CD → ngOnChanges → emitAssetsChange → parent CD infinite loop.
+    const initialUrls = this.urlsPreviews().slice(0, this.maxPhotos());
+    if (initialUrls.length > 0) {
+      this.previewUrls = initialUrls;
+      await this.loadImagesFromPreviewUrls(initialUrls);
+    } else if (this.persistDraft()) {
+      await this.loadImagesFromStorage();
+    }
   }
 
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (
-      changes['urlsPreviews']?.firstChange &&
-      changes['storageKey']?.firstChange &&
-      changes['persistDraft']?.firstChange
-    ) {
-      return;
+  ngOnChanges(changes: SimpleChanges): void {
+    // ONLY reinitialize when storageKey changes (user navigates to a different entity).
+    // urlsPreviews changes are intentionally IGNORED here — reacting to them would
+    // create an infinite loop: upload → emitAssetsChange → parent CD → new array ref
+    // → ngOnChanges → loadImagesFromPreviewUrls → emitAssetsChange → ∞
+    if (changes['storageKey'] && !changes['storageKey'].firstChange) {
+      this.clearLocalImages();
+      const urls = this.urlsPreviews().slice(0, this.maxPhotos());
+      if (urls.length > 0) {
+        this.previewUrls = urls;
+        void this.loadImagesFromPreviewUrls(urls);
+      } else if (this.persistDraft()) {
+        void this.loadImagesFromStorage();
+      } else {
+        this.emitAssetsChange();
+        this._cdr.markForCheck();
+      }
     }
-
-    this.previewUrls = this.urlsPreviews();
-    await this.syncImages();
   }
 
   async onFileSelect(
@@ -97,7 +114,6 @@ export class AddPhotoComponent implements OnInit, OnChanges {
     this.isDragOver = false;
     this._cdr.markForCheck();
 
-    // Asegurar que el siguiente id sea secuencial basado en el estado actual
     this.nextId = this.images.length + 1;
 
     for (const file of files) {
@@ -105,7 +121,7 @@ export class AddPhotoComponent implements OnInit, OnChanges {
         if (this.maxPhotos() === 1) {
           this.clearLocalImages();
         } else {
-          this.showToast('warning', 'Máximo de fotos alcanzado');
+          this.showToast('warning', 'Máximo de fotos alcanzado');
           break;
         }
       }
@@ -176,6 +192,7 @@ export class AddPhotoComponent implements OnInit, OnChanges {
     this.nextId = this.images.length + 1;
     this.isDragOver = false;
     this._cdr.markForCheck();
+    this.emitAssetsChange();
   }
 
   private async loadImagesFromPreviewUrls(urls: string[]): Promise<void> {
@@ -348,24 +365,6 @@ export class AddPhotoComponent implements OnInit, OnChanges {
       progressBar: true,
       closeButton: true,
     });
-  }
-
-  private async syncImages(): Promise<void> {
-    this.previewUrls = this.urlsPreviews().slice(0, this.maxPhotos());
-
-    if (this.previewUrls.length > 0) {
-      await this.clearDraftStorage();
-      await this.loadImagesFromPreviewUrls(this.previewUrls);
-      return;
-    }
-
-    if (this.persistDraft()) {
-      await this.loadImagesFromStorage();
-    } else {
-      this.clearLocalImages();
-      this.emitAssetsChange();
-      this._cdr.markForCheck();
-    }
   }
 
   private clearLocalImages(): void {
