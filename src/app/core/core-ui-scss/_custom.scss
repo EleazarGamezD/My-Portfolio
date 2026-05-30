@@ -19,6 +19,80 @@
 .sidebar {
   --cui-sidebar-width: 17rem;
 }
+
+body.admin-route-active {
+  .admin-sidebar.sidebar-narrow,
+  .admin-sidebar.sidebar-narrow-unfoldable:not(:hover) {
+    overflow: hidden;
+
+    .admin-sidebar__header {
+      padding-inline: 0.5rem;
+      overflow: hidden;
+    }
+
+    .admin-sidebar__brand {
+      width: 100%;
+      justify-content: center;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .admin-sidebar__brand-copy {
+      display: none;
+    }
+
+    .admin-sidebar__brand-mark {
+      width: 2.35rem;
+      height: 2.35rem;
+    }
+
+    .sidebar-nav {
+      --cui-sidebar-nav-padding-x: 0.5rem;
+      --cui-sidebar-nav-link-padding-x: 0.5rem;
+      overflow: hidden;
+    }
+
+    .nav-link {
+      width: 100%;
+      min-width: 0;
+      justify-content: center;
+      font-size: 0;
+      overflow: hidden;
+      text-indent: 0;
+      white-space: nowrap;
+      gap: 0;
+      padding-inline: 0.5rem;
+    }
+
+    .nav-link > *:not(.nav-icon) {
+      display: none;
+    }
+
+    .nav-link .nav-link-text,
+    .nav-link .nav-group-toggle,
+    .nav-link .nav-badge,
+    .nav-link .nav-group-items,
+    .nav-title {
+      display: none;
+    }
+
+    .nav-link .nav-icon,
+    .nav-link .nav-icon svg {
+      flex: 0 0 auto;
+      width: 1.25rem;
+      min-width: 1.25rem;
+      margin-inline-end: 0;
+      font-size: var(--cui-sidebar-nav-link-icon-font-size);
+    }
+
+    .sidebar-footer,
+    .sidebar-toggler,
+    .sidebar-toggler::before {
+      overflow: hidden;
+    }
+  }
+}
+
 @media (min-width: 992px) {
   .sidebar:not(.hide):not(.sidebar-narrow):not(.sidebar-narrow-unfoldable:not(:hover)):not(
       .sidebar-narrow-unfoldable
