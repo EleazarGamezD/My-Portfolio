@@ -16,6 +16,11 @@ import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/s
 
 type ProjectFormMode = 'create' | 'edit';
 
+export enum ProjectStatusEnum {
+  DRAFT = 'draft',
+  PUBLISHED = 'published',
+}
+
 @Component({
   selector: 'app-admin-project-form-page',
   standalone: true,
@@ -37,6 +42,11 @@ type ProjectFormMode = 'create' | 'edit';
 })
 export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
   readonly Language = Language;
+  readonly ProjectStatusEnum = ProjectStatusEnum;
+  readonly projectStatusOptions = [
+    { value: ProjectStatusEnum.DRAFT, label: 'Borrador' },
+    { value: ProjectStatusEnum.PUBLISHED, label: 'Publicado' },
+  ];
   mode: ProjectFormMode = 'create';
   draft: Partial<IProject> = this.createEmptyDraft();
   projectId = '';

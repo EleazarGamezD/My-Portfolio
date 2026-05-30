@@ -158,26 +158,36 @@
                     </ng-template>
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <label class="form-label">Enlace del proyecto</label>
-                  <input cFormControl type="text" [(ngModel)]="draft.projectLink" aria-label="Enlace del proyecto" />
+                  <input cFormControl type="text" [(ngModel)]="draft.projectLink" aria-label="Enlace del proyecto" placeholder="https://..." />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Enlace al codigo</label>
+                  <input cFormControl type="text" [(ngModel)]="draft.codeLink" aria-label="Enlace al codigo" placeholder="https://github.com/..." />
                 </div>
                 <div class="col-md-4">
-                  <label class="form-label">Enlace al codigo</label>
-                  <input cFormControl type="text" [(ngModel)]="draft.codeLink" aria-label="Enlace al codigo" />
-                </div>
-                <div class="col-md-3">
                   <label class="form-label">Estado</label>
-                  <input cFormControl type="text" [(ngModel)]="draft.status" aria-label="Estado" />
+                  <select cFormControl [(ngModel)]="draft.status" aria-label="Estado">
+                    <option *ngFor="let opt of projectStatusOptions" [value]="opt.value">{{ opt.label }}</option>
+                  </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                   <label class="form-label">Fecha de publicacion</label>
                   <input cFormControl type="date" [(ngModel)]="draft.publishedAt" aria-label="Fecha de publicacion" />
                 </div>
-                <div class="col-md-3 d-flex align-items-end">
-                  <label class="project-form__check">
-                    <input cFormCheckInput type="checkbox" [(ngModel)]="draft.featured" aria-label="Destacado" />
-                    Destacado
+                <div class="col-md-4 d-flex align-items-end">
+                  <label class="project-featured-toggle" [class.is-checked]="draft.featured">
+                    <input type="checkbox" [(ngModel)]="draft.featured" aria-label="Destacado" />
+                    <span class="project-featured-toggle__track">
+                      <span class="project-featured-toggle__thumb"></span>
+                    </span>
+                    <span class="project-featured-toggle__label">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                      Destacado
+                    </span>
                   </label>
                 </div>
                 <div class="col-12" *ngIf="showSkillsLibrary">

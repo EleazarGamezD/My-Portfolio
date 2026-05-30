@@ -52,6 +52,83 @@
   color: var(--cui-body-color);
 }
 
+// ── Featured toggle ──────────────────────────────────────────────────────────
+
+.project-featured-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  min-height: 2.75rem;
+
+  input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+}
+
+.project-featured-toggle__track {
+  position: relative;
+  width: 3rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  background: var(--cui-border-color);
+  border: 1.5px solid var(--cui-border-color);
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease;
+  flex-shrink: 0;
+
+  .is-checked & {
+    background: var(--base-color, #c84b31);
+    border-color: var(--base-color, #c84b31);
+  }
+}
+
+.project-featured-toggle__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0.18rem;
+  transform: translateY(-50%);
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  transition: left 0.22s ease;
+
+  .is-checked & {
+    left: calc(100% - 1.28rem);
+  }
+}
+
+.project-featured-toggle__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  color: var(--cui-body-color);
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+
+  svg {
+    color: var(--cui-secondary-color);
+    transition: color 0.2s ease;
+  }
+
+  .is-checked & {
+    color: var(--base-color, #c84b31);
+
+    svg {
+      color: var(--base-color, #c84b31);
+    }
+  }
+}
+
 .project-skills-panel {
   border: 1px solid var(--cui-border-color);
   border-radius: 1.15rem;
