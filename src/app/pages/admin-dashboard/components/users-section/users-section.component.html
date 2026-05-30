@@ -23,8 +23,8 @@
             <th>Nombre visible</th>
             <th>Rol</th>
             <th>Ultimo acceso</th>
-            <th class="text-center">Activo</th>
-            <th class="text-end">Acciones</th>
+            <th class="text-center users-table__status-header">Activo</th>
+            <th class="text-end users-table__actions-header">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -59,11 +59,11 @@
               </div>
             </td>
 
-            <td class="text-center">
+            <td class="text-center users-table__status-cell">
               <input cFormCheckInput type="checkbox" [(ngModel)]="user.active" [disabled]="isCurrentAdmin(user)" />
             </td>
 
-            <td class="text-end dashboard-actions-cell">
+            <td class="text-end dashboard-actions-cell users-table__actions-cell">
               <button cButton color="primary" size="sm" type="button" (click)="saveUser.emit(user)" [disabled]="isActionLoading(user)">
                 Guardar
               </button>

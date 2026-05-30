@@ -14,6 +14,15 @@
 
 .users-table {
   min-width: 920px;
+
+  th {
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  td {
+    vertical-align: middle;
+  }
 }
 
 .users-table__identity,
@@ -38,6 +47,42 @@
 
 .users-table__display-name-cell {
   min-width: 220px;
+}
+
+.users-table__identity {
+  min-width: 26rem;
+}
+
+.users-table__role-stack {
+  min-width: 17rem;
+
+  select {
+    min-width: 100%;
+  }
+}
+
+.users-table__last-access {
+  min-width: 9.5rem;
+}
+
+.users-table__status-header,
+.users-table__status-cell {
+  min-width: 5.5rem;
+}
+
+.users-table__actions-header,
+.users-table__actions-cell {
+  min-width: 8.5rem;
+  white-space: nowrap;
+}
+
+.users-table__actions-cell {
+  justify-content: flex-end;
+
+  .btn {
+    min-width: 6.75rem;
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 767.98px) {

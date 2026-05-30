@@ -45,7 +45,7 @@
     </div>
 
     <div class="table-responsive" *ngIf="!contentLoading">
-      <table [hover]="true" [striped]="true" cTable *ngIf="items.length > 0; else emptyItems">
+      <table [hover]="true" [striped]="true" cTable *ngIf="items.length > 0; else emptyItems" class="content-section-table" [class.content-section-table--social-links]="variant === 'socialLinks'">
         <thead>
           <tr [ngSwitch]="variant">
             <ng-container *ngSwitchCase="'skills'">
@@ -74,6 +74,8 @@
               <th>Red social</th>
               <th>Link</th>
             </ng-container>
+
+            <th class="text-end content-section-table__actions-header">Acciones</th>
           </tr>
         </thead>
 
@@ -109,7 +111,7 @@
               <td>
                 <div class="social-links-name">{{ getContentItemName(item) }}</div>
               </td>
-              <td>
+              <td class="social-links-link-cell">
                 <input cFormControl sizing="sm" type="text" [(ngModel)]="item.href" placeholder="Link" />
               </td>
             </ng-container>
