@@ -34,14 +34,14 @@
 
 .users-table__identity strong,
 .users-table__last-access strong {
-  color: #0f172a;
+  color: var(--cui-emphasis-color);
   font-weight: 600;
   overflow-wrap: anywhere;
 }
 
 .users-table__identity span,
 .users-table__last-access span {
-  color: #64748b;
+  color: var(--cui-secondary-color);
   font-size: 0.92rem;
 }
 

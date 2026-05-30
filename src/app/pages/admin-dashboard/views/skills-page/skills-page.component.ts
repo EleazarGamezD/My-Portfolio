@@ -16,7 +16,7 @@ export class AdminSkillsPageComponent implements OnInit {
   skills: IApiTechSkill[] = [];
   loading = true;
   deletingSkillId: string | null = null;
-  readonly pageSize = 6;
+  readonly pageSize = 8;
   pagination: IPaginationResponse<IApiTechSkill> = {
     data: [],
     totalItems: 0,

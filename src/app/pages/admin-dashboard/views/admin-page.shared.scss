@@ -1,3 +1,5 @@
+@use '@coreui/coreui/scss/mixins/color-mode' as *;
+
 .admin-page-header {
   display: flex;
   justify-content: space-between;
@@ -17,32 +19,56 @@
 
 .admin-page-title {
   margin-bottom: 0.3rem;
-  color: var(--dark-gray, #2e4052);
+  color: var(--cui-emphasis-color, var(--dark-gray, #2e4052));
   font-size: 1.85rem;
   font-weight: 700;
 }
 
 .admin-page-copy {
   max-width: 48rem;
-  color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 82%, var(--dark-gray, #2e4052) 18%);
+  color: var(--cui-secondary-color, color-mix(in srgb, var(--medium-gray, #7f8c8d) 82%, var(--dark-gray, #2e4052) 18%));
 }
 
 .admin-page-surface {
-  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
+  border: 1px solid var(--cui-border-color, color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%));
   border-radius: 1rem;
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, white 92%, var(--very-light-gray, #ecf0f1) 8%),
-      color-mix(in srgb, white 80%, var(--very-light-gray, #ecf0f1) 20%)
-    );
-  box-shadow: 0 18px 40px color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
+  background: var(--cui-card-bg, color-mix(in srgb, white 92%, var(--very-light-gray, #ecf0f1) 8%));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
 }
 
 .admin-page-message {
   margin-bottom: 1rem;
 }
 
+// Light mode: use the richer gradient surface
+@include color-mode(light) {
+  .admin-page-surface {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, white 92%, var(--very-light-gray, #ecf0f1) 8%),
+        color-mix(in srgb, white 80%, var(--very-light-gray, #ecf0f1) 20%)
+      );
+    box-shadow: 0 18px 40px color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
+  }
+}
+
+// Dark mode overrides
+@include color-mode(dark) {
+  .admin-page-title {
+    color: var(--cui-emphasis-color, #ffffff);
+  }
+
+  .admin-page-copy {
+    color: var(--cui-secondary-color, #8b98b0);
+  }
+
+  .admin-page-surface {
+    background: var(--cui-card-bg, #181d2a);
+    border-color: var(--cui-border-color, #2a3144);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+  }
+}
 
 @media (max-width: 767.98px) {
   .admin-page-header {

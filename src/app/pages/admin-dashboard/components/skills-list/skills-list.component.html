@@ -16,17 +16,18 @@
     <p class="admin-page-copy mb-0">Administra el catalogo visual de skills que luego se relacionan con los proyectos.</p>
   </div>
 
-  <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-    <c-spinner color="primary" size="sm"></c-spinner>
-    <span>Cargando skills...</span>
-  </div>
-
-  <div class="empty-state" *ngIf="!loading && skills.length === 0">
+  <div *ngIf="!loading && skills.length === 0" class="empty-state">
     <p>No se encontraron skills.</p>
   </div>
 
-  <div class="skills-surface" *ngIf="!loading && skills.length > 0">
-    <div class="skills-grid">
+  <div class="skills-surface" *ngIf="skills.length > 0 || loading">
+    <!-- Spinner shown inside surface during load/paginate -->
+    <div *ngIf="loading" class="skills-loading">
+      <c-spinner color="primary" size="sm"></c-spinner>
+      <span>Cargando...</span>
+    </div>
+
+    <div class="skills-grid" [class.skills-grid--loading]="loading">
       <article class="skill-card" *ngFor="let skill of skills">
         <div class="skill-card__menu">
           <app-admin-action-menu [canEdit]="true" [editLink]="['/admin/dashboard/skills/edit', skill._id || '']" [canDelete]="!isDeleting(skill)" [canDeactivate]="false" (actionSelected)="handleAction(skill, $event)">

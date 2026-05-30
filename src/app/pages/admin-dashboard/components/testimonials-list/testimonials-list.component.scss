@@ -41,12 +41,10 @@
 }
 
 .testimonials-surface {
-  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 12%, transparent 88%);
+  border: 1px solid var(--cui-border-color);
   border-radius: 1.5rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), color-mix(in srgb, white 84%, var(--very-light-gray, #ecf0f1) 16%)),
-    radial-gradient(circle at top left, color-mix(in srgb, var(--base-color, #c84b31) 10%, transparent 90%), transparent 40%);
-  box-shadow: 0 24px 60px color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
+  background: var(--cui-card-bg);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -61,21 +59,21 @@ table {
 }
 
 thead th {
-  background: color-mix(in srgb, white 76%, var(--very-light-gray, #ecf0f1) 24%);
-  color: color-mix(in srgb, var(--dark-gray, #2e4052) 72%, var(--base-color, #c84b31) 28%);
+  background: var(--cui-secondary-bg);
+  color: var(--cui-emphasis-color);
   font-weight: 700;
-  border-bottom: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
+  border-bottom: 1px solid var(--cui-border-color);
   padding: 1rem 1.1rem;
   text-align: left;
   white-space: nowrap;
 }
 
 tbody tr {
-  border-bottom: 1px solid rgba(222, 230, 236, 0.9);
+  border-bottom: 1px solid var(--cui-border-color);
 }
 
 tbody tr:hover {
-  background: color-mix(in srgb, white 82%, var(--very-light-gray, #ecf0f1) 18%);
+  background: var(--cui-secondary-bg);
 }
 
 tbody td {
@@ -90,20 +88,20 @@ tbody td {
   min-width: 2rem;
   height: 2rem;
   border-radius: 999px;
-  background: color-mix(in srgb, white 68%, var(--base-color, #c84b31) 32%);
-  color: color-mix(in srgb, var(--dark-gray, #2e4052) 70%, var(--base-color, #c84b31) 30%);
+  background: var(--cui-secondary-bg);
+  color: var(--base-color, #c84b31);
   font-weight: 700;
 }
 
 .testimonial-name {
   min-width: 14rem;
   font-weight: 700;
-  color: var(--dark-gray, #2e4052);
+  color: var(--cui-emphasis-color);
 }
 
 .testimonial-meta {
   min-width: 12rem;
-  color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 70%, var(--dark-gray, #2e4052) 30%);
+  color: var(--cui-secondary-color);
 }
 
 .testimonial-detail-link {
@@ -113,9 +111,9 @@ tbody td {
   min-width: 7.75rem;
   padding: 0.7rem 0.95rem;
   border-radius: 0.9rem;
-  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent 82%);
-  background: color-mix(in srgb, white 86%, var(--very-light-gray, #ecf0f1) 14%);
-  color: color-mix(in srgb, var(--dark-gray, #2e4052) 68%, var(--base-color, #c84b31) 32%);
+  border: 1px solid var(--cui-border-color);
+  background: var(--cui-card-bg);
+  color: var(--cui-body-color);
   font-weight: 700;
   text-decoration: none;
 }
@@ -126,11 +124,11 @@ tbody td {
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.25rem 1.2rem;
-  border-top: 1px solid rgba(222, 230, 236, 0.9);
+  border-top: 1px solid var(--cui-border-color);
 }
 
 .testimonials-pagination__meta {
-  color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 70%, var(--dark-gray, #2e4052) 30%);
+  color: var(--cui-secondary-color);
   font-weight: 600;
 }
 
@@ -146,9 +144,9 @@ tbody td {
   height: 2.5rem;
   padding: 0 0.9rem;
   border-radius: 0.9rem;
-  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent 82%);
-  background: color-mix(in srgb, white 86%, var(--very-light-gray, #ecf0f1) 14%);
-  color: color-mix(in srgb, var(--dark-gray, #2e4052) 68%, var(--base-color, #c84b31) 32%);
+  border: 1px solid var(--cui-border-color);
+  background: var(--cui-card-bg);
+  color: var(--cui-body-color);
   font-weight: 700;
 }
 
@@ -166,7 +164,7 @@ tbody td {
 .empty-state {
   text-align: center;
   padding: 3rem 1rem;
-  color: #666;
+  color: var(--cui-secondary-color);
   font-size: 1.125rem;
 }
 

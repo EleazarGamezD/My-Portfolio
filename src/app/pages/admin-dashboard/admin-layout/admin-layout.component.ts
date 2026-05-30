@@ -23,6 +23,7 @@ import {
   SidebarToggleDirective,
   SidebarTogglerDirective,
 } from '@coreui/angular';
+import { IconDirective } from '@coreui/icons-angular';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { filter } from 'rxjs';
 import { ADMIN_SECTIONS, isAdminSection } from '../admin-sections';
@@ -50,6 +51,7 @@ import { DefaultHeaderComponent } from './default-header/default-header.componen
     ContainerComponent,
     ShadowOnScrollDirective,
     NgScrollbar,
+    IconDirective,
     DefaultHeaderComponent,
     DefaultFooterComponent,
   ],

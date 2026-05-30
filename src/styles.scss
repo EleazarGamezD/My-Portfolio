@@ -68,6 +68,19 @@ body.admin-route-active {
     color: var(--cui-btn-active-color, var(--bs-btn-active-color)) !important;
   }
 
+  // ── Header hamburger toggle — always white icon on dark header ───────────────
+  // Portfolio's style.css may set .btn { color: dark-value }, overriding the
+  // inherited #f5f7fb from .header. This rule restores it with higher specificity.
+  .header .btn.header-toggler,
+  .header button.header-toggler {
+    color: #ffffff !important;
+
+    svg {
+      color: #ffffff !important;
+      fill: currentColor;
+    }
+  }
+
   app-admin-layout .base-shell {
     width: 100%;
     padding-top: 1.5rem;

@@ -2,21 +2,21 @@
   display: block;
   margin-top: 0.3rem;
   font-size: 0.78rem;
-  color: #dc3545;
+  color: var(--cui-danger);
 }
 
 .dashboard-detail-card {
   height: 100%;
-  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
+  border: 1px solid var(--cui-border-color);
   border-radius: 12px;
   padding: 1rem 1.1rem;
-  background: color-mix(in srgb, white 88%, var(--very-light-gray, #ecf0f1) 12%);
+  background: var(--cui-card-bg);
 }
 
 .dashboard-detail-label {
   display: block;
   margin-bottom: 0.35rem;
-  color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 86%, var(--dark-gray, #2e4052) 14%);
+  color: var(--cui-secondary-color);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -24,15 +24,10 @@
 }
 
 .dashboard-create-box {
-  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent 82%);
+  border: 1px solid var(--cui-border-color);
   border-radius: 12px;
   padding: 1rem;
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, white 72%, var(--very-light-gray, #ecf0f1) 28%),
-      color-mix(in srgb, white 84%, var(--base-color, #c84b31) 16%)
-    );
+  background: var(--cui-card-bg);
 }
 
 .dashboard-actions-cell {
@@ -61,7 +56,7 @@
     padding: 1.5rem;
 
     .card-title {
-      color: var(--dark-gray, #2e4052);
+      color: var(--cui-emphasis-color);
       font-weight: 600;
       margin-bottom: 1rem;
       font-size: 0.9rem;
@@ -85,11 +80,11 @@
     margin-bottom: 0;
 
     thead {
-      background-color: #f8f9fa;
+      background-color: var(--cui-secondary-bg);
 
       th {
         border: none;
-        color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 84%, var(--dark-gray, #2e4052) 16%);
+        color: var(--cui-secondary-color);
         font-weight: 600;
         padding: 1rem;
         font-size: 0.85rem;
@@ -101,13 +96,13 @@
     tbody {
       tr {
         &:hover {
-          background-color: #f8f9fa;
+          background-color: var(--cui-secondary-bg);
         }
 
         td {
           border: none;
           padding: 1rem;
-          color: var(--dark-gray, #2e4052);
+          color: var(--cui-body-color);
           vertical-align: middle;
         }
       }

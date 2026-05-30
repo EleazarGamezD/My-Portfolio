@@ -21,6 +21,19 @@
     color: rgba(255, 255, 255, 0.9);
   }
 
+  // Hamburger button — always white icon regardless of portfolio CSS overrides
+  button.header-toggler {
+    color: #ffffff !important;
+    background: transparent;
+    border: none;
+
+    svg,
+    svg * {
+      color: #ffffff !important;
+      fill: currentColor;
+    }
+  }
+
   .admin-user-trigger {
     display: inline-flex;
     align-items: center;

@@ -8,7 +8,7 @@
 
 .skills-copy {
   margin-top: 0.3rem;
-  color: #748494;
+  color: var(--cui-secondary-color);
 }
 
 .skills-create-box {
@@ -19,13 +19,13 @@
   margin-bottom: 1rem;
 
   h6 {
-    color: #163447;
+    color: var(--cui-emphasis-color);
     font-size: 1.05rem;
     font-weight: 800;
   }
 
   p {
-    color: #748494;
+    color: var(--cui-secondary-color);
   }
 }
 
@@ -41,11 +41,9 @@
 }
 
 .skill-card {
-  border: 1px solid rgba(170, 190, 204, 0.34);
+  border: 1px solid var(--cui-border-color);
   border-radius: 1.35rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(244, 249, 252, 0.99)),
-    radial-gradient(circle at top left, rgba(13, 93, 136, 0.07), transparent 46%);
+  background: var(--cui-card-bg);
   padding: 1rem;
 }
 
@@ -63,8 +61,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ecf4fb, #dfeef8);
-  border: 1px solid rgba(151, 178, 196, 0.3);
+  background: var(--cui-secondary-bg);
+  border: 1px solid var(--cui-border-color);
   color: #0d5d88;
   font-size: 1.3rem;
   font-weight: 800;
@@ -83,7 +81,7 @@
 
   h6 {
     margin: 0;
-    color: #18384d;
+    color: var(--cui-emphasis-color);
     font-size: 1.05rem;
     font-weight: 800;
   }
@@ -96,7 +94,7 @@
 .skill-card__editor {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(170, 190, 204, 0.28);
+  border-top: 1px solid var(--cui-border-color);
 }
 
 .skill-card__actions {
@@ -112,7 +110,7 @@
   gap: 0.55rem;
   min-height: 2.75rem;
   font-weight: 700;
-  color: #274154;
+  color: var(--cui-body-color);
 }
 
 .skills-pagination {
@@ -122,11 +120,11 @@
   justify-content: space-between;
   gap: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(170, 190, 204, 0.28);
+  border-top: 1px solid var(--cui-border-color);
 }
 
 .skills-pagination__summary {
-  color: #6d7d8c;
+  color: var(--cui-secondary-color);
   font-weight: 600;
 }
 

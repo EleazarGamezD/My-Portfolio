@@ -1,8 +1,9 @@
 @use '../admin-page.shared' as *;
+@use '@coreui/coreui/scss/mixins/color-mode' as *;
 
 .form-label {
   font-weight: 700;
-  color: #274154;
+  color: var(--cui-body-color);
   margin-bottom: 0.65rem;
 }
 
@@ -13,11 +14,9 @@
 }
 
 .project-form__section {
-  border: 1px solid rgba(174, 191, 204, 0.34);
+  border: 1px solid var(--cui-border-color);
   border-radius: 1.35rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 253, 0.98)),
-    radial-gradient(circle at top left, rgba(15, 93, 136, 0.06), transparent 44%);
+  background: var(--cui-card-bg);
   padding: 1.35rem;
 }
 
@@ -26,14 +25,14 @@
 
   h3 {
     margin: 0;
-    color: #1f3342;
+    color: var(--cui-emphasis-color);
     font-size: 1.08rem;
     font-weight: 800;
   }
 
   p {
     margin: 0.35rem 0 0;
-    color: #6c7d8b;
+    color: var(--cui-secondary-color);
   }
 }
 
@@ -50,13 +49,13 @@
   gap: 0.65rem;
   min-height: 2.75rem;
   font-weight: 700;
-  color: #274154;
+  color: var(--cui-body-color);
 }
 
 .project-skills-panel {
-  border: 1px solid rgba(174, 191, 204, 0.34);
+  border: 1px solid var(--cui-border-color);
   border-radius: 1.15rem;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--cui-secondary-bg);
   padding: 1rem;
 }
 
@@ -69,7 +68,7 @@
 }
 
 .project-skills-panel__copy {
-  color: #6c7d8b;
+  color: var(--cui-secondary-color);
 }
 
 .project-skills-grid {
@@ -79,9 +78,9 @@
 }
 
 .project-skill-card {
-  border: 1px solid rgba(163, 184, 198, 0.38);
+  border: 1px solid var(--cui-border-color);
   border-radius: 1rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 247, 251, 0.98));
+  background: var(--cui-card-bg);
   display: flex;
   align-items: center;
   gap: 0.85rem;
@@ -95,19 +94,17 @@
 
   &:hover {
     transform: translateY(-1px);
-    border-color: rgba(13, 93, 136, 0.32);
-    box-shadow: 0 16px 28px rgba(13, 93, 136, 0.08);
+    border-color: color-mix(in srgb, var(--base-color, #c84b31) 38%, transparent 62%);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.12);
   }
 
   &.is-selected {
-    border-color: rgba(13, 93, 136, 0.42);
-    box-shadow: 0 18px 30px rgba(13, 93, 136, 0.12);
+    border-color: color-mix(in srgb, var(--base-color, #c84b31) 54%, transparent 46%);
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.16);
   }
 
   &.is-primary {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(231, 243, 249, 0.98)),
-      radial-gradient(circle at top left, rgba(13, 93, 136, 0.1), transparent 55%);
+    background: color-mix(in srgb, var(--base-color, #c84b31) 8%, var(--cui-card-bg) 92%);
   }
 }
 
@@ -115,12 +112,12 @@
   width: 3rem;
   height: 3rem;
   border-radius: 0.95rem;
-  background: linear-gradient(135deg, #ecf4fb, #dfeef8);
+  background: color-mix(in srgb, var(--base-color, #c84b31) 12%, var(--cui-secondary-bg) 88%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  color: #0d5d88;
+  color: var(--base-color, #c84b31);
   font-weight: 800;
   flex-shrink: 0;
 
@@ -138,11 +135,11 @@
   flex: 1;
 
   strong {
-    color: #18384d;
+    color: var(--cui-emphasis-color);
   }
 
   span {
-    color: #0d5d88;
+    color: var(--base-color, #c84b31);
     font-size: 0.78rem;
     font-weight: 700;
   }
@@ -151,23 +148,36 @@
 .project-skill-card__primary {
   border: 0;
   border-radius: 999px;
-  background: rgba(13, 93, 136, 0.12);
-  color: #0d5d88;
+  background: color-mix(in srgb, var(--base-color, #c84b31) 12%, transparent 88%);
+  color: var(--base-color, #c84b31);
   padding: 0.45rem 0.8rem;
   font-size: 0.76rem;
   font-weight: 800;
 
   &.is-active {
-    background: #0d5d88;
+    background: var(--base-color, #c84b31);
     color: #fff;
   }
 }
 
 .project-skills-empty {
-  border: 1px dashed rgba(163, 184, 198, 0.55);
+  border: 1px dashed var(--cui-border-color);
   border-radius: 1rem;
   padding: 1rem;
-  color: #6c7d8b;
+  color: var(--cui-secondary-color);
+}
+
+// Light mode: richer gradient sections
+@include color-mode(light) {
+  .project-form__section {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 253, 0.98)),
+      radial-gradient(circle at top left, rgba(15, 93, 136, 0.04), transparent 44%);
+  }
+
+  .project-skill-card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 247, 251, 0.98));
+  }
 }
 
 :host ::ng-deep .admin-page-surface {
@@ -178,7 +188,9 @@
 :host ::ng-deep textarea.form-control,
 :host ::ng-deep input.form-control {
   border-radius: 0.95rem;
-  border-color: rgba(174, 191, 204, 0.85);
+  border-color: var(--cui-input-border-color);
+  background-color: var(--cui-input-bg);
+  color: var(--cui-input-color);
   min-height: 3rem;
 }
 

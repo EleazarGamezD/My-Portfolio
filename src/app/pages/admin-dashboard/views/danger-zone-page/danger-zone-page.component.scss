@@ -1,4 +1,5 @@
 @use '../admin-page.shared' as page;
+@use '@coreui/coreui/scss/mixins/color-mode' as *;
 
 .dz-grid {
   display: flex;
@@ -12,13 +13,13 @@
   align-items: flex-start;
   gap: 1rem;
   padding: 1.2rem 1.4rem;
-  border: 1.5px solid #fca5a5;
+  border: 1.5px solid color-mix(in srgb, #ef4444 38%, var(--cui-border-color) 62%);
   border-radius: 0.875rem;
-  background: #fff;
+  background: var(--cui-card-bg);
 
   &--force {
-    border-color: #f87171;
-    background: #fff8f8;
+    border-color: #ef4444;
+    background: color-mix(in srgb, #ef4444 5%, var(--cui-card-bg) 95%);
   }
 
   &__icon {
@@ -34,14 +35,14 @@
 
   &__title {
     font-weight: 700;
-    color: #0f172a;
+    color: var(--cui-emphasis-color);
     margin-bottom: 0.25rem;
     font-size: 0.95rem;
   }
 
   &__desc {
     font-size: 0.83rem;
-    color: #64748b;
+    color: var(--cui-secondary-color);
     margin: 0;
     line-height: 1.5;
   }
@@ -66,13 +67,13 @@
 }
 
 .dz-dialog {
-  background: #fff;
+  background: var(--cui-modal-bg, var(--cui-card-bg));
   border-radius: 1rem;
   padding: 2rem 2.2rem;
   max-width: 440px;
   width: 90%;
   text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
 
   &__icon {
     font-size: 2.5rem;
@@ -82,12 +83,12 @@
   &__title {
     font-weight: 700;
     margin-bottom: 0.75rem;
-    color: #0f172a;
+    color: var(--cui-emphasis-color);
   }
 
   &__body {
     font-size: 0.9rem;
-    color: #475569;
+    color: var(--cui-secondary-color);
     margin-bottom: 1.5rem;
     line-height: 1.55;
   }

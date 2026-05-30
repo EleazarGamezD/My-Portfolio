@@ -1,5 +1,29 @@
 .admin-sidebar__header {
   padding: 1rem 1rem 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-sidebar__close-btn {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.8) !important;
+  padding: 0.35rem;
+  border-radius: 0.45rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff !important;
+  }
+
+  svg {
+    color: inherit !important;
+    display: block;
+  }
 }
 
 .admin-sidebar__brand {

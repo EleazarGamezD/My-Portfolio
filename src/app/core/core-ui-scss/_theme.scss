@@ -86,6 +86,12 @@ body {
   );
   color: #f5f7fb;
 
+  // Ensure the sidebar toggle button icon is always visible on the dark header
+  button.header-toggler,
+  .btn.header-toggler {
+    color: #ffffff !important;
+  }
+
   .nav-link {
     color: #ffffff !important;
 
@@ -115,20 +121,108 @@ body {
 }
 
 @include color-mode(dark) {
-  :root {
-    --cui-body-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 84%, black 16%);
-    --cui-body-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 88%, white 12%);
-    --cui-link-color: color-mix(in srgb, var(--base-color, #c84b31) 78%, white 22%);
-    --cui-link-hover-color: color-mix(in srgb, var(--base-color, #c84b31) 62%, white 38%);
-    --cui-header-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 72%, var(--base-color, #c84b31) 28%);
-    --cui-sidebar-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 90%, black 10%);
-    --cui-sidebar-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 82%, white 18%);
-  }
+  // ── True dark mode: variables go DIRECTLY here (not inside :root {}) ─────────
+  // `@include color-mode(dark)` generates `[data-coreui-theme="dark"] { ... }`.
+  // The attribute is set on <html>, so variables placed here land on the root
+  // element directly — no `:root {}` wrapper needed (that would create a
+  // descendant selector that never matches).
+
+  // Content area
+  --cui-body-bg: #0f1117;
+  --cui-body-color: #dde3ec;
+  --cui-secondary-bg: #181d2a;
+  --cui-tertiary-bg: #1e2535;
+  --cui-border-color: #2a3144;
+  --cui-border-color-translucent: rgba(74, 85, 104, 0.38);
+
+  // Text hierarchy
+  --cui-secondary-color: #8b98b0;
+  --cui-tertiary-color: #5e6b82;
+  --cui-emphasis-color: #ffffff;
+
+  // Cards / surfaces
+  --cui-card-bg: #181d2a;
+  --cui-card-cap-bg: #1e2535;
+  --cui-card-cap-color: #dde3ec;
+  --cui-card-border-color: #2a3144;
+  --cui-card-color: #dde3ec;
+
+  // Form controls
+  --cui-input-bg: #0f1117;
+  --cui-input-disabled-bg: #181d2a;
+  --cui-input-border-color: #313a50;
+  --cui-input-color: #dde3ec;
+  --cui-input-placeholder-color: #5e6b82;
+  --cui-input-focus-border-color: color-mix(in srgb, var(--base-color, #c84b31) 72%, white 28%);
+  --cui-input-focus-bg: #181d2a;
+  --cui-form-select-bg: #0f1117;
+
+  // Tables
+  --cui-table-bg: transparent;
+  --cui-table-striped-bg: rgba(255, 255, 255, 0.024);
+  --cui-table-hover-bg: rgba(255, 255, 255, 0.048);
+  --cui-table-border-color: #2a3144;
+  --cui-table-color: #dde3ec;
+  --cui-table-striped-color: #dde3ec;
+  --cui-table-hover-color: #dde3ec;
+
+  // Dropdowns
+  --cui-dropdown-bg: #1e2535;
+  --cui-dropdown-border-color: #2a3144;
+  --cui-dropdown-color: #dde3ec;
+  --cui-dropdown-link-color: #dde3ec;
+  --cui-dropdown-link-hover-bg: rgba(255, 255, 255, 0.07);
+  --cui-dropdown-link-hover-color: #ffffff;
+  --cui-dropdown-link-active-bg: var(--base-color, #c84b31);
+  --cui-dropdown-link-active-color: #ffffff;
+  --cui-dropdown-header-color: #8b98b0;
+  --cui-dropdown-divider-bg: #2a3144;
+
+  // Modals
+  --cui-modal-bg: #1e2535;
+  --cui-modal-border-color: #2a3144;
+  --cui-modal-header-bg: #181d2a;
+  --cui-modal-footer-bg: #181d2a;
+  --cui-modal-color: #dde3ec;
+
+  // Pagination
+  --cui-pagination-bg: #181d2a;
+  --cui-pagination-border-color: #2a3144;
+  --cui-pagination-color: #dde3ec;
+  --cui-pagination-hover-bg: rgba(255, 255, 255, 0.07);
+  --cui-pagination-hover-border-color: #2a3144;
+  --cui-pagination-hover-color: #ffffff;
+  --cui-pagination-active-bg: var(--base-color, #c84b31);
+  --cui-pagination-active-border-color: var(--base-color, #c84b31);
+  --cui-pagination-disabled-bg: #181d2a;
+  --cui-pagination-disabled-border-color: #2a3144;
+  --cui-pagination-disabled-color: #5e6b82;
+
+  // List groups
+  --cui-list-group-bg: #181d2a;
+  --cui-list-group-border-color: #2a3144;
+  --cui-list-group-color: #dde3ec;
+  --cui-list-group-action-hover-bg: rgba(255, 255, 255, 0.07);
+  --cui-list-group-action-hover-color: #ffffff;
+
+  // Tooltips / popovers
+  --cui-tooltip-bg: #1e2535;
+  --cui-tooltip-color: #dde3ec;
+  --cui-popover-bg: #1e2535;
+  --cui-popover-border-color: #2a3144;
+  --cui-popover-body-color: #dde3ec;
+  --cui-popover-header-bg: #181d2a;
+  --cui-popover-header-color: #dde3ec;
+
+  // Links use theme accent
+  --cui-link-color: color-mix(in srgb, var(--base-color, #c84b31) 78%, white 22%);
+  --cui-link-hover-color: color-mix(in srgb, var(--base-color, #c84b31) 62%, white 38%);
 
   body {
     background-color: var(--cui-body-bg);
   }
 
+  // Sidebar: keep the dark theme gradient
   .sidebar {
     --cui-sidebar-nav-link-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 82%, var(--base-color, #c84b31) 18%);
     --cui-sidebar-nav-link-hover-color: #ffffff;
@@ -143,9 +237,10 @@ body {
     );
   }
 
+  // Header: keep the dark theme gradient
   .header {
-    --cui-header-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 88%, white 12%);
-    --cui-header-nav-link-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 78%, white 22%);
+    --cui-header-color: #f5f7fb;
+    --cui-header-nav-link-color: rgba(255, 255, 255, 0.88);
     --cui-header-nav-link-hover-color: #ffffff;
     --cui-header-nav-link-active-color: #ffffff;
     --cui-header-toggler-icon-color: #ffffff;
@@ -155,6 +250,11 @@ body {
       color-mix(in srgb, var(--dark-gray, #2e4052) 72%, var(--base-color, #c84b31) 28%) 42%,
       color-mix(in srgb, var(--base-color, #c84b31) 84%, white 16%) 100%
     );
+
+    button.header-toggler,
+    .btn.header-toggler {
+      color: #ffffff !important;
+    }
 
     .nav-link {
       color: #ffffff !important;
@@ -167,6 +267,8 @@ body {
   }
 
   .footer {
-    --cui-footer-bg: var(--cui-body-bg);
+    --cui-footer-bg: var(--cui-secondary-bg);
+    --cui-footer-color: var(--cui-body-color);
+    --cui-footer-border-color: var(--cui-border-color);
   }
 }
