@@ -144,3 +144,27 @@
     color: #0c5460;
   }
 }
+
+@media (max-width: 767.98px) {
+  .dashboard-actions-cell {
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .dashboard-create-box {
+    padding: 0.75rem;
+  }
+
+  .table-responsive .table thead th,
+  .table-responsive .table tbody td {
+    padding: 0.65rem 0.5rem;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .card .card-body {
+    padding: 1rem;
+  }
+}

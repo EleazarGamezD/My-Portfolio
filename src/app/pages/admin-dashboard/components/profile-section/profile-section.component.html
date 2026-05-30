@@ -13,25 +13,37 @@
         <div *ngIf="!contentLoading && profile" class="row g-3">
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Nombre ES</span>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="dashboard-detail-label">Nombre ES</span>
+                        <app-translate-button [fromText]="profile.label!.es || ''" fromLang="es" toLang="en" (translated)="profile.label!.en = $event" />
+                    </div>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.label!.es" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Nombre EN</span>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="dashboard-detail-label">Nombre EN</span>
+                        <app-translate-button [fromText]="profile.label!.en || ''" fromLang="en" toLang="es" (translated)="profile.label!.es = $event" />
+                    </div>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.label!.en" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Titulo ES</span>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="dashboard-detail-label">Titulo ES</span>
+                        <app-translate-button [fromText]="profile.title!.es || ''" fromLang="es" toLang="en" (translated)="profile.title!.en = $event" />
+                    </div>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.title!.es" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Titulo EN</span>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="dashboard-detail-label">Titulo EN</span>
+                        <app-translate-button [fromText]="profile.title!.en || ''" fromLang="en" toLang="es" (translated)="profile.title!.es = $event" />
+                    </div>
                     <input cFormControl sizing="sm" type="text" [(ngModel)]="profile.title!.en" />
                 </div>
             </div>
@@ -61,25 +73,37 @@
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Descripcion ES</span>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="dashboard-detail-label">Descripcion ES</span>
+                        <app-translate-button [fromText]="profile.description!.es || ''" fromLang="es" toLang="en" (translated)="profile.description!.en = $event" />
+                    </div>
                     <textarea cFormControl rows="4" [(ngModel)]="profile.description!.es"></textarea>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Descripcion EN</span>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="dashboard-detail-label">Descripcion EN</span>
+                        <app-translate-button [fromText]="profile.description!.en || ''" fromLang="en" toLang="es" (translated)="profile.description!.es = $event" />
+                    </div>
                     <textarea cFormControl rows="4" [(ngModel)]="profile.description!.en"></textarea>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Acerca de ES</span>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="dashboard-detail-label">Acerca de ES</span>
+                        <app-translate-button [fromText]="profile.metadata!.about!.es || ''" fromLang="es" toLang="en" (translated)="profile.metadata!.about!.en = $event" />
+                    </div>
                     <textarea cFormControl rows="5" [(ngModel)]="profile.metadata!.about!.es"></textarea>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="dashboard-detail-card">
-                    <span class="dashboard-detail-label">Acerca de EN</span>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="dashboard-detail-label">Acerca de EN</span>
+                        <app-translate-button [fromText]="profile.metadata!.about!.en || ''" fromLang="en" toLang="es" (translated)="profile.metadata!.about!.es = $event" />
+                    </div>
                     <textarea cFormControl rows="5" [(ngModel)]="profile.metadata!.about!.en"></textarea>
                 </div>
             </div>
@@ -133,8 +157,9 @@
                                     <app-show-errors
                                       [control]="heroSlideTitleEs.control"
                                       [requiredField]="'titulo en espanol'" />
-                                    <div class="text-body-secondary small mt-1">
-                                      {{ slide.title?.es?.length || 0 }}/{{ heroSlideTitleMaxLength }}
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <span class="text-body-secondary small">{{ slide.title?.es?.length || 0 }}/{{ heroSlideTitleMaxLength }}</span>
+                                        <app-translate-button [fromText]="slide.title!.es || ''" fromLang="es" toLang="en" (translated)="slide.title!.en = $event" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -152,8 +177,9 @@
                                     <app-show-errors
                                       [control]="heroSlideTitleEn.control"
                                       [requiredField]="'titulo en ingles'" />
-                                    <div class="text-body-secondary small mt-1">
-                                      {{ slide.title?.en?.length || 0 }}/{{ heroSlideTitleMaxLength }}
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <span class="text-body-secondary small">{{ slide.title?.en?.length || 0 }}/{{ heroSlideTitleMaxLength }}</span>
+                                        <app-translate-button [fromText]="slide.title!.en || ''" fromLang="en" toLang="es" (translated)="slide.title!.es = $event" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -170,8 +196,9 @@
                                     <app-show-errors
                                       [control]="heroSlideDescriptionEs.control"
                                       [requiredField]="'texto en espanol'" />
-                                    <div class="text-body-secondary small mt-1">
-                                      {{ slide.description?.es?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <span class="text-body-secondary small">{{ slide.description?.es?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}</span>
+                                        <app-translate-button [fromText]="slide.description!.es || ''" fromLang="es" toLang="en" (translated)="slide.description!.en = $event" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -188,8 +215,9 @@
                                     <app-show-errors
                                       [control]="heroSlideDescriptionEn.control"
                                       [requiredField]="'texto en ingles'" />
-                                    <div class="text-body-secondary small mt-1">
-                                      {{ slide.description?.en?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <span class="text-body-secondary small">{{ slide.description?.en?.length || 0 }}/{{ heroSlideDescriptionMaxLength }}</span>
+                                        <app-translate-button [fromText]="slide.description!.en || ''" fromLang="en" toLang="es" (translated)="slide.description!.es = $event" />
                                     </div>
                                 </div>
                             </div>

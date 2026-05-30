@@ -8,7 +8,8 @@ export type AdminSection =
   | 'testimonials'
   | 'resumes'
   | 'socialLinks'
-  | 'users';
+  | 'users'
+  | 'themes';
 
 export const ADMIN_SECTIONS: Array<{ key: AdminSection; label: string; icon: string }> = [
   { key: 'overview', label: 'Resumen', icon: 'cilSpeedometer' },
@@ -21,6 +22,7 @@ export const ADMIN_SECTIONS: Array<{ key: AdminSection; label: string; icon: str
   { key: 'resumes', label: 'Hojas de vida', icon: 'cilCloudDownload' },
   { key: 'socialLinks', label: 'Redes sociales', icon: 'cilShareBoxed' },
   { key: 'users', label: 'Usuarios', icon: 'cilPeople' },
+  { key: 'themes', label: 'Temas', icon: 'cilPaint' },
 ];
 
 export function isAdminSection(value: string | null | undefined): value is AdminSection {

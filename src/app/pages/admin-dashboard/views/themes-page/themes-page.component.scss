@@ -1,0 +1,72 @@
+@use '../admin-page.shared' as page;
+
+.themes-create-box {
+  max-width: 700px;
+}
+
+.themes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.themes-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  overflow: hidden;
+  border-radius: 1rem;
+  min-height: 100px;
+
+  &--active {
+    box-shadow: 0 0 0 2px var(--base-color, #2946f3), 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.themes-card__swatch {
+  width: 72px;
+  min-height: 100%;
+  flex-shrink: 0;
+}
+
+.themes-card__body {
+  flex: 1;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.themes-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.themes-card__name {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.themes-card__hex {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-family: monospace;
+}
+
+.themes-card__badges {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.themes-card__actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.themes-edit-row {
+  width: 100%;
+}

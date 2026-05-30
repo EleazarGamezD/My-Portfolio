@@ -1,0 +1,110 @@
+<section>
+  <div class="admin-page-header">
+    <div>
+      <p class="admin-page-kicker">Apariencia</p>
+      <h2 class="admin-page-title">Temas de color</h2>
+      <p class="admin-page-copy mb-0">Gestiona la paleta de colores del portfolio público. El tema activo se aplica automáticamente.</p>
+    </div>
+    <button cButton color="primary" type="button" (click)="showCreateForm = !showCreateForm">
+      + Nuevo tema
+    </button>
+  </div>
+
+  @if (showCreateForm) {
+    <div class="admin-page-surface p-3 mb-4 themes-create-box">
+      <h5 class="mb-3">Crear nuevo tema</h5>
+      <div class="row g-3 align-items-end">
+        <div class="col-12 col-sm-5">
+          <label class="form-label">Nombre</label>
+          <input class="form-control" [(ngModel)]="newThemeName" placeholder="Ej: Azul Eléctrico" />
+        </div>
+        <div class="col-12 col-sm-4">
+          <label class="form-label">Color base</label>
+          <div class="d-flex gap-2 align-items-center">
+            <input type="color" class="form-control form-control-color" [(ngModel)]="newThemeColor" />
+            <input class="form-control" [(ngModel)]="newThemeColor" placeholder="#2946f3" />
+          </div>
+        </div>
+        <div class="col-12 col-sm-3">
+          <div class="d-flex gap-2">
+            <button cButton color="primary" type="button" [disabled]="actionLoadingId === 'create'" (click)="createTheme()">
+              @if (actionLoadingId === 'create') {
+                <c-spinner size="sm" class="me-1" />
+              }
+              Crear
+            </button>
+            <button cButton color="secondary" variant="outline" type="button" (click)="showCreateForm = false">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (loading) {
+    <div class="d-flex justify-content-center py-5">
+      <c-spinner />
+    </div>
+  } @else {
+    <div class="themes-grid">
+      @for (theme of themes; track theme._id) {
+        <div class="admin-page-surface themes-card" [class.themes-card--active]="theme.active">
+          <div class="themes-card__swatch" [style.background]="theme.colors.baseColor"></div>
+          <div class="themes-card__body">
+            @if (editingId === theme._id) {
+              <div class="themes-edit-row">
+                <input class="form-control form-control-sm mb-2" [(ngModel)]="editName" placeholder="Nombre" />
+                <div class="d-flex gap-2 align-items-center mb-2">
+                  <input type="color" class="form-control form-control-color form-control-sm" [(ngModel)]="editColor" />
+                  <input class="form-control form-control-sm" [(ngModel)]="editColor" placeholder="#000000" />
+                </div>
+                <div class="d-flex gap-2">
+                  <button cButton color="primary" size="sm" type="button" [disabled]="actionLoadingId === theme._id" (click)="saveEdit(theme)">
+                    @if (actionLoadingId === theme._id) {
+                      <c-spinner size="sm" class="me-1" />
+                    }
+                    Guardar
+                  </button>
+                  <button cButton color="secondary" variant="outline" size="sm" type="button" (click)="cancelEdit()">Cancelar</button>
+                </div>
+              </div>
+            } @else {
+              <div class="themes-card__info">
+                <span class="themes-card__name">{{ theme.name }}</span>
+                <span class="themes-card__hex">{{ theme.colors.baseColor }}</span>
+              </div>
+              <div class="themes-card__badges">
+                @if (theme.active) {
+                  <c-badge color="success">Activo</c-badge>
+                }
+              </div>
+              <div class="themes-card__actions">
+                @if (!theme.active) {
+                  <button cButton color="success" variant="outline" size="sm" type="button" [disabled]="!!actionLoadingId" (click)="activateTheme(theme)">
+                    @if (actionLoadingId === theme._id) {
+                      <c-spinner size="sm" class="me-1" />
+                    }
+                    Activar
+                  </button>
+                }
+                <button cButton color="secondary" variant="outline" size="sm" type="button" [disabled]="!!actionLoadingId" (click)="startEdit(theme)">
+                  Editar
+                </button>
+                @if (!theme.active) {
+                  <button cButton color="danger" variant="outline" size="sm" type="button" [disabled]="!!actionLoadingId" (click)="deleteTheme(theme)">
+                    Eliminar
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (themes.length === 0) {
+        <p class="text-muted">No hay temas. Crea el primero.</p>
+      }
+    </div>
+  }
+</section>

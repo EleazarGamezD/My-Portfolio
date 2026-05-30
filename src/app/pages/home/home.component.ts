@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private readonly storageService: StorageService,
     private readonly requestStateService: RequestStateService,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.storageService.setStorage(NgStorage.LOADER, true);
@@ -149,6 +149,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  private readonly viewportStabilityMaxWaitMs = 5000;
+
   private waitForViewportStability(): Promise<void> {
     if (typeof window === 'undefined' || typeof MutationObserver === 'undefined') {
       return Promise.resolve();
@@ -158,6 +160,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       let resolved = false;
       let quietTimerId: ReturnType<typeof setTimeout> | null = null;
 
+      // Safety net: always resolve after max wait to prevent infinite hang
+      // caused by continuous DOM mutations (animations, sliders, particles, etc.)
+      const maxTimerId = setTimeout(() => finish(), this.viewportStabilityMaxWaitMs);
+
       const finish = () => {
         if (resolved) {
           return;
@@ -165,6 +171,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
         resolved = true;
         observer.disconnect();
+        clearTimeout(maxTimerId);
 
         if (quietTimerId) {
           clearTimeout(quietTimerId);
@@ -189,11 +196,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       };
 
       const observer = new MutationObserver(() => {
-        if (!this.hasPendingViewportImages()) {
-          scheduleQuietWindow();
-          return;
-        }
-
         scheduleQuietWindow();
       });
 

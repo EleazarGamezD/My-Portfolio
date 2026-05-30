@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, race, timer } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 
 @Injectable({
@@ -22,11 +22,16 @@ export class RequestStateService {
     this.pendingRequestsSubject.next(Math.max(0, this.pendingRequests - 1));
   }
 
-  async waitForIdle(): Promise<void> {
+  async waitForIdle(timeoutMs = 5000): Promise<void> {
     if (this.pendingRequests === 0) {
       return;
     }
 
-    await firstValueFrom(this.pendingRequests$.pipe(filter((pendingRequests) => pendingRequests === 0)));
+    await firstValueFrom(
+      race(
+        this.pendingRequests$.pipe(filter((n) => n === 0)),
+        timer(timeoutMs),
+      ),
+    );
   }
 }

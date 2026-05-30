@@ -6,6 +6,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { adminIconSubset } from '@core/icons/admin-icon-subset';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { ThemeService } from '@core/services/theme/theme.service';
 import { StorageService } from '@core/services/storage/storage.service';
 import { IconSetService } from '@coreui/icons-angular';
 import { filter } from 'rxjs/operators';
@@ -26,12 +27,15 @@ export class AppComponent implements OnInit {
     private readonly storageService: StorageService,
     private iconSetService: IconSetService,
     private readonly destroyRef: DestroyRef,
+    private readonly themeService: ThemeService,
     @Inject(DOCUMENT) private document: Document,
   ) {
     this.iconSetService.icons = { ...adminIconSubset };
   }
 
   ngOnInit(): void {
+    void this.themeService.loadAndApplyActiveTheme();
+
     this.meta.addTag({ name: 'author', content: 'Eleazar Gamez' });
     this.i18nService.syncLanguageFromUrl(this.router.url);
     this.updateSeo(this.router.url);

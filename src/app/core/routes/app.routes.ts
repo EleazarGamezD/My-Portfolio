@@ -246,6 +246,14 @@ export const routes: Routes = [
               (m) => m.AdminUsersPageComponent,
             ),
       },
+      {
+        path: 'dashboard/themes',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/themes-page/themes-page.component')
+            .then(
+              (m) => m.AdminThemesPageComponent,
+            ),
+      },
     ],
   },
   {

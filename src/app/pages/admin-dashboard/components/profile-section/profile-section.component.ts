@@ -12,11 +12,12 @@ import {
 } from '@coreui/angular';
 import { PhotoEditorComponent } from '../shared/photo-editor/photo-editor.component';
 import { ShowErrorsComponent } from '../shared/show-errors/show-errors.component';
+import { TranslateButtonComponent } from '../shared/translate-button/translate-button.component';
 
 @Component({
     selector: 'app-admin-profile-section',
     standalone: true,
-    imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, PhotoEditorComponent, ShowErrorsComponent],
+    imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, PhotoEditorComponent, ShowErrorsComponent, TranslateButtonComponent],
     templateUrl: './profile-section.component.html',
     styleUrl: './profile-section.component.scss',
 })
