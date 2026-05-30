@@ -17,7 +17,11 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 0.9rem;
-  background: linear-gradient(135deg, #38bdf8, #2563eb);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 70%, var(--base-color, #c84b31) 30%),
+    var(--base-color, #c84b31)
+  );
   color: #eff6ff;
   font-weight: 700;
   letter-spacing: 0.08em;

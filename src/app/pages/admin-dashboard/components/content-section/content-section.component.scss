@@ -10,14 +10,14 @@
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid rgba(37, 99, 235, 0.16);
+  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent 82%);
   border-radius: 999px;
-  background: rgba(239, 246, 255, 0.8);
-  color: #2563eb;
+  background: color-mix(in srgb, white 72%, var(--base-color, #c84b31) 28%);
+  color: color-mix(in srgb, var(--dark-gray, #2e4052) 68%, var(--base-color, #c84b31) 32%);
   font-size: 1.1rem;
 }
 
 .social-links-name {
-  color: #0f172a;
+  color: var(--dark-gray, #2e4052);
   font-weight: 600;
 }

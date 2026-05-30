@@ -7,16 +7,16 @@
 
 .dashboard-detail-card {
   height: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
   border-radius: 12px;
   padding: 1rem 1.1rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: color-mix(in srgb, white 88%, var(--very-light-gray, #ecf0f1) 12%);
 }
 
 .dashboard-detail-label {
   display: block;
   margin-bottom: 0.35rem;
-  color: #6b7683;
+  color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 86%, var(--dark-gray, #2e4052) 14%);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -24,10 +24,15 @@
 }
 
 .dashboard-create-box {
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent 82%);
   border-radius: 12px;
   padding: 1rem;
-  background: rgba(247, 250, 252, 0.92);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, white 72%, var(--very-light-gray, #ecf0f1) 28%),
+      color-mix(in srgb, white 84%, var(--base-color, #c84b31) 16%)
+    );
 }
 
 .dashboard-actions-cell {
@@ -56,7 +61,7 @@
     padding: 1.5rem;
 
     .card-title {
-      color: #333;
+      color: var(--dark-gray, #2e4052);
       font-weight: 600;
       margin-bottom: 1rem;
       font-size: 0.9rem;
@@ -65,7 +70,7 @@
     }
 
     .card-text {
-      color: #0066cc;
+      color: var(--base-color, #c84b31);
       font-weight: 700;
       margin: 0;
     }
@@ -84,7 +89,7 @@
 
       th {
         border: none;
-        color: #666;
+        color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 84%, var(--dark-gray, #2e4052) 16%);
         font-weight: 600;
         padding: 1rem;
         font-size: 0.85rem;
@@ -102,7 +107,7 @@
         td {
           border: none;
           padding: 1rem;
-          color: #333;
+          color: var(--dark-gray, #2e4052);
           vertical-align: middle;
         }
       }

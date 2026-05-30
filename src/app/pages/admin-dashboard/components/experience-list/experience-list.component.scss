@@ -17,7 +17,11 @@
   gap: 0.5rem;
   padding: 0.9rem 1.4rem;
   background:
-    linear-gradient(135deg, #0e5f8d, #0c6ca2),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--dark-gray, #2e4052) 72%, var(--base-color, #c84b31) 28%),
+      var(--base-color, #c84b31)
+    ),
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 48%);
   color: #fff;
   border: none;
@@ -25,7 +29,7 @@
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 14px 28px rgba(12, 108, 162, 0.18);
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--base-color, #c84b31) 24%, transparent 76%);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -33,25 +37,25 @@
 
 .btn-create:hover {
   transform: translateY(-1px);
-  box-shadow: 0 18px 32px rgba(12, 108, 162, 0.24);
+  box-shadow: 0 18px 32px color-mix(in srgb, var(--base-color, #c84b31) 32%, transparent 68%);
 }
 
 .experience-surface {
-  border: 1px solid rgba(172, 191, 206, 0.34);
+  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 12%, transparent 88%);
   border-radius: 1.5rem;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 253, 0.98)),
-    radial-gradient(circle at top left, rgba(18, 88, 129, 0.06), transparent 40%);
-  box-shadow: 0 24px 60px rgba(88, 109, 124, 0.1);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), color-mix(in srgb, white 84%, var(--very-light-gray, #ecf0f1) 16%)),
+    radial-gradient(circle at top left, color-mix(in srgb, var(--base-color, #c84b31) 10%, transparent 90%), transparent 40%);
+  box-shadow: 0 24px 60px color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
   overflow: hidden;
 }
 
 .reorder-banner {
   padding: 0.9rem 1.1rem;
-  background: rgba(223, 240, 248, 0.9);
-  color: #0e5f8d;
+  background: color-mix(in srgb, white 72%, var(--base-color, #c84b31) 28%);
+  color: color-mix(in srgb, var(--dark-gray, #2e4052) 72%, var(--base-color, #c84b31) 28%);
   font-weight: 700;
-  border-bottom: 1px solid rgba(197, 212, 223, 0.7);
+  border-bottom: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent 82%);
 }
 
 .table-responsive {
@@ -65,10 +69,10 @@ table {
 }
 
 thead th {
-  background: rgba(235, 243, 248, 0.86);
-  color: #0c5b86;
+  background: color-mix(in srgb, white 76%, var(--very-light-gray, #ecf0f1) 24%);
+  color: color-mix(in srgb, var(--dark-gray, #2e4052) 72%, var(--base-color, #c84b31) 28%);
   font-weight: 700;
-  border-bottom: 1px solid rgba(197, 212, 223, 0.7);
+  border-bottom: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
   padding: 1rem 1.1rem;
   text-align: left;
   white-space: nowrap;
@@ -79,7 +83,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: rgba(245, 249, 252, 0.92);
+  background: color-mix(in srgb, white 82%, var(--very-light-gray, #ecf0f1) 18%);
 }
 
 tbody td {
@@ -109,10 +113,10 @@ tbody td {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(188, 205, 216, 0.84);
+  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent 82%);
   border-radius: 0.85rem;
-  background: #f6fafc;
-  color: #0e5f8d;
+  background: color-mix(in srgb, white 86%, var(--very-light-gray, #ecf0f1) 14%);
+  color: color-mix(in srgb, var(--dark-gray, #2e4052) 68%, var(--base-color, #c84b31) 32%);
   cursor: grab;
 }
 
@@ -132,21 +136,21 @@ tbody td {
   min-width: 2rem;
   height: 2rem;
   border-radius: 999px;
-  background: #eef5f9;
-  color: #0e5f8d;
+  background: color-mix(in srgb, white 68%, var(--base-color, #c84b31) 32%);
+  color: color-mix(in srgb, var(--dark-gray, #2e4052) 70%, var(--base-color, #c84b31) 30%);
   font-weight: 700;
 }
 
 .experience-title {
   min-width: 16rem;
   font-weight: 700;
-  color: #17202a;
+  color: var(--dark-gray, #2e4052);
   line-height: 1.35;
 }
 
 .experience-period {
   min-width: 10rem;
-  color: #243645;
+  color: color-mix(in srgb, var(--dark-gray, #2e4052) 78%, var(--medium-gray, #7f8c8d) 22%);
   font-weight: 700;
   white-space: nowrap;
 }
@@ -155,7 +159,7 @@ tbody td {
   width: 100%;
   min-width: 24rem;
   max-width: 40rem;
-  color: #334155;
+  color: color-mix(in srgb, var(--dark-gray, #2e4052) 78%, var(--medium-gray, #7f8c8d) 22%);
 }
 
 .empty-state {

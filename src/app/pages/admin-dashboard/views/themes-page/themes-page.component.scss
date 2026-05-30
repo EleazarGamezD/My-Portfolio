@@ -9,7 +9,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #64748b;
+  color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 78%, var(--dark-gray, #2e4052) 22%);
 }
 
 .themes-grid {
@@ -53,13 +53,13 @@
 
 .themes-card__name {
   font-weight: 600;
-  color: #0f172a;
+  color: var(--dark-gray, #2e4052);
   font-size: 0.95rem;
 }
 
 .themes-card__hex {
   font-size: 0.78rem;
-  color: #64748b;
+  color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 78%, var(--dark-gray, #2e4052) 22%);
   font-family: monospace;
 }
 

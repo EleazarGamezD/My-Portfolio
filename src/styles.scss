@@ -19,6 +19,41 @@ body.admin-route-active section {
 // which makes hover backgrounds white and causes invisible text on CMS buttons.
 // We restore the proper CoreUI CSS-variable-driven hover behavior here.
 body.admin-route-active {
+  .btn-primary,
+  .btn[class*='btn-primary'] {
+    --cui-btn-bg: var(--base-color, #c84b31);
+    --cui-btn-border-color: var(--base-color, #c84b31);
+    --cui-btn-hover-bg: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
+    --cui-btn-hover-border-color: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
+    --cui-btn-active-bg: color-mix(in srgb, var(--base-color, #c84b31) 76%, black 24%);
+    --cui-btn-active-border-color: color-mix(in srgb, var(--base-color, #c84b31) 76%, black 24%);
+    --cui-btn-color: #fff;
+    --cui-btn-hover-color: #fff;
+    --cui-btn-active-color: #fff;
+  }
+
+  .btn-outline-primary,
+  .btn[class*='btn-outline-primary'] {
+    --cui-btn-color: var(--base-color, #c84b31);
+    --cui-btn-border-color: color-mix(in srgb, var(--base-color, #c84b31) 58%, transparent 42%);
+    --cui-btn-hover-bg: var(--base-color, #c84b31);
+    --cui-btn-hover-border-color: var(--base-color, #c84b31);
+    --cui-btn-active-bg: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
+    --cui-btn-active-border-color: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
+    --cui-btn-hover-color: #fff;
+    --cui-btn-active-color: #fff;
+  }
+
+  .text-primary {
+    color: var(--base-color, #c84b31) !important;
+  }
+
+  .bg-primary,
+  .badge.bg-primary {
+    background-color: var(--base-color, #c84b31) !important;
+    border-color: var(--base-color, #c84b31) !important;
+  }
+
   .btn:hover:not(:disabled),
   .btn:focus-visible:not(:disabled) {
     background-color: var(--cui-btn-hover-bg, var(--bs-btn-hover-bg)) !important;
