@@ -8,6 +8,7 @@ import { AdminPortfolioMediaSectionComponent } from '@pages/admin-dashboard/comp
   standalone: true,
   imports: [CommonModule, AdminPortfolioMediaSectionComponent],
   templateUrl: './portfolio-media-page.component.html',
+  styleUrls: ['./portfolio-media-page.component.scss'],
 })
 export class AdminPortfolioMediaPageComponent implements OnInit {
   constructor(
