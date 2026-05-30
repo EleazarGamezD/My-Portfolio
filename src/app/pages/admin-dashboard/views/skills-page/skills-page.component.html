@@ -1,10 +1,6 @@
 <section>
-  <app-skills-list
-    [skills]="skills"
-    [loading]="loading"
-    [deletingSkillId]="deletingSkillId"
-    [pagination]="pagination"
-    (pageChange)="changePage($event)"
-    (deleteSkill)="deleteSkill($event)">
-  </app-skills-list>
+  <div class="base-shell">
+    <app-skills-list [skills]="skills" [loading]="loading" [deletingSkillId]="deletingSkillId" [pagination]="pagination" (pageChange)="changePage($event)" (deleteSkill)="deleteSkill($event)">
+    </app-skills-list>
+  </div>
 </section>

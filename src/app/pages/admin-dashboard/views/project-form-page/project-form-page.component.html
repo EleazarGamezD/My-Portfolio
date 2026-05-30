@@ -1,246 +1,177 @@
 <section>
+  <div class="base-shell">
     <div class="admin-page-header">
-        <div>
-            <p class="admin-page-kicker">Flujo de proyectos</p>
-            <h2 class="admin-page-title">{{ pageTitle }}</h2>
-            <p class="admin-page-copy mb-0">{{ pageCopy }}</p>
-        </div>
-        <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/projects']">Volver al listado</a>
+      <div>
+        <p class="admin-page-kicker">Flujo de proyectos</p>
+        <h2 class="admin-page-title">{{ pageTitle }}</h2>
+        <p class="admin-page-copy mb-0">{{ pageCopy }}</p>
+      </div>
+      <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/projects']">Volver al listado</a>
     </div>
 
     <c-alert *ngIf="facade.contentError" color="danger">{{ facade.contentError }}</c-alert>
     <c-alert *ngIf="notFound" color="warning">No se encontro el proyecto solicitado.</c-alert>
 
     <c-card class="admin-page-surface" *ngIf="!notFound">
-        <c-card-body>
-            <div class="project-form">
-                <section>
-                    <div class="project-form__section">
-                        <div class="project-form__section-head">
-                            <h3>Contenido base</h3>
-                            <p>Identidad principal del proyecto en ambos idiomas. El slug se genera automaticamente.</p>
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Titulo en espanol</label>
-                                <input cFormControl type="text" [(ngModel)]="draft.title!.es" />
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Titulo en ingles</label>
-                                <input cFormControl type="text" [(ngModel)]="draft.title!.en" />
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Resumen en espanol</label>
-                                <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.es"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Resumen en ingles</label>
-                                <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.en"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Descripcion en espanol</label>
-                                <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Descripcion en ingles</label>
-                                <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <div class="project-form__section">
-                        <div class="project-form__section-head">
-                            <h3>Imagenes</h3>
-                            <p>Portada y galeria del proyecto.</p>
-                        </div>
-                        <div class="row g-4">
-                            <div class="col-lg-6">
-                                <label class="form-label">Imagen de portada</label>
-                                <ng-container *ngIf="mode === 'create'; else editCover">
-                                    <app-add-photo
-                                      [storageKey]="coverStorageKey"
-                                      [maxPhotos]="1"
-                                      [maxMb]="5"
-                                      [title]="'Portada del proyecto'"
-                                      [subTitle]="'Selecciona la portada del proyecto'"
-                                      [label]="'Seleccionar portada'"
-                                      [hint]="'Arrastra o selecciona una imagen'"
-                                      [urlsPreviews]="coverPreviewUrls"
-                                      (assetsChange)="onCoverAssetsChange($event)"
-                                      (uploadError)="onUploadError($event)">
-                                    </app-add-photo>
-                                </ng-container>
-                                <ng-template #editCover>
-                                    <app-photo-editor
-                                      [assets]="coverAssets"
-                                      [maxPhotos]="1"
-                                      [variant]="'single'"
-                                      [title]="'Portada del proyecto'"
-                                      [subTitle]="'Portada actual del proyecto.'"
-                                      [emptyLabel]="'Agregar portada'"
-                                      [addButtonLabel]="'Agregar'"
-                                      [changeButtonLabel]="'Cambiar'"
-                                      [removeButtonLabel]="'Eliminar'"
-                                      (assetsChange)="onCoverAssetsChange($event)"
-                                      (uploadError)="onUploadError($event)"></app-photo-editor>
-                                </ng-template>
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label">Galeria</label>
-                                <ng-container *ngIf="mode === 'create'; else editGallery">
-                                    <app-add-photo
-                                      [storageKey]="galleryStorageKey"
-                                      [maxPhotos]="8"
-                                      [maxMb]="5"
-                                      [title]="'Galeria del proyecto'"
-                                      [subTitle]="'Agrega las imágenes del proyecto'"
-                                      [label]="'Agregar imagenes'"
-                                      [hint]="'Arrastra o selecciona imágenes'"
-                                      [urlsPreviews]="galleryPreviewUrls"
-                                      (assetsChange)="onGalleryAssetsChange($event)"
-                                      (uploadError)="onUploadError($event)">
-                                    </app-add-photo>
-                                </ng-container>
-                                <ng-template #editGallery>
-                                    <app-photo-editor
-                                      [assets]="galleryAssets"
-                                      [maxPhotos]="8"
-                                      [variant]="'gallery'"
-                                      [title]="'Galeria del proyecto'"
-                                      [subTitle]="'Administra la galeria existente con acciones directas.'"
-                                      [emptyLabel]="'Agregar imagen a la galeria'"
-                                      [addButtonLabel]="'Agregar'"
-                                      [changeButtonLabel]="'Cambiar'"
-                                      [removeButtonLabel]="'Eliminar'"
-                                      (assetsChange)="onGalleryAssetsChange($event)"
-                                      (uploadError)="onUploadError($event)"></app-photo-editor>
-                                </ng-template>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <div class="project-form__section">
-                        <div class="project-form__section-head">
-                            <h3>Publicacion</h3>
-                            <p>Skills relacionadas, skill principal, enlaces y estado de publicacion.</p>
-                        </div>
-                        <div class="row g-3">
-                        <div class="col-12">
-                            <div class="project-skills-panel">
-                                <div class="project-skills-panel__header">
-                                    <div>
-                                        <label class="form-label mb-1">Skills del proyecto</label>
-                                        <p class="project-skills-panel__copy mb-0">
-                                            Selecciona skills existentes y marca una como principal.
-                                        </p>
-                                    </div>
-
-                                    <button
-                                      cButton
-                                      color="secondary"
-                                      variant="outline"
-                                      type="button"
-                                      (click)="toggleSkillsLibrary()">
-                                        {{ showSkillsLibrary ? 'Ocultar gestor de skills' : 'Administrar skills' }}
-                                    </button>
-                                </div>
-
-                                <div class="project-skills-grid" *ngIf="availableSkills.length > 0; else noSkillsState">
-                                    <div
-                                      class="project-skill-card"
-                                      *ngFor="let skill of availableSkills"
-                                      [class.is-selected]="skill._id && isSkillSelected(skill._id)"
-                                      [class.is-primary]="skill._id && isPrimarySkill(skill._id)"
-                                      role="button"
-                                      tabindex="0"
-                                      (click)="skill._id && toggleSkillSelection(skill._id)">
-                                        <div class="project-skill-card__icon">
-                                            <ng-container *ngIf="getSkillIconUrl(skill) as iconUrl; else skillFallbackIcon">
-                                                <img [src]="iconUrl" [alt]="getSkillLabel(skill)" />
-                                            </ng-container>
-                                            <ng-template #skillFallbackIcon>
-                                                <span>{{ getSkillLabel(skill).charAt(0) || '?' }}</span>
-                                            </ng-template>
-                                        </div>
-
-                                        <div class="project-skill-card__body">
-                                            <strong>{{ getSkillLabel(skill) || 'Skill' }}</strong>
-                                            <span *ngIf="skill._id && isPrimarySkill(skill._id)">Skill principal</span>
-                                        </div>
-
-                                        <div class="project-skill-card__actions" *ngIf="skill._id && isSkillSelected(skill._id)">
-                                            <button
-                                              type="button"
-                                              class="project-skill-card__primary"
-                                              [class.is-active]="isPrimarySkill(skill._id)"
-                                              (click)="$event.stopPropagation(); setPrimarySkill(skill._id)">
-                                                Principal
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <ng-template #noSkillsState>
-                                    <div class="project-skills-empty">
-                                        <p class="mb-0">No hay skills creadas todavia. Abre el gestor y crea la primera.</p>
-                                    </div>
-                                </ng-template>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Enlace del proyecto</label>
-                            <input cFormControl type="text" [(ngModel)]="draft.projectLink" />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Enlace al codigo</label>
-                            <input cFormControl type="text" [(ngModel)]="draft.codeLink" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Estado</label>
-                            <input cFormControl type="text" [(ngModel)]="draft.status" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Fecha de publicacion</label>
-                            <input cFormControl type="date" [(ngModel)]="draft.publishedAt" />
-                        </div>
-                        <div class="col-md-3 d-flex align-items-end">
-                            <label class="project-form__check">
-                                <input cFormCheckInput type="checkbox" [(ngModel)]="draft.featured" />
-                                Destacado
-                            </label>
-                        </div>
-                        <div class="col-12" *ngIf="showSkillsLibrary">
-                            <app-admin-skills-section
-                              [sectionTitle]="'Biblioteca de skills'"
-                              [createTitle]="'Crear skill'"
-                              [emptyMessage]="'No se encontraron skills.'"
-                              [skills]="facade.techSkills"
-                              [draft]="facade.newContentItems.techSkills"
-                              [contentLoading]="facade.contentLoading"
-                              [actionLoadingKey]="facade.actionLoadingKey"
-                              (createSkill)="facade.createContentItem('techSkills')"
-                              (saveSkill)="facade.saveContentItem('techSkills', $event)"
-                              (deleteSkill)="facade.deleteContentItem('techSkills', $event)"
-                              (draftIconAssetsChange)="facade.onTechSkillDraftIconAssetsChange($event)"
-                              (skillIconAssetsChange)="facade.onTechSkillIconAssetsChange($event.skill, $event.assets)"
-                              (imageUploadError)="facade.onImageUploadError($event)">
-                            </app-admin-skills-section>
-                        </div>
-                        </div>
-                    </div>
-                </section>
+      <c-card-body>
+        <div class="project-form">
+          <section>
+            <div class="project-form__section">
+              <div class="project-form__section-head">
+                <h3>Contenido base</h3>
+                <p>Identidad principal del proyecto en ambos idiomas. El slug se genera automaticamente.</p>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Titulo en espanol</label>
+                  <input cFormControl type="text" [(ngModel)]="draft.title!.es" aria-label="Titulo en espanol" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Titulo en ingles</label>
+                  <input cFormControl type="text" [(ngModel)]="draft.title!.en" aria-label="Titulo en ingles" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Resumen en espanol</label>
+                  <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.es" aria-label="Resumen en espanol"></textarea>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Resumen en ingles</label>
+                  <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.en" aria-label="Resumen en ingles"></textarea>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Descripcion en espanol</label>
+                  <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es" aria-label="Descripcion en espanol"></textarea>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Descripcion en ingles</label>
+                  <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en" aria-label="Descripcion en ingles"></textarea>
+                </div>
+              </div>
             </div>
+          </section>
 
-            <div class="project-form__footer">
-                <button cButton color="secondary" variant="outline" type="button" (click)="cancel()">Cancelar</button>
-                <button cButton color="primary" type="button" (click)="submit()" [disabled]="facade.actionLoadingKey !== null">
-                    {{ mode === 'create' ? 'Crear proyecto' : 'Guardar cambios' }}
-                </button>
+          <section>
+            <div class="project-form__section">
+              <div class="project-form__section-head">
+                <h3>Imagenes</h3>
+                <p>Portada y galeria del proyecto.</p>
+              </div>
+              <div class="row g-4">
+                <div class="col-lg-6">
+                  <label class="form-label">Imagen de portada</label>
+                  <ng-container *ngIf="mode === 'create'; else editCover">
+                    <app-add-photo [storageKey]="coverStorageKey" [maxPhotos]="1" [maxMb]="5" [title]="'Portada del proyecto'" [subTitle]="'Selecciona la portada del proyecto'" [label]="'Seleccionar portada'" [hint]="'Arrastra o selecciona una imagen'" [urlsPreviews]="coverPreviewUrls" (assetsChange)="onCoverAssetsChange($event)" (uploadError)="onUploadError($event)">
+                    </app-add-photo>
+                  </ng-container>
+                  <ng-template #editCover>
+                    <app-photo-editor [assets]="coverAssets" [maxPhotos]="1" [variant]="'single'" [title]="'Portada del proyecto'" [subTitle]="'Portada actual del proyecto.'" [emptyLabel]="'Agregar portada'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Eliminar'" (assetsChange)="onCoverAssetsChange($event)" (uploadError)="onUploadError($event)"></app-photo-editor>
+                  </ng-template>
+                </div>
+                <div class="col-lg-6">
+                  <label class="form-label">Galeria</label>
+                  <ng-container *ngIf="mode === 'create'; else editGallery">
+                    <app-add-photo [storageKey]="galleryStorageKey" [maxPhotos]="8" [maxMb]="5" [title]="'Galeria del proyecto'" [subTitle]="'Agrega las imágenes del proyecto'" [label]="'Agregar imagenes'" [hint]="'Arrastra o selecciona imágenes'" [urlsPreviews]="galleryPreviewUrls" (assetsChange)="onGalleryAssetsChange($event)" (uploadError)="onUploadError($event)">
+                    </app-add-photo>
+                  </ng-container>
+                  <ng-template #editGallery>
+                    <app-photo-editor [assets]="galleryAssets" [maxPhotos]="8" [variant]="'gallery'" [title]="'Galeria del proyecto'" [subTitle]="'Administra la galeria existente con acciones directas.'" [emptyLabel]="'Agregar imagen a la galeria'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Eliminar'" (assetsChange)="onGalleryAssetsChange($event)" (uploadError)="onUploadError($event)"></app-photo-editor>
+                  </ng-template>
+                </div>
+              </div>
             </div>
-        </c-card-body>
+          </section>
+
+          <section>
+            <div class="project-form__section">
+              <div class="project-form__section-head">
+                <h3>Publicacion</h3>
+                <p>Skills relacionadas, skill principal, enlaces y estado de publicacion.</p>
+              </div>
+              <div class="row g-3">
+                <div class="col-12">
+                  <div class="project-skills-panel">
+                    <div class="project-skills-panel__header">
+                      <div>
+                        <label class="form-label mb-1">Skills del proyecto</label>
+                        <p class="project-skills-panel__copy mb-0">
+                          Selecciona skills existentes y marca una como principal.
+                        </p>
+                      </div>
+
+                      <button cButton color="secondary" variant="outline" type="button" (click)="toggleSkillsLibrary()">
+                        {{ showSkillsLibrary ? 'Ocultar gestor de skills' : 'Administrar skills' }}
+                      </button>
+                    </div>
+
+                    <div class="project-skills-grid" *ngIf="availableSkills.length > 0; else noSkillsState">
+                      <div class="project-skill-card" *ngFor="let skill of availableSkills" [class.is-selected]="skill._id && isSkillSelected(skill._id)" [class.is-primary]="skill._id && isPrimarySkill(skill._id)" role="button" tabindex="0" (click)="skill._id && toggleSkillSelection(skill._id)">
+                        <div class="project-skill-card__icon">
+                          <ng-container *ngIf="getSkillIconUrl(skill) as iconUrl; else skillFallbackIcon">
+                            <img [src]="iconUrl" [alt]="getSkillLabel(skill)" aria-label='icon' />
+                          </ng-container>
+                          <ng-template #skillFallbackIcon>
+                            <span>{{ getSkillLabel(skill).charAt(0) || '?' }}</span>
+                          </ng-template>
+                        </div>
+
+                        <div class="project-skill-card__body">
+                          <strong>{{ getSkillLabel(skill) || 'Skill' }}</strong>
+                          <span *ngIf="skill._id && isPrimarySkill(skill._id)">Skill principal</span>
+                        </div>
+
+                        <div class="project-skill-card__actions" *ngIf="skill._id && isSkillSelected(skill._id)">
+                          <button type="button" class="project-skill-card__primary" [class.is-active]="isPrimarySkill(skill._id)" (click)="$event.stopPropagation(); setPrimarySkill(skill._id)">
+                            Principal
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <ng-template #noSkillsState>
+                      <div class="project-skills-empty">
+                        <p class="mb-0">No hay skills creadas todavia. Abre el gestor y crea la primera.</p>
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Enlace del proyecto</label>
+                  <input cFormControl type="text" [(ngModel)]="draft.projectLink" aria-label="Enlace del proyecto" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Enlace al codigo</label>
+                  <input cFormControl type="text" [(ngModel)]="draft.codeLink" aria-label="Enlace al codigo" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Estado</label>
+                  <input cFormControl type="text" [(ngModel)]="draft.status" aria-label="Estado" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Fecha de publicacion</label>
+                  <input cFormControl type="date" [(ngModel)]="draft.publishedAt" aria-label="Fecha de publicacion" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                  <label class="project-form__check">
+                    <input cFormCheckInput type="checkbox" [(ngModel)]="draft.featured" aria-label="Destacado" />
+                    Destacado
+                  </label>
+                </div>
+                <div class="col-12" *ngIf="showSkillsLibrary">
+                  <app-admin-skills-section [sectionTitle]="'Biblioteca de skills'" [createTitle]="'Crear skill'" [emptyMessage]="'No se encontraron skills.'" [skills]="facade.techSkills" [draft]="facade.newContentItems.techSkills" [contentLoading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" (createSkill)="facade.createContentItem('techSkills')" (saveSkill)="facade.saveContentItem('techSkills', $event)" (deleteSkill)="facade.deleteContentItem('techSkills', $event)" (draftIconAssetsChange)="facade.onTechSkillDraftIconAssetsChange($event)" (skillIconAssetsChange)="facade.onTechSkillIconAssetsChange($event.skill, $event.assets)" (imageUploadError)="facade.onImageUploadError($event)">
+                  </app-admin-skills-section>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="project-form__footer">
+          <button cButton color="secondary" variant="outline" type="button" (click)="cancel()">Cancelar</button>
+          <button cButton color="primary" type="button" (click)="submit()" [disabled]="facade.actionLoadingKey !== null">
+            {{ mode === 'create' ? 'Crear proyecto' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </c-card-body>
     </c-card>
+  </div>
 </section>

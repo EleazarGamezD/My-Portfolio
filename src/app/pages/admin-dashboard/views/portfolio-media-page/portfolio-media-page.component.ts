@@ -13,7 +13,7 @@ export class AdminPortfolioMediaPageComponent implements OnInit {
   constructor(
     public readonly facade: AdminDashboardFacade,
     private readonly cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.facade.ensureContentReady();

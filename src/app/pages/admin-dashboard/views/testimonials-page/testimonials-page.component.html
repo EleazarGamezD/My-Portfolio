@@ -1,8 +1,4 @@
 <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
 
-<app-testimonials-list
-  [items]="items"
-  [loading]="loading"
-  [pagination]="pagination"
-  (pageChange)="onPageChange($event)">
+<app-testimonials-list [items]="items" [loading]="loading" [pagination]="pagination" (pageChange)="onPageChange($event)">
 </app-testimonials-list>
