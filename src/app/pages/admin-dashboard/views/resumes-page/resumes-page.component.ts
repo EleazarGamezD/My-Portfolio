@@ -26,6 +26,7 @@ interface ResumeSlotDraft {
   fileName: string;
   mimeType: string;
   base64: string;
+  downloadUrl: string;
   metadata: Record<string, unknown>;
 }
 
@@ -94,7 +95,7 @@ export class AdminResumesPageComponent implements OnInit {
       return;
     }
 
-    if (!slot.base64.trim()) {
+    if (!slot.base64.trim() && !slot.downloadUrl.trim() && !slot.fileName.trim()) {
       this.error = `Debes cargar un archivo para ${slot.heading.toLowerCase()}.`;
       this.showErrorToast(this.error, 'Hojas de vida');
       return;
@@ -115,7 +116,7 @@ export class AdminResumesPageComponent implements OnInit {
         active: true,
         fileName: slot.fileName,
         mimeType: slot.mimeType || 'application/pdf',
-        base64: slot.base64,
+        base64: slot.base64.trim() || undefined,
         metadata: {
           ...slot.metadata,
           language: slot.language,
@@ -189,6 +190,7 @@ export class AdminResumesPageComponent implements OnInit {
       slot.fileName = item.fileName || '';
       slot.mimeType = item.mimeType || 'application/pdf';
       slot.base64 = item.base64 || '';
+      slot.downloadUrl = item.href || '';
       slot.order = typeof item.order === 'number' ? item.order : slot.order;
       slot.metadata = typeof item.metadata === 'object' && item.metadata !== null ? item.metadata : {};
     }
@@ -214,6 +216,7 @@ export class AdminResumesPageComponent implements OnInit {
       fileName: '',
       mimeType: 'application/pdf',
       base64: '',
+      downloadUrl: '',
       metadata: { language },
     };
   }

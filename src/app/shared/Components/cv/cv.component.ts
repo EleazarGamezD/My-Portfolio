@@ -7,6 +7,7 @@ import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cv',
@@ -25,6 +26,7 @@ export class CvComponent implements OnInit {
     private contentService: ContentService,
     private analyticsService: AnalyticsService,
     private readonly changeDetectorRef: ChangeDetectorRef,
+    private readonly toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -55,20 +57,33 @@ export class CvComponent implements OnInit {
   }
 
   downloadCV(resume: IApiResume): void {
-    if (!resume.base64) {
+    const fileName = this.getResumeDownloadFileName(resume);
+    this.analyticsService.trackCVDownload(fileName);
+
+    if (resume.href) {
+      const link = document.createElement('a');
+      link.href = resume.href;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       return;
     }
 
-    const fileName = this.getResumeDownloadFileName(resume);
+    if (!resume.base64) {
+      this.toastr.error('El archivo CV no está disponible.', 'Error');
+      return;
+    }
+
     const mimeType = resume.mimeType || 'application/pdf';
-    const filePath = `data:${mimeType};base64,${resume.base64}`;
-
-    this.analyticsService.trackCVDownload(fileName);
-
     const link = document.createElement('a');
-    link.href = filePath;
+    link.href = `data:${mimeType};base64,${resume.base64}`;
     link.download = fileName;
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
   }
 
   getResumeTitle(resume: IApiResume) {

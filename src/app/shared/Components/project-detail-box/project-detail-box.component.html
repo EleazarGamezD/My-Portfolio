@@ -1,4 +1,4 @@
-<section class="background-repeat" style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')">
+<section class="background-repeat" [style.background-image]="detailBackgroundImage ? 'linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.98)), url(' + detailBackgroundImage + ')' : null">
   <div class="container project-detail-shell pt-100px pb-100px">
     @if (project) {
       <div class="project-detail-card">
@@ -66,6 +66,9 @@
 
             <div class="project-description-block">
               <h6 class="text-dark-gray mb-10px">{{ t('project.details.description') }}</h6>
+              @if (projectSummary && projectSummary !== projectDescription) {
+                <p class="mb-15px fst-italic">{{ projectSummary }}</p>
+              }
               <p class="mb-0">{{ projectDescription }}</p>
             </div>
 

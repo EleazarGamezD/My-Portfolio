@@ -7,7 +7,6 @@ import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
-import { AddPhotoComponent } from '@pages/admin-dashboard/components/shared/add-photo/add-photo.component';
 import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/photo-editor/photo-editor.component';
 import { ToastrService } from 'ngx-toastr';
 
@@ -24,7 +23,6 @@ type SkillFormMode = 'create' | 'edit';
     ButtonModule,
     CardModule,
     FormModule,
-    AddPhotoComponent,
     PhotoEditorComponent,
   ],
   templateUrl: './skill-form-page.component.html',

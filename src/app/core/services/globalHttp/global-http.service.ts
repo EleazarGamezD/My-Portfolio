@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
+import { RequestStateService } from '@core/services/request-state/request-state.service';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { StorageService } from '@services/storage/storage.service';
 import { catchError, defaultIfEmpty, lastValueFrom, map, throwError } from 'rxjs';
@@ -16,6 +17,7 @@ export class GlobalHttpService extends StorageService {
     public _http: HttpClient,
     storageMap: StorageMap,
     private readonly ngZone: NgZone,
+    private readonly requestStateService: RequestStateService,
     @Inject(PLATFORM_ID) platformId: object,
   ) {
     super(storageMap, platformId);
@@ -80,16 +82,22 @@ export class GlobalHttpService extends StorageService {
     const requestOptions: object =
       method === RequestMethod.GET ? { headers } : { body: options, headers };
 
-    return lastValueFrom(
-      this._http
-        .request<T>(method, url, requestOptions)
-        .pipe(
-          map((response) => response as T),
-          defaultIfEmpty(null as T),
-          catchError((error: HttpErrorResponse) =>
-            throwError(() => error),
+    this.requestStateService.beginRequest();
+
+    try {
+      return await lastValueFrom(
+        this._http
+          .request<T>(method, url, requestOptions)
+          .pipe(
+            map((response) => response as T),
+            defaultIfEmpty(null as T),
+            catchError((error: HttpErrorResponse) =>
+              throwError(() => error),
+            ),
           ),
-        ),
-    );
+      );
+    } finally {
+      this.requestStateService.endRequest();
+    }
   }
 }

@@ -12,6 +12,7 @@ import {
 } from '@core/interfaces/admin/admin.interface';
 import { API_ADMIN_ROUTES } from '@core/routes/admin/admin.routes';
 import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
+import { RequestStateService } from '@core/services/request-state/request-state.service';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
 
@@ -23,9 +24,10 @@ export class AdminAuthService extends GlobalHttpService {
     httpClient: HttpClient,
     storageMap: StorageMap,
     ngZone: NgZone,
+    requestStateService: RequestStateService,
     @Inject(PLATFORM_ID) platformId: object,
   ) {
-    super(httpClient, storageMap, ngZone, platformId);
+    super(httpClient, storageMap, ngZone, requestStateService, platformId);
   }
 
   async login(email: string, password: string) {

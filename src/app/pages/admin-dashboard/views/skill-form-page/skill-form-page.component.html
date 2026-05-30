@@ -114,15 +114,8 @@
                 <p>Sube un icono limpio y reconocible. Esta misma pieza se reutiliza en tarjetas, filtros y detalles.</p>
               </div>
 
-              <ng-container *ngIf="mode === 'create'; else editIcon">
-                <app-add-photo [storageKey]="iconStorageKey" [maxPhotos]="1" [maxMb]="3" [title]="'Icono de la skill'" [subTitle]="'Usa una imagen clara, centrada y facil de reconocer.'" [label]="'Seleccionar icono'" [hint]="'Arrastra o selecciona una imagen'" [urlsPreviews]="previewUrls" (assetsChange)="onIconAssetsChange($event)" (uploadError)="onUploadError($event)">
-                </app-add-photo>
-              </ng-container>
-
-              <ng-template #editIcon>
-                <app-photo-editor [assets]="iconAssets" [maxPhotos]="1" [variant]="'single'" [title]="'Icono de la skill'" [subTitle]="'Agrega, cambia o elimina el icono principal.'" [emptyLabel]="'Agregar icono'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Eliminar'" (assetsChange)="onIconAssetsChange($event)" (uploadError)="onUploadError($event)">
-                </app-photo-editor>
-              </ng-template>
+              <app-photo-editor [assets]="iconAssets" [maxPhotos]="1" [variant]="'single'" [title]="'Icono de la skill'" [subTitle]="'Agrega, cambia o elimina el icono principal.'" [emptyLabel]="'Agregar icono'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Eliminar'" (assetsChange)="onIconAssetsChange($event)" (uploadError)="onUploadError($event)">
+              </app-photo-editor>
             </div>
           </section>
         </div>

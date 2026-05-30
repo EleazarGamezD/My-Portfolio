@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { IProject } from '@core/interfaces/projects/projects.interfaces';
 import { ProjectDetailBoxComponent } from '../project-detail-box/project-detail-box.component';
 
 @Component({
@@ -7,4 +8,6 @@ import { ProjectDetailBoxComponent } from '../project-detail-box/project-detail-
   templateUrl: './project-detail-group.component.html',
   styleUrl: './project-detail-group.component.scss',
 })
-export class ProjectDetailGroupComponent {}
+export class ProjectDetailGroupComponent {
+  @Input() project: IProject | null = null;
+}

@@ -1,13 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import { ProjectsService } from '@core/services/projects/projects.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
-import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
   selector: 'app-project-detail-box',
@@ -15,43 +13,24 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   templateUrl: './project-detail-box.component.html',
   styleUrl: './project-detail-box.component.scss',
 })
-export class ProjectDetailBoxComponent implements OnInit {
-  project: IProject | undefined;
+export class ProjectDetailBoxComponent implements OnChanges {
+  @Input() project: IProject | null = null;
   activeImage: string | null = null;
+  private lastTrackedProjectId: string | null = null;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
-    private readonly projectsService: ProjectsService,
     public i18nService: I18nService,
     private analyticsService: AnalyticsService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
   ) { }
 
-  ngOnInit() {
-    this.route.paramMap.subscribe(async (params) => {
-      const projectIdOrSlug = params.get('id') || '';
-      this.project = undefined;
+  ngOnChanges(): void {
+    this.activeImage = this.galleryImages[0] || null;
 
-      if (!projectIdOrSlug) {
-        return;
-      }
-
-      try {
-        this.project = await this.projectsService.getProjectByIdOrSlug(projectIdOrSlug);
-        this.activeImage = this.galleryImages[0] || null;
-
-        // Track project view
-        if (this.project?._id) {
-          this.analyticsService.trackProjectView(this.project._id.toString());
-        }
-      } catch (error) {
-        console.warn(`Failed to load project detail for "${projectIdOrSlug}" from API.`, error);
-      } finally {
-        this.changeDetectorRef.detectChanges();
-        requestTemplateReinit();
-      }
-    });
+    if (this.project?._id && this.lastTrackedProjectId !== this.project._id) {
+      this.analyticsService.trackProjectView(this.project._id.toString());
+      this.lastTrackedProjectId = this.project._id;
+    }
   }
 
   get projectTitle() {
@@ -67,7 +46,7 @@ export class ProjectDetailBoxComponent implements OnInit {
     }
     return this.i18nService.selectText(
       this.project.description?.es || this.project.summary?.es || '',
-      this.project.description?.en || this.project.summary?.en || this.project.description?.es || '',
+      this.project.description?.en || this.project.description?.es || this.project.summary?.en || this.project.summary?.es || '',
     );
   }
 
@@ -112,6 +91,10 @@ export class ProjectDetailBoxComponent implements OnInit {
 
   get heroImage() {
     return this.activeImage || this.galleryImages[0] || null;
+  }
+
+  get detailBackgroundImage() {
+    return this.heroImage || null;
   }
 
   get hasLiveDemo() {

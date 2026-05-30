@@ -1,7 +1,7 @@
 <section
   class="page-title-parallax-background bg-dark-gray ipad-top-space-margin"
   data-parallax-background-ratio="0.5"
-  style="background-image: url(https://placehold.co/1920x940)"
+  [style.background-image]="'url(' + backgroundImage() + ')'"
 >
   <div class="opacity-very-light bg-gradient-nero-grey-brown"></div>
   <div class="container">
@@ -10,7 +10,7 @@
         <div class="d-flex flex-column extra-small-screen">
           <div class="mt-auto">
             <h1 class="text-white alt-font mb-0 text-shadow-extra-large fw-400 ls-minus-1px">
-              {{ t('page.projectDetails') }}
+              {{ title() }}
             </h1>
           </div>
           <!-- start breadcrumb -->
@@ -21,7 +21,7 @@
               data-anime='{ "el": "childs", "translateY": [50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <li>{{ t('page.home') }}</li>
-              <li>{{ t('page.projectDetails') }}</li>
+              <li>{{ breadcrumbLabel() || title() }}</li>
             </ul>
           </div>
           <!-- end breadcrumb -->
