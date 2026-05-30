@@ -25,26 +25,50 @@
                 <div class="col-md-6">
                   <label class="form-label">Titulo en espanol</label>
                   <input cFormControl type="text" [(ngModel)]="draft.title!.es" aria-label="Titulo en espanol" />
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <app-translate-button [fromText]="draft.title!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.title!.en = $event; translateErrors['titleEs'] = ''" (translationError)="translateErrors['titleEs'] = $event" />
+                    <small *ngIf="translateErrors['titleEs']" class="translate-error">{{ translateErrors['titleEs'] }}</small>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Titulo en ingles</label>
                   <input cFormControl type="text" [(ngModel)]="draft.title!.en" aria-label="Titulo en ingles" />
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <app-translate-button [fromText]="draft.title!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.title!.es = $event; translateErrors['titleEn'] = ''" (translationError)="translateErrors['titleEn'] = $event" />
+                    <small *ngIf="translateErrors['titleEn']" class="translate-error">{{ translateErrors['titleEn'] }}</small>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Resumen en espanol</label>
                   <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.es" aria-label="Resumen en espanol"></textarea>
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <app-translate-button [fromText]="draft.summary!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.summary!.en = $event; translateErrors['summaryEs'] = ''" (translationError)="translateErrors['summaryEs'] = $event" />
+                    <small *ngIf="translateErrors['summaryEs']" class="translate-error">{{ translateErrors['summaryEs'] }}</small>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Resumen en ingles</label>
                   <textarea cFormControl rows="3" [(ngModel)]="draft.summary!.en" aria-label="Resumen en ingles"></textarea>
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <app-translate-button [fromText]="draft.summary!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.summary!.es = $event; translateErrors['summaryEn'] = ''" (translationError)="translateErrors['summaryEn'] = $event" />
+                    <small *ngIf="translateErrors['summaryEn']" class="translate-error">{{ translateErrors['summaryEn'] }}</small>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Descripcion en espanol</label>
                   <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es" aria-label="Descripcion en espanol"></textarea>
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <app-translate-button [fromText]="draft.description!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.description!.en = $event; translateErrors['descEs'] = ''" (translationError)="translateErrors['descEs'] = $event" />
+                    <small *ngIf="translateErrors['descEs']" class="translate-error">{{ translateErrors['descEs'] }}</small>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Descripcion en ingles</label>
                   <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en" aria-label="Descripcion en ingles"></textarea>
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <app-translate-button [fromText]="draft.description!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.description!.es = $event; translateErrors['descEn'] = ''" (translationError)="translateErrors['descEn'] = $event" />
+                    <small *ngIf="translateErrors['descEn']" class="translate-error">{{ translateErrors['descEn'] }}</small>
+                  </div>
                 </div>
               </div>
             </div>

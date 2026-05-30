@@ -12,6 +12,7 @@ import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angul
 import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/skills-section/skills-section.component';
 import { AddPhotoComponent } from '@pages/admin-dashboard/components/shared/add-photo/add-photo.component';
 import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/photo-editor/photo-editor.component';
+import { TranslateButtonComponent, Language } from '@pages/admin-dashboard/components/shared/translate-button/translate-button.component';
 
 type ProjectFormMode = 'create' | 'edit';
 
@@ -29,16 +30,19 @@ type ProjectFormMode = 'create' | 'edit';
     AdminSkillsSectionComponent,
     AddPhotoComponent,
     PhotoEditorComponent,
+    TranslateButtonComponent,
   ],
   templateUrl: './project-form-page.component.html',
   styleUrl: './project-form-page.component.scss',
 })
 export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
+  readonly Language = Language;
   mode: ProjectFormMode = 'create';
   draft: Partial<IProject> = this.createEmptyDraft();
   projectId = '';
   notFound = false;
   showSkillsLibrary = false;
+  translateErrors: Record<string, string> = {};
 
   constructor(
     public readonly facade: AdminDashboardFacade,
