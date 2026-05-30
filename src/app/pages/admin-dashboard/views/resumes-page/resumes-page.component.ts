@@ -2,6 +2,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiResume } from '@core/interfaces/content/content.interface';
+import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { ContentService } from '@core/services/content/content.service';
 import {
@@ -299,5 +300,18 @@ export class AdminResumesPageComponent implements OnInit {
     }
 
     this.toastr.error(message, title, { timeOut: 3500 });
+  }
+
+  downloadGeneratedPdf(lang: ResumeLanguage): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const url = API_CONTENT_ROUTES.generateCvPdf(lang);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = lang === 'es' ? 'cv-es.pdf' : 'resume-en.pdf';
+    anchor.target = '_blank';
+    anchor.rel = 'noopener';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
   }
 }

@@ -13,6 +13,28 @@
     <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
     <c-alert *ngIf="successMessage" color="success">{{ successMessage }}</c-alert>
 
+    <!-- Dynamic PDF generation -->
+    <c-card class="admin-page-surface mb-4">
+      <c-card-body>
+        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+          <div>
+            <h5 class="mb-1">Generación dinámica de CV</h5>
+            <p class="text-body-secondary mb-0 small">
+              Descarga un PDF generado al instante con la información actualizada del portfolio (perfil, experiencia, habilidades).
+            </p>
+          </div>
+          <div class="d-flex gap-2 flex-shrink-0">
+            <button cButton color="primary" variant="outline" type="button" (click)="downloadGeneratedPdf('es')">
+              Descargar CV Español
+            </button>
+            <button cButton color="secondary" variant="outline" type="button" (click)="downloadGeneratedPdf('en')">
+              Download CV English
+            </button>
+          </div>
+        </div>
+      </c-card-body>
+    </c-card>
+
     <c-card class="admin-page-surface resumes-page-card">
       <c-card-body>
         <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">

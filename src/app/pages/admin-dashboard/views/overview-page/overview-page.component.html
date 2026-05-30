@@ -111,7 +111,7 @@
         </div>
         <div class="col-md-7">
           <c-card class="h-100" *ngIf="projectViewsChart">
-            <c-card-header>Top Proyectos</c-card-header>
+            <c-card-header>Top 10 Proyectos</c-card-header>
             <c-card-body>
               <c-chart
                 type="bar"
@@ -123,6 +123,19 @@
           </c-card>
         </div>
       </div>
+
+      <!-- All projects chart (scrollable) -->
+      <c-card class="mb-4" *ngIf="allProjectViewsChart">
+        <c-card-header>Todos los proyectos vistos</c-card-header>
+        <c-card-body style="overflow-y: auto; max-height: 400px; padding-bottom: 0;">
+          <c-chart
+            type="bar"
+            [data]="allProjectViewsChart.data"
+            [options]="allProjectViewsChart.options"
+            [height]="allProjectViewsChart.height">
+          </c-chart>
+        </c-card-body>
+      </c-card>
 
       <!-- Tables row -->
       <div class="row g-3 mb-4">
@@ -140,7 +153,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of metrics.groupedByPath">
-                    <td class="text-truncate" style="max-width: 260px;">{{ item._id }}</td>
+                    <td style="word-break: break-all; font-size: 0.82rem;">{{ item._id }}</td>
                     <td class="text-end">{{ item.total }}</td>
                   </tr>
                   <tr *ngIf="!metrics.groupedByPath?.length">
@@ -170,7 +183,7 @@
                     <td>
                       <span class="badge bg-secondary">{{ getEventTypeLabel(event.type) }}</span>
                     </td>
-                    <td class="text-truncate" style="max-width: 160px;">{{ event.path }}</td>
+                    <td style="word-break: break-all; font-size: 0.82rem; max-width: 200px;">{{ event.path }}</td>
                     <td class="text-nowrap small">{{ event.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
                   </tr>
                   <tr *ngIf="!metrics.recentEvents?.length">

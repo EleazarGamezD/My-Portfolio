@@ -23,6 +23,7 @@ export interface IDashboardMetrics {
   groupedTotals: Array<{ _id: string; total: number }>;
   groupedByPath: Array<{ _id: string; total: number }>;
   groupedByProject: Array<{ _id: string | null; projectName: string; total: number }>;
+  allProjectViews: Array<{ _id: string | null; projectName: string; total: number }>;
   groupedByLanguage: Array<{ _id: string; total: number }>;
   groupedByDay: Array<{ _id: string; total: number }>;
   recentEvents: Array<{

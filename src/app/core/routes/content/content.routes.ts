@@ -12,4 +12,5 @@ export const API_CONTENT_ROUTES = {
   getResource: (resourceName: string) => `${environment.apiUrl}/content/${resourceName}`,
   updateResourceItem: (resourceName: string, id: string) => `${environment.apiUrl}/content/${resourceName}/${id}`,
   deleteResourceItem: (resourceName: string, id: string) => `${environment.apiUrl}/content/${resourceName}/${id}`,
+  generateCvPdf: (lang: 'es' | 'en') => `${environment.apiUrl}/content/resumes/generate-pdf?lang=${lang}`,
 };

@@ -135,6 +135,39 @@ export class AdminOverviewPageComponent implements OnInit {
     };
   }
 
+  get allProjectViewsChart(): { data: ChartData; options: ChartOptions; height: number } | null {
+    const metrics = this.facade.metrics;
+    if (!metrics?.allProjectViews?.length) return null;
+
+    const items = metrics.allProjectViews.filter((p) => p._id !== null);
+    if (!items.length) return null;
+
+    const labels = items.map((p) => p.projectName ?? p._id ?? 'Sin nombre');
+    const data = items.map((p) => p.total);
+    const height = Math.max(200, items.length * 32 + 60);
+
+    return {
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Vistas',
+            data,
+            backgroundColor: getStyle('--cui-success'),
+          },
+        ],
+      },
+      options: {
+        indexAxis: 'y' as const,
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, ticks: { precision: 0 } } },
+      },
+      height,
+    };
+  }
+
   get timelineChart(): { data: ChartData; options: ChartOptions } | null {
     const metrics = this.facade.metrics;
     if (!metrics?.groupedByDay?.length) return null;
