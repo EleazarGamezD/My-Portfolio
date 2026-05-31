@@ -45,9 +45,9 @@ export class ThemeService extends GlobalHttpService {
     return this.makeRequest<ITheme, object>(`${BASE}/themes/${id}/activate`, {}, RequestMethod.POST);
   }
 
-  async generatePalette(hex: string, mode: string): Promise<Partial<IThemeColors>> {
+  async generatePalette(hex: string, mode: string, seed = Date.now().toString()): Promise<Partial<IThemeColors>> {
     return this.makeRequest<Partial<IThemeColors>, null>(
-      `${BASE}/themes/generate-palette?hex=${encodeURIComponent(hex)}&mode=${encodeURIComponent(mode)}`,
+      `${BASE}/themes/generate-palette?hex=${encodeURIComponent(hex)}&mode=${encodeURIComponent(mode)}&seed=${encodeURIComponent(seed)}`,
       null,
       RequestMethod.GET,
     );
