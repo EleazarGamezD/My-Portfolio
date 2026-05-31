@@ -45,6 +45,14 @@ export class ThemeService extends GlobalHttpService {
     return this.makeRequest<ITheme, object>(`${BASE}/themes/${id}/activate`, {}, RequestMethod.POST);
   }
 
+  async generatePalette(hex: string, mode: string): Promise<Partial<IThemeColors>> {
+    return this.makeRequest<Partial<IThemeColors>, null>(
+      `${BASE}/themes/generate-palette?hex=${encodeURIComponent(hex)}&mode=${encodeURIComponent(mode)}`,
+      null,
+      RequestMethod.GET,
+    );
+  }
+
   async runSeedThemes(force = false): Promise<{ seeded: boolean; count?: number; reason?: string }> {
     return this.makeRequest(`${BASE}/admin/seed-themes?force=${force}`, {}, RequestMethod.POST);
   }
