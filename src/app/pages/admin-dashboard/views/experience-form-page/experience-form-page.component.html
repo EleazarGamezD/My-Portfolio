@@ -117,20 +117,14 @@
         </div>
 
         <!-- Skills técnicas del cargo -->
-        <div class="experience-editor__skills" *ngIf="!loading">
+        <div class="experience-editor__skills mt-3" *ngIf="!loading">
           <div class="experience-panel">
             <div class="experience-panel__head">
               <h3>Skills del cargo</h3>
               <p>Selecciona las tecnologías usadas en este trabajo. Solo se usan internamente para generar el CV dinámico.</p>
             </div>
 
-            <app-skill-picker
-              [selectedIds]="selectedSkillIds"
-              [showPrimary]="false"
-              [panelTitle]="''"
-              [panelCopy]="''"
-              (selectedIdsChange)="onSkillsChange($event)"
-            ></app-skill-picker>
+            <app-skill-picker [selectedIds]="selectedSkillIds" [showPrimary]="false" [panelTitle]="''" [panelCopy]="''" (selectedIdsChange)="onSkillsChange($event)"></app-skill-picker>
           </div>
         </div>
 
