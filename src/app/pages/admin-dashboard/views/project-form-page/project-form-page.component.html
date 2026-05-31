@@ -113,50 +113,15 @@
               </div>
               <div class="row g-3">
                 <div class="col-12">
-                  <div class="project-skills-panel">
-                    <div class="project-skills-panel__header">
-                      <div>
-                        <label class="form-label mb-1">Skills del proyecto</label>
-                        <p class="project-skills-panel__copy mb-0">
-                          Selecciona skills existentes y marca una como principal.
-                        </p>
-                      </div>
-
-                      <button cButton color="secondary" variant="outline" type="button" (click)="toggleSkillsLibrary()">
-                        {{ showSkillsLibrary ? 'Ocultar gestor de skills' : 'Administrar skills' }}
-                      </button>
-                    </div>
-
-                    <div class="project-skills-grid" *ngIf="availableSkills.length > 0; else noSkillsState">
-                      <div class="project-skill-card" *ngFor="let skill of availableSkills" [class.is-selected]="skill._id && isSkillSelected(skill._id)" [class.is-primary]="skill._id && isPrimarySkill(skill._id)" role="button" tabindex="0" (click)="skill._id && toggleSkillSelection(skill._id)">
-                        <div class="project-skill-card__icon">
-                          <ng-container *ngIf="getSkillIconUrl(skill) as iconUrl; else skillFallbackIcon">
-                            <img [src]="iconUrl" [alt]="getSkillLabel(skill)" aria-label='icon' />
-                          </ng-container>
-                          <ng-template #skillFallbackIcon>
-                            <span>{{ getSkillLabel(skill).charAt(0) || '?' }}</span>
-                          </ng-template>
-                        </div>
-
-                        <div class="project-skill-card__body">
-                          <strong>{{ getSkillLabel(skill) || 'Skill' }}</strong>
-                          <span *ngIf="skill._id && isPrimarySkill(skill._id)">Skill principal</span>
-                        </div>
-
-                        <div class="project-skill-card__actions" *ngIf="skill._id && isSkillSelected(skill._id)">
-                          <button type="button" class="project-skill-card__primary" [class.is-active]="isPrimarySkill(skill._id)" (click)="$event.stopPropagation(); setPrimarySkill(skill._id)">
-                            Principal
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <ng-template #noSkillsState>
-                      <div class="project-skills-empty">
-                        <p class="mb-0">No hay skills creadas todavia. Abre el gestor y crea la primera.</p>
-                      </div>
-                    </ng-template>
-                  </div>
+                  <app-skill-picker
+                    [selectedIds]="draft.skillIds ?? []"
+                    [showPrimary]="true"
+                    [primarySkillId]="draft.primarySkillId ?? null"
+                    [panelTitle]="'Skills del proyecto'"
+                    [panelCopy]="'Selecciona skills existentes y marca una como principal.'"
+                    (selectedIdsChange)="onSkillsChange($event)"
+                    (primaryChange)="onPrimarySkillChange($event)"
+                  ></app-skill-picker>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Enlace del proyecto</label>
@@ -190,20 +155,16 @@
                     </span>
                   </label>
                 </div>
-                <div class="col-12" *ngIf="showSkillsLibrary">
-                  <app-admin-skills-section [sectionTitle]="'Biblioteca de skills'" [createTitle]="'Crear skill'" [emptyMessage]="'No se encontraron skills.'" [skills]="facade.techSkills" [draft]="facade.newContentItems.techSkills" [contentLoading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" (createSkill)="facade.createContentItem('techSkills')" (saveSkill)="facade.saveContentItem('techSkills', $event)" (deleteSkill)="facade.deleteContentItem('techSkills', $event)" (draftIconAssetsChange)="facade.onTechSkillDraftIconAssetsChange($event)" (skillIconAssetsChange)="facade.onTechSkillIconAssetsChange($event.skill, $event.assets)" (imageUploadError)="facade.onImageUploadError($event)">
-                  </app-admin-skills-section>
-                </div>
               </div>
             </div>
           </section>
-        </div>
 
         <div class="project-form__footer">
           <button cButton color="secondary" variant="outline" type="button" (click)="cancel()">Cancelar</button>
           <button cButton color="primary" type="button" (click)="submit()" [disabled]="facade.actionLoadingKey !== null">
             {{ mode === 'create' ? 'Crear proyecto' : 'Guardar cambios' }}
           </button>
+        </div>
         </div>
       </c-card-body>
     </c-card>

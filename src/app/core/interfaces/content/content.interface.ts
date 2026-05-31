@@ -59,6 +59,8 @@ export interface IApiContentItem {
   order?: number;
   active?: boolean;
   metadata?: Record<string, unknown>;
+  /** Skill IDs associated with this content item (e.g. experience entry). Stored in metadata.skillIds. */
+  skillIds?: string[];
 }
 
 export interface IApiTechSkill extends IApiContentItem {

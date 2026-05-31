@@ -1,0 +1,109 @@
+<div class="skill-picker">
+  <!-- Header -->
+  <div class="skill-picker__header">
+    <div class="skill-picker__header-info">
+      <label class="form-label mb-1">{{ panelTitle }}</label>
+      <p class="skill-picker__copy mb-0">{{ panelCopy }}</p>
+    </div>
+    <div class="skill-picker__header-actions">
+      <span class="skill-picker__count" *ngIf="selectedCount > 0">
+        {{ selectedCount }} seleccionada{{ selectedCount !== 1 ? 's' : '' }}
+      </span>
+      <button cButton color="secondary" variant="outline" size="sm" type="button" (click)="toggleLibrary()">
+        {{ showSkillsLibrary ? 'Cerrar gestor' : 'Administrar skills' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Skills grid -->
+  <ng-container *ngIf="availableSkills.length > 0; else noSkillsState">
+    <div class="skill-picker__grid">
+      <div
+        *ngFor="let skill of pagedSkills"
+        class="skill-picker__card"
+        [class.is-selected]="skill._id && isSelected(skill._id)"
+        [class.is-primary]="skill._id && isPrimary(skill._id)"
+        role="button"
+        tabindex="0"
+        (click)="skill._id && toggleSkill(skill._id)"
+        (keydown.enter)="skill._id && toggleSkill(skill._id)"
+      >
+        <div class="skill-picker__card-icon">
+          <ng-container *ngIf="getSkillIconUrl(skill) as iconUrl; else skillFallback">
+            <img [src]="iconUrl" [alt]="getSkillLabel(skill)" />
+          </ng-container>
+          <ng-template #skillFallback>
+            <span>{{ getSkillLabel(skill).charAt(0) || '?' }}</span>
+          </ng-template>
+        </div>
+
+        <div class="skill-picker__card-body">
+          <strong>{{ getSkillLabel(skill) || 'Skill' }}</strong>
+          <span *ngIf="showPrimary && skill._id && isPrimary(skill._id)" class="skill-picker__primary-badge">
+            Principal
+          </span>
+        </div>
+
+        <div class="skill-picker__card-actions" *ngIf="showPrimary && skill._id && isSelected(skill._id)">
+          <button
+            type="button"
+            class="skill-picker__set-primary"
+            [class.is-active]="isPrimary(skill._id)"
+            (click)="setPrimary($event, skill._id)"
+          >
+            Principal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="skill-picker__pagination" *ngIf="totalPages > 1">
+      <span class="skill-picker__total">{{ availableSkills.length }} skills</span>
+      <div class="skill-picker__page-controls">
+        <button cButton color="secondary" variant="outline" size="sm" type="button" [disabled]="!hasPrevPage" (click)="prevPage()">
+          Anterior
+        </button>
+        <button
+          *ngFor="let p of pageNumbers"
+          cButton
+          [color]="p === currentPage ? 'primary' : 'secondary'"
+          [variant]="p === currentPage ? undefined : 'outline'"
+          size="sm"
+          type="button"
+          (click)="goToPage(p)"
+        >{{ p }}</button>
+        <button cButton color="secondary" variant="outline" size="sm" type="button" [disabled]="!hasNextPage" (click)="nextPage()">
+          Siguiente
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noSkillsState>
+    <p class="text-body-secondary mb-0">
+      No hay skills creadas todavía.
+      <button cButton color="secondary" variant="ghost" size="sm" type="button" (click)="toggleLibrary()">Crear la primera</button>
+    </p>
+  </ng-template>
+
+  <!-- Skills library (CRUD) -->
+  <div class="skill-picker__library" *ngIf="showSkillsLibrary">
+    <app-admin-skills-section
+      [sectionTitle]="'Biblioteca de skills'"
+      [createTitle]="'Crear skill'"
+      [emptyMessage]="'No se encontraron skills.'"
+      [skills]="facade.techSkills"
+      [draft]="facade.newContentItems.techSkills"
+      [contentLoading]="facade.contentLoading"
+      [actionLoadingKey]="facade.actionLoadingKey"
+      (createSkill)="facade.createContentItem('techSkills')"
+      (saveSkill)="facade.saveContentItem('techSkills', $event)"
+      (deleteSkill)="facade.deleteContentItem('techSkills', $event)"
+      (draftIconAssetsChange)="facade.onTechSkillDraftIconAssetsChange($event)"
+      (skillIconAssetsChange)="facade.onTechSkillIconAssetsChange($event.skill, $event.assets)"
+      (imageUploadError)="facade.onImageUploadError($event)"
+    >
+    </app-admin-skills-section>
+  </div>
+</div>
