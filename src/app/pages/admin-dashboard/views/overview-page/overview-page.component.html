@@ -87,6 +87,7 @@
         <c-card-body>
           <c-chart
             type="line"
+            [customTooltips]="false"
             [data]="timelineChart.data"
             [options]="timelineChart.options"
             [height]="250">
@@ -102,6 +103,7 @@
             <c-card-body>
               <c-chart
                 type="doughnut"
+                [customTooltips]="false"
                 [data]="eventTypeChart.data"
                 [options]="eventTypeChart.options"
                 [height]="260">
@@ -115,6 +117,7 @@
             <c-card-body>
               <c-chart
                 type="bar"
+                [customTooltips]="false"
                 [data]="projectViewsChart.data"
                 [options]="projectViewsChart.options"
                 [height]="260">
@@ -130,6 +133,7 @@
         <c-card-body style="overflow-y: auto; max-height: 400px; padding-bottom: 0;">
           <c-chart
             type="bar"
+            [customTooltips]="false"
             [data]="allProjectViewsChart.data"
             [options]="allProjectViewsChart.options"
             [height]="allProjectViewsChart.height">
