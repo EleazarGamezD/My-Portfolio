@@ -41,7 +41,7 @@
                           {{ getResumeDescription(resume) }}
                         </p>
                       </div>
-                      <button type="button" class="btn btn-link btn-large text-dark-gray thin fw-500" (click)="downloadCV(resume)" title="Download" [disabled]="!resume.base64">
+                      <button type="button" class="btn btn-link btn-large text-dark-gray thin fw-500" (click)="downloadCV(resume)" title="Download" [disabled]="!canDownloadCV(resume)">
                         <i class="fa-solid fa-download"></i>
                         {{ t('cv.download') || 'Download' }}
                       </button>

@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiProfile, IApiResume } from '@core/interfaces/content/content.interface';
+import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cv',
@@ -26,7 +26,6 @@ export class CvComponent implements OnInit {
     private contentService: ContentService,
     private analyticsService: AnalyticsService,
     private readonly changeDetectorRef: ChangeDetectorRef,
-    private readonly toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -59,31 +58,17 @@ export class CvComponent implements OnInit {
   downloadCV(resume: IApiResume): void {
     const fileName = this.getResumeDownloadFileName(resume);
     this.analyticsService.trackCVDownload(fileName);
+    const resumeLanguage = this.resolveResumeLanguage(resume);
+    const generatedUrl = API_CONTENT_ROUTES.generateCvPdf(resumeLanguage);
 
-    if (resume.href) {
-      const link = document.createElement('a');
-      link.href = resume.href;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      return;
-    }
-
-    if (!resume.base64) {
-      this.toastr.error('El archivo CV no está disponible.', 'Error');
-      return;
-    }
-
-    const mimeType = resume.mimeType || 'application/pdf';
-    const link = document.createElement('a');
-    link.href = `data:${mimeType};base64,${resume.base64}`;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const generatedLink = document.createElement('a');
+    generatedLink.href = generatedUrl;
+    generatedLink.target = '_blank';
+    generatedLink.rel = 'noopener noreferrer';
+    generatedLink.download = fileName;
+    document.body.appendChild(generatedLink);
+    generatedLink.click();
+    document.body.removeChild(generatedLink);
   }
 
   getResumeTitle(resume: IApiResume) {
@@ -128,6 +113,28 @@ export class CvComponent implements OnInit {
       default:
         return 'pdf';
     }
+  }
+
+  canDownloadCV(resume: IApiResume): boolean {
+    return Boolean(this.resolveResumeLanguage(resume));
+  }
+
+  private resolveResumeLanguage(resume: IApiResume): 'es' | 'en' {
+    const rawLanguage = typeof resume.metadata?.['language'] === 'string'
+      ? resume.metadata['language']
+      : resume.language || '';
+    const normalizedLanguage = rawLanguage.trim().toLowerCase();
+
+    if (normalizedLanguage === 'en') {
+      return 'en';
+    }
+
+    if (normalizedLanguage === 'es') {
+      return 'es';
+    }
+
+    const identity = `${resume.slug || ''} ${resume.fileName || ''} ${resume.title?.en || ''}`.toLowerCase();
+    return identity.includes('en') ? 'en' : 'es';
   }
 
   t(key: string) {
