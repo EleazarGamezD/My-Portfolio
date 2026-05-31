@@ -21,8 +21,8 @@
             <input id="filterTo" cFormControl type="date" [(ngModel)]="facade.filters.to" />
           </div>
           <div class="col-12 d-flex gap-2 justify-content-end">
-            <button cButton color="secondary" variant="outline" type="button" (click)="facade.clearFilters()">Limpiar</button>
-            <button cButton color="primary" type="button" (click)="facade.applyFilters()">Aplicar filtros</button>
+            <button cButton color="secondary" variant="outline" type="button" (click)="clearFilters()">Limpiar</button>
+            <button cButton color="primary" type="button" (click)="applyFilters()">Aplicar filtros</button>
           </div>
         </div>
       </c-card-body>

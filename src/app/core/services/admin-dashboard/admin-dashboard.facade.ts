@@ -96,13 +96,32 @@ export class AdminDashboardFacade {
       return;
     }
 
-    const currentAdminResponse = await this.adminAuthService.getCurrentAdmin();
-    this.currentAdmin = currentAdminResponse.user;
-    this.currentAdminLoaded = true;
+    try {
+      const currentAdminResponse = await this.adminAuthService.getCurrentAdmin();
+      this.currentAdmin = currentAdminResponse.user;
+      this.currentAdminLoaded = true;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to load current admin session';
+
+      this.ngZone.run(() => {
+        this.currentAdmin = null;
+        this.currentAdminLoaded = false;
+        this.loading = false;
+        this.contentLoading = false;
+        this.error = message;
+        this.contentError = message;
+      });
+
+      console.error('Error loading current admin session:', error);
+    }
   }
 
   async ensureOverviewReady(): Promise<void> {
     await this.ensureCurrentAdmin();
+
+    if (!this.currentAdmin) {
+      return;
+    }
 
     if (this.metricsLoaded) {
       return;
@@ -114,6 +133,10 @@ export class AdminDashboardFacade {
 
   async ensureContentReady(): Promise<void> {
     await this.ensureCurrentAdmin();
+
+    if (!this.currentAdmin) {
+      return;
+    }
 
     if (this.contentLoaded) {
       return;
