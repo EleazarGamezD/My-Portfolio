@@ -25,6 +25,10 @@
             <button class="btn btn-primary w-100" type="button" (click)="login()" [disabled]="loading || !email || !password">
               {{ loading ? 'Signing in...' : 'Sign in' }}
             </button>
+
+            <div class="text-center mt-3">
+              <a routerLink="/admin/forgot-password" class="text-muted small">¿Olvidaste tu contraseña?</a>
+            </div>
           </div>
         </div>
       </div>

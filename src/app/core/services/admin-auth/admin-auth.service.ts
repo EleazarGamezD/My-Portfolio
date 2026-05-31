@@ -9,6 +9,12 @@ import {
   IAdminMeResponse,
   IAdminUser,
   IAdminUsersResponse,
+  IForgotPasswordRequest,
+  IForgotPasswordResponse,
+  IResetPasswordRequest,
+  IResetPasswordResponse,
+  ISetupAccountRequest,
+  ISetupAccountResponse,
 } from '@core/interfaces/admin/admin.interface';
 import { API_ADMIN_ROUTES } from '@core/routes/admin/admin.routes';
 import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
@@ -41,6 +47,35 @@ export class AdminAuthService extends GlobalHttpService {
     await this.setStorage(NgStorage.USER_EMAIL, response.user.email);
 
     return response;
+  }
+
+  async setupAccount(payload: ISetupAccountRequest) {
+    const response = await this.makeRequest<ISetupAccountResponse, ISetupAccountRequest>(
+      API_ADMIN_ROUTES.setupAccount,
+      payload,
+      RequestMethod.POST,
+    );
+
+    await this.setStorage(NgStorage.TOKEN, response.accessToken);
+    await this.setStorage(NgStorage.USER_EMAIL, response.user.email);
+
+    return response;
+  }
+
+  async forgotPassword(email: string) {
+    return this.makeRequest<IForgotPasswordResponse, IForgotPasswordRequest>(
+      API_ADMIN_ROUTES.forgotPassword,
+      { email },
+      RequestMethod.POST,
+    );
+  }
+
+  async resetPassword(token: string, newPassword: string) {
+    return this.makeRequest<IResetPasswordResponse, IResetPasswordRequest>(
+      API_ADMIN_ROUTES.resetPassword,
+      { token, newPassword },
+      RequestMethod.POST,
+    );
   }
 
   async getCurrentAdmin() {

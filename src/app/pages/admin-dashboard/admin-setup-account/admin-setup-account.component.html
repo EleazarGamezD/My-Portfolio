@@ -1,0 +1,42 @@
+<section class="admin-shell">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-7">
+        <div class="admin-card shadow-lg">
+          <div class="admin-card__body">
+            <p class="admin-eyebrow">Primer acceso</p>
+            <h1 class="admin-title">Configura tu cuenta</h1>
+            <p class="admin-copy">Crea tu usuario definitivo. La cuenta de bootstrap será eliminada automáticamente.</p>
+
+            <div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+
+            <div class="mb-3">
+              <label for="setupEmail" class="form-label">Email</label>
+              <input id="setupEmail" type="email" class="form-control" [(ngModel)]="email" placeholder="tu@email.com" autocomplete="email" />
+            </div>
+            <div class="mb-3">
+              <label for="setupUsername" class="form-label">Usuario</label>
+              <input id="setupUsername" type="text" class="form-control" [(ngModel)]="username" placeholder="nombre_usuario" />
+            </div>
+            <div class="mb-3">
+              <label for="setupDisplayName" class="form-label">Nombre para mostrar</label>
+              <input id="setupDisplayName" type="text" class="form-control" [(ngModel)]="displayName" placeholder="Eleazar Gamez" />
+            </div>
+            <div class="mb-3">
+              <label for="setupPassword" class="form-label">Contraseña</label>
+              <input id="setupPassword" type="password" class="form-control" [(ngModel)]="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" />
+            </div>
+            <div class="mb-4">
+              <label for="setupConfirmPassword" class="form-label">Confirmar contraseña</label>
+              <input id="setupConfirmPassword" type="password" class="form-control" [(ngModel)]="confirmPassword" placeholder="Repite la contraseña" autocomplete="new-password" />
+            </div>
+
+            <button class="btn btn-primary w-100" type="button" (click)="submit()" [disabled]="loading || !email || !username || !displayName || !password || !confirmPassword">
+              {{ loading ? 'Configurando...' : 'Configurar cuenta' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

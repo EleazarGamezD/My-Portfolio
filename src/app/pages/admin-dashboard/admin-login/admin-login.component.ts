@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 
 @Component({
     selector: 'app-admin-login',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, RouterLink],
     templateUrl: './admin-login.component.html',
     styleUrl: './admin-login.component.scss',
 })
@@ -47,8 +47,12 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
         this.error = null;
 
         try {
-            await this.adminAuthService.login(this.email, this.password);
-            await this.router.navigateByUrl(this.getRedirectTarget());
+            const response = await this.adminAuthService.login(this.email, this.password);
+            if (response.mustChangePassword) {
+                await this.router.navigateByUrl('/admin/setup-account');
+            } else {
+                await this.router.navigateByUrl(this.getRedirectTarget());
+            }
         } catch (error) {
             this.error = error instanceof Error ? error.message : 'Failed to authenticate admin user.';
         } finally {

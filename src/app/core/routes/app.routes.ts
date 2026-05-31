@@ -43,6 +43,30 @@ export const routes: Routes = [
         ),
   },
   {
+    path: 'admin/setup-account',
+    loadComponent: () =>
+      import('@pages/admin-dashboard/admin-setup-account/admin-setup-account.component')
+        .then(
+          (m) => m.AdminSetupAccountComponent,
+        ),
+  },
+  {
+    path: 'admin/forgot-password',
+    loadComponent: () =>
+      import('@pages/admin-dashboard/admin-forgot-password/admin-forgot-password.component')
+        .then(
+          (m) => m.AdminForgotPasswordComponent,
+        ),
+  },
+  {
+    path: 'admin/reset-password',
+    loadComponent: () =>
+      import('@pages/admin-dashboard/admin-reset-password/admin-reset-password.component')
+        .then(
+          (m) => m.AdminResetPasswordComponent,
+        ),
+  },
+  {
     path: 'admin',
     canActivate: [adminAuthGuard],
     loadComponent: () =>
