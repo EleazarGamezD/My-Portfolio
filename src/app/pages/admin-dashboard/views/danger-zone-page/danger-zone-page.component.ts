@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
+import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { ThemeService } from '@core/services/theme/theme.service';
 import { ButtonModule, SpinnerComponent } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
@@ -28,6 +29,23 @@ export class DangerZonePageComponent {
 
   readonly actions: DangerAction[] = [
     {
+      id: 'seed-initial',
+      title: 'Seed inicial del sistema',
+      description: 'Inserta el contenido inicial del portfolio (perfil, proyectos demo, skills, experiencia, etc.) si la base de datos está vacía.',
+      confirmTitle: 'Ejecutar seed inicial',
+      confirmBody: 'Se insertará el contenido base del portfolio. Si ya existen datos, la operación se omitirá de manera segura.',
+      buttonLabel: 'Ejecutar seed',
+    },
+    {
+      id: 'seed-initial-demo',
+      title: 'Seed con contenido demo personal',
+      description: 'Inserta un conjunto completo de contenido de demostración (perfil, proyectos, skills, etc.) reemplazando el existente.',
+      confirmTitle: 'Seed de contenido demo',
+      confirmBody: '<strong>⚠️ Atención:</strong> Esto insertará contenido de demostración. Úsalo solo en entornos de prueba.',
+      buttonLabel: 'Seed demo',
+      isForce: true,
+    },
+    {
       id: 'seed-themes',
       title: 'Seed de temas predeterminados',
       description: 'Inserta los 5 temas base si no existen aún. La operación es segura y se omite si ya hay temas.',
@@ -48,6 +66,7 @@ export class DangerZonePageComponent {
 
   constructor(
     private readonly themeService: ThemeService,
+    private readonly adminAuthService: AdminAuthService,
     private readonly toastr: ToastrService,
     private readonly cdr: ChangeDetectorRef,
   ) {}
@@ -76,6 +95,12 @@ export class DangerZonePageComponent {
         } else {
           this.toastr.info('Ya existen temas. Usa "Forzar seed" para reemplazarlos.', 'Danger Zone');
         }
+      } else if (action.id === 'seed-initial') {
+        await this.adminAuthService.runSeedInitial('starter');
+        this.toastr.success('Seed inicial ejecutado correctamente.', 'Danger Zone');
+      } else if (action.id === 'seed-initial-demo') {
+        await this.adminAuthService.runSeedInitial('demo-personal');
+        this.toastr.success('Seed de contenido demo ejecutado correctamente.', 'Danger Zone');
       }
     } catch {
       this.toastr.error('Error al ejecutar la acción.', 'Danger Zone');

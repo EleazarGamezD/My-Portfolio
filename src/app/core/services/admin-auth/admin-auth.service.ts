@@ -76,6 +76,14 @@ export class AdminAuthService extends GlobalHttpService {
     );
   }
 
+  async runSeedInitial(preset: 'starter' | 'demo-personal' = 'starter'): Promise<{ message: string; seeded?: boolean; count?: number }> {
+    return this.makeRequest<{ message: string; seeded?: boolean; count?: number }, object>(
+      `${API_ADMIN_ROUTES.seedInitial}?preset=${preset}`,
+      {},
+      RequestMethod.POST,
+    );
+  }
+
   async isAuthenticated() {
     const token = await this.getStorage(NgStorage.TOKEN);
 
