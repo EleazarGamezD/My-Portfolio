@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
@@ -14,7 +14,7 @@ import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/s
   styleUrl: './skill-picker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SkillPickerComponent implements OnInit, OnChanges {
+export class SkillPickerComponent implements OnInit, OnChanges, DoCheck {
   /** IDs of currently selected skills */
   @Input() selectedIds: string[] = [];
   /** Whether to show the "primary skill" feature (for projects) */
@@ -33,11 +33,12 @@ export class SkillPickerComponent implements OnInit, OnChanges {
 
   showSkillsLibrary = false;
   currentPage = 1;
+  private _lastSkillCount = -1;
 
   constructor(
     public readonly facade: AdminDashboardFacade,
     private readonly cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.facade.ensureContentReady();
@@ -46,6 +47,14 @@ export class SkillPickerComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.currentPage = 1;
+  }
+
+  ngDoCheck(): void {
+    const count = this.facade.techSkills.length;
+    if (count !== this._lastSkillCount) {
+      this._lastSkillCount = count;
+      this.cdr.markForCheck();
+    }
   }
 
   // ── Computed ─────────────────────────────────────────────────────────────
@@ -136,6 +145,21 @@ export class SkillPickerComponent implements OnInit, OnChanges {
 
   toggleLibrary(): void {
     this.showSkillsLibrary = !this.showSkillsLibrary;
+    this.cdr.markForCheck();
+  }
+
+  async onCreateSkill(): Promise<void> {
+    await this.facade.createContentItem('techSkills');
+    this.cdr.markForCheck();
+  }
+
+  async onSaveSkill(skill: IApiTechSkill): Promise<void> {
+    await this.facade.saveContentItem('techSkills', skill);
+    this.cdr.markForCheck();
+  }
+
+  async onDeleteSkill(skill: IApiTechSkill): Promise<void> {
+    await this.facade.deleteContentItem('techSkills', skill);
     this.cdr.markForCheck();
   }
 

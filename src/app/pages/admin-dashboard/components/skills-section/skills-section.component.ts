@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
-import { IProjectAsset, IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
+import { IPaginationResponse, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { BadgeModule, ButtonModule, CardModule, FormModule, SpinnerModule } from '@coreui/angular';
 import {
@@ -29,8 +29,9 @@ import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/p
   ],
   templateUrl: './skills-section.component.html',
   styleUrl: './skills-section.component.scss',
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class AdminSkillsSectionComponent {
+export class AdminSkillsSectionComponent implements OnChanges {
   @Input({ required: true }) sectionTitle = '';
   @Input({ required: true }) createTitle = '';
   @Input({ required: true }) emptyMessage = '';
@@ -39,6 +40,10 @@ export class AdminSkillsSectionComponent {
   @Input() contentLoading = false;
   @Input() actionLoadingKey: string | null = null;
   @Input() pagination: IPaginationResponse<IApiTechSkill> | null = null;
+  /** When true, hides the list below the create form */
+  @Input() hideList = false;
+  /** When true, clicking the gear on a list card moves edit into the top form instead of inline */
+  @Input() useTopFormForEdit = false;
 
   @Output() createSkill = new EventEmitter<void>();
   @Output() saveSkill = new EventEmitter<IApiTechSkill>();
@@ -48,14 +53,49 @@ export class AdminSkillsSectionComponent {
   @Output() imageUploadError = new EventEmitter<string>();
   @Output() pageChange = new EventEmitter<number>();
 
+  @ViewChild('topFormRef') topFormRef?: ElementRef<HTMLElement>;
+
+  // ── Top-form edit mode (used when useTopFormForEdit = true) ─────────────
+  topFormMode: 'create' | 'edit' = 'create';
+  topFormEditSkill: IApiTechSkill | null = null;
+
+  // ── Inline edit (used when useTopFormForEdit = false) ───────────────────
   editingSkillId: string | null = null;
   private readonly snapshots = new Map<string, IApiTechSkill>();
 
+  constructor(private readonly cdr: ChangeDetectorRef) { }
+
+  ngOnChanges(): void {
+    // When the skills list refreshes after a save/create, clear the top-form edit state
+    if (this.topFormMode === 'edit' && this.topFormEditSkill) {
+      const stillExists = this.skills.some((s) => s._id === this.topFormEditSkill?._id);
+      if (!stillExists) {
+        this.resetTopForm();
+      }
+    }
+  }
+
   get draftLabel(): string {
+    if (this.topFormMode === 'edit' && this.topFormEditSkill) {
+      return this.getSkillLabel(this.topFormEditSkill);
+    }
     return this.draft.label?.es || this.draft.label?.en || this.draft.value || '';
   }
 
+  get topFormTitle(): string {
+    return this.topFormMode === 'edit' ? 'Editar skill' : this.createTitle;
+  }
+
+  get topFormCopy(): string {
+    return this.topFormMode === 'edit'
+      ? 'Modifica los datos de la skill y guarda los cambios.'
+      : 'El nombre se replica a espanol e ingles automaticamente.';
+  }
+
   get draftIconAssets(): IProjectAsset[] {
+    if (this.topFormMode === 'edit' && this.topFormEditSkill) {
+      return this.getSkillIconAssets(this.topFormEditSkill);
+    }
     const icon = this.draft.icon;
     if (!icon) {
       return [];
@@ -71,6 +111,9 @@ export class AdminSkillsSectionComponent {
   }
 
   get draftStorageKey(): string {
+    if (this.topFormMode === 'edit' && this.topFormEditSkill?._id) {
+      return `dashboard-tech-skill-edit-icon-${this.topFormEditSkill._id}`;
+    }
     return 'dashboard-tech-skill-draft-icon';
   }
 
@@ -91,22 +134,81 @@ export class AdminSkillsSectionComponent {
   }
 
   onDraftLabelChange(value: string): void {
-    this.assignSkillLabel(this.draft, value);
+    if (this.topFormMode === 'edit' && this.topFormEditSkill) {
+      this.assignSkillLabel(this.topFormEditSkill, value);
+    } else {
+      this.assignSkillLabel(this.draft, value);
+    }
   }
 
   onSkillLabelChange(skill: IApiTechSkill, value: string): void {
     this.assignSkillLabel(skill, value);
   }
 
+  onTopFormIconChange(assets: IProjectAsset[]): void {
+    if (this.topFormMode === 'edit' && this.topFormEditSkill) {
+      this.skillIconAssetsChange.emit({ skill: this.topFormEditSkill, assets });
+      if (assets[0]) {
+        this.topFormEditSkill.icon = assets[0];
+      }
+    } else {
+      this.draftIconAssetsChange.emit(assets);
+    }
+  }
+
+  // ── Top-form edit mode ────────────────────────────────────────────────────
+
+  startTopFormEdit(skill: IApiTechSkill): void {
+    this.topFormEditSkill = structuredClone(skill);
+    this.topFormMode = 'edit';
+    setTimeout(() => {
+      this.topFormRef?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }
+
+  cancelTopFormEdit(): void {
+    this.resetTopForm();
+  }
+
+  commitTopFormEdit(): void {
+    if (!this.topFormEditSkill) return;
+    const skill = this.topFormEditSkill;
+    this.assignSkillLabel(skill, this.getSkillLabel(skill));
+    this.saveSkill.emit(skill);
+    this.resetTopForm();
+  }
+
+  private resetTopForm(): void {
+    this.topFormMode = 'create';
+    this.topFormEditSkill = null;
+  }
+
+  // ── Inline edit (used when useTopFormForEdit = false) ───────────────────
+
   onSkillAction(skill: IApiTechSkill, action: AdminActionMenuAction): void {
     if (action === 'delete') {
-      this.deleteSkill.emit(skill);
+      this.onSkillCardDelete(skill);
       return;
     }
-
     if (action === 'edit') {
-      this.startEdit(skill);
+      this.onSkillCardGear(skill);
     }
+  }
+
+  onSkillCardGear(skill: IApiTechSkill): void {
+    if (this.useTopFormForEdit) {
+      this.startTopFormEdit(skill);
+    } else {
+      if (this.isEditing(skill)) {
+        this.cancelEdit(skill);
+      } else {
+        this.startEdit(skill);
+      }
+    }
+  }
+
+  onSkillCardDelete(skill: IApiTechSkill): void {
+    this.deleteSkill.emit(skill);
   }
 
   startEdit(skill: IApiTechSkill): void {
@@ -144,16 +246,22 @@ export class AdminSkillsSectionComponent {
     this.editingSkillId = null;
   }
 
-  getSkillLabel(skill: IApiTechSkill): string {
+  getSkillLabel(skill: IApiTechSkill | Partial<IApiTechSkill>): string {
     return skill.label?.es || skill.label?.en || skill.value || '';
   }
 
-  getSkillIconAssets(skill: IApiTechSkill): IProjectAsset[] {
+  getSkillIconAssets(skill: IApiTechSkill | Partial<IApiTechSkill>): IProjectAsset[] {
     if (!skill.icon) {
       return [];
     }
 
     return [typeof skill.icon === 'string' ? { url: skill.icon } : skill.icon];
+  }
+
+  getSkillIconUrl(skill: IApiTechSkill | Partial<IApiTechSkill>): string | null {
+    const assets = this.getSkillIconAssets(skill);
+    if (!assets[0]) return null;
+    return resolveImageAssetUrl(assets[0]);
   }
 
   isEditing(skill: IApiTechSkill): boolean {
