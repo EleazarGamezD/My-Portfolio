@@ -1,0 +1,182 @@
+<section>
+  <div class="base-shell">
+
+    <!-- Header -->
+    <div class="admin-page-header">
+      <div>
+        <p class="admin-page-kicker">{{ kicker }}</p>
+        <h2 class="admin-page-title">{{ pageTitle }}</h2>
+        <p class="admin-page-copy mb-0">Configura los colores y tipografías del portfolio público.</p>
+      </div>
+      <a routerLink="/admin/dashboard/themes" cButton color="secondary" variant="outline">
+        ← Volver a temas
+      </a>
+    </div>
+
+    @if (loading) {
+      <div class="d-flex justify-content-center py-5"><c-spinner /></div>
+    } @else if (notFound) {
+      <div cAlert color="danger">Tema no encontrado.</div>
+    } @else {
+
+      <div class="row g-4">
+
+        <!-- Left: form -->
+        <div class="col-lg-8">
+
+          <!-- Name -->
+          <c-card class="mb-4">
+            <c-card-header>Identificación</c-card-header>
+            <c-card-body>
+              <label class="form-label" for="themeName">Nombre del tema</label>
+              <input id="themeName" class="form-control" [(ngModel)]="name" placeholder="Ej: Azul Océano" />
+            </c-card-body>
+          </c-card>
+
+          <!-- Colors -->
+          <c-card class="mb-4">
+            <c-card-header>
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <span>Colores</span>
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                  <select class="form-select form-select-sm" [(ngModel)]="paletteMode" style="width: auto;">
+                    @for (m of paletteModes; track m.value) {
+                      <option [value]="m.value">{{ m.label }}</option>
+                    }
+                  </select>
+                  <button cButton color="primary" size="sm" type="button"
+                    [disabled]="generatingPalette"
+                    (click)="generatePalette()">
+                    @if (generatingPalette) { <c-spinner size="sm" class="me-1" /> }
+                    🎨 Generar paleta
+                  </button>
+                </div>
+              </div>
+              <small class="text-body-secondary d-block mt-1">
+                Escoge el modo de armonía y haz clic en "Generar paleta" para obtener colores complementarios a partir del <strong>Color principal</strong>.
+              </small>
+            </c-card-header>
+            <c-card-body>
+              <div class="row g-3">
+                @for (field of colorFields; track field.key) {
+                  <div class="col-12 col-sm-6 col-xl-4">
+                    <label class="form-label mb-1">
+                      {{ field.label }}
+                      <small class="text-body-secondary d-block fw-normal" style="font-size: 0.75rem;">{{ field.hint }}</small>
+                    </label>
+                    <div class="d-flex gap-2 align-items-center">
+                      <input type="color"
+                        class="form-control form-control-color flex-shrink-0"
+                        style="width: 44px; height: 38px; padding: 2px;"
+                        [(ngModel)]="colors[field.key]"
+                        [attr.aria-label]="field.label" />
+                      <input class="form-control form-control-sm font-monospace"
+                        [(ngModel)]="colors[field.key]"
+                        [attr.aria-label]="field.label + ' hex'" />
+                    </div>
+                  </div>
+                }
+              </div>
+            </c-card-body>
+          </c-card>
+
+          <!-- Fonts -->
+          <c-card class="mb-4">
+            <c-card-header>Tipografías</c-card-header>
+            <c-card-body>
+              <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                  <label class="form-label">Fuente principal <small class="text-body-secondary">(textos y párrafos)</small></label>
+                  <select class="form-select" [(ngModel)]="colors.primaryFont" aria-label="Fuente principal">
+                    @for (f of fontOptions; track f.value) {
+                      <option [value]="f.value">{{ f.label }}</option>
+                    }
+                  </select>
+                  <small class="text-body-secondary mt-1 d-block" [style.font-family]="colors.primaryFont">
+                    Vista previa: Este es el texto principal del sitio.
+                  </small>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label class="form-label">Fuente alternativa <small class="text-body-secondary">(títulos y headings)</small></label>
+                  <select class="form-select" [(ngModel)]="colors.altFont" aria-label="Fuente alternativa">
+                    @for (f of fontOptions; track f.value) {
+                      <option [value]="f.value">{{ f.label }}</option>
+                    }
+                  </select>
+                  <small class="text-body-secondary mt-1 d-block" [style.font-family]="colors.altFont">
+                    Vista previa: Portfolio Profesional
+                  </small>
+                </div>
+              </div>
+            </c-card-body>
+          </c-card>
+
+          <!-- Actions -->
+          <div class="d-flex gap-2">
+            <button cButton color="primary" type="button" [disabled]="saving" (click)="save()">
+              @if (saving) { <c-spinner size="sm" class="me-1" /> }
+              {{ mode === 'create' ? 'Crear tema' : 'Guardar cambios' }}
+            </button>
+            <button cButton color="secondary" variant="outline" type="button" [disabled]="saving" (click)="cancel()">
+              Cancelar
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Right: live preview -->
+        <div class="col-lg-4">
+          <div class="theme-preview-sticky">
+            <c-card>
+              <c-card-header>Vista previa</c-card-header>
+              <c-card-body class="p-0">
+                <div class="theme-preview"
+                  [style.--preview-base]="colors.baseColor"
+                  [style.--preview-bg]="colors.veryLightGray"
+                  [style.--preview-dark]="colors.darkGray"
+                  [style.--preview-mid]="colors.mediumGray"
+                  [style.--preview-border]="colors.lightMediumGray">
+
+                  <div class="theme-preview__header">
+                    <span class="theme-preview__logo" [style.font-family]="colors.altFont">{{ name || 'Mi Portfolio' }}</span>
+                    <div class="theme-preview__nav">
+                      <span>Proyectos</span>
+                      <span>Habilidades</span>
+                      <span>Contacto</span>
+                    </div>
+                  </div>
+
+                  <div class="theme-preview__hero">
+                    <p class="theme-preview__hero-title" [style.font-family]="colors.altFont">Diseñador & Desarrollador</p>
+                    <p class="theme-preview__hero-sub" [style.font-family]="colors.primaryFont">Construyendo experiencias digitales únicas con pasión y precisión.</p>
+                    <button class="theme-preview__btn">Ver proyectos</button>
+                  </div>
+
+                  <div class="theme-preview__section">
+                    <p class="theme-preview__section-title" [style.font-family]="colors.altFont">Proyectos destacados</p>
+                    <div class="theme-preview__cards">
+                      @for (card of [1,2,3]; track card) {
+                        <div class="theme-preview__card">
+                          <div class="theme-preview__card-img"></div>
+                          <p class="theme-preview__card-title" [style.font-family]="colors.primaryFont">Proyecto {{ card }}</p>
+                          <p class="theme-preview__card-text">Descripción breve del proyecto.</p>
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="theme-preview__palette-row">
+                    @for (field of colorFields; track field.key) {
+                      <div class="theme-preview__palette-chip" [style.background]="colors[field.key]" [title]="field.label + ': ' + colors[field.key]"></div>
+                    }
+                  </div>
+                </div>
+              </c-card-body>
+            </c-card>
+          </div>
+        </div>
+
+      </div>
+    }
+  </div>
+</section>

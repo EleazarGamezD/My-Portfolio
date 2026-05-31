@@ -255,6 +255,24 @@ export const routes: Routes = [
             ),
       },
       {
+        path: 'dashboard/themes/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/theme-form-page/theme-form-page.component')
+            .then(
+              (m) => m.AdminThemeFormPageComponent,
+            ),
+        data: { mode: 'create' },
+      },
+      {
+        path: 'dashboard/themes/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/theme-form-page/theme-form-page.component')
+            .then(
+              (m) => m.AdminThemeFormPageComponent,
+            ),
+        data: { mode: 'edit' },
+      },
+      {
         path: 'dashboard/dangerZone',
         loadComponent: () =>
           import('@pages/admin-dashboard/views/danger-zone-page/danger-zone-page.component')

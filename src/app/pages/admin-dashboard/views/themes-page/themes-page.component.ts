@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { DEFAULT_THEME_COLORS, FONT_OPTIONS, ITheme, IThemeColors } from '@core/interfaces/theme/theme.interface';
+import { RouterLink } from '@angular/router';
+import { ITheme } from '@core/interfaces/theme/theme.interface';
 import { ThemeService } from '@core/services/theme/theme.service';
 import {
   BadgeComponent,
@@ -11,31 +11,17 @@ import {
 } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
 
-function blankColors(): IThemeColors {
-  return { ...DEFAULT_THEME_COLORS };
-}
-
 @Component({
   selector: 'app-admin-themes-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonModule, CardModule, BadgeComponent, SpinnerComponent],
+  imports: [CommonModule, RouterLink, ButtonModule, CardModule, BadgeComponent, SpinnerComponent],
   templateUrl: './themes-page.component.html',
   styleUrl: './themes-page.component.scss',
 })
 export class AdminThemesPageComponent implements OnInit {
-  readonly fontOptions = FONT_OPTIONS;
-
   themes: ITheme[] = [];
   loading = true;
   actionLoadingId: string | null = null;
-
-  showCreateForm = false;
-  newThemeName = '';
-  newThemeColors: IThemeColors = blankColors();
-
-  editingId: string | null = null;
-  editName = '';
-  editColors: IThemeColors = blankColors();
 
   constructor(
     private readonly themeService: ThemeService,
@@ -55,56 +41,6 @@ export class AdminThemesPageComponent implements OnInit {
       this.toastr.error('No se pudieron cargar los temas.', 'Panel');
     } finally {
       this.loading = false;
-      this.cdr.detectChanges();
-    }
-  }
-
-  async createTheme(): Promise<void> {
-    if (!this.newThemeName.trim() || !this.newThemeColors.baseColor.trim()) return;
-    this.actionLoadingId = 'create';
-    try {
-      await this.themeService.createTheme({
-        name: this.newThemeName.trim(),
-        colors: { ...this.newThemeColors },
-      });
-      this.toastr.success('Tema creado.', 'Panel');
-      this.newThemeName = '';
-      this.newThemeColors = blankColors();
-      this.showCreateForm = false;
-      await this.loadThemes();
-    } catch {
-      this.toastr.error('No se pudo crear el tema.', 'Panel');
-    } finally {
-      this.actionLoadingId = null;
-      this.cdr.detectChanges();
-    }
-  }
-
-  startEdit(theme: ITheme): void {
-    this.editingId = theme._id ?? null;
-    this.editName = theme.name;
-    this.editColors = { ...DEFAULT_THEME_COLORS, ...theme.colors };
-  }
-
-  cancelEdit(): void {
-    this.editingId = null;
-  }
-
-  async saveEdit(theme: ITheme): Promise<void> {
-    if (!theme._id) return;
-    this.actionLoadingId = theme._id;
-    try {
-      await this.themeService.updateTheme(theme._id, {
-        name: this.editName.trim(),
-        colors: { ...this.editColors },
-      });
-      this.toastr.success('Tema actualizado.', 'Panel');
-      this.editingId = null;
-      await this.loadThemes();
-    } catch {
-      this.toastr.error('No se pudo actualizar el tema.', 'Panel');
-    } finally {
-      this.actionLoadingId = null;
       this.cdr.detectChanges();
     }
   }
