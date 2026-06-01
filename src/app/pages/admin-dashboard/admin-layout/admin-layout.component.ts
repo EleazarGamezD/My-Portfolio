@@ -6,6 +6,7 @@ import {
   RouterLink,
   RouterOutlet,
 } from '@angular/router';
+import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import {
@@ -86,7 +87,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         }),
       );
       this.subscriptions.add(
-        this.adminAuthService.watchStorage('token').subscribe((token) => {
+        this.adminAuthService.watchStorage(NgStorage.TOKEN).subscribe((token) => {
           if (!token) {
             void this.router.navigate(['/admin/login'], {
               queryParams: { sessionExpired: '1', redirectTo: this.router.url },

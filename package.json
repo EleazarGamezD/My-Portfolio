@@ -6,7 +6,7 @@
     "config": "node scripts/set-env.mjs",
     "start": "ng serve",
     "dev": "ng serve --watch --host 0.0.0.0",
-    "dev:remote": "ng serve --configuration development --host 0.0.0.0",
+    "dev:remote": "ng serve --configuration development --watch --host 0.0.0.0",
     "local": "ng serve --c local-development --watch --host 0.0.0.0",
     "build": "ng build",
     "build:prod": "ng build --configuration production --base-href /My-Portfolio/",

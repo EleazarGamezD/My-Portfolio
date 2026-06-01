@@ -23,54 +23,12 @@
 </c-sidebar>
 
 <div class="wrapper d-flex flex-column min-vh-100">
-  <!--   <header [cShadowOnScroll]="'sm'" class="header header-sticky p-0 shadow-sm admin-header" position="sticky">
-    <c-container breakpoint="xl" class="px-4 admin-header__container">
-      <button cHeaderToggler cSidebarToggle="adminSidebar" class="btn btn-ghost-dark admin-header__toggle" type="button">
-        <svg cIcon name="cilMenu" size="lg" title="Open navigation"></svg>
-      </button>
-
-      <div class="admin-header__meta">
-        <p class="admin-header__eyebrow mb-0">Portfolio Control Panel</p>
-        <h1 class="admin-header__title mb-0">{{ currentSectionLabel }}</h1>
-        <c-breadcrumb class="admin-header__breadcrumb mb-0">
-          <c-breadcrumb-item>
-            <a [routerLink]="['/admin/dashboard/overview']">Dashboard</a>
-          </c-breadcrumb-item>
-          <c-breadcrumb-item [active]="true">{{ currentSectionLabel }}</c-breadcrumb-item>
-        </c-breadcrumb>
-      </div>
-
-      <div class="admin-header__actions">
-        <div class="admin-header__user">
-          <span class="admin-header__user-name">{{ facade.currentAdmin?.displayName || facade.currentAdmin?.email || 'Admin user' }}</span>
-          <small class="admin-header__user-role">{{ facade.currentAdmin?.role || 'authenticated' }}</small>
-        </div>
-        <button cButton color="danger" variant="outline" type="button" (click)="logout()">
-          <svg cIcon name="cilAccountLogout" class="me-2" title="Logout"></svg>
-          Logout
-        </button>
-      </div>
-    </c-container>
-  </header> -->
-  <app-default-header
-    [cShadowOnScroll]="'sm'"
-    [currentSectionLabel]="currentSectionLabel"
-    class="mb-4 d-print-none header header-sticky p-0 shadow-sm"
-    position="sticky"
-    sidebarId="adminSidebar" />
+  <app-default-header [cShadowOnScroll]="'sm'" [currentSectionLabel]="currentSectionLabel" class="mb-4 d-print-none header header-sticky p-0 shadow-sm" position="sticky" sidebarId="adminSidebar" />
   <div class="body flex-grow-1">
     <c-container breakpoint="lg" class="h-auto px-4">
       <router-outlet />
     </c-container>
   </div>
-  <!--  <footer class="footer px-4 py-3 admin-footer">
-    <div>
-      <strong>Portfolio CMS</strong>
-      <span class="text-body-secondary"> Made with &hearts; by <a href="https://eleazargamez.dev" target="_blank" rel="noopener noreferrer">Eleazar Gámez</a>
-      </span>
-    </div>
-    <div class="ms-auto text-body-secondary">{{ currentYear }}</div>
-  </footer> -->
   <app-default-footer />
 </div>
 
