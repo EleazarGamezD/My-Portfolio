@@ -124,6 +124,14 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl(this.i18nService.replaceLanguageInUrl(this.router.url, language));
   }
 
+  get alternateLanguage(): AppLanguage {
+    return this.i18nService.currentLanguage() === 'es' ? 'en' : 'es';
+  }
+
+  get alternateLanguageLabel(): string {
+    return this.alternateLanguage.toUpperCase();
+  }
+
   t(key: Parameters<I18nService['t']>[0]) {
     return this.i18nService.t(key);
   }

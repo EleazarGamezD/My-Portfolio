@@ -57,6 +57,16 @@
                 {{ t('nav.cv') }}
               </button>
             </li>
+            <li class="nav-item d-lg-none d-flex language-mobile-item">
+              <button
+                type="button"
+                class="nav-link language-mobile-link"
+                (click)="switchLanguage(alternateLanguage)"
+                [attr.aria-label]="'Switch language to ' + alternateLanguageLabel"
+              >
+                <span>{{ alternateLanguageLabel }}</span>
+              </button>
+            </li>
             <li class="nav-item d-lg-none d-flex admin-mobile-item">
               <button type="button" class="nav-link admin-mobile-link" (click)="navigateToAdminLogin()" aria-label="Admin access">
                 <span>Admin Panel</span>
@@ -69,11 +79,8 @@
       <div class="col-auto col-lg-2 text-end">
         <div class="header-actions">
           <div class="language-switcher">
-            <button type="button" class="lang-btn" [class.active]="i18nService.currentLanguage() === 'es'" (click)="switchLanguage('es')">
-              ES
-            </button>
-            <button type="button" class="lang-btn" [class.active]="i18nService.currentLanguage() === 'en'" (click)="switchLanguage('en')">
-              EN
+            <button type="button" class="lang-btn" (click)="switchLanguage(alternateLanguage)" [attr.aria-label]="'Switch language to ' + alternateLanguageLabel">
+              {{ alternateLanguageLabel }}
             </button>
           </div>
           <div class="header-social-list" aria-label="Social links">

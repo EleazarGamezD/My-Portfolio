@@ -61,3 +61,77 @@
   color: rgba(255, 255, 255, 0.62);
   font-size: 0.72rem;
 }
+
+:host ::ng-deep .admin-confirmation-modal {
+  .modal-content {
+    border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent);
+    border-radius: 1.25rem;
+    background: color-mix(in srgb, #ffffff 88%, var(--base-color, #c84b31) 12%);
+    box-shadow: 0 28px 80px rgba(15, 23, 42, 0.22);
+  }
+
+  .modal-header,
+  .modal-footer {
+    border-color: color-mix(in srgb, var(--base-color, #c84b31) 14%, transparent);
+  }
+}
+
+.admin-confirmation-modal__header {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, #ffffff 82%, var(--base-color, #c84b31) 18%),
+      color-mix(in srgb, #ffffff 92%, var(--dark-gray, #2e4052) 8%)
+    );
+
+  h5 {
+    color: var(--dark-gray, #2e4052);
+    font-weight: 700;
+  }
+}
+
+.admin-confirmation-modal__body {
+  color: color-mix(in srgb, var(--dark-gray, #2e4052) 88%, #000000 12%);
+  line-height: 1.65;
+}
+
+.admin-confirmation-modal__footer {
+  gap: 0.75rem;
+}
+
+.admin-confirmation-modal__cancel,
+.admin-confirmation-modal__confirm {
+  border-radius: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.admin-confirmation-modal__cancel {
+  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 35%, transparent) !important;
+  background: transparent !important;
+  color: var(--dark-gray, #2e4052) !important;
+
+  &:hover {
+    background: color-mix(in srgb, var(--dark-gray, #2e4052) 8%, #ffffff 92%) !important;
+    box-shadow: 0 12px 30px color-mix(in srgb, var(--dark-gray, #2e4052) 14%, transparent);
+  }
+}
+
+.admin-confirmation-modal__confirm {
+  border: 1px solid var(--base-color, #c84b31) !important;
+  background: linear-gradient(
+    135deg,
+    var(--base-color, #c84b31),
+    color-mix(in srgb, var(--base-color, #c84b31) 72%, var(--dark-gray, #2e4052) 28%)
+  ) !important;
+  color: #fff8f4 !important;
+
+  &:hover {
+    box-shadow: 0 14px 32px color-mix(in srgb, var(--base-color, #c84b31) 30%, transparent);
+  }
+}

@@ -74,18 +74,18 @@
   <app-default-footer />
 </div>
 
-<c-modal alignment="center" backdrop="static" [visible]="facade.confirmationDialog.visible" (visibleChange)="facade.onConfirmationVisibleChange($event)">
-  <c-modal-header>
+<c-modal class="admin-confirmation-modal" alignment="center" backdrop="static" [visible]="facade.confirmationDialog.visible" (visibleChange)="facade.onConfirmationVisibleChange($event)">
+  <c-modal-header class="admin-confirmation-modal__header">
     <h5 cModalTitle>{{ facade.confirmationDialog.title }}</h5>
   </c-modal-header>
-  <c-modal-body>
+  <c-modal-body class="admin-confirmation-modal__body">
     {{ facade.confirmationDialog.message }}
   </c-modal-body>
-  <c-modal-footer>
-    <button cButton color="secondary" variant="outline" type="button" (click)="facade.cancelPendingAction()">
+  <c-modal-footer class="admin-confirmation-modal__footer">
+    <button cButton class="admin-confirmation-modal__cancel" type="button" (click)="facade.cancelPendingAction()">
       Cancel
     </button>
-    <button cButton color="danger" type="button" (click)="facade.confirmPendingAction()">
+    <button cButton class="admin-confirmation-modal__confirm" type="button" (click)="facade.confirmPendingAction()">
       {{ facade.confirmationDialog.confirmLabel }}
     </button>
   </c-modal-footer>
