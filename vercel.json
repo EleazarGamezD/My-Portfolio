@@ -2,7 +2,11 @@
   "rewrites": [
     {
       "source": "/admin/(.*)",
-      "destination": "/admin"
+      "destination": "/index.csr.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/index.csr.html"
     }
   ]
 }

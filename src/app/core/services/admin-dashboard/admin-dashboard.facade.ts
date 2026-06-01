@@ -209,7 +209,7 @@ export class AdminDashboardFacade {
       this.ngZone.run(() => {
         this.projectsPagination = projects;
         this.projects = projects.data;
-        this.profile = this.normalizeProfile(profile);
+        this.profile = this.normalizeProfile(profile) ?? this.createEmptyProfileDraft();
         this.techSkills = techSkills;
         this.experience = experience;
         this.testimonials = testimonials;
@@ -823,6 +823,24 @@ export class AdminDashboardFacade {
       mimeType: '',
       base64: '',
       metadata: {},
+    };
+  }
+
+  private createEmptyProfileDraft(): IApiProfile {
+    return {
+      slug: 'main-profile',
+      label: { es: '', en: '' },
+      title: { es: '', en: '' },
+      description: { es: '', en: '' },
+      location: '',
+      availability: '',
+      email: '',
+      phone: '',
+      metadata: {
+        about: { es: '', en: '' },
+        heroSlides: [],
+        portfolioMedia: this.normalizePortfolioMedia(),
+      },
     };
   }
 
