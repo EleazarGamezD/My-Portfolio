@@ -249,7 +249,11 @@ El CMS administrativo está integrado en el mismo frontend. Para acceder:
 
 1. Ve a `https://tu-portfolio.vercel.app/admin` (o `http://localhost:4200/admin` en desarrollo).
 2. Ingresa con las credenciales del usuario administrador:
-   - Si usaste el seed inicial (`npm run seed:starter` en el backend), se crea un usuario bootstrap temporal que te pedirá crear tu cuenta definitiva al primer login.
+   - Si el backend se está ejecutando por primera vez sobre una base vacía, se auto-inicializa y crea un usuario bootstrap temporal:
+     - Email: `admin@portfolio.local`
+     - Password: `Admin@1234!`
+   - Ese usuario temporal está obligado a pasar por el flujo `setup-account` en el primer login para registrar el usuario administrador real.
+   - Cuando termina ese proceso, el backend elimina automáticamente el usuario bootstrap.
    - Si creaste un usuario manualmente vía API, usa esas credenciales.
 3. El CMS permite editar todo el contenido del portfolio: perfil, proyectos, experiencia laboral, skills, temas visuales, etc.
 
