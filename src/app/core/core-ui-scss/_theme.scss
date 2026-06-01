@@ -11,6 +11,15 @@ body {
   --cui-info: var(--base-color, #c84b31);
   --cui-body-bg: var(--very-light-gray, #ecf0f1);
   --cui-body-color: var(--dark-gray, #2e4052);
+  --cui-secondary-bg: #ffffff;
+  --cui-tertiary-bg: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 82%, white 18%);
+  --cui-border-color: color-mix(in srgb, var(--dark-gray, #2e4052) 14%, white 86%);
+  --cui-emphasis-color: var(--dark-gray, #2e4052);
+  --cui-card-bg: #ffffff;
+  --cui-card-color: var(--dark-gray, #2e4052);
+  --cui-card-border-color: color-mix(in srgb, var(--dark-gray, #2e4052) 10%, white 90%);
+  --cui-modal-bg: #ffffff;
+  --cui-modal-color: var(--dark-gray, #2e4052);
   --cui-link-color: var(--base-color, #c84b31);
   --cui-link-hover-color: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
   --cui-header-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 76%, var(--base-color, #c84b31) 24%);

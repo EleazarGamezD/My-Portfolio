@@ -59,7 +59,7 @@
 .dz-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.52);
+  background: rgba(15, 23, 42, 0.48);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,7 +67,9 @@
 }
 
 .dz-dialog {
-  background: var(--cui-modal-bg, var(--cui-card-bg));
+  background: var(--cui-card-bg) !important;
+  color: var(--cui-body-color);
+  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent);
   border-radius: 1rem;
   padding: 2rem 2.2rem;
   max-width: 440px;
@@ -91,6 +93,10 @@
     color: var(--cui-secondary-color);
     margin-bottom: 1.5rem;
     line-height: 1.55;
+
+    :is(strong, b) {
+      color: var(--cui-emphasis-color);
+    }
   }
 
   &__actions {
