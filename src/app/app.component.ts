@@ -54,7 +54,6 @@ export class AppComponent implements OnInit {
         window.dispatchEvent(new CustomEvent('router-navigation-end', {
           detail: { url: this.router.url },
         }));
-        console.log('🧭 Navegación completada a:', this.router.url);
       }
     });
   }
