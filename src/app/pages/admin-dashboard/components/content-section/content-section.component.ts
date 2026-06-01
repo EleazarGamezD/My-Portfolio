@@ -56,11 +56,11 @@ export class AdminContentSectionComponent {
     }
 
     get shouldShowCreateBox(): boolean {
-        return true;
+        return this.variant !== 'socialLinks';
     }
 
     get shouldShowDeleteAction(): boolean {
-        return true;
+        return this.variant !== 'socialLinks';
     }
 
     getIconClass(item: IApiContentItem): string {
