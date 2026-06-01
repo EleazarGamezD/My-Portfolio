@@ -60,6 +60,7 @@ export class GlobalHttpService extends StorageService {
       const response = await this.makeHttpRequest<T>(route, payload, method);
       return this.ngZone.run(() => response);
     } catch (error) {
+      await this.handleAuthFailure(error);
       console.error('Error:', error);
       throw this.ngZone.run(() => error);
     }
@@ -99,5 +100,35 @@ export class GlobalHttpService extends StorageService {
     } finally {
       this.requestStateService.endRequest();
     }
+  }
+
+  private async handleAuthFailure(error: unknown): Promise<void> {
+    if (!(error instanceof HttpErrorResponse) || error.status !== 401 || typeof window === 'undefined') {
+      return;
+    }
+
+    const currentPath = window.location.pathname;
+    const isProtectedAdminRoute =
+      currentPath.startsWith('/admin')
+      && !currentPath.startsWith('/admin/login')
+      && !currentPath.startsWith('/admin/forgot-password')
+      && !currentPath.startsWith('/admin/reset-password')
+      && !currentPath.startsWith('/admin/setup-account');
+
+    if (!isProtectedAdminRoute) {
+      return;
+    }
+
+    await this.deleteStorage(NgStorage.TOKEN);
+    await this.deleteStorage(NgStorage.USER_EMAIL);
+    await this.deleteStorage(NgStorage.TOKEN_EXPIRES_AT);
+
+    const redirectTo = encodeURIComponent(
+      `${window.location.pathname}${window.location.search}${window.location.hash}`,
+    );
+
+    this.ngZone.runOutsideAngular(() => {
+      window.location.assign(`/admin/login?sessionExpired=1&redirectTo=${redirectTo}`);
+    });
   }
 }

@@ -17,6 +17,7 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
     password = '';
     loading = false;
     error: string | null = null;
+    infoMessage: string | null = null;
     private readonly adminStylesheetId = 'admin-coreui-stylesheet';
 
     constructor(
@@ -28,6 +29,9 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
 
     async ngOnInit(): Promise<void> {
         this.enableAdminThemeContext();
+        this.infoMessage = this.route.snapshot.queryParamMap.get('sessionExpired')
+            ? 'La sesión expiró o ya no es válida. Ingresa de nuevo para volver al dashboard.'
+            : null;
 
         if (await this.adminAuthService.isAuthenticated()) {
             await this.router.navigateByUrl(this.getRedirectTarget());

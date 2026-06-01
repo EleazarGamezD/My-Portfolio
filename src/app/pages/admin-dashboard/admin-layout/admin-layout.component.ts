@@ -25,7 +25,7 @@ import {
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { NgScrollbar } from 'ngx-scrollbar';
-import { filter } from 'rxjs';
+import { Subscription, filter } from 'rxjs';
 import { ADMIN_SECTIONS, isAdminSection } from '../admin-sections';
 import { adminNavItems } from './admin-layout.nav';
 import { DefaultFooterComponent } from './default-footer/default-footer.component';
@@ -61,6 +61,7 @@ import { DefaultHeaderComponent } from './default-header/default-header.componen
 export class AdminLayoutComponent implements OnInit, OnDestroy {
   readonly navItems: INavData[] = adminNavItems;
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
+  private readonly subscriptions = new Subscription();
   currentYear = new Date().getFullYear();
   currentSectionLabel = 'Overview';
 
@@ -77,17 +78,29 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     try {
       await this.facade.ensureCurrentAdmin();
       this.syncSectionFromUrl(this.router.url);
-      this.router.events.pipe(
-        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      ).subscribe((event) => {
-        this.syncSectionFromUrl(event.urlAfterRedirects);
-      });
+      this.subscriptions.add(
+        this.router.events.pipe(
+          filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        ).subscribe((event) => {
+          this.syncSectionFromUrl(event.urlAfterRedirects);
+        }),
+      );
+      this.subscriptions.add(
+        this.adminAuthService.watchStorage('token').subscribe((token) => {
+          if (!token) {
+            void this.router.navigate(['/admin/login'], {
+              queryParams: { sessionExpired: '1', redirectTo: this.router.url },
+            });
+          }
+        }),
+      );
     } catch (error) {
       console.error('Failed to load current admin for layout:', error);
     }
   }
 
   ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
     this.disableAdminScrolling();
     this.disableAdminThemeStyles();
   }

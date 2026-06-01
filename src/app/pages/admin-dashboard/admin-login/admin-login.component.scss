@@ -106,6 +106,18 @@
   border-radius: 1rem;
 }
 
+.admin-back-link {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.admin-back-link:hover,
+.admin-back-link:focus-visible {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
 @media (max-width: 767.98px) {
   .admin-shell {
     padding: 28px 0;

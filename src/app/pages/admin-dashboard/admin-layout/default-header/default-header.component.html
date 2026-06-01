@@ -11,15 +11,11 @@
     </c-header-nav>
 
     <c-header-nav class="d-none d-md-flex ms-auto">
-      <a cNavLink>
-        <svg cIcon class="my-1" name="cilBell" size="lg"></svg>
-      </a>
-      <a cNavLink>
-        <svg cIcon class="my-1" name="cilList" size="lg"></svg>
-      </a>
-      <a cNavLink>
-        <svg cIcon class="my-1" name="cilEnvelopeOpen" size="lg"></svg>
-      </a>
+      <c-nav-item>
+        <a cNavLink routerLink="/" class="admin-header__portfolio-link">
+          Volver al portfolio
+        </a>
+      </c-nav-item>
     </c-header-nav>
 
     <c-header-nav class="ms-auto ms-md-0">
@@ -60,7 +56,7 @@
       </li>
       <li>
         <div class="admin-user-meta">
-          <strong>{{ currentAdminName }}</strong>
+          <strong>{{ currentAdminName }}</strong> <br />
           <small>{{ currentAdminRole }}</small>
         </div>
       </li>

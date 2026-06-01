@@ -12,6 +12,10 @@
               {{ error }}
             </div>
 
+            <div *ngIf="infoMessage" class="alert alert-warning" role="alert">
+              {{ infoMessage }}
+            </div>
+
             <div class="mb-3">
               <label for="adminEmail" class="form-label">Email</label>
               <input id="adminEmail" type="email" class="form-control" [(ngModel)]="email" placeholder="admin@portfolio.com" autocomplete="username" />
@@ -28,6 +32,10 @@
 
             <div class="text-center mt-3">
               <a routerLink="/admin/forgot-password" class="text-muted small">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <div class="text-center mt-2">
+              <a routerLink="/" class="admin-back-link">← Volver al portfolio</a>
             </div>
           </div>
         </div>
