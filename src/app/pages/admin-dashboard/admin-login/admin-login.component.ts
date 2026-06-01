@@ -67,7 +67,6 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
     private getRedirectTarget(): string {
         return this.route.snapshot.queryParamMap.get('redirectTo') || '/admin/dashboard/overview';
     }
-
     private enableAdminThemeContext(): void {
         if (typeof document === 'undefined') {
             return;

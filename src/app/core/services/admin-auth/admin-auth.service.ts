@@ -119,6 +119,36 @@ export class AdminAuthService extends GlobalHttpService {
     );
   }
 
+  async getSeedStatus() {
+    return this.makeRequest<{
+      hasAdminUsers: boolean;
+      hasStarterContent: boolean;
+      hasThemes: boolean;
+      isFullyConfigured: boolean;
+      shouldRunStarterSeed: boolean;
+      shouldCreateBootstrapAdmin: boolean;
+      shouldSeedThemes: boolean;
+    }, null>(API_ADMIN_ROUTES.seedStatus, null, RequestMethod.GET);
+  }
+
+  async ensureInitialPlatformSetup() {
+    const status = await this.getSeedStatus();
+
+    if (!status.shouldRunStarterSeed && !status.shouldCreateBootstrapAdmin && !status.shouldSeedThemes) {
+      return {
+        ensured: false,
+        status,
+      };
+    }
+
+    const result = await this.runSeedInitial('starter');
+    return {
+      ensured: true,
+      status,
+      result,
+    };
+  }
+
   async isAuthenticated() {
     const token = await this.getStorage(NgStorage.TOKEN);
 

@@ -10,6 +10,7 @@ export const API_ADMIN_ROUTES = {
   users: `${environment.apiUrl}/admin/users`,
   updateUser: (id: string) => `${environment.apiUrl}/admin/users/${id}`,
   dashboardMetrics: `${environment.apiUrl}/admin/dashboard/metrics`,
+  seedStatus: `${environment.apiUrl}/admin/seed-status`,
   seedInitial: `${environment.apiUrl}/admin/seed-initial`,
   seedDemoPersonal: `${environment.apiUrl}/admin/seed-demo-personal`,
 };
