@@ -28,6 +28,13 @@ function localizedRoute(lang: AppLanguage): Route {
   };
 }
 
+function localizedAdminPublicRoute(lang: AppLanguage, adminPath: string, loadComponent: NonNullable<Route['loadComponent']>): Route {
+  return {
+    path: `${lang}/${adminPath}`,
+    loadComponent,
+  };
+}
+
 export const routes: Routes = [
   {
     path: '',
@@ -42,6 +49,14 @@ export const routes: Routes = [
           (m) => m.AdminLoginComponent,
         ),
   },
+  localizedAdminPublicRoute('es', 'admin/login', () =>
+    import('@pages/admin-dashboard/admin-login/admin-login.component')
+      .then((m) => m.AdminLoginComponent),
+  ),
+  localizedAdminPublicRoute('en', 'admin/login', () =>
+    import('@pages/admin-dashboard/admin-login/admin-login.component')
+      .then((m) => m.AdminLoginComponent),
+  ),
   {
     path: 'admin/setup-account',
     loadComponent: () =>
@@ -50,6 +65,14 @@ export const routes: Routes = [
           (m) => m.AdminSetupAccountComponent,
         ),
   },
+  localizedAdminPublicRoute('es', 'admin/setup-account', () =>
+    import('@pages/admin-dashboard/admin-setup-account/admin-setup-account.component')
+      .then((m) => m.AdminSetupAccountComponent),
+  ),
+  localizedAdminPublicRoute('en', 'admin/setup-account', () =>
+    import('@pages/admin-dashboard/admin-setup-account/admin-setup-account.component')
+      .then((m) => m.AdminSetupAccountComponent),
+  ),
   {
     path: 'admin/forgot-password',
     loadComponent: () =>
@@ -58,6 +81,14 @@ export const routes: Routes = [
           (m) => m.AdminForgotPasswordComponent,
         ),
   },
+  localizedAdminPublicRoute('es', 'admin/forgot-password', () =>
+    import('@pages/admin-dashboard/admin-forgot-password/admin-forgot-password.component')
+      .then((m) => m.AdminForgotPasswordComponent),
+  ),
+  localizedAdminPublicRoute('en', 'admin/forgot-password', () =>
+    import('@pages/admin-dashboard/admin-forgot-password/admin-forgot-password.component')
+      .then((m) => m.AdminForgotPasswordComponent),
+  ),
   {
     path: 'admin/reset-password',
     loadComponent: () =>
@@ -66,6 +97,14 @@ export const routes: Routes = [
           (m) => m.AdminResetPasswordComponent,
         ),
   },
+  localizedAdminPublicRoute('es', 'admin/reset-password', () =>
+    import('@pages/admin-dashboard/admin-reset-password/admin-reset-password.component')
+      .then((m) => m.AdminResetPasswordComponent),
+  ),
+  localizedAdminPublicRoute('en', 'admin/reset-password', () =>
+    import('@pages/admin-dashboard/admin-reset-password/admin-reset-password.component')
+      .then((m) => m.AdminResetPasswordComponent),
+  ),
   {
     path: 'admin',
     canActivate: [adminAuthGuard],

@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/(es|en)/admin/(.*)",
+      "destination": "/index.csr.html"
+    },
+    {
+      "source": "/(es|en)/admin",
+      "destination": "/index.csr.html"
+    },
+    {
       "source": "/admin/(.*)",
       "destination": "/index.csr.html"
     },
