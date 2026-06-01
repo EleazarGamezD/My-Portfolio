@@ -64,7 +64,7 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     this.mode = (this.route.snapshot.data['mode'] as ProjectFormMode) || 'create';
-    await this.facade.ensureContentReady();
+    await this.facade.loadProjectEditorDependencies();
     this.cdr.detectChanges();
 
     if (this.mode === 'create') {

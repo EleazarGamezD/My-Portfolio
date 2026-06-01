@@ -244,7 +244,7 @@ export class ContentService extends GlobalHttpService {
     return response;
   }
 
-  private invalidateResourceCache(resourceName: string) {
+  invalidateResourceCache(resourceName: string) {
     switch (resourceName) {
       case 'profile':
         this.profilePromise = null;
@@ -267,5 +267,14 @@ export class ContentService extends GlobalHttpService {
       default:
         return;
     }
+  }
+
+  invalidateAllContentCache() {
+    this.profilePromise = null;
+    this.techSkillsPromise = null;
+    this.experiencePromise = null;
+    this.testimonialsPromise = null;
+    this.socialLinksPromise = null;
+    this.resumesPromise = null;
   }
 }

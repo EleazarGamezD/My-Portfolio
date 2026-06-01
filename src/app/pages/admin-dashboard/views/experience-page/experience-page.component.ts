@@ -18,7 +18,7 @@ export class AdminExperiencePageComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    await this.facade.ensureContentReady();
+    await this.facade.loadExperienceContent();
     this.cdr.detectChanges();
   }
 }

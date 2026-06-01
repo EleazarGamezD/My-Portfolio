@@ -57,12 +57,11 @@ export class AdminContentPageComponent implements OnInit {
     this.config = this.route.snapshot.data as AdminContentPageData;
     if (this.config.variant === 'skills') {
       await this.loadSkillPage();
-      await this.facade.ensureContentReady();
       this.cdr.detectChanges();
       return;
     }
 
-    await this.facade.ensureContentReady();
+    await this.loadCurrentContentSection();
     this.cdr.detectChanges();
   }
 
@@ -105,6 +104,20 @@ export class AdminContentPageComponent implements OnInit {
 
   async changeSkillPage(page: number): Promise<void> {
     await this.loadSkillPage(page);
+  }
+
+  private async loadCurrentContentSection(): Promise<void> {
+    switch (this.config.resourceName) {
+      case 'experience':
+        await this.facade.loadExperienceContent();
+        return;
+      case 'testimonials':
+        await this.facade.loadTestimonialsContent();
+        return;
+      case 'socialLinks':
+        await this.facade.loadSocialLinksContent();
+        return;
+    }
   }
 
   private async loadSkillPage(page = this.skillPagination.currentPage): Promise<void> {

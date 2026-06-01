@@ -17,7 +17,7 @@ export class AdminPortfolioMediaPageComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    await this.facade.ensureContentReady();
+    await this.facade.loadProfileContent();
     this.cdr.detectChanges();
   }
 }

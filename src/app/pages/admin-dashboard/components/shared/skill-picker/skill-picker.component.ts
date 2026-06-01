@@ -41,7 +41,7 @@ export class SkillPickerComponent implements OnInit, OnChanges, DoCheck {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    await this.facade.ensureContentReady();
+    await this.facade.loadTechSkillsContent();
     this.cdr.markForCheck();
   }
 
