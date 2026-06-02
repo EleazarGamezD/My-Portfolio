@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiProfile } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -10,7 +10,8 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   selector: 'app-small-about-resume',
   imports: [],
   templateUrl: './small-about-resume.component.html',
-  styleUrl: './small-about-resume.component.scss'
+  styleUrl: './small-about-resume.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SmallAboutResumeComponent implements OnInit {
   profile: IApiProfile | null = null;
@@ -27,7 +28,7 @@ export class SmallAboutResumeComponent implements OnInit {
     } catch (error) {
       console.warn('Failed to load profile content from API.', error);
     } finally {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.markForCheck();
       requestTemplateReinit();
     }
   }

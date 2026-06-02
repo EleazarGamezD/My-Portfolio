@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, DestroyRef, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import {
@@ -19,6 +19,7 @@ import { filter } from 'rxjs/operators';
   imports: [],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
   profileContent: IApiProfile | null = null;
@@ -40,6 +41,7 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     public i18nService: I18nService,
     private readonly contentService: ContentService,
+    private readonly cdr: ChangeDetectorRef,
     private readonly destroyRef: DestroyRef,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
@@ -59,6 +61,8 @@ export class HeaderComponent implements OnInit {
       this.profileContent = profile;
     } catch (error) {
       console.warn('Failed to load header content from API.', error);
+    } finally {
+      this.cdr.markForCheck();
     }
 
     this.router.events
@@ -141,6 +145,10 @@ export class HeaderComponent implements OnInit {
       resolveImageAssetUrl(this.profileContent?.metadata?.portfolioMedia?.headerLogo) ||
       createPortfolioPlaceholder('Logo', 640, 240)
     );
+  }
+
+  trackSocial(_: number, item: IApiContentItem): string {
+    return item.slug || item.value || item.href || `${_}`;
   }
 
   private getScrollToFromUrl(url: string): string | null {

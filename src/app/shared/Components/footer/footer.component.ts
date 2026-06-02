@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   IApiContentItem,
@@ -14,7 +14,8 @@ import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placehol
   selector: 'app-footer',
   imports: [],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss'
+  styleUrl: './footer.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent implements OnInit {
   date = new Date().getFullYear();
@@ -36,6 +37,7 @@ export class FooterComponent implements OnInit {
     private readonly router: Router,
     public i18nService: I18nService,
     private readonly contentService: ContentService,
+    private readonly cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private readonly platformId: object,
   ) { }
 
@@ -50,6 +52,8 @@ export class FooterComponent implements OnInit {
       this.profileContent = profile;
     } catch (error) {
       console.warn('Failed to load footer content from API.', error);
+    } finally {
+      this.cdr.markForCheck();
     }
   }
 
@@ -79,6 +83,10 @@ export class FooterComponent implements OnInit {
 
   get profileOwnerName() {
     return this.profileContent?.label?.es || this.profileContent?.label?.en || 'Portfolio Owner';
+  }
+
+  trackSocial(_: number, item: IApiContentItem): string {
+    return item.slug || item.value || item.href || `${_}`;
   }
 
   private scrollToElement(elementId: string) {
