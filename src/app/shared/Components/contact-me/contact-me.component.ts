@@ -7,7 +7,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { IApiProfile } from '@core/interfaces/content/content.interface';
+import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { EmailService } from '@services/email/email.service';
 import { RecaptchaService } from '@services/recaptcha/recaptcha.service';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
@@ -24,6 +27,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class ContactMeComponent implements OnInit {
   contactForm!: FormGroup;
+  profile: IApiProfile | null = null;
   siteKey: string = environment.reCaptchaSiteKey;
   recaptcha: string = '';
   isBrowser: boolean;
@@ -34,6 +38,7 @@ export class ContactMeComponent implements OnInit {
     private recaptchaV3Service: ReCaptchaV3Service,
     private recaptchaService: RecaptchaService,
     private toastr: ToastrService,
+    private readonly contentService: ContentService,
     public i18nService: I18nService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
@@ -56,6 +61,8 @@ export class ContactMeComponent implements OnInit {
       subject: ['', Validators.required],
       message: ['', Validators.required],
     });
+
+    void this.loadProfile();
   }
 
   async onSubmit() {
@@ -114,5 +121,24 @@ export class ContactMeComponent implements OnInit {
 
   t(key: string) {
     return this.i18nService.t(key);
+  }
+
+  get sectionBackgroundImage() {
+    if (this.profile?.metadata?.portfolioMedia?.contactSectionTransparentBackground) {
+      return 'none';
+    }
+
+    const backgroundUrl =
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.contactSectionBackground) ||
+      'images/demo-spa-salon-home-bg-01.jpg';
+    return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
+  }
+
+  private async loadProfile(): Promise<void> {
+    try {
+      this.profile = await this.contentService.getProfile();
+    } catch (error) {
+      console.warn('Failed to load profile content for contact section.', error);
+    }
   }
 }

@@ -51,20 +51,12 @@
 <body class="overflow-x-hidden" data-mobile-nav-style="classic">
   <app-root></app-root>
 
-  <!-- Script para reinicializar componentes después de cambios de ruta -->
   <script>
-
-    // Esta función permite reinicializar los componentes manualmente si es necesario
     function reinitTemplateComponents() {
       if (window.templateBridge && typeof window.templateBridge.reinitAll === 'function') {
-        window.templateBridge.reinitAll();
+        window.dispatchEvent(new CustomEvent('template-reinit'));
       }
     }
-
-    // Detectar cuando Angular ha terminado de renderizar
-    window.addEventListener('DOMContentLoaded', function () {
-      console.log('🚀 DOM cargado, esperando inicialización de Angular...');
-    });
   </script>
 </body>
 </html>

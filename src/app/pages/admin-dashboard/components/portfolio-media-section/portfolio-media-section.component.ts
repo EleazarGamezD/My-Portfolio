@@ -5,6 +5,21 @@ import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { ButtonModule, CardModule, SpinnerModule } from '@coreui/angular';
 import { PhotoEditorComponent } from '../shared/photo-editor/photo-editor.component';
 
+type PortfolioMediaAssetField = keyof Omit<
+  IApiPortfolioMedia,
+  | 'testimonialLogos'
+  | 'aboutSectionTransparentBackground'
+  | 'projectsSectionTransparentBackground'
+  | 'testimonialsSectionTransparentBackground'
+  | 'contactSectionTransparentBackground'
+>;
+
+type PortfolioMediaBooleanField =
+  | 'aboutSectionTransparentBackground'
+  | 'projectsSectionTransparentBackground'
+  | 'testimonialsSectionTransparentBackground'
+  | 'contactSectionTransparentBackground';
+
 @Component({
   selector: 'app-admin-portfolio-media-section',
   standalone: true,
@@ -29,21 +44,33 @@ export class AdminPortfolioMediaSectionComponent {
     this.profile.metadata.heroSlides ??= [];
     this.profile.metadata.portfolioMedia ??= {
       testimonialLogos: [],
+      aboutSectionTransparentBackground: false,
+      projectsSectionTransparentBackground: false,
+      testimonialsSectionTransparentBackground: false,
+      contactSectionTransparentBackground: false,
     };
     this.profile.metadata.portfolioMedia.testimonialLogos ??= [];
+    this.profile.metadata.portfolioMedia.aboutSectionTransparentBackground ??= false;
+    this.profile.metadata.portfolioMedia.projectsSectionTransparentBackground ??= false;
+    this.profile.metadata.portfolioMedia.testimonialsSectionTransparentBackground ??= false;
+    this.profile.metadata.portfolioMedia.contactSectionTransparentBackground ??= false;
 
     return this.profile.metadata.portfolioMedia;
   }
 
-  setSingleAsset(field: keyof Omit<IApiPortfolioMedia, 'testimonialLogos'>, assets: IProjectAsset[]) {
+  setSingleAsset(field: PortfolioMediaAssetField, assets: IProjectAsset[]) {
     this.portfolioMedia[field] = assets[0] ?? null;
+  }
+
+  setBooleanField(field: PortfolioMediaBooleanField, value: boolean) {
+    this.portfolioMedia[field] = value;
   }
 
   setTestimonialLogos(assets: IProjectAsset[]) {
     this.portfolioMedia.testimonialLogos = [...assets];
   }
 
-  getSingleAsset(field: keyof Omit<IApiPortfolioMedia, 'testimonialLogos'>): IProjectAsset[] {
+  getSingleAsset(field: PortfolioMediaAssetField): IProjectAsset[] {
     const asset = this.portfolioMedia[field];
 
     if (!asset) {
@@ -57,5 +84,9 @@ export class AdminPortfolioMediaSectionComponent {
     return (this.portfolioMedia.testimonialLogos ?? []).map((asset) =>
       typeof asset === 'string' ? { url: asset } : asset,
     );
+  }
+
+  isTransparentBackground(field: PortfolioMediaBooleanField): boolean {
+    return this.portfolioMedia[field] ?? false;
   }
 }

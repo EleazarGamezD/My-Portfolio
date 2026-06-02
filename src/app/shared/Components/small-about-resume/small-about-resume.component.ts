@@ -20,7 +20,7 @@ export class SmallAboutResumeComponent implements OnInit {
     public i18nService: I18nService,
     private readonly contentService: ContentService,
     private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   async ngOnInit() {
     try {
@@ -36,27 +36,27 @@ export class SmallAboutResumeComponent implements OnInit {
   get titleText() {
     return this.profile
       ? this.i18nService.selectText(
-          this.profile.title?.es ?? '',
-          this.profile.title?.en ?? this.profile.title?.es ?? '',
-        )
+        this.profile.title?.es ?? '',
+        this.profile.title?.en ?? this.profile.title?.es ?? '',
+      )
       : '';
   }
 
   get primaryDescription() {
     return this.profile
       ? this.i18nService.selectText(
-          this.profile.description?.es ?? '',
-          this.profile.description?.en ?? this.profile.description?.es ?? '',
-        )
+        this.profile.description?.es ?? '',
+        this.profile.description?.en ?? this.profile.description?.es ?? '',
+      )
       : '';
   }
 
   get secondaryDescription() {
     return this.profile
       ? this.i18nService.selectText(
-          this.profile.metadata?.about?.es ?? '',
-          this.profile.metadata?.about?.en ?? this.profile.metadata?.about?.es ?? '',
-        )
+        this.profile.metadata?.about?.es ?? '',
+        this.profile.metadata?.about?.en ?? this.profile.metadata?.about?.es ?? '',
+      )
       : '';
   }
 
@@ -72,6 +72,17 @@ export class SmallAboutResumeComponent implements OnInit {
       resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSecondaryImage) ||
       createPortfolioPlaceholder('About Photo B', 900, 1100)
     );
+  }
+
+  get sectionBackgroundImage() {
+    if (this.profile?.metadata?.portfolioMedia?.aboutSectionTransparentBackground) {
+      return 'none';
+    }
+
+    const backgroundUrl =
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSectionBackground) ||
+      'images/demo-spa-salon-home-bg-01.jpg';
+    return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
   }
 
   t(key: string) {
