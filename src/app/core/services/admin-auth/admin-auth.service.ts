@@ -112,8 +112,16 @@ export class AdminAuthService extends GlobalHttpService {
   }
 
   async runSeedInitial(preset: 'starter' | 'demo-personal' = 'starter'): Promise<{ message: string; seeded?: boolean; count?: number }> {
+    if (preset === 'demo-personal') {
+      return this.makeRequest<{ message: string; seeded?: boolean; count?: number }, object>(
+        API_ADMIN_ROUTES.seedDemoPersonal,
+        {},
+        RequestMethod.POST,
+      );
+    }
+
     return this.makeRequest<{ message: string; seeded?: boolean; count?: number }, object>(
-      `${API_ADMIN_ROUTES.seedInitial}?preset=${preset}`,
+      API_ADMIN_ROUTES.seedInitial,
       {},
       RequestMethod.POST,
     );

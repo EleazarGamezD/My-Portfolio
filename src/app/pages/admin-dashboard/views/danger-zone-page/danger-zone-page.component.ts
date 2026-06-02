@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
+import { ContentService } from '@core/services/content/content.service';
 import { ThemeService } from '@core/services/theme/theme.service';
 import { ButtonModule, SpinnerComponent } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
@@ -67,6 +68,7 @@ export class DangerZonePageComponent {
   constructor(
     private readonly themeService: ThemeService,
     private readonly adminAuthService: AdminAuthService,
+    private readonly contentService: ContentService,
     private readonly toastr: ToastrService,
     private readonly cdr: ChangeDetectorRef,
   ) {}
@@ -97,9 +99,11 @@ export class DangerZonePageComponent {
         }
       } else if (action.id === 'seed-initial') {
         await this.adminAuthService.runSeedInitial('starter');
+        this.contentService.invalidateAllContentCache();
         this.toastr.success('Seed inicial ejecutado correctamente.', 'Danger Zone');
       } else if (action.id === 'seed-initial-demo') {
         await this.adminAuthService.runSeedInitial('demo-personal');
+        this.contentService.invalidateAllContentCache();
         this.toastr.success('Seed de contenido demo ejecutado correctamente.', 'Danger Zone');
       }
     } catch {

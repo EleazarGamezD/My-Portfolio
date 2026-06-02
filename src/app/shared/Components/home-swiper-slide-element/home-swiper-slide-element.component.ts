@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IApiHeroSlide } from '@core/interfaces/content/content.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -11,6 +11,7 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   imports: [],
   templateUrl: './home-swiper-slide-element.component.html',
   styleUrl: './home-swiper-slide-element.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeSwiperSlideElementComponent {
   constructor(public i18nService: I18nService) {}

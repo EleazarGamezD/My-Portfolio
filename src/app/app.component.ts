@@ -6,8 +6,8 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { adminIconSubset } from '@core/icons/admin-icon-subset';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import { ThemeService } from '@core/services/theme/theme.service';
 import { StorageService } from '@core/services/storage/storage.service';
+import { ThemeService } from '@core/services/theme/theme.service';
 import { IconSetService } from '@coreui/icons-angular';
 import { filter } from 'rxjs/operators';
 

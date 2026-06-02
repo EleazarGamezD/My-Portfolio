@@ -1,12 +1,12 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   IApiContentItem,
   IApiProfile,
 } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import { Router } from '@angular/router';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 
@@ -37,7 +37,7 @@ export class FooterComponent implements OnInit {
     public i18nService: I18nService,
     private readonly contentService: ContentService,
     @Inject(PLATFORM_ID) private readonly platformId: object,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     try {

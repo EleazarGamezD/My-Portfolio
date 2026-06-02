@@ -66,14 +66,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     await this.waitForNextPaint();
     await requestTemplateReinit();
     await this.requestStateService.waitForIdle();
-    // Extra paint frames so Angular can process HTTP responses and re-render
-    await this.waitForNextPaint();
-    await this.waitForNextPaint();
     await this.waitForNextPaint();
     await this.waitForFonts();
-    await this.waitForViewportStability();
     await this.waitForCriticalImages(this.portfolioView?.nativeElement);
-    await this.waitForRealImages(8000);
 
     if (this.destroyed) {
       return;
@@ -119,23 +114,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     await Promise.all(images.map((image) => this.waitForImage(image)));
   }
 
-  private async waitForRealImages(maxWaitMs = 8000): Promise<void> {
-    if (typeof document === 'undefined') return;
-    const images = Array.from(document.querySelectorAll<HTMLImageElement>('img'))
-      .filter(
-        (img) =>
-          this.isInInitialViewport(img) &&
-          img.src &&
-          !img.src.startsWith('data:') &&
-          !img.complete,
-      );
-    if (!images.length) return;
-    await Promise.race([
-      Promise.all(images.map((img) => this.waitForImage(img))),
-      new Promise<void>((resolve) => setTimeout(resolve, maxWaitMs)),
-    ]);
-  }
-
   private waitForImage(image: HTMLImageElement): Promise<void> {
     return new Promise((resolve) => {
       function finish(): void {
@@ -147,80 +125,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       image.addEventListener('load', finish, { once: true });
       image.addEventListener('error', finish, { once: true });
     });
-  }
-
-  private readonly viewportStabilityMaxWaitMs = 5000;
-
-  private waitForViewportStability(): Promise<void> {
-    if (typeof window === 'undefined' || typeof MutationObserver === 'undefined') {
-      return Promise.resolve();
-    }
-
-    return new Promise((resolve) => {
-      let resolved = false;
-      let quietTimerId: ReturnType<typeof setTimeout> | null = null;
-
-      // Safety net: always resolve after max wait to prevent infinite hang
-      // caused by continuous DOM mutations (animations, sliders, particles, etc.)
-      const maxTimerId = setTimeout(() => finish(), this.viewportStabilityMaxWaitMs);
-
-      const finish = () => {
-        if (resolved) {
-          return;
-        }
-
-        resolved = true;
-        observer.disconnect();
-        clearTimeout(maxTimerId);
-
-        if (quietTimerId) {
-          clearTimeout(quietTimerId);
-        }
-
-        resolve();
-      };
-
-      const scheduleQuietWindow = () => {
-        if (quietTimerId) {
-          clearTimeout(quietTimerId);
-        }
-
-        quietTimerId = setTimeout(() => {
-          if (!this.hasPendingViewportImages()) {
-            finish();
-            return;
-          }
-
-          scheduleQuietWindow();
-        }, this.viewportQuietWindowMs);
-      };
-
-      const observer = new MutationObserver(() => {
-        scheduleQuietWindow();
-      });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        characterData: true,
-        attributes: true,
-        attributeFilter: ['src', 'style', 'class'],
-      });
-
-      scheduleQuietWindow();
-    });
-  }
-
-  private hasPendingViewportImages(): boolean {
-    if (typeof document === 'undefined') {
-      return false;
-    }
-
-    const viewportImages = Array.from(document.querySelectorAll<HTMLImageElement>('img')).filter((image) =>
-      this.isInInitialViewport(image),
-    );
-
-    return viewportImages.some((image) => !image.complete);
   }
 
   private isInInitialViewport(element: Element): boolean {
