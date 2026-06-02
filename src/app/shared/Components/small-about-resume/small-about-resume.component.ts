@@ -11,9 +11,6 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   templateUrl: './small-about-resume.component.html',
   styleUrl: './small-about-resume.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    ngSkipHydration: 'true',
-  },
 })
 export class SmallAboutResumeComponent implements OnInit {
   profile: IApiProfile | null = null;

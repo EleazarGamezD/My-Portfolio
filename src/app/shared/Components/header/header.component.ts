@@ -76,10 +76,6 @@ export class HeaderComponent implements OnInit {
         if (elementId) {
           this.scrollToElement(elementId);
         }
-
-        if (this.isBrowser && !elementId) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
       });
   }
 
@@ -104,6 +100,8 @@ export class HeaderComponent implements OnInit {
     if (!this.i18nService.isHomeUrl(this.router.url)) {
       void this.router.navigate([`/${this.i18nService.currentLanguage()}`], {
         queryParams: { scrollTo: elementId },
+      }).then(() => {
+        this.scrollToElement(elementId);
       });
     } else {
       this.scrollToElement(elementId);
@@ -112,9 +110,12 @@ export class HeaderComponent implements OnInit {
 
   scrollToElement(elementId: string) {
     if (this.isBrowser) {
-      window.requestAnimationFrame(() => {
+      const attemptScroll = (retries = 12) => {
         const element = document.getElementById(elementId);
         if (!element) {
+          if (retries > 0) {
+            window.setTimeout(() => attemptScroll(retries - 1), 60);
+          }
           return;
         }
 
@@ -123,7 +124,9 @@ export class HeaderComponent implements OnInit {
         const targetTop = Math.max(elementTop - headerOffset, 0);
 
         this.animateWindowScroll(targetTop);
-      });
+      };
+
+      window.requestAnimationFrame(() => attemptScroll());
     }
   }
 

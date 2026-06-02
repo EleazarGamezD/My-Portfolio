@@ -33,6 +33,7 @@ import { WorkReferencesComponent } from '../../shared/Components/work-references
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+  private static readonly reloadScrollHandledStorageKey = 'home-reload-scroll-handled';
   private destroyed = false;
   private shouldScrollToTopOnReload = false;
   private readonly criticalImageTimeoutMs = 2500;
@@ -193,13 +194,26 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       return false;
     }
 
+    const alreadyHandled = window.sessionStorage.getItem(HomeComponent.reloadScrollHandledStorageKey) === '1';
+    if (alreadyHandled) {
+      return false;
+    }
+
     const navigationEntries = window.performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
     if (navigationEntries.length > 0) {
-      return navigationEntries[0].type === 'reload';
+      const isReload = navigationEntries[0].type === 'reload';
+      if (isReload) {
+        window.sessionStorage.setItem(HomeComponent.reloadScrollHandledStorageKey, '1');
+      }
+      return isReload;
     }
 
     const legacyNavigation = (window.performance as Performance & { navigation?: { type?: number } }).navigation;
-    return legacyNavigation?.type === 1;
+    const isReload = legacyNavigation?.type === 1;
+    if (isReload) {
+      window.sessionStorage.setItem(HomeComponent.reloadScrollHandledStorageKey, '1');
+    }
+    return isReload;
   }
 
   private animateWindowScroll(targetTop: number): void {
