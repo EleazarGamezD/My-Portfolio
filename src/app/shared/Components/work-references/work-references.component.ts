@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiContentItem, IApiProfile } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -10,7 +10,8 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   selector: 'app-work-references',
   imports: [],
   templateUrl: './work-references.component.html',
-  styleUrl: './work-references.component.scss'
+  styleUrl: './work-references.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkReferencesComponent implements OnInit {
   profile: IApiProfile | null = null;
@@ -40,7 +41,7 @@ export class WorkReferencesComponent implements OnInit {
     } catch (error) {
       console.warn('Failed to load testimonials from API.', error);
     } finally {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.markForCheck();
       requestTemplateReinit();
     }
   }
@@ -98,5 +99,13 @@ export class WorkReferencesComponent implements OnInit {
       resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.testimonialsSectionBackground) ||
       'images/demo-spa-salon-home-bg-01.jpg';
     return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
+  }
+
+  trackTestimonial(index: number, item: IApiContentItem): string {
+    return item._id || item.slug || item.name || item.label?.es || item.label?.en || `${index}`;
+  }
+
+  trackLogo(index: number, item: { url: string }): string {
+    return item.url || `${index}`;
   }
 }

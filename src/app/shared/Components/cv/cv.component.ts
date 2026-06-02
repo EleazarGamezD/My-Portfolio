@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiProfile, IApiResume } from '@core/interfaces/content/content.interface';
 import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
@@ -14,6 +14,7 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   imports: [CommonModule],
   templateUrl: './cv.component.html',
   styleUrl: './cv.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CvComponent implements OnInit {
   resumes: IApiResume[] = [];
@@ -50,7 +51,7 @@ export class CvComponent implements OnInit {
       this.resumes = [];
     } finally {
       this.loading = false;
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.markForCheck();
       requestTemplateReinit();
     }
   }
@@ -167,5 +168,9 @@ export class CvComponent implements OnInit {
       resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeWebDevelopmentIcon) ||
       createPortfolioPlaceholder('Web Dev Icon', 420, 420)
     );
+  }
+
+  trackResume(index: number, resume: IApiResume): string {
+    return resume._id || resume.slug || resume.fileName || resume.title?.es || resume.title?.en || `${index}`;
   }
 }

@@ -27,8 +27,17 @@ export class HomeBannerSliderComponent implements OnInit {
       console.warn('Failed to load hero slides from API.', error);
       this.sliderContentArray = [];
     } finally {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.markForCheck();
       requestTemplateReinit();
     }
+  }
+
+  trackSlide(index: number, slide: IApiHeroSlide): string {
+    const imageKey =
+      typeof slide.image === 'string'
+        ? slide.image
+        : slide.image?.url || '';
+
+    return imageKey || slide.title?.es || slide.title?.en || `${index}`;
   }
 }

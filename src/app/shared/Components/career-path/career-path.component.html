@@ -8,7 +8,7 @@
         <h3 class="text-dark-gray fw-600 ls-minus-2px mb-40px">{{ t('home.career.title') }}</h3>
         <div class="row row-cols-1">
           <!-- start process step item -->
-          @for(item of careerPathArray; track $index){ <div class="col-12 process-step-style-05 position-relative hover-box">
+          @for(item of careerPathArray; track trackCareerItem($index, item)){ <div class="col-12 process-step-style-05 position-relative hover-box">
             <div class="process-step-item d-flex">
               <div class="process-step-icon-wrap position-relative">
                 <div class="process-step-icon d-flex justify-content-center align-items-center mx-auto rounded-circle h-60px w-60px fs-16 bg-solitude-blue fw-600 position-relative">

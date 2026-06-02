@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiProfile } from '@core/interfaces/content/content.interface';
 import { IProject } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
@@ -13,7 +13,8 @@ import { SliderProjectItemComponent } from "../slider-project-item/slider-projec
   selector: 'app-slider-projects',
   imports: [SliderProjectItemComponent],
   templateUrl: './slider-projects.component.html',
-  styleUrl: './slider-projects.component.scss'
+  styleUrl: './slider-projects.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SliderProjectsComponent implements OnInit {
   profile: IApiProfile | null = null;
@@ -41,7 +42,7 @@ export class SliderProjectsComponent implements OnInit {
       this.ProjectsArray = [];
     } finally {
       this.isLoading = false;
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.markForCheck();
       requestTemplateReinit();
     }
   }
@@ -73,5 +74,9 @@ export class SliderProjectsComponent implements OnInit {
       resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.projectsSectionBackground) ||
       'images/demo-spa-salon-home-bg-01.jpg';
     return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
+  }
+
+  trackProject(index: number, project: IProject): string {
+    return project._id || project.slug || project.title?.es || project.title?.en || `${index}`;
   }
 }

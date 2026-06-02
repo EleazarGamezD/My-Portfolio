@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -24,6 +24,7 @@ import { environment } from '../../../../environments/environment';
   providers: [EmailService, RecaptchaService],
   templateUrl: './contact-me.component.html',
   styleUrl: './contact-me.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContactMeComponent implements OnInit {
   contactForm!: FormGroup;
@@ -39,6 +40,7 @@ export class ContactMeComponent implements OnInit {
     private recaptchaService: RecaptchaService,
     private toastr: ToastrService,
     private readonly contentService: ContentService,
+    private readonly cdr: ChangeDetectorRef,
     public i18nService: I18nService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
@@ -76,8 +78,10 @@ export class ContactMeComponent implements OnInit {
       this.toastr.error(this.t('toast.error.invalidForm'), this.t('toast.error.title'), {
         timeOut: 3000,
       });
+      this.cdr.markForCheck();
     } else {
       this.sendingEmail = true;
+      this.cdr.markForCheck();
       try {
         // 1. get token from reCaptcha
         const token = (await this.recaptchaV3Service
@@ -115,6 +119,7 @@ export class ContactMeComponent implements OnInit {
         });
       } finally {
         this.sendingEmail = false;
+        this.cdr.markForCheck();
       }
     }
   }
@@ -139,6 +144,8 @@ export class ContactMeComponent implements OnInit {
       this.profile = await this.contentService.getProfile();
     } catch (error) {
       console.warn('Failed to load profile content for contact section.', error);
+    } finally {
+      this.cdr.markForCheck();
     }
   }
 }

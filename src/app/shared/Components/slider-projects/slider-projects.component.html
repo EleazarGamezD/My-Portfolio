@@ -49,7 +49,7 @@
           "effect": "slide"
         }'>
             <div class="swiper-wrapper pt-20px pb-20px">
-              @for(project of ProjectsArray; track $index){
+              @for(project of ProjectsArray; track trackProject($index, project)){
               <!-- start slider item -->
               <div class="swiper-slide separator">
                 <app-slider-project-item [project]="project" [projectIndex]="$index" />
