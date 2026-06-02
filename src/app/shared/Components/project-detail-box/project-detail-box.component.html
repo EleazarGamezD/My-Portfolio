@@ -30,7 +30,12 @@
           </div>
 
           <div class="project-content-panel">
-            <span class="project-kicker">{{ t('home.projects.title') }}</span>
+            <div class="project-headline-row">
+              <span class="project-kicker">{{ t('home.projects.title') }}</span>
+              @if (isFeatured) {
+                <span class="project-featured-flag">{{ t('project.details.featured') }}</span>
+              }
+            </div>
             <h1 class="alt-font text-dark-gray project-title">{{ projectTitle }}</h1>
 
             @if (projectSummary) {
@@ -38,6 +43,12 @@
             }
 
             <div class="project-meta-list">
+              @if (isFeatured) {
+                <div class="project-meta-item project-meta-item-featured">
+                  <span class="project-meta-label">{{ t('project.card.featured') }}</span>
+                  <p class="project-featured-description">{{ t('project.details.featuredDescription') }}</p>
+                </div>
+              }
               <div class="project-meta-item">
                 <span class="project-meta-label">{{ t('project.details.technologies') }}</span>
                 @if (projectTechnologies.length > 0) {

@@ -109,6 +109,26 @@ section {
   text-transform: uppercase;
 }
 
+.project-headline-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.project-featured-flag {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(24, 24, 24, 0.9);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .project-title {
   margin: 18px 0 14px;
   line-height: 1;
@@ -132,12 +152,25 @@ section {
   gap: 10px;
 }
 
+.project-meta-item-featured {
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(239, 99, 44, 0.1) 0%, rgba(239, 99, 44, 0.04) 100%);
+  border: 1px solid rgba(239, 99, 44, 0.18);
+}
+
 .project-meta-label {
   font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-weight: 700;
   color: rgba(24, 24, 24, 0.56);
+}
+
+.project-featured-description {
+  margin: 0;
+  color: rgba(24, 24, 24, 0.82);
+  line-height: 1.7;
 }
 
 .project-meta-value {

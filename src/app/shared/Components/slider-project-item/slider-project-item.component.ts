@@ -29,6 +29,10 @@ export class SliderProjectItemComponent {
     return this.i18nService.selectText(this.project.title?.es || '', this.project.title?.en || this.project.title?.es || '');
   }
 
+  get isFeatured() {
+    return Boolean(this.project.featured);
+  }
+
   get previewImage() {
     const coverImage = this.resolveProjectAsset(this.project.coverImage);
     if (coverImage) {

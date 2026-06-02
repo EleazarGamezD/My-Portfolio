@@ -93,6 +93,10 @@ export class ProjectDetailBoxComponent implements OnChanges {
     return this.activeImage || this.galleryImages[0] || null;
   }
 
+  get isFeatured() {
+    return Boolean(this.project?.featured);
+  }
+
   get detailBackgroundImage() {
     return this.heroImage || null;
   }

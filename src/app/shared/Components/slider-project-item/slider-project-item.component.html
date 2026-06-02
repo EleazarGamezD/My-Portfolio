@@ -1,7 +1,10 @@
-<article class="project-card-shell cursor-pointer" (click)="navigateToProject()">
+<article class="project-card-shell cursor-pointer" [class.project-card-shell-featured]="isFeatured" (click)="navigateToProject()">
   <div class="project-card-media">
     <img [src]="previewImage" [alt]="title" class="project-card-image" loading="lazy" decoding="async" />
     <span class="project-card-index">{{ projectIndex + 1 }}</span>
+    @if (isFeatured) {
+      <span class="project-card-featured-badge">{{ t('project.card.featured') }}</span>
+    }
   </div>
 
   <div class="project-card-body">

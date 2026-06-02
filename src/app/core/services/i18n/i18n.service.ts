@@ -83,7 +83,10 @@ const TRANSLATIONS: Record<AppLanguage, Record<TranslationKey, string>> = {
     'cv.phonePrefix': 'T:',
 
     'project.card.category': 'Proyecto',
+    'project.card.featured': 'Destacado',
     'project.details.technologies': 'Tecnologias',
+    'project.details.featured': 'Proyecto destacado',
+    'project.details.featuredDescription': 'Este proyecto forma parte de la seleccion destacada del portfolio.',
     'project.details.liveDemo': 'Ver demo',
     'project.details.sourceCode': 'Ver codigo fuente',
     'project.details.backHome': 'Volver al inicio',
@@ -168,7 +171,10 @@ const TRANSLATIONS: Record<AppLanguage, Record<TranslationKey, string>> = {
     'cv.phonePrefix': 'T:',
 
     'project.card.category': 'Project',
+    'project.card.featured': 'Featured',
     'project.details.technologies': 'Technologies',
+    'project.details.featured': 'Featured project',
+    'project.details.featuredDescription': 'This project is part of the featured portfolio selection.',
     'project.details.liveDemo': 'Live demo',
     'project.details.sourceCode': 'View source code',
     'project.details.backHome': 'Back to home',
