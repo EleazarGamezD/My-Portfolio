@@ -34,6 +34,7 @@ import { WorkReferencesComponent } from '../../shared/Components/work-references
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroyed = false;
+  private shouldScrollToTopOnReload = false;
   private readonly criticalImageTimeoutMs = 2500;
   private readonly criticalAssetSelectors = [
     'header .default-logo',
@@ -55,12 +56,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'manual';
       }
+
+      this.shouldScrollToTopOnReload = this.isReloadNavigation();
     }
   }
 
   async ngAfterViewInit(): Promise<void> {
     await this.releaseViewWhenReady();
-    this.scrollToTopSmooth();
+    if (this.shouldScrollToTopOnReload) {
+      this.scrollToTopSmooth();
+    }
   }
 
   ngOnDestroy(): void {
@@ -181,6 +186,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.animateWindowScroll(0);
+  }
+
+  private isReloadNavigation(): boolean {
+    if (typeof window === 'undefined' || !('performance' in window)) {
+      return false;
+    }
+
+    const navigationEntries = window.performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    if (navigationEntries.length > 0) {
+      return navigationEntries[0].type === 'reload';
+    }
+
+    const legacyNavigation = (window.performance as Performance & { navigation?: { type?: number } }).navigation;
+    return legacyNavigation?.type === 1;
   }
 
   private animateWindowScroll(targetTop: number): void {

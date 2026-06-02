@@ -17,6 +17,8 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
 })
 export class SmallAboutResumeComponent implements OnInit {
   profile: IApiProfile | null = null;
+  primaryImageSrc = createPortfolioPlaceholder('About Photo A', 900, 1100);
+  secondaryImageSrc = createPortfolioPlaceholder('About Photo B', 900, 1100);
 
   constructor(
     public i18nService: I18nService,
@@ -27,6 +29,7 @@ export class SmallAboutResumeComponent implements OnInit {
   async ngOnInit() {
     try {
       this.profile = await this.contentService.getProfile();
+      this.syncPortfolioMedia();
     } catch (error) {
       console.warn('Failed to load profile content from API.', error);
     } finally {
@@ -81,20 +84,6 @@ export class SmallAboutResumeComponent implements OnInit {
     return '';
   }
 
-  get primaryImage() {
-    return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutPrimaryImage) ||
-      createPortfolioPlaceholder('About Photo A', 900, 1100)
-    );
-  }
-
-  get secondaryImage() {
-    return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSecondaryImage) ||
-      createPortfolioPlaceholder('About Photo B', 900, 1100)
-    );
-  }
-
   get sectionBackgroundImage() {
     if (this.profile?.metadata?.portfolioMedia?.aboutSectionTransparentBackground) {
       return 'none';
@@ -108,5 +97,15 @@ export class SmallAboutResumeComponent implements OnInit {
 
   t(key: string) {
     return this.i18nService.t(key);
+  }
+
+  private syncPortfolioMedia(): void {
+    this.primaryImageSrc =
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutPrimaryImage) ||
+      createPortfolioPlaceholder('About Photo A', 900, 1100);
+
+    this.secondaryImageSrc =
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSecondaryImage) ||
+      createPortfolioPlaceholder('About Photo B', 900, 1100);
   }
 }
