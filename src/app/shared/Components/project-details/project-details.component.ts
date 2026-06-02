@@ -1,10 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { IProject } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
+import { filter, map, distinctUntilChanged } from 'rxjs/operators';
 import { PagesBannerComponent } from '../pages-banner/pages-banner.component';
 import { ProjectDetailGroupComponent } from '../project-detail-group/project-detail-group.component';
 
@@ -15,9 +17,11 @@ import { ProjectDetailGroupComponent } from '../project-detail-group/project-det
   imports: [PagesBannerComponent, ProjectDetailGroupComponent],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectDetailsComponent implements OnInit, AfterViewInit {
   project: IProject | null = null;
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -35,24 +39,16 @@ export class ProjectDetailsComponent implements OnInit, AfterViewInit {
       });
     }
 
-    this.route.paramMap.subscribe(async (params) => {
-      const projectIdOrSlug = params.get('id') || '';
-      this.project = null;
-
-      if (!projectIdOrSlug) {
-        this.cdr.detectChanges();
-        return;
-      }
-
-      try {
-        this.project = await this.projectsService.getProjectByIdOrSlug(projectIdOrSlug);
-      } catch (error) {
-        console.warn(`Failed to load project detail for "${projectIdOrSlug}" from API.`, error);
-      } finally {
-        this.cdr.detectChanges();
-        requestTemplateReinit();
-      }
-    });
+    this.route.paramMap
+      .pipe(
+        map((params) => params.get('id') || ''),
+        filter((projectIdOrSlug) => typeof projectIdOrSlug === 'string'),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((projectIdOrSlug) => {
+        void this.loadProject(projectIdOrSlug);
+      });
   }
 
   ngAfterViewInit(): void {
@@ -72,5 +68,23 @@ export class ProjectDetailsComponent implements OnInit, AfterViewInit {
 
   get bannerBackgroundImage(): string {
     return resolveImageAssetUrl(this.project?.coverImage) || 'https://placehold.co/1920x940';
+  }
+
+  private async loadProject(projectIdOrSlug: string): Promise<void> {
+    this.project = null;
+
+    if (!projectIdOrSlug) {
+      this.cdr.markForCheck();
+      return;
+    }
+
+    try {
+      this.project = await this.projectsService.getProjectByIdOrSlug(projectIdOrSlug);
+    } catch (error) {
+      console.warn(`Failed to load project detail for "${projectIdOrSlug}" from API.`, error);
+    } finally {
+      this.cdr.markForCheck();
+      requestTemplateReinit();
+    }
   }
 }

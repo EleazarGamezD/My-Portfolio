@@ -8,7 +8,6 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
 
 @Component({
   selector: 'app-small-about-resume',
-  imports: [],
   templateUrl: './small-about-resume.component.html',
   styleUrl: './small-about-resume.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,7 +27,7 @@ export class SmallAboutResumeComponent implements OnInit {
     } catch (error) {
       console.warn('Failed to load profile content from API.', error);
     } finally {
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
       requestTemplateReinit();
     }
   }
@@ -43,21 +42,40 @@ export class SmallAboutResumeComponent implements OnInit {
   }
 
   get primaryDescription() {
-    return this.profile
-      ? this.i18nService.selectText(
-        this.profile.description?.es ?? '',
-        this.profile.description?.en ?? this.profile.description?.es ?? '',
-      )
-      : '';
+    if (!this.profile) {
+      return '';
+    }
+
+    const profileDescription = this.i18nService.selectText(
+      this.profile.description?.es ?? '',
+      this.profile.description?.en ?? this.profile.description?.es ?? '',
+    );
+
+    if (profileDescription.trim()) {
+      return profileDescription;
+    }
+
+    return this.i18nService.selectText(
+      this.profile.metadata?.about?.es ?? '',
+      this.profile.metadata?.about?.en ?? this.profile.metadata?.about?.es ?? '',
+    );
   }
 
   get secondaryDescription() {
-    return this.profile
-      ? this.i18nService.selectText(
-        this.profile.metadata?.about?.es ?? '',
-        this.profile.metadata?.about?.en ?? this.profile.metadata?.about?.es ?? '',
-      )
-      : '';
+    if (!this.profile) {
+      return '';
+    }
+
+    const aboutDescription = this.i18nService.selectText(
+      this.profile.metadata?.about?.es ?? '',
+      this.profile.metadata?.about?.en ?? this.profile.metadata?.about?.es ?? '',
+    );
+
+    if (aboutDescription.trim() && aboutDescription.trim() !== this.primaryDescription.trim()) {
+      return aboutDescription;
+    }
+
+    return '';
   }
 
   get primaryImage() {

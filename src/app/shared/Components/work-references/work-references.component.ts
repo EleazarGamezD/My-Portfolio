@@ -41,7 +41,7 @@ export class WorkReferencesComponent implements OnInit {
     } catch (error) {
       console.warn('Failed to load testimonials from API.', error);
     } finally {
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
       requestTemplateReinit();
     }
   }

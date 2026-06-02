@@ -1,6 +1,8 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
-import { RequestStateService } from '@core/services/request-state/request-state.service';
+import { ContentService } from '@core/services/content/content.service';
+import { ThemeService } from '@core/services/theme/theme.service';
+import { ProjectsService } from '@services/projects/projects.service';
 import { StorageService } from '@core/services/storage/storage.service';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 import { CareerPathComponent } from '../../shared/Components/career-path/career-path.component';
@@ -31,18 +33,23 @@ import { WorkReferencesComponent } from '../../shared/Components/work-references
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('portfolioView', { static: true }) private portfolioView?: ElementRef<HTMLElement>;
-
   private destroyed = false;
-  private readonly viewportQuietWindowMs = 420;
+  private readonly criticalImageTimeoutMs = 2500;
+  private readonly criticalAssetSelectors = [
+    'header .default-logo',
+    '.hero-slide-image',
+  ];
 
   constructor(
     private readonly storageService: StorageService,
-    private readonly requestStateService: RequestStateService,
+    private readonly contentService: ContentService,
+    private readonly projectsService: ProjectsService,
+    private readonly themeService: ThemeService,
   ) { }
 
   async ngOnInit(): Promise<void> {
     await this.storageService.setStorage(NgStorage.LOADER, true);
+    this.prefetchBackgroundContent();
 
     if (typeof window !== 'undefined') {
       window.scrollTo({
@@ -63,19 +70,21 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private async releaseViewWhenReady(): Promise<void> {
-    await this.waitForNextPaint();
-    await requestTemplateReinit();
-    await this.requestStateService.waitForIdle();
-    await this.waitForNextPaint();
-    await this.waitForFonts();
-    await this.waitForCriticalImages(this.portfolioView?.nativeElement);
-
-    if (this.destroyed) {
-      return;
+    try {
+      await this.waitForNextPaint();
+      await this.themeService.loadAndApplyActiveTheme();
+      await requestTemplateReinit();
+      await this.waitForNextPaint();
+      await this.waitForCriticalAssets();
+      await this.waitForNextPaint();
+    } catch (error) {
+      console.warn('Home loader fallback triggered.', error);
     }
-
-    await this.waitForNextPaint();
-    await this.storageService.setStorage(NgStorage.LOADER, false);
+    finally {
+      if (!this.destroyed) {
+        await this.storageService.setStorage(NgStorage.LOADER, false);
+      }
+    }
   }
 
   private waitForNextPaint(): Promise<void> {
@@ -90,49 +99,80 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private async waitForFonts(): Promise<void> {
-    if (typeof document === 'undefined' || !('fonts' in document)) {
+  private async waitForCriticalAssets(): Promise<void> {
+    if (typeof document === 'undefined' || typeof window === 'undefined') {
       return;
     }
 
-    await (document.fonts as FontFaceSet).ready.catch(() => undefined);
+    await Promise.all(this.criticalAssetSelectors.map((selector) => this.waitForCriticalImageSelector(selector)));
   }
 
-  private async waitForCriticalImages(root?: HTMLElement): Promise<void> {
-    if (!root || typeof window === 'undefined') {
-      return;
-    }
-
-    const images = Array.from(
-      document.querySelectorAll<HTMLImageElement>('img[data-loader-critical="true"], img.hero-slide-preload'),
-    ).filter((image) => this.isInInitialViewport(image) && !image.complete);
-
-    if (!images.length) {
-      return;
-    }
-
-    await Promise.all(images.map((image) => this.waitForImage(image)));
-  }
-
-  private waitForImage(image: HTMLImageElement): Promise<void> {
+  private waitForCriticalImageSelector(selector: string): Promise<void> {
     return new Promise((resolve) => {
-      function finish(): void {
-        image.removeEventListener('load', finish);
-        image.removeEventListener('error', finish);
+      if (typeof document === 'undefined' || typeof window === 'undefined') {
         resolve();
+        return;
       }
 
-      image.addEventListener('load', finish, { once: true });
-      image.addEventListener('error', finish, { once: true });
+      const deadline = window.performance.now() + this.criticalImageTimeoutMs;
+
+      const finish = (): void => {
+        if (pollId) {
+          window.clearTimeout(pollId);
+        }
+        window.clearTimeout(timeoutId);
+        if (currentImage) {
+          currentImage.removeEventListener('load', finish);
+          currentImage.removeEventListener('error', finish);
+        }
+        resolve();
+      };
+
+      const bindImage = (image: HTMLImageElement): void => {
+        currentImage = image;
+        if (image.complete) {
+          finish();
+          return;
+        }
+
+        image.addEventListener('load', finish, { once: true });
+        image.addEventListener('error', finish, { once: true });
+      };
+
+      const pollForImage = (): void => {
+        const image = document.querySelector<HTMLImageElement>(selector);
+        if (image) {
+          bindImage(image);
+          return;
+        }
+
+        if (window.performance.now() >= deadline) {
+          finish();
+          return;
+        }
+
+        pollId = window.setTimeout(pollForImage, 80);
+      };
+
+      let currentImage: HTMLImageElement | null = null;
+      let pollId: number | null = null;
+      const timeoutId = window.setTimeout(finish, this.criticalImageTimeoutMs);
+
+      pollForImage();
     });
   }
 
-  private isInInitialViewport(element: Element): boolean {
-    if (typeof window === 'undefined') {
-      return false;
-    }
+  private prefetchBackgroundContent(): void {
+    const backgroundRequests = [
+      this.contentService.getProfile(),
+      this.contentService.getTechSkills(),
+      this.contentService.getExperience(),
+      this.contentService.getTestimonials(),
+      this.contentService.getSocialLinks(),
+      this.contentService.getResumes(),
+      this.projectsService.getProjects(),
+    ];
 
-    const rect = element.getBoundingClientRect();
-    return rect.bottom >= 0 && rect.top <= window.innerHeight;
+    void Promise.allSettled(backgroundRequests);
   }
 }

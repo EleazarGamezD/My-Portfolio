@@ -51,7 +51,7 @@ export class CvComponent implements OnInit {
       this.resumes = [];
     } finally {
       this.loading = false;
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
       requestTemplateReinit();
     }
   }

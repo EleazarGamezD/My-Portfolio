@@ -34,7 +34,7 @@ export class CareerPathComponent implements OnInit {
     } catch (error) {
       console.warn('Failed to load experience from API.', error);
     } finally {
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
       requestTemplateReinit();
     }
   }

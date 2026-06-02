@@ -27,7 +27,7 @@ export class HomeBannerSliderComponent implements OnInit {
       console.warn('Failed to load hero slides from API.', error);
       this.sliderContentArray = [];
     } finally {
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
       requestTemplateReinit();
     }
   }

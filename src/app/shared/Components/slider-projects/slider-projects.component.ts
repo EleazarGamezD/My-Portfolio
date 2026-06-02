@@ -42,7 +42,7 @@ export class SliderProjectsComponent implements OnInit {
       this.ProjectsArray = [];
     } finally {
       this.isLoading = false;
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
       requestTemplateReinit();
     }
   }
