@@ -11,6 +11,9 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   templateUrl: './small-about-resume.component.html',
   styleUrl: './small-about-resume.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    ngSkipHydration: 'true',
+  },
 })
 export class SmallAboutResumeComponent implements OnInit {
   profile: IApiProfile | null = null;
@@ -79,19 +82,17 @@ export class SmallAboutResumeComponent implements OnInit {
   }
 
   get primaryImage() {
-    return resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutPrimaryImage);
+    return (
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutPrimaryImage) ||
+      createPortfolioPlaceholder('About Photo A', 900, 1100)
+    );
   }
 
   get secondaryImage() {
-    return resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSecondaryImage);
-  }
-
-  get primaryImagePlaceholder() {
-    return createPortfolioPlaceholder('About Photo A', 900, 1100);
-  }
-
-  get secondaryImagePlaceholder() {
-    return createPortfolioPlaceholder('About Photo B', 900, 1100);
+    return (
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSecondaryImage) ||
+      createPortfolioPlaceholder('About Photo B', 900, 1100)
+    );
   }
 
   get sectionBackgroundImage() {
