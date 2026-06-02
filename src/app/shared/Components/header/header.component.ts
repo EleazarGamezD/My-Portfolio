@@ -102,11 +102,9 @@ export class HeaderComponent implements OnInit {
 
   scrollTo(elementId: string) {
     if (!this.i18nService.isHomeUrl(this.router.url)) {
-      this.router
-        .navigate([`/${this.i18nService.currentLanguage()}`], { queryParams: { scrollTo: elementId } })
-        .then(() => {
-          this.scrollToElement(elementId);
-        });
+      void this.router.navigate([`/${this.i18nService.currentLanguage()}`], {
+        queryParams: { scrollTo: elementId },
+      });
     } else {
       this.scrollToElement(elementId);
     }
@@ -114,10 +112,18 @@ export class HeaderComponent implements OnInit {
 
   scrollToElement(elementId: string) {
     if (this.isBrowser) {
-      const element = document.getElementById(elementId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      window.requestAnimationFrame(() => {
+        const element = document.getElementById(elementId);
+        if (!element) {
+          return;
+        }
+
+        const headerOffset = this.getHeaderOffset();
+        const elementTop = element.getBoundingClientRect().top + window.scrollY;
+        const targetTop = Math.max(elementTop - headerOffset, 0);
+
+        this.animateWindowScroll(targetTop);
+      });
     }
   }
 
@@ -158,5 +164,50 @@ export class HeaderComponent implements OnInit {
     }
 
     return new URLSearchParams(queryString).get('scrollTo');
+  }
+
+  private getHeaderOffset(): number {
+    if (!this.isBrowser) {
+      return 0;
+    }
+
+    const header = document.querySelector('header');
+    const headerHeight = header instanceof HTMLElement ? header.offsetHeight : 0;
+
+    return headerHeight > 0 ? headerHeight + 12 : 24;
+  }
+
+  private animateWindowScroll(targetTop: number): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const startTop = window.scrollY;
+    const distance = targetTop - startTop;
+
+    if (Math.abs(distance) < 2) {
+      window.scrollTo(0, targetTop);
+      return;
+    }
+
+    const duration = 700;
+    const startTime = performance.now();
+
+    const step = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress =
+        progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      window.scrollTo(0, startTop + distance * easedProgress);
+
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+
+    window.requestAnimationFrame(step);
   }
 }
