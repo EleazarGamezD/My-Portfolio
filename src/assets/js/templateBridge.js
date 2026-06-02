@@ -60,6 +60,79 @@
     });
   }
 
+  function reinitFancyText() {
+    const fancyTextElements = document.querySelectorAll(
+      "[data-fancy-text]:not([data-fancy-text-initialized='true'])"
+    );
+
+    fancyTextElements.forEach(function (el) {
+      try {
+        const options = el.getAttribute("data-fancy-text");
+        if (!options) {
+          return;
+        }
+
+        const parsedOptions = JSON.parse(options);
+        const content = Array.isArray(parsedOptions.string)
+          ? parsedOptions.string.filter(Boolean)
+          : [];
+
+        if (!content.length) {
+          return;
+        }
+
+        el.setAttribute("data-fancy-text-initialized", "true");
+        el.style.display = "inline-block";
+        el.style.transformOrigin = "50% 50%";
+        el.textContent = content[0];
+
+        if (
+          parsedOptions.effect !== "rotate" ||
+          content.length <= 1 ||
+          typeof window.anime === "undefined"
+        ) {
+          return;
+        }
+
+        let activeIndex = 0;
+
+        const runRotation = function () {
+          const nextIndex = (activeIndex + 1) % content.length;
+
+          const timeline = window.anime.timeline({
+            complete: function () {
+              activeIndex = nextIndex;
+              window.setTimeout(runRotation, 1400);
+            },
+          });
+
+          timeline
+            .add({
+              targets: el,
+              opacity: [1, 0],
+              rotateX: [0, 70],
+              duration: 260,
+              easing: "easeInQuad",
+            })
+            .add({
+              targets: el,
+              begin: function () {
+                el.textContent = content[nextIndex];
+              },
+              opacity: [0, 1],
+              rotateX: [-70, 0],
+              duration: 360,
+              easing: "easeOutQuad",
+            });
+        };
+
+        window.setTimeout(runRotation, 1400);
+      } catch (err) {
+        console.error("Error initializing fancy text:", err);
+      }
+    });
+  }
+
   function triggerResizeEvent() {
     window.dispatchEvent(new Event("resize"));
   }
@@ -68,6 +141,7 @@
     reinitAll: function () {
       reinitSwiper();
       reinitAnimations();
+      reinitFancyText();
       triggerResizeEvent();
     },
   };
