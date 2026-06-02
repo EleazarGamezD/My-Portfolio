@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   NavigationEnd,
   Router,
@@ -63,6 +63,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   readonly navItems: INavData[] = adminNavItems;
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
   private readonly subscriptions = new Subscription();
+  @ViewChild('adminSidebar') adminSidebar?: SidebarComponent;
   currentYear = new Date().getFullYear();
   currentSectionLabel = 'Overview';
 
@@ -84,6 +85,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
           filter((event): event is NavigationEnd => event instanceof NavigationEnd),
         ).subscribe((event) => {
           this.syncSectionFromUrl(event.urlAfterRedirects);
+          this.closeMobileSidebar();
         }),
       );
       this.subscriptions.add(
@@ -168,5 +170,13 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     }
 
     document.getElementById(this.adminStylesheetId)?.remove();
+  }
+
+  private closeMobileSidebar(): void {
+    if (typeof window === 'undefined' || window.innerWidth >= 992 || !this.adminSidebar) {
+      return;
+    }
+
+    this.adminSidebar.visible = false;
   }
 }
