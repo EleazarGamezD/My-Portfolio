@@ -30,6 +30,11 @@ export class SliderProjectItemComponent {
   }
 
   get previewImage() {
+    const coverImage = this.resolveProjectAsset(this.project.coverImage);
+    if (coverImage) {
+      return coverImage;
+    }
+
     const rawImages = Array.isArray(this.project.images) ? this.project.images : [];
 
     for (const image of rawImages) {
@@ -37,11 +42,6 @@ export class SliderProjectItemComponent {
       if (resolvedImage) {
         return resolvedImage;
       }
-    }
-
-    const coverImage = this.resolveProjectAsset(this.project.coverImage);
-    if (coverImage) {
-      return coverImage;
     }
 
     return createPortfolioPlaceholder('Project Cover', 1200, 900);
