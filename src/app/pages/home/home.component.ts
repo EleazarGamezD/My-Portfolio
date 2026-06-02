@@ -52,16 +52,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.prefetchBackgroundContent();
 
     if (typeof window !== 'undefined') {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'auto',
-      });
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
     }
   }
 
   async ngAfterViewInit(): Promise<void> {
     await this.releaseViewWhenReady();
+    this.scrollToTopSmooth();
   }
 
   ngOnDestroy(): void {
@@ -174,5 +173,47 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     ];
 
     void Promise.allSettled(backgroundRequests);
+  }
+
+  private scrollToTopSmooth(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    this.animateWindowScroll(0);
+  }
+
+  private animateWindowScroll(targetTop: number): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const startTop = window.scrollY;
+    const distance = targetTop - startTop;
+
+    if (Math.abs(distance) < 2) {
+      window.scrollTo(0, targetTop);
+      return;
+    }
+
+    const duration = 700;
+    const startTime = performance.now();
+
+    const step = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress =
+        progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      window.scrollTo(0, startTop + distance * easedProgress);
+
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+
+    window.requestAnimationFrame(step);
   }
 }

@@ -79,17 +79,19 @@ export class SmallAboutResumeComponent implements OnInit {
   }
 
   get primaryImage() {
-    return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutPrimaryImage) ||
-      createPortfolioPlaceholder('About Photo A', 900, 1100)
-    );
+    return resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutPrimaryImage);
   }
 
   get secondaryImage() {
-    return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSecondaryImage) ||
-      createPortfolioPlaceholder('About Photo B', 900, 1100)
-    );
+    return resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSecondaryImage);
+  }
+
+  get primaryImagePlaceholder() {
+    return createPortfolioPlaceholder('About Photo A', 900, 1100);
+  }
+
+  get secondaryImagePlaceholder() {
+    return createPortfolioPlaceholder('About Photo B', 900, 1100);
   }
 
   get sectionBackgroundImage() {
