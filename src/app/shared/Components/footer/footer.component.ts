@@ -9,6 +9,7 @@ import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
+import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
   selector: 'app-footer',
@@ -20,7 +21,7 @@ import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placehol
 export class FooterComponent implements OnInit {
   date = new Date().getFullYear();
   profileContent: IApiProfile | null = null;
-  footerImageSrc = createPortfolioPlaceholder('Footer Badge', 480, 480);
+  footerImageSrc: string | null = null;
   social: IApiContentItem[] = [
     {
       label: { es: 'GitHub', en: 'GitHub' },
@@ -58,6 +59,7 @@ export class FooterComponent implements OnInit {
       console.warn('Failed to load footer content from API.', error);
     } finally {
       this.cdr.detectChanges();
+      requestTemplateReinit();
     }
   }
 
