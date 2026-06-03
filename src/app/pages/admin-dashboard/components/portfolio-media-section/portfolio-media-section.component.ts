@@ -33,6 +33,8 @@ export class AdminPortfolioMediaSectionComponent {
   @Input() saveLoading = false;
   @Output() saveProfile = new EventEmitter<void>();
   @Output() imageUploadError = new EventEmitter<string>();
+  readonly backgroundMaxMb = 10;
+  readonly mediaMaxMb = 8;
 
   get portfolioMedia(): IApiPortfolioMedia {
     if (!this.profile) {

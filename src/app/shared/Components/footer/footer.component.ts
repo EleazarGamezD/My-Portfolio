@@ -20,6 +20,7 @@ import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placehol
 export class FooterComponent implements OnInit {
   date = new Date().getFullYear();
   profileContent: IApiProfile | null = null;
+  footerImageSrc = createPortfolioPlaceholder('Footer Badge', 480, 480);
   social: IApiContentItem[] = [
     {
       label: { es: 'GitHub', en: 'GitHub' },
@@ -50,10 +51,13 @@ export class FooterComponent implements OnInit {
 
       this.social = socialLinks;
       this.profileContent = profile;
+      this.footerImageSrc =
+        resolveImageAssetUrl(profile?.metadata?.portfolioMedia?.footerCenterImage) ||
+        createPortfolioPlaceholder('Footer Badge', 480, 480);
     } catch (error) {
       console.warn('Failed to load footer content from API.', error);
     } finally {
-      this.cdr.markForCheck();
+      this.cdr.detectChanges();
     }
   }
 
@@ -70,13 +74,6 @@ export class FooterComponent implements OnInit {
 
   t(key: Parameters<I18nService['t']>[0]) {
     return this.i18nService.t(key);
-  }
-
-  get footerCenterImage() {
-    return (
-      resolveImageAssetUrl(this.profileContent?.metadata?.portfolioMedia?.footerCenterImage) ||
-      createPortfolioPlaceholder('Footer Badge', 480, 480)
-    );
   }
 
   get profileOwnerName() {
