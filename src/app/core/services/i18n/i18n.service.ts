@@ -81,6 +81,10 @@ const TRANSLATIONS: Record<AppLanguage, Record<TranslationKey, string>> = {
     'cv.viewMap': 'Ver en google maps',
     'cv.emailPrefix': 'E:',
     'cv.phonePrefix': 'T:',
+    'cv.resumes': 'Hojas de vida',
+    'cv.download': 'Descargar CV',
+    'cv.noResumes': 'No hay hojas de vida disponibles',
+    'cv.loadError': 'No se pudieron cargar las hojas de vida.',
 
     'project.card.category': 'Proyecto',
     'project.card.featured': 'Destacado',
@@ -170,6 +174,10 @@ const TRANSLATIONS: Record<AppLanguage, Record<TranslationKey, string>> = {
     'cv.viewMap': 'View on google map',
     'cv.emailPrefix': 'E:',
     'cv.phonePrefix': 'T:',
+    'cv.resumes': 'Resumes',
+    'cv.download': 'Download CV',
+    'cv.noResumes': 'No resumes available',
+    'cv.loadError': 'The resumes could not be loaded.',
 
     'project.card.category': 'Project',
     'project.card.featured': 'Featured',

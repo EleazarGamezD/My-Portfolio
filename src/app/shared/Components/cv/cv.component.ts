@@ -9,6 +9,8 @@ import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
+const CV_CONTENT_TIMEOUT_MS = 12000;
+
 @Component({
   selector: 'app-cv',
   imports: [CommonModule],
@@ -37,17 +39,19 @@ export class CvComponent implements OnInit {
     try {
       this.loading = true;
       this.error = null;
-      const [resumes, profile] = await Promise.all([
-        this.contentService.getResumes(),
-        this.contentService.getProfile(),
-      ]);
+      const [resumes, profile] = await this.withTimeout(
+        Promise.all([
+          this.contentService.getResumes(),
+          this.contentService.getProfile(),
+        ]),
+      );
       this.resumes = Array.isArray(resumes)
         ? resumes.filter((resume) => resume.active !== false)
         : [];
       this.profile = profile;
     } catch (err) {
       console.error('Error loading resumes:', err);
-      this.error = 'Error loading resumes';
+      this.error = this.t('cv.loadError');
       this.resumes = [];
     } finally {
       this.loading = false;
@@ -160,5 +164,21 @@ export class CvComponent implements OnInit {
 
   trackResume(index: number, resume: IApiResume): string {
     return resume._id || resume.slug || resume.fileName || resume.title?.es || resume.title?.en || `${index}`;
+  }
+
+  private async withTimeout<T>(operation: Promise<T>): Promise<T> {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error('CV content request timed out')), CV_CONTENT_TIMEOUT_MS);
+    });
+
+    try {
+      return await Promise.race([operation, timeoutPromise]);
+    } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    }
   }
 }
