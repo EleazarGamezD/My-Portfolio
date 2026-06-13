@@ -1,130 +1,129 @@
-<section class="background-repeat" [style.background-image]="detailBackgroundImage ? 'linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.98)), url(' + detailBackgroundImage + ')' : null">
+<section class="background-around">
+  <div class="project-detail-background" [@imageEaseOut]="detailBackgroundImage" [style.background-image]="detailBackgroundStyle"></div>
   <div class="container project-detail-shell pt-100px pb-100px">
     @if (project) {
-      <div class="project-detail-card">
-        <div class="project-detail-grid">
-          <div class="project-media-panel">
-            <div class="project-media-frame">
-              @if (heroImage) {
-                <img [src]="heroImage" [alt]="projectTitle" class="project-hero-image" />
-              } @else {
-                <div class="project-media-placeholder">
-                  <span>{{ projectTitle }}</span>
-                </div>
-              }
+    <div class="project-detail-card">
+      <div class="project-detail-grid">
+        <div class="project-media-panel">
+          <div class="project-media-frame">
+            @if (heroImage) {
+            <img [src]="heroImage" [alt]="projectTitle" class="project-hero-image" [@imageEaseOut]="heroImage" />
+            } @else {
+            <div class="project-media-placeholder">
+              <span>{{ projectTitle }}</span>
             </div>
-
-            @if (galleryImages.length > 1) {
-              <div class="project-gallery">
-                @for (image of galleryImages; track image) {
-                  <button
-                    type="button"
-                    class="project-gallery-thumb"
-                    [class.is-active]="image === heroImage"
-                    (click)="selectImage(image)">
-                    <img [src]="image" [alt]="projectTitle" />
-                  </button>
-                }
-              </div>
             }
           </div>
 
-          <div class="project-content-panel">
-            <div class="project-headline-row">
-              <span class="project-kicker">{{ t('home.projects.title') }}</span>
-              @if (isFeatured) {
-                <span class="project-featured-flag">{{ t('project.details.featured') }}</span>
-              }
-            </div>
-            <h1 class="alt-font text-dark-gray project-title">{{ projectTitle }}</h1>
-
-            @if (projectSummary) {
-              <p class="project-summary">{{ projectSummary }}</p>
+          @if (galleryImages.length > 1) {
+          <div class="project-gallery">
+            @for (image of galleryImages; track image) {
+            <button type="button" class="project-gallery-thumb" [class.is-active]="image === heroImage" (click)="selectImage(image)">
+              <img [src]="image" [alt]="projectTitle" />
+            </button>
             }
+          </div>
+          }
 
-            @if (hasGitHubStats) {
-              <div class="project-github-stats" aria-label="GitHub repository stats">
-                <a class="project-github-stat" [href]="project.githubStats?.url" target="_blank" rel="noopener noreferrer">
-                  <span class="project-github-stat-label">Stars</span>
-                  <strong>{{ formatCount(project.githubStats?.stars) }}</strong>
-                </a>
-                <a class="project-github-stat" [href]="project.githubStats?.url" target="_blank" rel="noopener noreferrer">
-                  <span class="project-github-stat-label">Forks</span>
-                  <strong>{{ formatCount(project.githubStats?.forks) }}</strong>
-                </a>
-              </div>
-            }
-
-            <div class="project-meta-list">
-              @if (isFeatured) {
-                <div class="project-meta-item project-meta-item-featured">
-                  <span class="project-meta-label">{{ t('project.card.featured') }}</span>
-                  <p class="project-featured-description">{{ t('project.details.featuredDescription') }}</p>
-                </div>
-              }
-              <div class="project-meta-item">
-                <span class="project-meta-label">{{ t('project.details.technologies') }}</span>
-                @if (projectTechnologies.length > 0) {
-                  <div class="project-skill-list">
-                    @for (skill of projectTechnologies; track skill._id || skill.slug || $index) {
-                      <div class="project-skill-chip" [class.is-primary]="isPrimarySkill(skill)">
-                        @if (getSkillIcon(skill); as skillIcon) {
-                          <img [src]="skillIcon" [alt]="getSkillLabel(skill)" />
-                        }
-                        <span>{{ getSkillLabel(skill) }}</span>
-                        @if (isPrimarySkill(skill)) {
-                          <small>Main</small>
-                        }
-                      </div>
-                    }
-                  </div>
-                } @else {
-                  <div class="project-chip-list">
-                    @for (technology of projectTechnologyLabels; track technology) {
-                      <span class="project-chip">{{ technology }}</span>
-                    }
-                  </div>
+          @if (projectTechnologyLabels.length > 0) {
+          <div class="project-technologies-panel">
+            <span class="project-meta-label">{{ t('project.details.technologies') }}</span>
+            @if (projectTechnologies.length > 0) {
+            <div class="project-skill-list">
+              @for (skill of projectTechnologies; track skill._id || skill.slug || $index) {
+              <div class="project-skill-chip" [class.is-primary]="isPrimarySkill(skill)">
+                @if (getSkillIcon(skill); as skillIcon) {
+                <img [src]="skillIcon" [alt]="getSkillLabel(skill)" />
+                }
+                <span>{{ getSkillLabel(skill) }}</span>
+                @if (isPrimarySkill(skill)) {
+                <small>Main</small>
                 }
               </div>
-            </div>
-
-            <div class="project-description-block">
-              <h6 class="text-dark-gray mb-10px">{{ t('project.details.description') }}</h6>
-              @if (projectSummary && projectSummary !== projectDescription) {
-                <p class="mb-15px fst-italic">{{ projectSummary }}</p>
               }
-              <p class="mb-0">{{ projectDescription }}</p>
             </div>
-
-            <div class="project-actions">
-              @if (hasLiveDemo) {
-                <a class="btn btn-medium btn-dark-gray" [href]="project.projectLink" target="_blank" rel="noopener noreferrer">
-                  {{ t('project.details.liveDemo') }}
-                </a>
+            } @else {
+            <div class="project-chip-list">
+              @for (technology of projectTechnologyLabels; track technology) {
+              <span class="project-chip">{{ technology }}</span>
               }
-
-              @if (hasSourceCode) {
-                <a class="btn btn-medium btn-transparent-dark-gray" [href]="project.codeLink" target="_blank" rel="noopener noreferrer">
-                  {{ t('project.details.sourceCode') }}
-                </a>
-              }
-
-              <button class="btn btn-medium btn-base-color" type="button" (click)="backToHome()">
-                {{ t('project.details.backHome') }}
-              </button>
             </div>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="project-content-panel">
+          <div class="project-headline-row">
+            @if (isFeatured) {
+            <span class="project-featured-flag">{{ t('project.details.featured') }}</span>
+            }
+          </div>
+          <h1 class="alt-font text-dark-gray project-title">{{ projectTitle }}</h1>
+
+          @if (projectSummary) {
+          <p class="project-summary">{{ projectSummary }}</p>
+          }
+
+          @if (hasGitHubStats) {
+          <div class="project-github-stats" aria-label="GitHub repository stats">
+            <a class="project-github-stat" [href]="project.githubStats?.url" target="_blank" rel="noopener noreferrer">
+              <span class="project-github-stat-label">Stars</span>
+              <strong>{{ formatCount(project.githubStats?.stars) }}</strong>
+            </a>
+            <a class="project-github-stat" [href]="project.githubStats?.url" target="_blank" rel="noopener noreferrer">
+              <span class="project-github-stat-label">Forks</span>
+              <strong>{{ formatCount(project.githubStats?.forks) }}</strong>
+            </a>
+          </div>
+          }
+
+          <div class="project-meta-list">
+            @if (isFeatured) {
+            <div class="project-meta-item project-meta-item-featured">
+              <span class="project-meta-label">{{ t('project.card.featured') }}</span>
+              <p class="project-featured-description">{{ t('project.details.featuredDescription') }}</p>
+            </div>
+            }
+          </div>
+
+          <div class="project-description-block">
+            <h6 class="text-dark-gray mb-10px">{{ t('project.details.description') }}</h6>
+            @if (projectSummary && projectSummary !== projectDescription) {
+            <p class="mb-15px fst-italic">{{ projectSummary }}</p>
+            }
+            <p class="mb-0">{{ projectDescription }}</p>
+          </div>
+
+          <div class="project-actions">
+            @if (hasLiveDemo) {
+            <a class="btn btn-medium btn-dark-gray" [href]="project.projectLink" target="_blank" rel="noopener noreferrer">
+              {{ t('project.details.liveDemo') }}
+            </a>
+            }
+
+            @if (hasSourceCode) {
+            <a class="btn btn-medium btn-transparent-dark-gray" [href]="project.codeLink" target="_blank" rel="noopener noreferrer">
+              {{ t('project.details.sourceCode') }}
+            </a>
+            }
+
+            <button class="btn btn-medium btn-base-color" type="button" (click)="backToHome()">
+              {{ t('project.details.backHome') }}
+            </button>
           </div>
         </div>
       </div>
+    </div>
     } @else {
-      <div class="row justify-content-center">
-        <div class="col-lg-8 text-center project-empty-state">
-          <h4 class="text-dark-gray">{{ t('project.details.notFound') }}</h4>
-          <button class="btn btn-small btn-base-color mt-15px" type="button" (click)="backToHome()">
-            {{ t('project.details.backHome') }}
-          </button>
-        </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center project-empty-state">
+        <h4 class="text-dark-gray">{{ t('project.details.notFound') }}</h4>
+        <button class="btn btn-small btn-base-color mt-15px" type="button" (click)="backToHome()">
+          {{ t('project.details.backHome') }}
+        </button>
       </div>
+    </div>
     }
   </div>
 </section>

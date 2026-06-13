@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
@@ -12,6 +13,14 @@ import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
   imports: [CommonModule],
   templateUrl: './project-detail-box.component.html',
   styleUrl: './project-detail-box.component.scss',
+  animations: [
+    trigger('imageEaseOut', [
+      transition('* => *', [
+        style({ opacity: 0.35, transform: 'scale(1.012)', filter: 'blur(2px)' }),
+        animate('520ms ease-out', style({ opacity: 1, transform: 'scale(1)', filter: 'blur(0)' })),
+      ]),
+    ]),
+  ],
 })
 export class ProjectDetailBoxComponent implements OnChanges {
   @Input() project: IProject | null = null;
@@ -101,6 +110,10 @@ export class ProjectDetailBoxComponent implements OnChanges {
     return this.heroImage || null;
   }
 
+  get detailBackgroundStyle() {
+    return this.detailBackgroundImage ? this.buildBackgroundImage(this.detailBackgroundImage) : null;
+  }
+
   get hasLiveDemo() {
     return !!this.project?.projectLink && this.project.projectLink.startsWith('http');
   }
@@ -143,6 +156,10 @@ export class ProjectDetailBoxComponent implements OnChanges {
 
   private resolveProjectAsset(asset?: string | IProjectAsset | null) {
     return resolveImageAssetUrl(asset);
+  }
+
+  private buildBackgroundImage(image: string) {
+    return `linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.58)), url(${image})`;
   }
 
   backToHome() {
