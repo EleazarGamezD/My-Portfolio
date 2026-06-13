@@ -14,6 +14,59 @@
   white-space: nowrap;
 }
 
+.content-section-period-cell {
+  display: grid;
+  grid-template-columns: minmax(5rem, 1fr) minmax(5rem, 1fr);
+  gap: 0.5rem;
+  min-width: 11rem;
+}
+
+.content-section-translatable-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.5rem;
+
+  textarea,
+  .translate-error {
+    grid-column: 1 / -1;
+  }
+}
+
+.content-section-field {
+  display: grid;
+  gap: 0.35rem;
+
+  span {
+    color: color-mix(in srgb, var(--dark-gray, #2e4052) 72%, white 28%);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+}
+
+.content-section-current-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.45rem;
+  color: var(--dark-gray, #2e4052);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  input {
+    margin: 0;
+  }
+}
+
+.content-section-current-check--compact {
+  grid-column: 1 / -1;
+  margin-top: 0;
+  font-size: 0.78rem;
+}
+
+
 .content-section-table--social-links {
   table-layout: fixed;
 

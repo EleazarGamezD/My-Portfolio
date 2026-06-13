@@ -10,7 +10,7 @@ import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
 import { ToastrService } from 'ngx-toastr';
 
-export type ContentResourceName = 'techSkills' | 'experience' | 'testimonials' | 'resumes' | 'socialLinks';
+export type ContentResourceName = 'techSkills' | 'experience' | 'education' | 'certifications' | 'testimonials' | 'resumes' | 'socialLinks';
 
 interface AdminConfirmationDialog {
   visible: boolean;
@@ -36,6 +36,8 @@ export class AdminDashboardFacade {
   };
   techSkills: IApiTechSkill[] = [];
   experience: IApiContentItem[] = [];
+  education: IApiContentItem[] = [];
+  certifications: IApiContentItem[] = [];
   testimonials: IApiContentItem[] = [];
   socialLinks: IApiContentItem[] = [];
   resumes: IApiResume[] = [];
@@ -50,6 +52,8 @@ export class AdminDashboardFacade {
   readonly newContentItems: Record<Exclude<ContentResourceName, 'resumes'>, Partial<IApiContentItem>> = {
     techSkills: this.createEmptySkillDraft(),
     experience: this.createEmptyContentDraft(),
+    education: this.createEmptyContentDraft(),
+    certifications: this.createEmptyContentDraft(),
     testimonials: this.createEmptyContentDraft(),
     socialLinks: this.createEmptyContentDraft(),
   };
@@ -212,6 +216,28 @@ export class AdminDashboardFacade {
 
       this.ngZone.run(() => {
         this.experience = experience;
+      });
+    });
+  }
+
+  async loadEducationContent(): Promise<void> {
+    await this.loadContentResource('Education', async () => {
+      this.contentService.invalidateResourceCache('education');
+      const education = await this.contentService.getEducation();
+
+      this.ngZone.run(() => {
+        this.education = education;
+      });
+    });
+  }
+
+  async loadCertificationsContent(): Promise<void> {
+    await this.loadContentResource('Certifications', async () => {
+      this.contentService.invalidateResourceCache('certifications');
+      const certifications = await this.contentService.getCertifications();
+
+      this.ngZone.run(() => {
+        this.certifications = certifications;
       });
     });
   }
@@ -430,7 +456,9 @@ export class AdminDashboardFacade {
 
   async createContentItem(resourceName: Exclude<ContentResourceName, 'resumes'>): Promise<void> {
     const draft = this.newContentItems[resourceName];
-    const name = this.getLocalizedText(draft.label || draft.title);
+    const labelName = this.getLocalizedText(draft.label);
+    const titleName = this.getLocalizedText(draft.title);
+    const name = labelName !== '-' ? labelName : titleName;
 
     if (resourceName === 'techSkills') {
       const normalizedLabel = this.normalizeSkillLabel(draft.label?.es || draft.label?.en || draft.value || '');
@@ -459,24 +487,36 @@ export class AdminDashboardFacade {
       return;
     }
 
-    if (!draft.slug || name === '-') {
-      this.contentError = `Slug and label are required to create ${resourceName}.`;
+    if (name === '-') {
+      this.contentError = `Label or title is required to create ${resourceName}.`;
       this.showErrorToast(this.contentError, 'Content');
       return;
     }
 
+    const metadata = { ...(draft.metadata ?? {}) };
+
+    if (resourceName === 'certifications') {
+      delete metadata['platform'];
+      delete metadata['issuer'];
+    }
+
     const payload: Partial<IApiContentItem> = {
-      slug: draft.slug,
+      slug: draft.slug?.trim() || this.createInternalContentSlug(resourceName, draft, name),
       label: draft.label,
       title: draft.title?.es || draft.title?.en ? draft.title : draft.label,
       description: draft.description?.es || draft.description?.en ? draft.description : { es: '', en: '' },
       value: draft.value,
-      period: draft.period,
+      period: draft.period
+        ? {
+            ...draft.period,
+            end: draft.period.current ? null : draft.period.end,
+          }
+        : draft.period,
       icon: draft.icon,
       href: draft.href,
       order: draft.order,
       active: draft.active ?? true,
-      metadata: draft.metadata,
+      metadata,
     };
 
     await this.runContentAction(`${resourceName}-create`, async () => {
@@ -526,6 +566,11 @@ export class AdminDashboardFacade {
     const payload = resourceName === 'techSkills'
       ? this.getTechSkillPayload(item as IApiTechSkill)
       : this.getContentPayload(item);
+
+    if (resourceName === 'certifications' && payload.metadata) {
+      delete payload.metadata['platform'];
+      delete payload.metadata['issuer'];
+    }
 
     await this.runContentAction(`${resourceName}-save-${item._id}`, async () => {
       await this.contentService.updateContentItem(resourceName, item._id!, payload);
@@ -609,6 +654,58 @@ export class AdminDashboardFacade {
 
       await this.loadExperienceContent();
       this.actionMessage = 'Experience order updated.';
+    });
+  }
+
+  async reorderContentItems(resourceName: 'education' | 'certifications', previousIndex: number, currentIndex: number): Promise<void> {
+    const currentItems = this.getContentItems(resourceName);
+
+    if (
+      previousIndex === currentIndex ||
+      previousIndex < 0 ||
+      currentIndex < 0 ||
+      previousIndex >= currentItems.length ||
+      currentIndex >= currentItems.length
+    ) {
+      return;
+    }
+
+    const reordered = [...currentItems];
+    const [movedItem] = reordered.splice(previousIndex, 1);
+
+    if (!movedItem) {
+      return;
+    }
+
+    reordered.splice(currentIndex, 0, movedItem);
+
+    const itemsToPersist = reordered
+      .map((item, index) => ({
+        ...item,
+        order: index + 1,
+      }))
+      .filter((item) => item._id && item.order !== currentItems.find((current) => current._id === item._id)?.order);
+
+    const orderedItems = reordered.map((item, index) => ({
+      ...item,
+      order: index + 1,
+    }));
+
+    if (resourceName === 'education') {
+      this.education = orderedItems;
+    } else {
+      this.certifications = orderedItems;
+    }
+
+    await this.runContentAction(`${resourceName}-reorder`, async () => {
+      await Promise.all(
+        itemsToPersist.map((item) =>
+          this.contentService.updateContentItem(resourceName, item._id!, this.getContentPayload(item)),
+        ),
+      );
+
+      await this.reloadContentCollection(resourceName);
+      this.actionMessage = `${resourceName} order updated.`;
     });
   }
 
@@ -766,6 +863,10 @@ export class AdminDashboardFacade {
         return this.techSkills;
       case 'experience':
         return this.experience;
+      case 'education':
+        return this.education;
+      case 'certifications':
+        return this.certifications;
       case 'testimonials':
         return this.testimonials;
       case 'socialLinks':
@@ -830,6 +931,31 @@ export class AdminDashboardFacade {
       active: true,
       metadata: {},
     };
+  }
+
+  private createInternalContentSlug(resourceName: Exclude<ContentResourceName, 'resumes'>, draft: Partial<IApiContentItem>, name: string): string {
+    const rawSlug = [
+      resourceName,
+      name,
+      draft.title?.es,
+      draft.title?.en,
+      typeof draft.metadata?.['platform'] === 'string' ? draft.metadata['platform'] : '',
+      typeof draft.metadata?.['issuedAt'] === 'string' ? draft.metadata['issuedAt'] : '',
+      Date.now().toString(36),
+    ]
+      .filter((part): part is string => typeof part === 'string' && part.trim().length > 0)
+      .join('-');
+
+    return this.slugifyContentValue(rawSlug) || `${resourceName}-${Date.now().toString(36)}`;
+  }
+
+  private slugifyContentValue(value: string): string {
+    return value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
   }
 
   private createEmptySkillDraft(): Partial<IApiTechSkill> {
@@ -1028,6 +1154,12 @@ export class AdminDashboardFacade {
         return;
       case 'experience':
         await this.loadExperienceContent();
+        return;
+      case 'education':
+        await this.loadEducationContent();
+        return;
+      case 'certifications':
+        await this.loadCertificationsContent();
         return;
       case 'testimonials':
         await this.loadTestimonialsContent();

@@ -13,6 +13,7 @@ import {
   AdminContentSectionComponent,
   AdminContentSectionVariant,
 } from '@pages/admin-dashboard/components/content-section/content-section.component';
+import { OrderedCvContentListComponent } from '@pages/admin-dashboard/components/ordered-cv-content-list/ordered-cv-content-list.component';
 import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/skills-section/skills-section.component';
 
 type ContentResourcePage = Exclude<ContentResourceName, 'resumes'>;
@@ -30,7 +31,7 @@ interface AdminContentPageData {
 @Component({
   selector: 'app-admin-content-page',
   standalone: true,
-  imports: [CommonModule, AlertModule, AdminContentSectionComponent, AdminSkillsSectionComponent],
+  imports: [CommonModule, AlertModule, AdminContentSectionComponent, AdminSkillsSectionComponent, OrderedCvContentListComponent],
   templateUrl: './content-page.component.html',
   styleUrl: './content-page.component.scss',
 })
@@ -73,6 +74,10 @@ export class AdminContentPageComponent implements OnInit {
     return this.facade.getContentDraft(this.config.resourceName);
   }
 
+  get isOrderedCvContent(): boolean {
+    return this.config.variant === 'education' || this.config.variant === 'certifications';
+  }
+
   get skillItems(): IApiTechSkill[] {
     return this.skillPagination.data;
   }
@@ -106,10 +111,24 @@ export class AdminContentPageComponent implements OnInit {
     await this.loadSkillPage(page);
   }
 
+  async reorderOrderedCvContent(previousIndex: number, currentIndex: number): Promise<void> {
+    if (this.config.resourceName !== 'education' && this.config.resourceName !== 'certifications') {
+      return;
+    }
+
+    await this.facade.reorderContentItems(this.config.resourceName, previousIndex, currentIndex);
+  }
+
   private async loadCurrentContentSection(): Promise<void> {
     switch (this.config.resourceName) {
       case 'experience':
         await this.facade.loadExperienceContent();
+        return;
+      case 'education':
+        await this.facade.loadEducationContent();
+        return;
+      case 'certifications':
+        await this.facade.loadCertificationsContent();
         return;
       case 'testimonials':
         await this.facade.loadTestimonialsContent();

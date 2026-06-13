@@ -87,33 +87,21 @@ export class CvComponent implements OnInit {
   }
 
   private getResumeDownloadFileName(resume: IApiResume): string {
-    const baseName = this.getResumeTitle(resume)
-      .trim()
-      .replace(/[\\/:*?"<>|]/g, ' ')
+    const language = this.resolveResumeLanguage(resume);
+    const fullName = this.i18nService.selectText(
+      this.profile?.label?.es ?? this.profile?.title?.es ?? '',
+      this.profile?.label?.en ?? this.profile?.title?.en ?? this.profile?.label?.es ?? this.profile?.title?.es ?? '',
+    );
+    const normalizedName = fullName
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9\s_-]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
+    const [firstName = 'portfolio', ...rest] = normalizedName.split(' ');
+    const lastName = rest.at(-1) || 'owner';
 
-    const extension = this.getResumeFileExtension(resume);
-    return `${baseName || 'resume'}.${extension}`;
-  }
-
-  private getResumeFileExtension(resume: IApiResume): string {
-    const fileName = resume.fileName?.trim() || '';
-    const extensionMatch = fileName.match(/\.([a-z0-9]+)$/i);
-
-    if (extensionMatch?.[1]) {
-      return extensionMatch[1].toLowerCase();
-    }
-
-    switch (resume.mimeType) {
-      case 'application/msword':
-        return 'doc';
-      case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-        return 'docx';
-      case 'application/pdf':
-      default:
-        return 'pdf';
-    }
+    return `${firstName}_${lastName}_${language}_cv.pdf`;
   }
 
   canDownloadCV(resume: IApiResume): boolean {

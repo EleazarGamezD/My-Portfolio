@@ -239,6 +239,88 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'dashboard/education',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/content-page/content-page.component')
+            .then(
+              (m) => m.AdminContentPageComponent,
+            ),
+        data: {
+          resourceName: 'education',
+          variant: 'education',
+          sectionTitle: 'Educación',
+          createTitle: 'Agregar educación',
+          emptyMessage: 'No hay educación cargada.',
+          kicker: 'CV académico',
+          description: 'Gestiona estudios, instituciones, fechas y enlaces de respaldo para el CV generado.',
+        },
+      },
+      {
+        path: 'dashboard/education/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/cv-content-form-page/cv-content-form-page.component')
+            .then(
+              (m) => m.AdminCvContentFormPageComponent,
+            ),
+        data: {
+          resourceName: 'education',
+          mode: 'create',
+        },
+      },
+      {
+        path: 'dashboard/education/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/cv-content-form-page/cv-content-form-page.component')
+            .then(
+              (m) => m.AdminCvContentFormPageComponent,
+            ),
+        data: {
+          resourceName: 'education',
+          mode: 'edit',
+        },
+      },
+      {
+        path: 'dashboard/certifications',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/content-page/content-page.component')
+            .then(
+              (m) => m.AdminContentPageComponent,
+            ),
+        data: {
+          resourceName: 'certifications',
+          variant: 'certifications',
+          sectionTitle: 'Certificados',
+          createTitle: 'Agregar certificado',
+          emptyMessage: 'No hay certificados cargados.',
+          kicker: 'Credenciales verificables',
+          description: 'Carga certificados de Udemy, Coursera, Platzi u otras plataformas con su enlace verificable.',
+        },
+      },
+      {
+        path: 'dashboard/certifications/create',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/cv-content-form-page/cv-content-form-page.component')
+            .then(
+              (m) => m.AdminCvContentFormPageComponent,
+            ),
+        data: {
+          resourceName: 'certifications',
+          mode: 'create',
+        },
+      },
+      {
+        path: 'dashboard/certifications/edit/:id',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/cv-content-form-page/cv-content-form-page.component')
+            .then(
+              (m) => m.AdminCvContentFormPageComponent,
+            ),
+        data: {
+          resourceName: 'certifications',
+          mode: 'edit',
+        },
+      },
+      {
         path: 'dashboard/testimonials',
         loadComponent: () =>
           import('@pages/admin-dashboard/views/testimonials-page/testimonials-page.component')

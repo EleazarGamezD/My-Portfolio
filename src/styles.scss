@@ -63,6 +63,25 @@ body.admin-route-active {
     color: var(--base-color, #c84b31) !important;
   }
 
+  input[type='checkbox'].form-check-input,
+  input[type='checkbox'][cformcheckinput],
+  input[type='checkbox'][cFormCheckInput] {
+    width: 0.86rem !important;
+    min-width: 0.86rem;
+    height: 0.86rem !important;
+    border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 35%, white 65%);
+    border-radius: 0.14rem !important;
+    background-color: white;
+    background-size: 0.58rem 0.58rem;
+    cursor: pointer;
+    vertical-align: middle;
+
+    &:checked {
+      border-color: var(--base-color, #c84b31);
+      background-color: var(--base-color, #c84b31);
+    }
+  }
+
   .bg-primary,
   .badge.bg-primary {
     background-color: var(--base-color, #c84b31) !important;

@@ -6,6 +6,8 @@ export const API_CONTENT_ROUTES = {
   updateProfile: `${environment.apiUrl}/content/profile`,
   getTechSkills: `${environment.apiUrl}/content/techSkills`,
   getExperience: `${environment.apiUrl}/content/experience`,
+  getEducation: `${environment.apiUrl}/content/education`,
+  getCertifications: `${environment.apiUrl}/content/certifications`,
   getSocialLinks: `${environment.apiUrl}/content/socialLinks`,
   getTestimonials: `${environment.apiUrl}/content/testimonials`,
   getResumes: `${environment.apiUrl}/content/resumes`,
