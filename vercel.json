@@ -21,6 +21,14 @@
   ],
   "rewrites": [
     {
+      "source": "/(es|en)/projectDetails/(.*)",
+      "destination": "/index.csr.html"
+    },
+    {
+      "source": "/projectDetails/(.*)",
+      "destination": "/index.csr.html"
+    },
+    {
       "source": "/(es|en)/admin/(.*)",
       "destination": "/index.csr.html"
     },
