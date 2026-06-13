@@ -109,6 +109,19 @@ export class ProjectDetailBoxComponent implements OnChanges {
     return !!this.project?.codeLink && this.project.codeLink.startsWith('http');
   }
 
+  get hasGitHubStats() {
+    return Boolean(this.project?.githubStats);
+  }
+
+  formatCount(value?: number) {
+    const amount = Number(value ?? 0);
+    if (amount >= 1000) {
+      return `${(amount / 1000).toFixed(amount >= 10000 ? 0 : 1)}k`;
+    }
+
+    return String(amount);
+  }
+
   selectImage(image: string) {
     this.activeImage = image;
   }

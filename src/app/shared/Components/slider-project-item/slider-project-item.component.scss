@@ -123,6 +123,33 @@
   gap: 8px;
 }
 
+.project-card-github {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project-card-github-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(24, 24, 24, 0.06);
+  border: 1px solid rgba(24, 24, 24, 0.08);
+  color: #181818;
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.project-card-github-icon {
+  color: #b14b21;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .project-card-chip {
   display: inline-flex;
   align-items: center;

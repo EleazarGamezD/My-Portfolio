@@ -66,6 +66,19 @@ export class SliderProjectItemComponent {
     return Array.isArray(this.project.stack) && this.project.stack.length > 3 ? this.project.stack.length - 3 : 0;
   }
 
+  get hasGitHubStats() {
+    return Boolean(this.project.githubStats);
+  }
+
+  formatCount(value?: number) {
+    const amount = Number(value ?? 0);
+    if (amount >= 1000) {
+      return `${(amount / 1000).toFixed(amount >= 10000 ? 0 : 1)}k`;
+    }
+
+    return String(amount);
+  }
+
   private resolveProjectAsset(asset?: string | IProjectAsset | null) {
     return resolveImageAssetUrl(asset);
   }

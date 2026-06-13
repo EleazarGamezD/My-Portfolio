@@ -17,6 +17,19 @@
       <p class="project-card-summary">{{ summary }}</p>
     }
 
+    @if (hasGitHubStats) {
+      <div class="project-card-github" aria-label="GitHub repository stats">
+        <span class="project-card-github-pill">
+          <span class="project-card-github-icon">Star</span>
+          {{ formatCount(project.githubStats?.stars) }}
+        </span>
+        <span class="project-card-github-pill">
+          <span class="project-card-github-icon">Fork</span>
+          {{ formatCount(project.githubStats?.forks) }}
+        </span>
+      </div>
+    }
+
     @if (stackPreview.length > 0) {
       <div class="project-card-stack">
         @for (technology of stackPreview; track technology) {

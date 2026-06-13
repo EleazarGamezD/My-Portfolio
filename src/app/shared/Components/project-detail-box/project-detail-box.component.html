@@ -42,6 +42,19 @@
               <p class="project-summary">{{ projectSummary }}</p>
             }
 
+            @if (hasGitHubStats) {
+              <div class="project-github-stats" aria-label="GitHub repository stats">
+                <a class="project-github-stat" [href]="project.githubStats?.url" target="_blank" rel="noopener noreferrer">
+                  <span class="project-github-stat-label">Stars</span>
+                  <strong>{{ formatCount(project.githubStats?.stars) }}</strong>
+                </a>
+                <a class="project-github-stat" [href]="project.githubStats?.url" target="_blank" rel="noopener noreferrer">
+                  <span class="project-github-stat-label">Forks</span>
+                  <strong>{{ formatCount(project.githubStats?.forks) }}</strong>
+                </a>
+              </div>
+            }
+
             <div class="project-meta-list">
               @if (isFeatured) {
                 <div class="project-meta-item project-meta-item-featured">

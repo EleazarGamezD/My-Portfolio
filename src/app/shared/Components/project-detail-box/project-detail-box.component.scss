@@ -141,6 +141,48 @@ section {
   margin-bottom: 28px;
 }
 
+.project-github-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: -10px 0 28px;
+}
+
+.project-github-stat {
+  min-width: 112px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(24, 24, 24, 0.04);
+  border: 1px solid rgba(24, 24, 24, 0.08);
+  color: #181818;
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(239, 99, 44, 0.28);
+    background: rgba(239, 99, 44, 0.08);
+    color: #181818;
+  }
+
+  strong {
+    font-size: 1rem;
+    line-height: 1;
+  }
+}
+
+.project-github-stat-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(24, 24, 24, 0.58);
+}
+
 .project-meta-list {
   display: grid;
   gap: 20px;

@@ -15,6 +15,14 @@ export interface IProjectAsset {
   extension?: string;
 }
 
+export interface IGitHubRepositoryStats {
+  owner: string;
+  repo: string;
+  url: string;
+  stars: number;
+  forks: number;
+}
+
 export interface IProject {
   _id?: string;
   slug?: string;
@@ -30,6 +38,7 @@ export interface IProject {
   coverImage?: string | IProjectAsset | null;
   projectLink?: string;
   codeLink?: string;
+  githubStats?: IGitHubRepositoryStats | null;
   icon?: string;
   featured?: boolean;
   status?: string;
