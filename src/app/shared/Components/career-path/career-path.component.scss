@@ -1,3 +1,141 @@
 section {
   padding-top: 0px !important;
 }
+
+.career-visual {
+  min-height: 620px;
+  isolation: isolate;
+}
+
+.career-visual__api {
+  position: relative;
+  z-index: 9;
+  display: block;
+  width: min(46%, 360px);
+  height: auto;
+  margin: 72px auto 0;
+  transform: translateX(-4%);
+}
+
+.career-visual__rain,
+.career-visual__web {
+  position: absolute;
+  pointer-events: none;
+  height: auto;
+}
+
+.career-visual__rain {
+  z-index: 1;
+  opacity: 0.82;
+}
+
+.career-visual__rain--center {
+  width: min(86%, 650px);
+  top: 42%;
+  left: 52%;
+  transform: translate(-50%, -50%);
+}
+
+.career-visual__rain--left {
+  width: min(56%, 430px);
+  top: 86px;
+  left: 2%;
+}
+
+.career-visual__rain--right-top {
+  width: min(54%, 420px);
+  top: 76px;
+  right: 0;
+}
+
+.career-visual__rain--right-bottom {
+  width: min(42%, 320px);
+  top: 238px;
+  right: 8%;
+}
+
+.career-visual__web {
+  z-index: 2;
+  width: min(28%, 190px);
+  top: 410px;
+  left: 15%;
+}
+
+@media (max-width: 1199px) {
+  .career-visual {
+    min-height: 560px;
+  }
+
+  .career-visual__api {
+    width: min(52%, 340px);
+    margin-top: 64px;
+  }
+
+  .career-visual__web {
+    top: 380px;
+  }
+}
+
+@media (max-width: 991px) {
+  .career-visual {
+    min-height: 520px;
+  }
+
+  .career-visual__api {
+    width: min(48%, 320px);
+    margin-top: 54px;
+    transform: none;
+  }
+
+  .career-visual__rain--center {
+    width: 78%;
+  }
+
+  .career-visual__rain--left {
+    left: 7%;
+  }
+
+  .career-visual__rain--right-top {
+    right: 7%;
+  }
+
+  .career-visual__rain--right-bottom {
+    right: 14%;
+  }
+
+  .career-visual__web {
+    left: 22%;
+  }
+}
+
+@media (max-width: 575px) {
+  .career-visual {
+    min-height: 420px;
+  }
+
+  .career-visual__api {
+    width: min(64%, 280px);
+    margin-top: 42px;
+  }
+
+  .career-visual__rain--center {
+    width: 95%;
+  }
+
+  .career-visual__rain--left,
+  .career-visual__rain--right-top {
+    width: 62%;
+    top: 64px;
+  }
+
+  .career-visual__rain--right-bottom {
+    width: 52%;
+    top: 190px;
+  }
+
+  .career-visual__web {
+    width: 24%;
+    top: 315px;
+    left: 16%;
+  }
+}
