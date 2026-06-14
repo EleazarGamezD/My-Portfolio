@@ -30,7 +30,8 @@ const TRANSLATIONS: Record<AppLanguage, Record<TranslationKey, string>> = {
     'home.career.badge': 'Trayectoria',
     'home.career.title': 'Trayectoria profesional.',
 
-    'home.contactHello.title': '¡Di hola!',
+    'home.contactHello.title': 'Di hola!, Say hello!, Say hi!',
+    'home.contactHello.body': '¿Listo para crear algo extraordinario juntos? Si tienes un proyecto en mente, buscas colaboración o simplemente quieres charlar sobre desarrollo web, conversemos. Estoy siempre abierto a nuevas oportunidades y desafíos que nos permitan transformar ideas en experiencias digitales memorables. Hablemos de cómo puedo aportar valor a tu próximo proyecto.',
 
     'home.contactForm.badge': 'Creemos juntos',
     'home.contactForm.title': '¿En qué puedo ayudarte?',
@@ -116,7 +117,8 @@ const TRANSLATIONS: Record<AppLanguage, Record<TranslationKey, string>> = {
     'home.career.badge': 'Career path',
     'home.career.title': 'Professional career path.',
 
-    'home.contactHello.title': 'Say hello!',
+    'home.contactHello.title': "Di hola!, Say hello!, Say hi!",
+    'home.contactHello.body': 'Ready to build something extraordinary together? If you have a project in mind, are looking for collaboration, or just want to talk about web development, let’s talk. I am always open to new opportunities and challenges that transform ideas into memorable digital experiences. Let’s discuss how I can add value to your next project.',
 
     'home.contactForm.badge': 'Let’s build together',
     'home.contactForm.title': 'How can I help you?',

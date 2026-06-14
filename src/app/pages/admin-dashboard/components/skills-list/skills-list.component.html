@@ -2,22 +2,22 @@
   <div class="data-table-header">
     <div class="header-top">
       <div>
-        <p class="admin-page-kicker mb-1">Catalogo tecnico</p>
-        <h2 class="admin-page-title mb-0">Skills tecnicas</h2>
+        <p class="admin-page-kicker mb-1">Catálogo técnico</p>
+        <h2 class="admin-page-title mb-0">Habilidades técnicas</h2>
       </div>
       <a class="btn-create" [routerLink]="['/admin/dashboard/skills/create']">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
-        Crear skill
+        Crear habilidad
       </a>
     </div>
-    <p class="admin-page-copy mb-0">Administra el catalogo visual de skills que luego se relacionan con los proyectos.</p>
+    <p class="admin-page-copy mb-0">Administra el catálogo visual de habilidades que luego se relacionan con los proyectos.</p>
   </div>
 
   <div *ngIf="!loading && skills.length === 0" class="empty-state">
-    <p>No se encontraron skills.</p>
+    <p>No se encontraron habilidades.</p>
   </div>
 
   <div class="skills-surface" *ngIf="skills.length > 0 || loading">
@@ -54,7 +54,7 @@
 
     <div class="skills-pagination" *ngIf="pagination.totalPages > 1">
       <div class="skills-pagination__meta">
-        {{ pagination.totalItems }} skills
+        {{ pagination.totalItems }} habilidades
       </div>
       <div class="skills-pagination__controls">
         <button type="button" class="skills-pagination__button" [disabled]="!pagination.hasPrevPage" (click)="changePage(pagination.currentPage - 1)">

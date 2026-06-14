@@ -135,7 +135,7 @@ export class ContactMeComponent implements OnInit {
 
     const backgroundUrl =
       resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.contactSectionBackground) ||
-      'images/demo-spa-salon-home-bg-01.jpg';
+      'https://placehold.co/1920x1200';
     return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
   }
 

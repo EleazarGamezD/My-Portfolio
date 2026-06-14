@@ -359,6 +359,14 @@ export const routes: Routes = [
             ),
       },
       {
+        path: 'dashboard/contactMe',
+        loadComponent: () =>
+          import('@pages/admin-dashboard/views/contact-me-page/contact-me-page.component')
+            .then(
+              (m) => m.AdminContactMePageComponent,
+            ),
+      },
+      {
         path: 'dashboard/resumes',
         loadComponent: () =>
           import('@pages/admin-dashboard/views/resumes-page/resumes-page.component')

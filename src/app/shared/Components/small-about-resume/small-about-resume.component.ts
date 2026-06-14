@@ -88,7 +88,7 @@ export class SmallAboutResumeComponent implements OnInit {
 
     const backgroundUrl =
       resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSectionBackground) ||
-      'images/demo-spa-salon-home-bg-01.jpg';
+      'https://placehold.co/1920x1200';
     return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
   }
 

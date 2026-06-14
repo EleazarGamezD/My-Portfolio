@@ -996,6 +996,8 @@ export class AdminDashboardFacade {
       phone: '',
       metadata: {
         about: { es: '', en: '' },
+        contactIntroTitle: { es: '', en: '' },
+        contactIntro: { es: '', en: '' },
         heroSlides: [],
         portfolioMedia: this.normalizePortfolioMedia(),
       },
@@ -1020,6 +1022,14 @@ export class AdminDashboardFacade {
           es: metadata.about?.es ?? '',
           en: metadata.about?.en ?? '',
         },
+        contactIntroTitle: {
+          es: metadata.contactIntroTitle?.es ?? '',
+          en: metadata.contactIntroTitle?.en ?? '',
+        },
+        contactIntro: {
+          es: metadata.contactIntro?.es ?? '',
+          en: metadata.contactIntro?.en ?? '',
+        },
         heroSlides: Array.isArray(metadata.heroSlides)
           ? metadata.heroSlides.map((slide) => this.normalizeHeroSlide(slide))
           : [],
@@ -1043,6 +1053,8 @@ export class AdminDashboardFacade {
 
     this.profile.metadata ??= {};
     this.profile.metadata.about ??= { es: '', en: '' };
+    this.profile.metadata.contactIntroTitle ??= { es: '', en: '' };
+    this.profile.metadata.contactIntro ??= { es: '', en: '' };
     this.profile.metadata.heroSlides ??= [];
     this.profile.metadata.portfolioMedia ??= this.normalizePortfolioMedia();
   }

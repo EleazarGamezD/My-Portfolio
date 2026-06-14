@@ -72,7 +72,7 @@ export class SliderProjectsComponent implements OnInit {
 
     const backgroundUrl =
       resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.projectsSectionBackground) ||
-      'images/demo-spa-salon-home-bg-01.jpg';
+      'https://placehold.co/1920x1200';
     return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
   }
 
