@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
@@ -41,6 +42,10 @@ export class FeaturesComponent implements OnInit {
       item.label?.es ?? item.value ?? '',
       item.label?.en ?? item.label?.es ?? item.value ?? '',
     );
+  }
+
+  getItemIconUrl(item: IApiContentItem): string | null {
+    return resolveImageAssetUrl(item.icon ?? null);
   }
 
   trackStackItem(_: number, item: IApiContentItem): string {

@@ -154,18 +154,11 @@ export class ContentService extends GlobalHttpService {
   }
 
   async getTechSkills(): Promise<IApiTechSkill[]> {
-    this.techSkillsPromise ??= this.withCacheResetOnError(
-      this.makeRequest<IApiTechSkill[], null>(
-        API_CONTENT_ROUTES.getTechSkills,
-        null,
-        RequestMethod.GET,
-      ),
-      () => {
-        this.techSkillsPromise = null;
-      },
+    return this.makeRequest<IApiTechSkill[], null>(
+      API_CONTENT_ROUTES.getTechSkills,
+      null,
+      RequestMethod.GET,
     );
-
-    return this.techSkillsPromise;
   }
 
   async getTechSkillsPaginated(options: IPaginationOptions): Promise<IPaginationResponse<IApiTechSkill>> {
