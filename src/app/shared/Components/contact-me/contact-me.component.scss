@@ -1,6 +1,41 @@
 section {
   padding-top: 0px !important;
+
   @media (max-width: 767px) {
     padding-bottom: 80px !important;
+  }
+}
+
+.contact-form-card {
+  border: 1px solid rgba(24, 24, 24, 0.08);
+  border-radius: 32px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.4) 100%),
+    rgba(255, 255, 255, 0.4);
+  box-shadow: 0 30px 70px rgba(24, 24, 24, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 44px 48px;
+}
+
+.contact-form-card .form-control {
+  border-color: rgba(31, 48, 68, 0.62) !important;
+  color: #1f3044;
+}
+
+.contact-form-card .form-control::placeholder {
+  color: rgba(31, 48, 68, 0.58);
+}
+
+.contact-form-card .form-label,
+.contact-form-card .form-icon i,
+.contact-form-card p {
+  color: #1f3044 !important;
+}
+
+@media (max-width: 767px) {
+  .contact-form-card {
+    border-radius: 24px;
+    padding: 28px 22px;
   }
 }
