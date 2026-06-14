@@ -46,6 +46,7 @@ export interface IApiPortfolioMedia {
 
 export interface IApiProfileMetadata {
   about?: ILocalizedText;
+  contactIntro?: ILocalizedText;
   heroSlides?: IApiHeroSlide[];
   portfolioMedia?: IApiPortfolioMedia;
 }

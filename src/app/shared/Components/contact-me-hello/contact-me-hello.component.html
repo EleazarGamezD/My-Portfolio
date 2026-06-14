@@ -4,15 +4,16 @@
       <div class="col-md-6 overflow-hidden"
         data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'>
         <h1 class="alt-font fw-700 text-dark-gray fancy-text-style-4 ls-minus-2px">
-          <span data-fancy-text='{ "effect": "rotate", "string": ["Di hola!", "Say hello!", "Say hi!"] }'></span><i
-            class="bi bi-emoji-smile icon-extra-large ms-15px"></i>
+          <span>{{ t('home.contactHello.title') }}</span><i class="bi bi-emoji-smile icon-extra-large ms-15px"></i>
         </h1>
       </div>
       <div class="col-md-6 last-paragraph-no-margin">
+        @if (contactIntroText) {
         <p class="w-85 xl-w-100"
           data-anime='{ "el": "lines", "translateY": [30, 0], "translateX": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'>
-          {{ t('home.contactHello.body') }}
+          {{ contactIntroText }}
         </p>
+        }
       </div>
     </div>
   </div>
