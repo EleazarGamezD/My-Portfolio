@@ -4,10 +4,19 @@
       <div>
         <p class="admin-page-kicker">Control de acceso</p>
         <h2 class="admin-page-title">Usuarios CMS</h2>
-        <p class="admin-page-copy mb-0">Administra quienes pueden entrar al panel, sus roles base y su estado de acceso.</p>
+        <p class="admin-page-copy mb-0">
+          Administra quienes pueden entrar al panel, sus roles base y su estado
+          de acceso.
+        </p>
       </div>
     </div>
 
-    <app-admin-users-section [adminUsers]="facade.adminUsers" [contentLoading]="facade.contentLoading" [currentAdminId]="facade.currentAdmin?._id" [actionLoadingKey]="facade.actionLoadingKey" (saveUser)="facade.saveAdminUser($event)"></app-admin-users-section>
+    <app-admin-users-section
+      [adminUsers]="facade.adminUsers"
+      [contentLoading]="facade.contentLoading"
+      [currentAdminId]="$safeNavigationMigration(facade.currentAdmin?._id)"
+      [actionLoadingKey]="facade.actionLoadingKey"
+      (saveUser)="facade.saveAdminUser($event)"
+    ></app-admin-users-section>
   </div>
 </section>
