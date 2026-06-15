@@ -1,5 +1,11 @@
-
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { TranslateService } from '@core/services/translate/translate.service';
 import { ButtonModule, SpinnerComponent } from '@coreui/angular';
 export enum Language {
@@ -15,6 +21,7 @@ export enum LanguageLabel {
   standalone: true,
   imports: [ButtonModule, SpinnerComponent],
   templateUrl: './translate-button.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './translate-button.component.scss',
 })
 export class TranslateButtonComponent implements OnChanges {
@@ -27,9 +34,12 @@ export class TranslateButtonComponent implements OnChanges {
 
   loading = false;
 
-  readonly langLabels: Record<Language, string> = { [Language.ES]: LanguageLabel.ES, [Language.EN]: LanguageLabel.EN };
+  readonly langLabels: Record<Language, string> = {
+    [Language.ES]: LanguageLabel.ES,
+    [Language.EN]: LanguageLabel.EN,
+  };
 
-  constructor(private readonly translateService: TranslateService) { }
+  constructor(private readonly translateService: TranslateService) {}
 
   ngOnChanges(): void {
     this.translationError.emit('');

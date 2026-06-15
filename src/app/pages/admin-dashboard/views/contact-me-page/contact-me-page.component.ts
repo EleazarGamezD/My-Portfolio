@@ -1,15 +1,35 @@
-
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
-import { ButtonModule, CardModule, FormModule, SpinnerModule } from '@coreui/angular';
-import { Language, TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
+import {
+  ButtonModule,
+  CardModule,
+  FormModule,
+  SpinnerModule,
+} from '@coreui/angular';
+import {
+  Language,
+  TranslateButtonComponent,
+} from '../../components/shared/translate-button/translate-button.component';
 
 @Component({
   selector: 'app-admin-contact-me-page',
   standalone: true,
-  imports: [FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, TranslateButtonComponent],
+  imports: [
+    FormsModule,
+    ButtonModule,
+    CardModule,
+    FormModule,
+    SpinnerModule,
+    TranslateButtonComponent,
+  ],
   templateUrl: './contact-me-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './contact-me-page.component.scss',
 })
 export class AdminContactMePageComponent implements OnInit {
@@ -49,9 +69,11 @@ export class AdminContactMePageComponent implements OnInit {
   }
 
   get contactTitle(): string {
-    return this.facade.profile?.metadata?.contactIntroTitle?.es
-      ?? this.facade.profile?.metadata?.contactIntroTitle?.en
-      ?? '';
+    return (
+      this.facade.profile?.metadata?.contactIntroTitle?.es ??
+      this.facade.profile?.metadata?.contactIntroTitle?.en ??
+      ''
+    );
   }
 
   set contactTitle(value: string) {

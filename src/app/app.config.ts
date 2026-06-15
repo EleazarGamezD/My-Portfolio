@@ -1,11 +1,9 @@
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import {
-  ApplicationConfig,
-  importProvidersFrom,
-} from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import {
   provideClientHydration,
   withEventReplay,
+  withNoIncrementalHydration,
 } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import {
@@ -35,10 +33,15 @@ export const appConfig: ApplicationConfig = {
       }),
       withViewTransitions(),
     ),
-    provideClientHydration(withEventReplay()),
+    provideClientHydration(withEventReplay(), withNoIncrementalHydration()),
     provideHttpClient(withFetch()),
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment.reCaptchaSiteKey },
-    importProvidersFrom(RecaptchaV3Module, StorageModule.forRoot({}), SidebarModule, DropdownModule),
+    importProvidersFrom(
+      RecaptchaV3Module,
+      StorageModule.forRoot({}),
+      SidebarModule,
+      DropdownModule,
+    ),
     IconSetService,
     provideAnimations(),
     provideToastr({

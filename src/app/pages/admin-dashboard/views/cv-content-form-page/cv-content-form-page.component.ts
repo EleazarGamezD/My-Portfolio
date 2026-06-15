@@ -1,12 +1,24 @@
-
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
-import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
+import {
+  AlertModule,
+  ButtonModule,
+  CardModule,
+  FormModule,
+} from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
-import { Language, TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
+import {
+  Language,
+  TranslateButtonComponent,
+} from '../../components/shared/translate-button/translate-button.component';
 
 type CvContentResource = 'education' | 'certifications';
 type CvContentFormMode = 'create' | 'edit';
@@ -14,8 +26,17 @@ type CvContentFormMode = 'create' | 'edit';
 @Component({
   selector: 'app-admin-cv-content-form-page',
   standalone: true,
-  imports: [FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule, TranslateButtonComponent],
+  imports: [
+    FormsModule,
+    RouterLink,
+    AlertModule,
+    ButtonModule,
+    CardModule,
+    FormModule,
+    TranslateButtonComponent,
+  ],
   templateUrl: './cv-content-form-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './cv-content-form-page.component.scss',
 })
 export class AdminCvContentFormPageComponent implements OnInit {
@@ -39,8 +60,11 @@ export class AdminCvContentFormPageComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.mode = (this.route.snapshot.data['mode'] as CvContentFormMode) || 'create';
-    this.resource = (this.route.snapshot.data['resourceName'] as CvContentResource) || 'education';
+    this.mode =
+      (this.route.snapshot.data['mode'] as CvContentFormMode) || 'create';
+    this.resource =
+      (this.route.snapshot.data['resourceName'] as CvContentResource) ||
+      'education';
 
     if (this.mode === 'edit') {
       await this.loadItem();
@@ -74,7 +98,9 @@ export class AdminCvContentFormPageComponent implements OnInit {
       return this.mode === 'create' ? 'Nuevo estudio' : 'Edicion academica';
     }
 
-    return this.mode === 'create' ? 'Nueva credencial' : 'Edicion de certificado';
+    return this.mode === 'create'
+      ? 'Nueva credencial'
+      : 'Edicion de certificado';
   }
 
   get heroTitle(): string {
@@ -114,7 +140,8 @@ export class AdminCvContentFormPageComponent implements OnInit {
       const end = this.draft.period?.end?.trim() || '';
 
       if (!start || (!this.currentPeriod && !end)) {
-        this.error = 'Fecha inicio y fecha fin son obligatorias, salvo que marques cursando.';
+        this.error =
+          'Fecha inicio y fecha fin son obligatorias, salvo que marques cursando.';
         return;
       }
     }
@@ -131,19 +158,43 @@ export class AdminCvContentFormPageComponent implements OnInit {
 
       const payload = this.isEducation
         ? this.buildEducationPayload(labelEs, labelEn, titleEs, titleEn, order)
-        : this.buildCertificationPayload(labelEs, labelEn, titleEs, titleEn, order);
+        : this.buildCertificationPayload(
+            labelEs,
+            labelEn,
+            titleEs,
+            titleEn,
+            order,
+          );
 
       if (this.mode === 'create') {
-        await this.contentService.createContentItem<IApiContentItem>(this.resource, payload);
-        this.toastr.success(this.isEducation ? 'Educacion creada.' : 'Certificado creado.', 'Panel');
+        await this.contentService.createContentItem<IApiContentItem>(
+          this.resource,
+          payload,
+        );
+        this.toastr.success(
+          this.isEducation ? 'Educacion creada.' : 'Certificado creado.',
+          'Panel',
+        );
       } else if (this.itemId) {
-        await this.contentService.updateContentItem<IApiContentItem>(this.resource, this.itemId, payload);
-        this.toastr.success(this.isEducation ? 'Educacion actualizada.' : 'Certificado actualizado.', 'Panel');
+        await this.contentService.updateContentItem<IApiContentItem>(
+          this.resource,
+          this.itemId,
+          payload,
+        );
+        this.toastr.success(
+          this.isEducation
+            ? 'Educacion actualizada.'
+            : 'Certificado actualizado.',
+          'Panel',
+        );
       }
 
       await this.router.navigate(this.backLink);
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo guardar el contenido.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo guardar el contenido.';
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.saving = false;
@@ -151,7 +202,13 @@ export class AdminCvContentFormPageComponent implements OnInit {
     }
   }
 
-  private buildEducationPayload(labelEs: string, labelEn: string, titleEs: string, titleEn: string, order: number): Partial<IApiContentItem> {
+  private buildEducationPayload(
+    labelEs: string,
+    labelEn: string,
+    titleEs: string,
+    titleEn: string,
+    order: number,
+  ): Partial<IApiContentItem> {
     const periodStart = this.draft.period?.start?.trim() || '';
     const periodEnd = this.draft.period?.end?.trim() || '';
 
@@ -162,7 +219,9 @@ export class AdminCvContentFormPageComponent implements OnInit {
         es: this.draft.description?.es?.trim() || '',
         en: this.draft.description?.en?.trim() || '',
       },
-      value: this.currentPeriod ? `${periodStart} - Actual` : `${periodStart} - ${periodEnd}`,
+      value: this.currentPeriod
+        ? `${periodStart} - Actual`
+        : `${periodStart} - ${periodEnd}`,
       period: {
         start: periodStart,
         end: this.currentPeriod ? null : periodEnd,
@@ -175,7 +234,13 @@ export class AdminCvContentFormPageComponent implements OnInit {
     };
   }
 
-  private buildCertificationPayload(labelEs: string, labelEn: string, titleEs: string, titleEn: string, order: number): Partial<IApiContentItem> {
+  private buildCertificationPayload(
+    labelEs: string,
+    labelEn: string,
+    titleEs: string,
+    titleEn: string,
+    order: number,
+  ): Partial<IApiContentItem> {
     const metadata = { ...(this.draft.metadata ?? {}) };
     delete metadata['platform'];
     delete metadata['issuer'];
@@ -188,8 +253,14 @@ export class AdminCvContentFormPageComponent implements OnInit {
       active: this.draft.active ?? true,
       metadata: {
         ...metadata,
-        issuedAt: typeof metadata['issuedAt'] === 'string' ? metadata['issuedAt'].trim() : '',
-        credentialId: typeof metadata['credentialId'] === 'string' ? metadata['credentialId'].trim() : '',
+        issuedAt:
+          typeof metadata['issuedAt'] === 'string'
+            ? metadata['issuedAt'].trim()
+            : '',
+        credentialId:
+          typeof metadata['credentialId'] === 'string'
+            ? metadata['credentialId'].trim()
+            : '',
       },
     };
   }
@@ -211,7 +282,10 @@ export class AdminCvContentFormPageComponent implements OnInit {
       this.draft.metadata ??= {};
       this.draft.period ??= { start: '', end: null, current: false };
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo cargar el contenido.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo cargar el contenido.';
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.loading = false;

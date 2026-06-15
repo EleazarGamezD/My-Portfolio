@@ -1,5 +1,10 @@
-
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {
   NavigationEnd,
   Router,
@@ -53,9 +58,10 @@ import { DefaultHeaderComponent } from './default-header/default-header.componen
     NgScrollbar,
     IconDirective,
     DefaultHeaderComponent,
-    DefaultFooterComponent
-],
+    DefaultFooterComponent,
+  ],
   templateUrl: './admin-layout.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './admin-layout.component.scss',
 })
 export class AdminLayoutComponent implements OnInit, OnDestroy {
@@ -70,7 +76,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     private readonly adminAuthService: AdminAuthService,
     private readonly router: Router,
     public readonly facade: AdminDashboardFacade,
-  ) { }
+  ) {}
 
   async ngOnInit(): Promise<void> {
     this.enableAdminThemeStyles();
@@ -80,21 +86,30 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       await this.facade.ensureCurrentAdmin();
       this.syncSectionFromUrl(this.router.url);
       this.subscriptions.add(
-        this.router.events.pipe(
-          filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        ).subscribe((event) => {
-          this.syncSectionFromUrl(event.urlAfterRedirects);
-          this.closeMobileSidebar();
-        }),
+        this.router.events
+          .pipe(
+            filter(
+              (event): event is NavigationEnd => event instanceof NavigationEnd,
+            ),
+          )
+          .subscribe((event) => {
+            this.syncSectionFromUrl(event.urlAfterRedirects);
+            this.closeMobileSidebar();
+          }),
       );
       this.subscriptions.add(
-        this.adminAuthService.watchStorage(NgStorage.TOKEN).subscribe((token) => {
-          if (!token) {
-            void this.router.navigate(['/admin/login'], {
-              queryParams: { sessionExpired: '1', redirectTo: this.router.url },
-            });
-          }
-        }),
+        this.adminAuthService
+          .watchStorage(NgStorage.TOKEN)
+          .subscribe((token) => {
+            if (!token) {
+              void this.router.navigate(['/admin/login'], {
+                queryParams: {
+                  sessionExpired: '1',
+                  redirectTo: this.router.url,
+                },
+              });
+            }
+          }),
       );
     } catch (error) {
       console.error('Failed to load current admin for layout:', error);
@@ -117,7 +132,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private syncSectionFromUrl(url: string): void {
     const segments = url.split('/').filter(Boolean);
     const dashboardIndex = segments.indexOf('dashboard');
-    const sectionKey = dashboardIndex >= 0 ? segments[dashboardIndex + 1] ?? 'overview' : 'overview';
+    const sectionKey =
+      dashboardIndex >= 0
+        ? (segments[dashboardIndex + 1] ?? 'overview')
+        : 'overview';
 
     if (!isAdminSection(sectionKey)) {
       this.currentSectionLabel = 'Overview';
@@ -125,7 +143,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     }
 
     this.currentSectionLabel =
-      ADMIN_SECTIONS.find((section) => section.key === sectionKey)?.label ?? 'Overview';
+      ADMIN_SECTIONS.find((section) => section.key === sectionKey)?.label ??
+      'Overview';
   }
 
   private enableAdminScrolling(): void {
@@ -151,7 +170,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const existingLink = document.getElementById(this.adminStylesheetId) as HTMLLinkElement | null;
+    const existingLink = document.getElementById(
+      this.adminStylesheetId,
+    ) as HTMLLinkElement | null;
     if (existingLink) {
       return;
     }
@@ -172,7 +193,11 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   private closeMobileSidebar(): void {
-    if (typeof window === 'undefined' || window.innerWidth >= 992 || !this.adminSidebar) {
+    if (
+      typeof window === 'undefined' ||
+      window.innerWidth >= 992 ||
+      !this.adminSidebar
+    ) {
       return;
     }
 

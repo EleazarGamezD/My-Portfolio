@@ -1,11 +1,12 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { I18nService } from '@core/services/i18n/i18n.service';
 
 @Component({
   selector: 'app-pages-banner',
   imports: [],
   templateUrl: './pages-banner.component.html',
-  styleUrl: './pages-banner.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './pages-banner.component.scss',
 })
 export class PagesBannerComponent {
   title = input<string>('');

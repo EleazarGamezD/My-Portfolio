@@ -1,10 +1,28 @@
-
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
-import { IPaginationResponse, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
+import {
+  IPaginationResponse,
+  IProjectAsset,
+} from '@core/interfaces/projects/projects.interfaces';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
-import { BadgeModule, ButtonModule, CardModule, FormModule, SpinnerModule } from '@coreui/angular';
+import {
+  BadgeModule,
+  ButtonModule,
+  CardModule,
+  FormModule,
+  SpinnerModule,
+} from '@coreui/angular';
 import {
   AdminActionMenuAction,
   AdminActionMenuComponent,
@@ -24,11 +42,11 @@ import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/p
     SpinnerModule,
     AddPhotoComponent,
     PhotoEditorComponent,
-    AdminActionMenuComponent
-],
+    AdminActionMenuComponent,
+  ],
   templateUrl: './skills-section.component.html',
   styleUrl: './skills-section.component.scss',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AdminSkillsSectionComponent implements OnChanges {
   @Input({ required: true }) sectionTitle = '';
@@ -48,7 +66,10 @@ export class AdminSkillsSectionComponent implements OnChanges {
   @Output() saveSkill = new EventEmitter<IApiTechSkill>();
   @Output() deleteSkill = new EventEmitter<IApiTechSkill>();
   @Output() draftIconAssetsChange = new EventEmitter<IProjectAsset[]>();
-  @Output() skillIconAssetsChange = new EventEmitter<{ skill: IApiTechSkill; assets: IProjectAsset[] }>();
+  @Output() skillIconAssetsChange = new EventEmitter<{
+    skill: IApiTechSkill;
+    assets: IProjectAsset[];
+  }>();
   @Output() imageUploadError = new EventEmitter<string>();
   @Output() pageChange = new EventEmitter<number>();
 
@@ -62,12 +83,14 @@ export class AdminSkillsSectionComponent implements OnChanges {
   editingSkillId: string | null = null;
   private readonly snapshots = new Map<string, IApiTechSkill>();
 
-  constructor(private readonly cdr: ChangeDetectorRef) { }
+  constructor(private readonly cdr: ChangeDetectorRef) {}
 
   ngOnChanges(): void {
     // When the skills list refreshes after a save/create, clear the top-form edit state
     if (this.topFormMode === 'edit' && this.topFormEditSkill) {
-      const stillExists = this.skills.some((s) => s._id === this.topFormEditSkill?._id);
+      const stillExists = this.skills.some(
+        (s) => s._id === this.topFormEditSkill?._id,
+      );
       if (!stillExists) {
         this.resetTopForm();
       }
@@ -78,7 +101,9 @@ export class AdminSkillsSectionComponent implements OnChanges {
     if (this.topFormMode === 'edit' && this.topFormEditSkill) {
       return this.getSkillLabel(this.topFormEditSkill);
     }
-    return this.draft.label?.es || this.draft.label?.en || this.draft.value || '';
+    return (
+      this.draft.label?.es || this.draft.label?.en || this.draft.value || ''
+    );
   }
 
   get topFormTitle(): string {
@@ -161,7 +186,10 @@ export class AdminSkillsSectionComponent implements OnChanges {
     this.topFormEditSkill = structuredClone(skill);
     this.topFormMode = 'edit';
     setTimeout(() => {
-      this.topFormRef?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      this.topFormRef?.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
     }, 50);
   }
 
@@ -249,7 +277,9 @@ export class AdminSkillsSectionComponent implements OnChanges {
     return skill.label?.es || skill.label?.en || skill.value || '';
   }
 
-  getSkillIconAssets(skill: IApiTechSkill | Partial<IApiTechSkill>): IProjectAsset[] {
+  getSkillIconAssets(
+    skill: IApiTechSkill | Partial<IApiTechSkill>,
+  ): IProjectAsset[] {
     if (!skill.icon) {
       return [];
     }
@@ -257,7 +287,9 @@ export class AdminSkillsSectionComponent implements OnChanges {
     return [typeof skill.icon === 'string' ? { url: skill.icon } : skill.icon];
   }
 
-  getSkillIconUrl(skill: IApiTechSkill | Partial<IApiTechSkill>): string | null {
+  getSkillIconUrl(
+    skill: IApiTechSkill | Partial<IApiTechSkill>,
+  ): string | null {
     const assets = this.getSkillIconAssets(skill);
     if (!assets[0]) return null;
     return resolveImageAssetUrl(assets[0]);
@@ -272,14 +304,22 @@ export class AdminSkillsSectionComponent implements OnChanges {
   }
 
   changePage(page: number): void {
-    if (!this.pagination || page < 1 || page > this.totalPages || page === this.currentPage) {
+    if (
+      !this.pagination ||
+      page < 1 ||
+      page > this.totalPages ||
+      page === this.currentPage
+    ) {
       return;
     }
 
     this.pageChange.emit(page);
   }
 
-  private assignSkillLabel(target: Partial<IApiTechSkill>, value: string): void {
+  private assignSkillLabel(
+    target: Partial<IApiTechSkill>,
+    value: string,
+  ): void {
     const normalized = this.normalizeSkillLabel(value);
     target.label = { es: normalized, en: normalized };
     target.title = { es: normalized, en: normalized };

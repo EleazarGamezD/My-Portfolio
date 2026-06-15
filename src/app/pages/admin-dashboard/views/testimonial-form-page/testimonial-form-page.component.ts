@@ -1,11 +1,23 @@
-
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
-import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
+import {
+  AlertModule,
+  ButtonModule,
+  CardModule,
+  FormModule,
+} from '@coreui/angular';
 import { ContentService } from '@core/services/content/content.service';
-import { Language, TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
+import {
+  Language,
+  TranslateButtonComponent,
+} from '../../components/shared/translate-button/translate-button.component';
 import { ToastrService } from 'ngx-toastr';
 
 type TestimonialFormMode = 'create' | 'edit';
@@ -13,8 +25,17 @@ type TestimonialFormMode = 'create' | 'edit';
 @Component({
   selector: 'app-admin-testimonial-form-page',
   standalone: true,
-  imports: [FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule, TranslateButtonComponent],
+  imports: [
+    FormsModule,
+    RouterLink,
+    AlertModule,
+    ButtonModule,
+    CardModule,
+    FormModule,
+    TranslateButtonComponent,
+  ],
   templateUrl: './testimonial-form-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './testimonial-form-page.component.scss',
 })
 export class AdminTestimonialFormPageComponent implements OnInit {
@@ -37,7 +58,8 @@ export class AdminTestimonialFormPageComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.mode = (this.route.snapshot.data['mode'] as TestimonialFormMode) || 'create';
+    this.mode =
+      (this.route.snapshot.data['mode'] as TestimonialFormMode) || 'create';
 
     if (this.mode === 'create') {
       return;
@@ -103,7 +125,8 @@ export class AdminTestimonialFormPageComponent implements OnInit {
     const descriptionEn = this.draft.description?.en?.trim() || '';
 
     if (!name || !position || !company || !descriptionEs || !descriptionEn) {
-      this.error = 'Nombre, cargo, empresa y testimonio en ambos idiomas son obligatorios.';
+      this.error =
+        'Nombre, cargo, empresa y testimonio en ambos idiomas son obligatorios.';
       return;
     }
 
@@ -138,16 +161,26 @@ export class AdminTestimonialFormPageComponent implements OnInit {
       };
 
       if (this.mode === 'create') {
-        await this.contentService.createContentItem<IApiContentItem>('testimonials', payload);
+        await this.contentService.createContentItem<IApiContentItem>(
+          'testimonials',
+          payload,
+        );
         this.toastr.success('Testimonio creado.', 'Panel');
       } else if (this.testimonialId) {
-        await this.contentService.updateContentItem<IApiContentItem>('testimonials', this.testimonialId, payload);
+        await this.contentService.updateContentItem<IApiContentItem>(
+          'testimonials',
+          this.testimonialId,
+          payload,
+        );
         this.toastr.success('Testimonio actualizado.', 'Panel');
       }
 
       await this.router.navigate(['/admin/dashboard/testimonials']);
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo guardar el testimonio.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo guardar el testimonio.';
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.saving = false;
@@ -170,7 +203,10 @@ export class AdminTestimonialFormPageComponent implements OnInit {
       this.draft = structuredClone(item);
       this.ensureMetadata();
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo cargar el testimonio.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo cargar el testimonio.';
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.loading = false;

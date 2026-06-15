@@ -1,5 +1,9 @@
-
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
@@ -9,6 +13,7 @@ import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
   standalone: true,
   imports: [FormsModule, RouterLink],
   templateUrl: './admin-reset-password.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './admin-reset-password.component.scss',
 })
 export class AdminResetPasswordComponent implements OnInit, OnDestroy {
@@ -58,7 +63,10 @@ export class AdminResetPasswordComponent implements OnInit, OnDestroy {
       this.success = true;
       setTimeout(() => this.router.navigateByUrl('/admin/login'), 3000);
     } catch (err) {
-      this.error = err instanceof Error ? err.message : 'Error al restablecer la contraseña.';
+      this.error =
+        err instanceof Error
+          ? err.message
+          : 'Error al restablecer la contraseña.';
     } finally {
       this.loading = false;
     }

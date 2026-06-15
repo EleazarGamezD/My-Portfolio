@@ -1,12 +1,21 @@
-
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
-import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
+import {
+  AlertModule,
+  ButtonModule,
+  CardModule,
+  FormModule,
+} from '@coreui/angular';
 import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/photo-editor/photo-editor.component';
 import { ToastrService } from 'ngx-toastr';
 
@@ -22,9 +31,10 @@ type SkillFormMode = 'create' | 'edit';
     ButtonModule,
     CardModule,
     FormModule,
-    PhotoEditorComponent
-],
+    PhotoEditorComponent,
+  ],
   templateUrl: './skill-form-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './skill-form-page.component.scss',
 })
 export class AdminSkillFormPageComponent implements OnInit {
@@ -70,7 +80,9 @@ export class AdminSkillFormPageComponent implements OnInit {
   }
 
   get draftLabel(): string {
-    return this.draft.label?.es || this.draft.label?.en || this.draft.value || '';
+    return (
+      this.draft.label?.es || this.draft.label?.en || this.draft.value || ''
+    );
   }
 
   get iconAssets(): IProjectAsset[] {
@@ -78,11 +90,17 @@ export class AdminSkillFormPageComponent implements OnInit {
       return [];
     }
 
-    return [typeof this.draft.icon === 'string' ? { url: this.draft.icon } : this.draft.icon];
+    return [
+      typeof this.draft.icon === 'string'
+        ? { url: this.draft.icon }
+        : this.draft.icon,
+    ];
   }
 
   get previewUrls(): string[] {
-    return this.iconAssets.map((asset) => resolveImageAssetUrl(asset)).filter((url): url is string => Boolean(url));
+    return this.iconAssets
+      .map((asset) => resolveImageAssetUrl(asset))
+      .filter((url): url is string => Boolean(url));
   }
 
   get iconStorageKey(): string {
@@ -127,16 +145,24 @@ export class AdminSkillFormPageComponent implements OnInit {
       };
 
       if (this.mode === 'create') {
-        await this.contentService.createContentItem<IApiTechSkill>('techSkills', payload);
+        await this.contentService.createContentItem<IApiTechSkill>(
+          'techSkills',
+          payload,
+        );
         this.toastr.success('Skill creada.', 'Panel');
       } else if (this.skillId) {
-        await this.contentService.updateContentItem<IApiTechSkill>('techSkills', this.skillId, payload);
+        await this.contentService.updateContentItem<IApiTechSkill>(
+          'techSkills',
+          this.skillId,
+          payload,
+        );
         this.toastr.success('Skill actualizada.', 'Panel');
       }
 
       await this.router.navigate(['/admin/dashboard/skills']);
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo guardar la skill.';
+      this.error =
+        error instanceof Error ? error.message : 'No se pudo guardar la skill.';
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.saving = false;
@@ -158,7 +184,8 @@ export class AdminSkillFormPageComponent implements OnInit {
 
       this.draft = structuredClone(skill);
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo cargar la skill.';
+      this.error =
+        error instanceof Error ? error.message : 'No se pudo cargar la skill.';
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.loading = false;

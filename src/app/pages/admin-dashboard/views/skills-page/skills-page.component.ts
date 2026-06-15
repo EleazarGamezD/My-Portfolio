@@ -1,5 +1,9 @@
-
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
@@ -10,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-admin-skills-page',
   standalone: true,
   imports: [SkillsListComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './skills-page.component.html',
 })
 export class AdminSkillsPageComponent implements OnInit {
@@ -30,7 +35,7 @@ export class AdminSkillsPageComponent implements OnInit {
     private readonly contentService: ContentService,
     private readonly toastr: ToastrService,
     private readonly cdr: ChangeDetectorRef,
-  ) { }
+  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.loadSkillsPage();
@@ -49,7 +54,10 @@ export class AdminSkillsPageComponent implements OnInit {
 
     try {
       await this.contentService.deleteContentItem('techSkills', skill._id);
-      this.toastr.success(`${skill.label?.es || skill.value || 'Skill'} eliminada.`, 'Panel');
+      this.toastr.success(
+        `${skill.label?.es || skill.value || 'Skill'} eliminada.`,
+        'Panel',
+      );
 
       const targetPage =
         this.skills.length === 1 && this.pagination.currentPage > 1
@@ -58,7 +66,10 @@ export class AdminSkillsPageComponent implements OnInit {
 
       await this.loadSkillsPage(targetPage);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'No se pudo eliminar la skill.';
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo eliminar la skill.';
       this.toastr.error(message, 'Panel');
     } finally {
       this.deletingSkillId = null;
@@ -66,7 +77,9 @@ export class AdminSkillsPageComponent implements OnInit {
     }
   }
 
-  private async loadSkillsPage(page = this.pagination.currentPage): Promise<void> {
+  private async loadSkillsPage(
+    page = this.pagination.currentPage,
+  ): Promise<void> {
     this.loading = true;
 
     try {
@@ -80,7 +93,10 @@ export class AdminSkillsPageComponent implements OnInit {
       this.pagination = response;
       this.skills = response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'No se pudieron cargar las skills.';
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'No se pudieron cargar las skills.';
       this.toastr.error(message, 'Panel');
     } finally {
       this.loading = false;

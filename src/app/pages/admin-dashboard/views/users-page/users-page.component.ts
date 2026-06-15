@@ -1,5 +1,9 @@
-
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { AdminUsersSectionComponent } from '@pages/admin-dashboard/components/users-section/users-section.component';
 import { AlertModule } from '@coreui/angular';
@@ -9,6 +13,7 @@ import { AlertModule } from '@coreui/angular';
   standalone: true,
   imports: [AlertModule, AdminUsersSectionComponent],
   templateUrl: './users-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './users-page.component.scss',
 })
 export class AdminUsersPageComponent implements OnInit {

@@ -1,5 +1,10 @@
-
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IconDirective } from '@coreui/icons-angular';
 import {
@@ -22,9 +27,10 @@ export type AdminActionMenuAction = 'edit' | 'delete' | 'deactivate';
     DropdownToggleDirective,
     DropdownMenuDirective,
     DropdownItemDirective,
-    IconDirective
-],
+    IconDirective,
+  ],
   templateUrl: './admin-action-menu.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './admin-action-menu.component.scss',
 })
 export class AdminActionMenuComponent {

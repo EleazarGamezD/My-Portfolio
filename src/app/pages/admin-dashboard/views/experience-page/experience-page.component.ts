@@ -1,5 +1,9 @@
-
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { AlertModule } from '@coreui/angular';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { ExperienceListComponent } from '@pages/admin-dashboard/components/experience-list/experience-list.component';
@@ -9,6 +13,7 @@ import { ExperienceListComponent } from '@pages/admin-dashboard/components/exper
   standalone: true,
   imports: [AlertModule, ExperienceListComponent],
   templateUrl: './experience-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './experience-page.component.scss',
 })
 export class AdminExperiencePageComponent implements OnInit {

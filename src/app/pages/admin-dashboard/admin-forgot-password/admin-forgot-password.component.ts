@@ -1,5 +1,9 @@
-
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
@@ -9,6 +13,7 @@ import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
   standalone: true,
   imports: [FormsModule, RouterLink],
   templateUrl: './admin-forgot-password.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './admin-forgot-password.component.scss',
 })
 export class AdminForgotPasswordComponent implements OnInit, OnDestroy {
@@ -36,7 +41,8 @@ export class AdminForgotPasswordComponent implements OnInit, OnDestroy {
       await this.adminAuthService.forgotPassword(this.email);
       this.sent = true;
     } catch (err) {
-      this.error = err instanceof Error ? err.message : 'Error al enviar el email.';
+      this.error =
+        err instanceof Error ? err.message : 'Error al enviar el email.';
     } finally {
       this.loading = false;
     }

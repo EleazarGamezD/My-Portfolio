@@ -1,10 +1,19 @@
-
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import { AlertModule, BadgeModule, ButtonModule, CardModule } from '@coreui/angular';
+import {
+  AlertModule,
+  BadgeModule,
+  ButtonModule,
+  CardModule,
+} from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -12,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
   standalone: true,
   imports: [RouterLink, AlertModule, BadgeModule, ButtonModule, CardModule],
   templateUrl: './testimonial-details-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './testimonial-details-page.component.scss',
 })
 export class AdminTestimonialDetailsPageComponent implements OnInit {
@@ -46,10 +56,12 @@ export class AdminTestimonialDetailsPageComponent implements OnInit {
       return value;
     }
 
-    return this.i18nService.selectText(
-      this.item.label?.es || '',
-      this.item.label?.en || this.item.label?.es || '',
-    ) || '';
+    return (
+      this.i18nService.selectText(
+        this.item.label?.es || '',
+        this.item.label?.en || this.item.label?.es || '',
+      ) || ''
+    );
   }
 
   get personPosition(): string {
@@ -86,13 +98,20 @@ export class AdminTestimonialDetailsPageComponent implements OnInit {
     this.actionLoading = true;
 
     try {
-      this.item = await this.contentService.updateContentItem<IApiContentItem>('testimonials', this.item._id, {
-        ...this.item,
-        active: !this.item.active,
-      });
+      this.item = await this.contentService.updateContentItem<IApiContentItem>(
+        'testimonials',
+        this.item._id,
+        {
+          ...this.item,
+          active: !this.item.active,
+        },
+      );
       this.toastr.success('Estado del testimonio actualizado.', 'Dashboard');
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'No se pudo actualizar el estado del testimonio.';
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo actualizar el estado del testimonio.';
       this.toastr.error(message, 'Dashboard');
     } finally {
       this.actionLoading = false;
@@ -108,11 +127,17 @@ export class AdminTestimonialDetailsPageComponent implements OnInit {
     this.actionLoading = true;
 
     try {
-      await this.contentService.deleteContentItem('testimonials', this.item._id);
+      await this.contentService.deleteContentItem(
+        'testimonials',
+        this.item._id,
+      );
       this.toastr.success('Testimonio eliminado.', 'Dashboard');
       await this.router.navigate(['/admin/dashboard/testimonials']);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'No se pudo eliminar el testimonio.';
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo eliminar el testimonio.';
       this.toastr.error(message, 'Dashboard');
     } finally {
       this.actionLoading = false;
@@ -126,13 +151,17 @@ export class AdminTestimonialDetailsPageComponent implements OnInit {
 
     try {
       const items = await this.contentService.getTestimonials();
-      this.item = items.find((entry) => entry._id === this.testimonialId) || null;
+      this.item =
+        items.find((entry) => entry._id === this.testimonialId) || null;
 
       if (!this.item) {
         this.notFound = true;
       }
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo cargar el testimonio.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo cargar el testimonio.';
     } finally {
       this.loading = false;
       this.cdr.detectChanges();

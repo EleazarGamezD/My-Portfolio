@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../../shared/Components/footer/footer.component';
 import { HeaderComponent } from '../../shared/Components/header/header.component';
@@ -15,6 +15,7 @@ import { ScrollIndicatorComponent } from '../../shared/Components/scroll-indicat
     ScrollIndicatorComponent,
   ],
   templateUrl: './main-layout.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './main-layout.component.scss',
 })
 export class MainLayoutComponent {}

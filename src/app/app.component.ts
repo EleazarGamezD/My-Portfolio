@@ -1,5 +1,11 @@
-
-import { Component, DestroyRef, Inject, OnInit, DOCUMENT } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  Inject,
+  OnInit,
+  DOCUMENT,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
@@ -18,6 +24,7 @@ import { filter } from 'rxjs/operators';
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
@@ -48,21 +55,26 @@ export class AppComponent implements OnInit {
 
     this.meta.updateTag({ name: 'robots', content: 'index, follow' });
 
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe((event: NavigationEnd) => {
-      this.updateSeo(event.urlAfterRedirects);
-      this.syncGlobalLoader(event.urlAfterRedirects);
+    this.router.events
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd,
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.updateSeo(event.urlAfterRedirects);
+        this.syncGlobalLoader(event.urlAfterRedirects);
 
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('router-navigation-end', {
-          detail: { url: this.router.url },
-        }));
-      }
-    });
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(
+            new CustomEvent('router-navigation-end', {
+              detail: { url: this.router.url },
+            }),
+          );
+        }
+      });
   }
-
 
   private getRouteTitle(url: string): string {
     const normalizedPath = this.i18nService.stripLanguageFromUrl(url);
@@ -108,10 +120,16 @@ export class AppComponent implements OnInit {
       return this.i18nService.t('site.title');
     }
 
-    return this.i18nService.selectText(
-      this.profileContent.label?.es ?? this.profileContent.title?.es ?? '',
-      this.profileContent.label?.en ?? this.profileContent.title?.en ?? this.profileContent.label?.es ?? this.profileContent.title?.es ?? '',
-    ) || this.i18nService.t('site.title');
+    return (
+      this.i18nService.selectText(
+        this.profileContent.label?.es ?? this.profileContent.title?.es ?? '',
+        this.profileContent.label?.en ??
+          this.profileContent.title?.en ??
+          this.profileContent.label?.es ??
+          this.profileContent.title?.es ??
+          '',
+      ) || this.i18nService.t('site.title')
+    );
   }
 
   private getSiteDescription(): string {
@@ -121,7 +139,9 @@ export class AppComponent implements OnInit {
 
     return this.i18nService.selectText(
       this.profileContent.description?.es ?? '',
-      this.profileContent.description?.en ?? this.profileContent.description?.es ?? '',
+      this.profileContent.description?.en ??
+        this.profileContent.description?.es ??
+        '',
     );
   }
 

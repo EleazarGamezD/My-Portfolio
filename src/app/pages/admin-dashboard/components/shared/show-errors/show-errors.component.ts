@@ -1,7 +1,17 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input } from '@angular/core';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-type ValidationErrorValue = { requiredLength?: string; requiredPattern?: string; min?: string };
+type ValidationErrorValue = {
+  requiredLength?: string;
+  requiredPattern?: string;
+  min?: string;
+};
 @Component({
   selector: 'app-show-errors',
   templateUrl: './show-errors.component.html',
@@ -31,6 +41,7 @@ type ValidationErrorValue = { requiredLength?: string; requiredPattern?: string;
     ]),
   ],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class ShowErrorsComponent {
@@ -38,7 +49,11 @@ export class ShowErrorsComponent {
   @Input() requiredField: string = '';
 
   shouldShowError(): boolean {
-    return !!(this.control && this.control.invalid && (this.control.dirty || this.control.touched));
+    return !!(
+      this.control &&
+      this.control.invalid &&
+      (this.control.dirty || this.control.touched)
+    );
   }
 
   get errorMessage(): string {

@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { ContentService } from '@core/services/content/content.service';
 import { ThemeService } from '@core/services/theme/theme.service';
@@ -30,10 +36,12 @@ import { WorkReferencesComponent } from '../../shared/Components/work-references
     CvComponent,
   ],
   templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
-  private static readonly reloadScrollHandledStorageKey = 'home-reload-scroll-handled';
+  private static readonly reloadScrollHandledStorageKey =
+    'home-reload-scroll-handled';
   private destroyed = false;
   private shouldScrollToTopOnReload = false;
   private readonly criticalImageTimeoutMs = 2500;
@@ -47,7 +55,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly contentService: ContentService,
     private readonly projectsService: ProjectsService,
     private readonly themeService: ThemeService,
-  ) { }
+  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.storageService.setStorage(NgStorage.LOADER, true);
@@ -84,8 +92,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       await this.waitForNextPaint();
     } catch (error) {
       console.warn('Home loader fallback triggered.', error);
-    }
-    finally {
+    } finally {
       if (!this.destroyed) {
         await this.storageService.setStorage(NgStorage.LOADER, false);
       }
@@ -109,7 +116,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    await Promise.all(this.criticalAssetSelectors.map((selector) => this.waitForCriticalImageSelector(selector)));
+    await Promise.all(
+      this.criticalAssetSelectors.map((selector) =>
+        this.waitForCriticalImageSelector(selector),
+      ),
+    );
   }
 
   private waitForCriticalImageSelector(selector: string): Promise<void> {
@@ -194,24 +205,37 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       return false;
     }
 
-    const alreadyHandled = window.sessionStorage.getItem(HomeComponent.reloadScrollHandledStorageKey) === '1';
+    const alreadyHandled =
+      window.sessionStorage.getItem(
+        HomeComponent.reloadScrollHandledStorageKey,
+      ) === '1';
     if (alreadyHandled) {
       return false;
     }
 
-    const navigationEntries = window.performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    const navigationEntries = window.performance.getEntriesByType(
+      'navigation',
+    ) as PerformanceNavigationTiming[];
     if (navigationEntries.length > 0) {
       const isReload = navigationEntries[0].type === 'reload';
       if (isReload) {
-        window.sessionStorage.setItem(HomeComponent.reloadScrollHandledStorageKey, '1');
+        window.sessionStorage.setItem(
+          HomeComponent.reloadScrollHandledStorageKey,
+          '1',
+        );
       }
       return isReload;
     }
 
-    const legacyNavigation = (window.performance as Performance & { navigation?: { type?: number } }).navigation;
+    const legacyNavigation = (
+      window.performance as Performance & { navigation?: { type?: number } }
+    ).navigation;
     const isReload = legacyNavigation?.type === 1;
     if (isReload) {
-      window.sessionStorage.setItem(HomeComponent.reloadScrollHandledStorageKey, '1');
+      window.sessionStorage.setItem(
+        HomeComponent.reloadScrollHandledStorageKey,
+        '1',
+      );
     }
     return isReload;
   }

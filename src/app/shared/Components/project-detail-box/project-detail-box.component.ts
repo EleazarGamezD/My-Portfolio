@@ -1,9 +1,16 @@
-
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
-import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
+import {
+  IProject,
+  IProjectAsset,
+} from '@core/interfaces/projects/projects.interfaces';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
@@ -13,11 +20,19 @@ import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
   imports: [],
   templateUrl: './project-detail-box.component.html',
   styleUrl: './project-detail-box.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [
     trigger('imageEaseOut', [
       transition('* => *', [
-        style({ opacity: 0.35, transform: 'scale(1.012)', filter: 'blur(2px)' }),
-        animate('520ms ease-out', style({ opacity: 1, transform: 'scale(1)', filter: 'blur(0)' })),
+        style({
+          opacity: 0.35,
+          transform: 'scale(1.012)',
+          filter: 'blur(2px)',
+        }),
+        animate(
+          '520ms ease-out',
+          style({ opacity: 1, transform: 'scale(1)', filter: 'blur(0)' }),
+        ),
       ]),
     ]),
   ],
@@ -31,7 +46,7 @@ export class ProjectDetailBoxComponent implements OnChanges {
     private router: Router,
     public i18nService: I18nService,
     private analyticsService: AnalyticsService,
-  ) { }
+  ) {}
 
   ngOnChanges(): void {
     this.activeImage = this.galleryImages[0] || null;
@@ -46,7 +61,10 @@ export class ProjectDetailBoxComponent implements OnChanges {
     if (!this.project) {
       return '';
     }
-    return this.i18nService.selectText(this.project.title?.es || '', this.project.title?.en || this.project.title?.es || '');
+    return this.i18nService.selectText(
+      this.project.title?.es || '',
+      this.project.title?.en || this.project.title?.es || '',
+    );
   }
 
   get projectDescription() {
@@ -55,7 +73,11 @@ export class ProjectDetailBoxComponent implements OnChanges {
     }
     return this.i18nService.selectText(
       this.project.description?.es || this.project.summary?.es || '',
-      this.project.description?.en || this.project.description?.es || this.project.summary?.en || this.project.summary?.es || '',
+      this.project.description?.en ||
+        this.project.description?.es ||
+        this.project.summary?.en ||
+        this.project.summary?.es ||
+        '',
     );
   }
 
@@ -66,7 +88,10 @@ export class ProjectDetailBoxComponent implements OnChanges {
 
     return this.i18nService.selectText(
       this.project.summary?.es || this.project.description?.es || '',
-      this.project.summary?.en || this.project.description?.en || this.project.summary?.es || '',
+      this.project.summary?.en ||
+        this.project.description?.en ||
+        this.project.summary?.es ||
+        '',
     );
   }
 
@@ -79,7 +104,9 @@ export class ProjectDetailBoxComponent implements OnChanges {
 
   get projectTechnologyLabels() {
     if (this.projectTechnologies.length > 0) {
-      return this.projectTechnologies.map((skill) => this.getSkillLabel(skill)).filter(Boolean);
+      return this.projectTechnologies
+        .map((skill) => this.getSkillLabel(skill))
+        .filter(Boolean);
     }
 
     return Array.isArray(this.project?.stack) ? this.project.stack : [];
@@ -111,11 +138,15 @@ export class ProjectDetailBoxComponent implements OnChanges {
   }
 
   get detailBackgroundStyle() {
-    return this.detailBackgroundImage ? this.buildBackgroundImage(this.detailBackgroundImage) : null;
+    return this.detailBackgroundImage
+      ? this.buildBackgroundImage(this.detailBackgroundImage)
+      : null;
   }
 
   get hasLiveDemo() {
-    return !!this.project?.projectLink && this.project.projectLink.startsWith('http');
+    return (
+      !!this.project?.projectLink && this.project.projectLink.startsWith('http')
+    );
   }
 
   get hasSourceCode() {
