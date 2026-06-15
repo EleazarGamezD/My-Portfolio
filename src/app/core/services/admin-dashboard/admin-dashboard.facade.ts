@@ -10,7 +10,7 @@ import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
 import { ToastrService } from 'ngx-toastr';
 
-export type ContentResourceName = 'techSkills' | 'experience' | 'testimonials' | 'resumes' | 'socialLinks';
+export type ContentResourceName = 'techSkills' | 'experience' | 'education' | 'certifications' | 'testimonials' | 'resumes' | 'socialLinks';
 
 interface AdminConfirmationDialog {
   visible: boolean;
@@ -36,6 +36,8 @@ export class AdminDashboardFacade {
   };
   techSkills: IApiTechSkill[] = [];
   experience: IApiContentItem[] = [];
+  education: IApiContentItem[] = [];
+  certifications: IApiContentItem[] = [];
   testimonials: IApiContentItem[] = [];
   socialLinks: IApiContentItem[] = [];
   resumes: IApiResume[] = [];
@@ -50,6 +52,8 @@ export class AdminDashboardFacade {
   readonly newContentItems: Record<Exclude<ContentResourceName, 'resumes'>, Partial<IApiContentItem>> = {
     techSkills: this.createEmptySkillDraft(),
     experience: this.createEmptyContentDraft(),
+    education: this.createEmptyContentDraft(),
+    certifications: this.createEmptyContentDraft(),
     testimonials: this.createEmptyContentDraft(),
     socialLinks: this.createEmptyContentDraft(),
   };
@@ -78,7 +82,6 @@ export class AdminDashboardFacade {
 
   private currentAdminLoaded = false;
   private metricsLoaded = false;
-  private contentLoaded = false;
   private pendingConfirmationAction: (() => Promise<void>) | null = null;
 
   constructor(
@@ -96,13 +99,32 @@ export class AdminDashboardFacade {
       return;
     }
 
-    const currentAdminResponse = await this.adminAuthService.getCurrentAdmin();
-    this.currentAdmin = currentAdminResponse.user;
-    this.currentAdminLoaded = true;
+    try {
+      const currentAdminResponse = await this.adminAuthService.getCurrentAdmin();
+      this.currentAdmin = currentAdminResponse.user;
+      this.currentAdminLoaded = true;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to load current admin session';
+
+      this.ngZone.run(() => {
+        this.currentAdmin = null;
+        this.currentAdminLoaded = false;
+        this.loading = false;
+        this.contentLoading = false;
+        this.error = message;
+        this.contentError = message;
+      });
+
+      console.error('Error loading current admin session:', error);
+    }
   }
 
   async ensureOverviewReady(): Promise<void> {
     await this.ensureCurrentAdmin();
+
+    if (!this.currentAdmin) {
+      return;
+    }
 
     if (this.metricsLoaded) {
       return;
@@ -110,17 +132,6 @@ export class AdminDashboardFacade {
 
     await this.loadMetrics();
     this.metricsLoaded = true;
-  }
-
-  async ensureContentReady(): Promise<void> {
-    await this.ensureCurrentAdmin();
-
-    if (this.contentLoaded) {
-      return;
-    }
-
-    await this.loadContentData();
-    this.contentLoaded = true;
   }
 
   async loadMetrics(): Promise<void> {
@@ -160,52 +171,122 @@ export class AdminDashboardFacade {
     await this.loadMetrics();
   }
 
-  async loadContentData(): Promise<void> {
-    try {
-      this.ngZone.run(() => {
-        this.contentLoading = true;
-        this.contentError = null;
+  async loadProjectsPage(page = this.projectsPagination.currentPage): Promise<void> {
+    await this.loadContentResource('Projects', async () => {
+      const projects = await this.projectsService.getProjectsPaginated({
+        page,
+        limit: this.projectsPageSize,
+        sortBy: 'createdAt',
+        sortOrder: 'desc',
       });
-
-      const [projects, profile, techSkills, experience, testimonials, socialLinks, resumes, adminUsers] = await Promise.all([
-        this.projectsService.getProjectsPaginated({
-          page: this.projectsPagination.currentPage,
-          limit: this.projectsPageSize,
-          sortBy: 'createdAt',
-          sortOrder: 'desc',
-        }),
-        this.contentService.getProfile(),
-        this.contentService.getTechSkills(),
-        this.contentService.getExperience(),
-        this.contentService.getTestimonials(),
-        this.contentService.getSocialLinks(),
-        this.contentService.getResumes(),
-        this.adminAuthService.getAdminUsers(),
-      ]);
 
       this.ngZone.run(() => {
         this.projectsPagination = projects;
         this.projects = projects.data;
-        this.profile = this.normalizeProfile(profile);
+      });
+    });
+  }
+
+  async loadProfileContent(): Promise<void> {
+    await this.loadContentResource('Profile', async () => {
+      this.contentService.invalidateResourceCache('profile');
+      const profile = await this.contentService.getProfile();
+
+      this.ngZone.run(() => {
+        this.profile = this.normalizeProfile(profile) ?? this.createEmptyProfileDraft();
+      });
+    });
+  }
+
+  async loadTechSkillsContent(): Promise<void> {
+    await this.loadContentResource('Skills', async () => {
+      this.contentService.invalidateResourceCache('techSkills');
+      const techSkills = await this.contentService.getTechSkills();
+
+      this.ngZone.run(() => {
         this.techSkills = techSkills;
+      });
+    });
+  }
+
+  async loadExperienceContent(): Promise<void> {
+    await this.loadContentResource('Experience', async () => {
+      this.contentService.invalidateResourceCache('experience');
+      const experience = await this.contentService.getExperience();
+
+      this.ngZone.run(() => {
         this.experience = experience;
+      });
+    });
+  }
+
+  async loadEducationContent(): Promise<void> {
+    await this.loadContentResource('Education', async () => {
+      this.contentService.invalidateResourceCache('education');
+      const education = await this.contentService.getEducation();
+
+      this.ngZone.run(() => {
+        this.education = education;
+      });
+    });
+  }
+
+  async loadCertificationsContent(): Promise<void> {
+    await this.loadContentResource('Certifications', async () => {
+      this.contentService.invalidateResourceCache('certifications');
+      const certifications = await this.contentService.getCertifications();
+
+      this.ngZone.run(() => {
+        this.certifications = certifications;
+      });
+    });
+  }
+
+  async loadTestimonialsContent(): Promise<void> {
+    await this.loadContentResource('Testimonials', async () => {
+      this.contentService.invalidateResourceCache('testimonials');
+      const testimonials = await this.contentService.getTestimonials();
+
+      this.ngZone.run(() => {
         this.testimonials = testimonials;
+      });
+    });
+  }
+
+  async loadSocialLinksContent(): Promise<void> {
+    await this.loadContentResource('Social links', async () => {
+      this.contentService.invalidateResourceCache('socialLinks');
+      const socialLinks = await this.contentService.getSocialLinks();
+
+      this.ngZone.run(() => {
         this.socialLinks = socialLinks;
+      });
+    });
+  }
+
+  async loadResumesContent(): Promise<void> {
+    await this.loadContentResource('Resumes', async () => {
+      this.contentService.invalidateResourceCache('resumes');
+      const resumes = await this.contentService.getResumes();
+
+      this.ngZone.run(() => {
         this.resumes = resumes;
+      });
+    });
+  }
+
+  async loadAdminUsers(): Promise<void> {
+    await this.loadContentResource('Admin users', async () => {
+      const adminUsers = await this.adminAuthService.getAdminUsers();
+
+      this.ngZone.run(() => {
         this.adminUsers = adminUsers;
       });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to load admin content';
-      this.ngZone.run(() => {
-        this.contentError = message;
-      });
-      this.showErrorToast(message, 'Admin content');
-      console.error('Error loading admin content:', err);
-    } finally {
-      this.ngZone.run(() => {
-        this.contentLoading = false;
-      });
-    }
+    });
+  }
+
+  async loadProjectEditorDependencies(): Promise<void> {
+    await this.loadTechSkillsContent();
   }
 
   async saveProject(project: IProject): Promise<void> {
@@ -233,7 +314,7 @@ export class AdminDashboardFacade {
 
     await this.runContentAction(`project-save-${project._id}`, async () => {
       await this.projectsService.updateProject(project._id!, payload);
-      await this.loadContentData();
+      await this.loadProjectsPage();
       this.actionMessage = `Project ${this.getProjectName(project)} updated.`;
     });
   }
@@ -260,7 +341,7 @@ export class AdminDashboardFacade {
 
     await this.runContentAction('profile-save', async () => {
       await this.contentService.updateProfile(payload);
-      await this.loadContentData();
+      await this.loadProfileContent();
       this.actionMessage = 'Profile updated.';
     });
   }
@@ -293,7 +374,7 @@ export class AdminDashboardFacade {
       await this.projectsService.createProject(payload);
       this.projectsPagination.currentPage = 1;
       this.resetProjectDraft();
-      await this.loadContentData();
+      await this.loadProjectsPage(1);
       this.actionMessage = 'Project created.';
     });
   }
@@ -310,7 +391,7 @@ export class AdminDashboardFacade {
       async () => {
         await this.runContentAction(`project-delete-${project._id}`, async () => {
           await this.projectsService.deleteProject(project._id!);
-          await this.loadContentData();
+          await this.loadProjectsPage();
 
           if (
             this.projects.length === 0 &&
@@ -318,7 +399,7 @@ export class AdminDashboardFacade {
             this.projectsPagination.totalPages > 0
           ) {
             this.projectsPagination.currentPage = this.projectsPagination.totalPages;
-            await this.loadContentData();
+            await this.loadProjectsPage(this.projectsPagination.currentPage);
           }
 
           this.actionMessage = `Project ${this.getProjectName(project)} deleted.`;
@@ -342,7 +423,7 @@ export class AdminDashboardFacade {
             ...project,
             status: 'archived',
           });
-          await this.loadContentData();
+          await this.loadProjectsPage();
           this.actionMessage = `Project ${this.getProjectName(project)} deactivated.`;
         });
       },
@@ -375,7 +456,9 @@ export class AdminDashboardFacade {
 
   async createContentItem(resourceName: Exclude<ContentResourceName, 'resumes'>): Promise<void> {
     const draft = this.newContentItems[resourceName];
-    const name = this.getLocalizedText(draft.label || draft.title);
+    const labelName = this.getLocalizedText(draft.label);
+    const titleName = this.getLocalizedText(draft.title);
+    const name = labelName !== '-' ? labelName : titleName;
 
     if (resourceName === 'techSkills') {
       const normalizedLabel = this.normalizeSkillLabel(draft.label?.es || draft.label?.en || draft.value || '');
@@ -398,36 +481,48 @@ export class AdminDashboardFacade {
       await this.runContentAction(`${resourceName}-create`, async () => {
         await this.contentService.createContentItem(resourceName, payload);
         this.resetContentDraft(resourceName);
-        await this.loadContentData();
+        await this.reloadContentCollection(resourceName);
         this.actionMessage = `${resourceName} item created.`;
       });
       return;
     }
 
-    if (!draft.slug || name === '-') {
-      this.contentError = `Slug and label are required to create ${resourceName}.`;
+    if (name === '-') {
+      this.contentError = `Label or title is required to create ${resourceName}.`;
       this.showErrorToast(this.contentError, 'Content');
       return;
     }
 
+    const metadata = { ...(draft.metadata ?? {}) };
+
+    if (resourceName === 'certifications') {
+      delete metadata['platform'];
+      delete metadata['issuer'];
+    }
+
     const payload: Partial<IApiContentItem> = {
-      slug: draft.slug,
+      slug: draft.slug?.trim() || this.createInternalContentSlug(resourceName, draft, name),
       label: draft.label,
       title: draft.title?.es || draft.title?.en ? draft.title : draft.label,
       description: draft.description?.es || draft.description?.en ? draft.description : { es: '', en: '' },
       value: draft.value,
-      period: draft.period,
+      period: draft.period
+        ? {
+            ...draft.period,
+            end: draft.period.current ? null : draft.period.end,
+          }
+        : draft.period,
       icon: draft.icon,
       href: draft.href,
       order: draft.order,
       active: draft.active ?? true,
-      metadata: draft.metadata,
+      metadata,
     };
 
     await this.runContentAction(`${resourceName}-create`, async () => {
       await this.contentService.createContentItem(resourceName, payload);
       this.resetContentDraft(resourceName);
-      await this.loadContentData();
+      await this.reloadContentCollection(resourceName);
       this.actionMessage = `${resourceName} item created.`;
     });
   }
@@ -456,7 +551,7 @@ export class AdminDashboardFacade {
     await this.runContentAction('resumes-create', async () => {
       await this.contentService.createContentItem('resumes', payload);
       this.resetResumeDraft();
-      await this.loadContentData();
+      await this.loadResumesContent();
       this.actionMessage = 'Resume created.';
     });
   }
@@ -472,9 +567,14 @@ export class AdminDashboardFacade {
       ? this.getTechSkillPayload(item as IApiTechSkill)
       : this.getContentPayload(item);
 
+    if (resourceName === 'certifications' && payload.metadata) {
+      delete payload.metadata['platform'];
+      delete payload.metadata['issuer'];
+    }
+
     await this.runContentAction(`${resourceName}-save-${item._id}`, async () => {
       await this.contentService.updateContentItem(resourceName, item._id!, payload);
-      await this.loadContentData();
+      await this.reloadContentCollection(resourceName);
       this.actionMessage = `${this.getContentItemName(item)} updated.`;
     });
   }
@@ -491,7 +591,7 @@ export class AdminDashboardFacade {
       async () => {
         await this.runContentAction(`${resourceName}-delete-${item._id}`, async () => {
           await this.contentService.deleteContentItem(resourceName, item._id!);
-          await this.loadContentData();
+          await this.reloadContentCollection(resourceName);
           this.actionMessage = `${this.getContentItemName(item)} deleted.`;
         });
       },
@@ -552,8 +652,60 @@ export class AdminDashboardFacade {
         ),
       );
 
-      await this.loadContentData();
+      await this.loadExperienceContent();
       this.actionMessage = 'Experience order updated.';
+    });
+  }
+
+  async reorderContentItems(resourceName: 'education' | 'certifications', previousIndex: number, currentIndex: number): Promise<void> {
+    const currentItems = this.getContentItems(resourceName);
+
+    if (
+      previousIndex === currentIndex ||
+      previousIndex < 0 ||
+      currentIndex < 0 ||
+      previousIndex >= currentItems.length ||
+      currentIndex >= currentItems.length
+    ) {
+      return;
+    }
+
+    const reordered = [...currentItems];
+    const [movedItem] = reordered.splice(previousIndex, 1);
+
+    if (!movedItem) {
+      return;
+    }
+
+    reordered.splice(currentIndex, 0, movedItem);
+
+    const itemsToPersist = reordered
+      .map((item, index) => ({
+        ...item,
+        order: index + 1,
+      }))
+      .filter((item) => item._id && item.order !== currentItems.find((current) => current._id === item._id)?.order);
+
+    const orderedItems = reordered.map((item, index) => ({
+      ...item,
+      order: index + 1,
+    }));
+
+    if (resourceName === 'education') {
+      this.education = orderedItems;
+    } else {
+      this.certifications = orderedItems;
+    }
+
+    await this.runContentAction(`${resourceName}-reorder`, async () => {
+      await Promise.all(
+        itemsToPersist.map((item) =>
+          this.contentService.updateContentItem(resourceName, item._id!, this.getContentPayload(item)),
+        ),
+      );
+
+      await this.reloadContentCollection(resourceName);
+      this.actionMessage = `${resourceName} order updated.`;
     });
   }
 
@@ -572,7 +724,7 @@ export class AdminDashboardFacade {
 
     await this.runContentAction(`admin-user-save-${user._id}`, async () => {
       await this.adminAuthService.updateAdminUser(user._id!, payload);
-      await this.loadContentData();
+      await this.loadAdminUsers();
       this.actionMessage = `Admin user ${user.displayName} updated.`;
     });
   }
@@ -587,7 +739,7 @@ export class AdminDashboardFacade {
     }
 
     this.projectsPagination.currentPage = page;
-    await this.loadContentData();
+    await this.loadProjectsPage(page);
   }
 
   async onNewResumeFileSelected(event: Event): Promise<void> {
@@ -711,6 +863,10 @@ export class AdminDashboardFacade {
         return this.techSkills;
       case 'experience':
         return this.experience;
+      case 'education':
+        return this.education;
+      case 'certifications':
+        return this.certifications;
       case 'testimonials':
         return this.testimonials;
       case 'socialLinks':
@@ -777,6 +933,31 @@ export class AdminDashboardFacade {
     };
   }
 
+  private createInternalContentSlug(resourceName: Exclude<ContentResourceName, 'resumes'>, draft: Partial<IApiContentItem>, name: string): string {
+    const rawSlug = [
+      resourceName,
+      name,
+      draft.title?.es,
+      draft.title?.en,
+      typeof draft.metadata?.['platform'] === 'string' ? draft.metadata['platform'] : '',
+      typeof draft.metadata?.['issuedAt'] === 'string' ? draft.metadata['issuedAt'] : '',
+      Date.now().toString(36),
+    ]
+      .filter((part): part is string => typeof part === 'string' && part.trim().length > 0)
+      .join('-');
+
+    return this.slugifyContentValue(rawSlug) || `${resourceName}-${Date.now().toString(36)}`;
+  }
+
+  private slugifyContentValue(value: string): string {
+    return value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
   private createEmptySkillDraft(): Partial<IApiTechSkill> {
     return {
       label: { es: '', en: '' },
@@ -803,6 +984,26 @@ export class AdminDashboardFacade {
     };
   }
 
+  private createEmptyProfileDraft(): IApiProfile {
+    return {
+      slug: 'main-profile',
+      label: { es: '', en: '' },
+      title: { es: '', en: '' },
+      description: { es: '', en: '' },
+      location: '',
+      availability: '',
+      email: '',
+      phone: '',
+      metadata: {
+        about: { es: '', en: '' },
+        contactIntroTitle: { es: '', en: '' },
+        contactIntro: { es: '', en: '' },
+        heroSlides: [],
+        portfolioMedia: this.normalizePortfolioMedia(),
+      },
+    };
+  }
+
   private normalizeProfile(profile: IApiProfile | null): IApiProfile | null {
     if (!profile) {
       return null;
@@ -820,6 +1021,14 @@ export class AdminDashboardFacade {
         about: {
           es: metadata.about?.es ?? '',
           en: metadata.about?.en ?? '',
+        },
+        contactIntroTitle: {
+          es: metadata.contactIntroTitle?.es ?? '',
+          en: metadata.contactIntroTitle?.en ?? '',
+        },
+        contactIntro: {
+          es: metadata.contactIntro?.es ?? '',
+          en: metadata.contactIntro?.en ?? '',
         },
         heroSlides: Array.isArray(metadata.heroSlides)
           ? metadata.heroSlides.map((slide) => this.normalizeHeroSlide(slide))
@@ -844,6 +1053,8 @@ export class AdminDashboardFacade {
 
     this.profile.metadata ??= {};
     this.profile.metadata.about ??= { es: '', en: '' };
+    this.profile.metadata.contactIntroTitle ??= { es: '', en: '' };
+    this.profile.metadata.contactIntro ??= { es: '', en: '' };
     this.profile.metadata.heroSlides ??= [];
     this.profile.metadata.portfolioMedia ??= this.normalizePortfolioMedia();
   }
@@ -854,10 +1065,18 @@ export class AdminDashboardFacade {
       aboutPrimaryImage: media?.aboutPrimaryImage ?? null,
       aboutSecondaryImage: media?.aboutSecondaryImage ?? null,
       footerCenterImage: media?.footerCenterImage ?? null,
+      aboutSectionBackground: media?.aboutSectionBackground ?? null,
+      aboutSectionTransparentBackground: media?.aboutSectionTransparentBackground ?? false,
       cvHeroBackground: media?.cvHeroBackground ?? null,
       cvSectionBackground: media?.cvSectionBackground ?? null,
       heroSlideFallbackImage: media?.heroSlideFallbackImage ?? null,
       projectFallbackImage: media?.projectFallbackImage ?? null,
+      projectsSectionBackground: media?.projectsSectionBackground ?? null,
+      projectsSectionTransparentBackground: media?.projectsSectionTransparentBackground ?? false,
+      testimonialsSectionBackground: media?.testimonialsSectionBackground ?? null,
+      testimonialsSectionTransparentBackground: media?.testimonialsSectionTransparentBackground ?? false,
+      contactSectionBackground: media?.contactSectionBackground ?? null,
+      contactSectionTransparentBackground: media?.contactSectionTransparentBackground ?? false,
       decorativeCloudIcon: media?.decorativeCloudIcon ?? null,
       decorativeWebDevelopmentIcon: media?.decorativeWebDevelopmentIcon ?? null,
       decorativeMultitaskIcon: media?.decorativeMultitaskIcon ?? null,
@@ -910,6 +1129,60 @@ export class AdminDashboardFacade {
       .filter(Boolean)
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join(' ');
+  }
+
+  private async loadContentResource(resourceLabel: string, callback: () => Promise<void>): Promise<void> {
+    await this.ensureCurrentAdmin();
+
+    if (!this.currentAdmin) {
+      return;
+    }
+
+    try {
+      this.ngZone.run(() => {
+        this.contentLoading = true;
+        this.contentError = null;
+      });
+
+      await callback();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : `Failed to load ${resourceLabel.toLowerCase()}`;
+      this.ngZone.run(() => {
+        this.contentError = message;
+      });
+      this.showErrorToast(message, resourceLabel);
+      console.error(`Error loading ${resourceLabel.toLowerCase()}:`, error);
+    } finally {
+      this.ngZone.run(() => {
+        this.contentLoading = false;
+      });
+    }
+  }
+
+  private async reloadContentCollection(resourceName: ContentResourceName): Promise<void> {
+    switch (resourceName) {
+      case 'techSkills':
+        await this.loadTechSkillsContent();
+        return;
+      case 'experience':
+        await this.loadExperienceContent();
+        return;
+      case 'education':
+        await this.loadEducationContent();
+        return;
+      case 'certifications':
+        await this.loadCertificationsContent();
+        return;
+      case 'testimonials':
+        await this.loadTestimonialsContent();
+        return;
+      case 'socialLinks':
+        await this.loadSocialLinksContent();
+        return;
+      case 'resumes':
+        await this.loadResumesContent();
+        return;
+    }
   }
 
   private async runContentAction(actionKey: string, callback: () => Promise<void>): Promise<void> {

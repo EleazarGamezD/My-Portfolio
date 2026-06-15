@@ -1,40 +1,36 @@
-<div class="skills-shell">
+<div>
   <div class="data-table-header">
     <div class="header-top">
       <div>
-        <p class="admin-page-kicker mb-1">Catalogo tecnico</p>
-        <h2 class="admin-page-title mb-0">Skills tecnicas</h2>
+        <p class="admin-page-kicker mb-1">Catálogo técnico</p>
+        <h2 class="admin-page-title mb-0">Habilidades técnicas</h2>
       </div>
       <a class="btn-create" [routerLink]="['/admin/dashboard/skills/create']">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
-        Crear skill
+        Crear habilidad
       </a>
     </div>
-    <p class="admin-page-copy mb-0">Administra el catalogo visual de skills que luego se relacionan con los proyectos.</p>
+    <p class="admin-page-copy mb-0">Administra el catálogo visual de habilidades que luego se relacionan con los proyectos.</p>
   </div>
 
-  <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-    <c-spinner color="primary" size="sm"></c-spinner>
-    <span>Cargando skills...</span>
+  <div *ngIf="!loading && skills.length === 0" class="empty-state">
+    <p>No se encontraron habilidades.</p>
   </div>
 
-  <div class="empty-state" *ngIf="!loading && skills.length === 0">
-    <p>No se encontraron skills.</p>
-  </div>
+  <div class="skills-surface" *ngIf="skills.length > 0 || loading">
+    <!-- Spinner shown inside surface during load/paginate -->
+    <div *ngIf="loading" class="skills-loading">
+      <c-spinner color="primary" size="sm"></c-spinner>
+      <span>Cargando...</span>
+    </div>
 
-  <div class="skills-surface" *ngIf="!loading && skills.length > 0">
-    <div class="skills-grid">
+    <div class="skills-grid" [class.skills-grid--loading]="loading">
       <article class="skill-card" *ngFor="let skill of skills">
         <div class="skill-card__menu">
-          <app-admin-action-menu
-            [canEdit]="true"
-            [editLink]="['/admin/dashboard/skills/edit', skill._id || '']"
-            [canDelete]="!isDeleting(skill)"
-            [canDeactivate]="false"
-            (actionSelected)="handleAction(skill, $event)">
+          <app-admin-action-menu [canEdit]="true" [editLink]="['/admin/dashboard/skills/edit', skill._id || '']" [canDelete]="!isDeleting(skill)" [canDeactivate]="false" (actionSelected)="handleAction(skill, $event)">
           </app-admin-action-menu>
         </div>
 
@@ -58,18 +54,13 @@
 
     <div class="skills-pagination" *ngIf="pagination.totalPages > 1">
       <div class="skills-pagination__meta">
-        {{ pagination.totalItems }} skills
+        {{ pagination.totalItems }} habilidades
       </div>
       <div class="skills-pagination__controls">
         <button type="button" class="skills-pagination__button" [disabled]="!pagination.hasPrevPage" (click)="changePage(pagination.currentPage - 1)">
           Anterior
         </button>
-        <button
-          type="button"
-          class="skills-pagination__button"
-          *ngFor="let page of visiblePages"
-          [class.skills-pagination__button--active]="page === pagination.currentPage"
-          (click)="changePage(page)">
+        <button type="button" class="skills-pagination__button" *ngFor="let page of visiblePages" [class.skills-pagination__button--active]="page === pagination.currentPage" (click)="changePage(page)">
           {{ page }}
         </button>
         <button type="button" class="skills-pagination__button" [disabled]="!pagination.hasNextPage" (click)="changePage(pagination.currentPage + 1)">

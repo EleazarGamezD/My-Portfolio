@@ -1,11 +1,6 @@
 <section>
-    <app-projects-list
-      [projects]="facade.projects"
-      [loading]="facade.contentLoading"
-      [actionLoadingKey]="facade.actionLoadingKey"
-      [pagination]="facade.projectsPagination"
-      (pageChange)="facade.changeProjectsPage($event)"
-      (deleteProject)="facade.deleteProject($event)"
-      (deactivateProject)="facade.deactivateProject($event)">
+  <div class="base-shell">
+    <app-projects-list [projects]="facade.projects" [loading]="facade.contentLoading" [actionLoadingKey]="facade.actionLoadingKey" [pagination]="facade.projectsPagination" (pageChange)="facade.changeProjectsPage($event)" (deleteProject)="facade.deleteProject($event)" (deactivateProject)="facade.deactivateProject($event)">
     </app-projects-list>
+  </div>
 </section>

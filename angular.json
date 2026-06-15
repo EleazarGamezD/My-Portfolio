@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "My-Portfolio": {
+    "Portfolio_frontend_v2": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/my-portfolio",
+            "outputPath": "dist/Portfolio_frontend_v2",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -41,8 +41,11 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@coreui/coreui/dist/css/coreui.min.css",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              {
+                "input": "src/app/core/core-ui-scss/core-ui-styles.scss",
+                "bundleName": "admin-coreui",
+                "inject": false
+              },
               "node_modules/swiper/swiper-bundle.min.css",
               "src/assets/css/icon.min.css",
               "src/assets/css/style.css",
@@ -54,7 +57,7 @@
             "scripts": [
               "src/assets/js/jquery.js",
               "src/assets/js/vendors.min.js",
-               "src/assets/js/main.js",
+              "src/assets/js/main.js",
               "src/assets/js/templateBridge.js"
             ],
             "server": "src/main.server.ts",
@@ -94,7 +97,13 @@
                "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "extractLicenses": true
+              "extractLicenses": true,
+              "fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.development.ts"
+								}
+							]
             },
             	"local-development": {
 						"optimization": true,
@@ -116,14 +125,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "My-Portfolio:build:production"
+              "buildTarget": "Portfolio_frontend_v2:build:production"
             },
             "development": {
-              "buildTarget": "My-Portfolio:build:development"
+              "buildTarget": "Portfolio_frontend_v2:build:development"
             },
-            	"local-development": {
-							"buildTarget": "My-Portfolio:build:local-development",
-							"proxyConfig": "proxy.conf.local.json"
+            "local-development": {
+							"buildTarget": "Portfolio_frontend_v2:build:local-development"
 						}
           },
           "defaultConfiguration": "development"

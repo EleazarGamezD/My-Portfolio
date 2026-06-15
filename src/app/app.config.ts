@@ -20,7 +20,7 @@ import { IconSetService } from '@coreui/icons-angular';
 import { StorageModule } from '@ngx-pwa/local-storage';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { provideToastr } from 'ngx-toastr';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,7 +30,7 @@ export const appConfig: ApplicationConfig = {
         onSameUrlNavigation: 'reload',
       }),
       withInMemoryScrolling({
-        scrollPositionRestoration: 'top',
+        scrollPositionRestoration: 'disabled',
         anchorScrolling: 'enabled',
       }),
       withViewTransitions(),
@@ -41,6 +41,11 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(RecaptchaV3Module, StorageModule.forRoot({}), SidebarModule, DropdownModule),
     IconSetService,
     provideAnimations(),
-    provideToastr(),
+    provideToastr({
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      timeOut: 4000,
+      extendedTimeOut: 1500,
+    }),
   ],
 };

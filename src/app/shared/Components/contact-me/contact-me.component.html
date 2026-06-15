@@ -1,75 +1,75 @@
-<section class="background-repeat position-relative sm-pt-0" style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')">
+<section class="background-repeat position-relative sm-pt-0" [style.background-image]="sectionBackgroundImage">
   <div class="container" id="appointment">
     <div class="row justify-content-center mb-2">
-      <div class="col-12 text-center" data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'>
-        <span class="fs-15 mb-5px text-base-color fw-500 d-block text-uppercase ls-2px">{{ t('home.contactForm.badge') }}</span>
-        <h3 class="alt-font ls-minus-1px text-dark-gray">
-          {{ t('home.contactForm.title') }}
-        </h3>
-      </div>
-    </div>
-    <div class="row row-cols-md-1 justify-content-center mb-10 md-mb-15 sm-mb-0">
-      <div class="col-xl-9 col-lg-10 col-md-12">
-        <form [formGroup]="contactForm" class="contact-form-style-03">
-          <div class="row">
-            <div class="col-md-6">
-              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.name.label') }}</label>
-              <div class="position-relative form-group mb-25px">
-                <span class="form-icon"><i class="bi bi-emoji-smile text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail1" type="text" formControlName="name" [placeholder]="t('home.contactForm.name.placeholder')" [attr.aria-label]="t('home.contactForm.name.label')" />
+      <div class="col-xl-9 col-lg-10 col-md-12 contact-form-card">
+        <div class="col-12 text-center" data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'>
+          <span class="fs-15 mb-5px text-base-color fw-500 d-block text-uppercase ls-2px">{{ t('home.contactForm.badge') }}</span>
+          <h3 class="alt-font ls-minus-1px text-dark-gray">
+            {{ t('home.contactForm.title') }}
+          </h3>
+        </div>
+        <div class="row row-cols-md-1 justify-content-center">
+          <form [formGroup]="contactForm" class="contact-form-style-03">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.name.label') }}</label>
+                <div class="position-relative form-group mb-25px">
+                  <span class="form-icon"><i class="bi bi-emoji-smile text-dark-gray"></i></span>
+                  <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail1" type="text" formControlName="name" [placeholder]="t('home.contactForm.name.placeholder')" [attr.aria-label]="t('home.contactForm.name.label')" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.email.label') }}</label>
+                <div class="position-relative form-group mb-25px">
+                  <span class="form-icon"><i class="bi bi-envelope text-dark-gray"></i></span>
+                  <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail2" type="email" formControlName="email" [placeholder]="t('home.contactForm.email.placeholder')" [attr.aria-label]="t('home.contactForm.email.label')" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.phone.label') }}</label>
+                <div class="position-relative form-group mb-25px">
+                  <span class="form-icon"><i class="bi bi-telephone text-dark-gray"></i></span>
+                  <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail3" type="tel" formControlName="phone" [placeholder]="t('home.contactForm.phone.placeholder')" [attr.aria-label]="t('home.contactForm.phone.label')" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">{{ t('home.contactForm.subject.label') }}</label>
+                <div class="position-relative form-group mb-25px">
+                  <span class="form-icon"><i class="bi bi-journals text-dark-gray"></i></span>
+                  <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail4" type="text" formControlName="subject" [placeholder]="t('home.contactForm.subject.placeholder')" [attr.aria-label]="t('home.contactForm.subject.label')" />
+                </div>
+              </div>
+              <div class="col-12 mb-35px">
+                <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">{{ t('home.contactForm.message.label') }}</label>
+                <div class="position-relative form-group form-textarea mb-0">
+                  <textarea class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" formControlName="message" [placeholder]="t('home.contactForm.message.placeholder')" rows="4" [attr.aria-label]="t('home.contactForm.message.label')"></textarea>
+                  <span class="form-icon"><i class="bi bi-chat-square-dots text-dark-gray"></i></span>
+                </div>
+              </div>
+              <div class="col-md-8 sm-mb-30px text-center text-md-start">
+                <p class="mb-0 fs-15 lh-26 w-80 md-w-85 sm-w-100">
+                  {{ t('home.contactForm.privacy') }}
+                </p>
+              </div>
+              <div class="col-md-4 text-center text-md-end">
+                <input id="exampleInputEmail5" type="hidden" name="redirect" value="" />
+                <button class="btn btn-small btn-double-border btn-border-base-color left-icon submit" [disabled]='contactForm.invalid' type="submit" (click)="onSubmit()">
+                  <span>
+                    <span><i class="fa-regular fa-paper-plane"></i></span>
+                    @if (!sendingEmail) {
+                    <span class="btn-double-text" [attr.data-text]="t('home.contactForm.submit')">{{ t('home.contactForm.submit') }}</span>
+                    } @else {
+                    <span class="btn-double-text" [attr.data-text]="t('home.contactForm.submitting')">{{ t('home.contactForm.submitting') }}</span>
+                    }
+                  </span>
+                </button>
+              </div>
+              <div class="col-12 text-center">
+                <div class="form-results mt-20px d-none"></div>
               </div>
             </div>
-            <div class="col-md-6">
-              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.email.label') }}</label>
-              <div class="position-relative form-group mb-25px">
-                <span class="form-icon"><i class="bi bi-envelope text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail2" type="email" formControlName="email" [placeholder]="t('home.contactForm.email.placeholder')" [attr.aria-label]="t('home.contactForm.email.label')" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0">{{ t('home.contactForm.phone.label') }}</label>
-              <div class="position-relative form-group mb-25px">
-                <span class="form-icon"><i class="bi bi-telephone text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail3" type="tel" formControlName="phone" [placeholder]="t('home.contactForm.phone.placeholder')" [attr.aria-label]="t('home.contactForm.phone.label')" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">{{ t('home.contactForm.subject.label') }}</label>
-              <div class="position-relative form-group mb-25px">
-                <span class="form-icon"><i class="bi bi-journals text-dark-gray"></i></span>
-                <input class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" id="exampleInputEmail4" type="text" formControlName="subject" [placeholder]="t('home.contactForm.subject.placeholder')" [attr.aria-label]="t('home.contactForm.subject.label')" />
-              </div>
-            </div>
-            <div class="col-12 mb-35px">
-              <label for="exampleInputEmail1" class="form-label fs-13 ls-1px text-uppercase text-dark-gray fw-500 mb-0  required">{{ t('home.contactForm.message.label') }}</label>
-              <div class="position-relative form-group form-textarea mb-0">
-                <textarea class="fs-17 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required" formControlName="message" [placeholder]="t('home.contactForm.message.placeholder')" rows="4" [attr.aria-label]="t('home.contactForm.message.label')"></textarea>
-                <span class="form-icon"><i class="bi bi-chat-square-dots text-dark-gray"></i></span>
-              </div>
-            </div>
-            <div class="col-md-8 sm-mb-30px text-center text-md-start">
-              <p class="mb-0 fs-15 lh-26 w-80 md-w-85 sm-w-100">
-                {{ t('home.contactForm.privacy') }}
-              </p>
-            </div>
-            <div class="col-md-4 text-center text-md-end">
-              <input id="exampleInputEmail5" type="hidden" name="redirect" value="" />
-              <button class="btn btn-small btn-double-border btn-border-base-color left-icon submit" [disabled]='contactForm.invalid' type="submit" (click)="onSubmit()">
-                <span>
-                  <span><i class="fa-regular fa-paper-plane"></i></span>
-                  @if (!sendingEmail) {
-                  <span class="btn-double-text" [attr.data-text]="t('home.contactForm.submit')">{{ t('home.contactForm.submit') }}</span>
-                  } @else {
-                  <span class="btn-double-text" [attr.data-text]="t('home.contactForm.submitting')">{{ t('home.contactForm.submitting') }}</span>
-                  }
-                </span>
-              </button>
-            </div>
-            <div class="col-12 text-center">
-              <div class="form-results mt-20px d-none"></div>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>

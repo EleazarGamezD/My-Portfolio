@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
 import { ContentService } from '@core/services/content/content.service';
+import { Language, TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
 import { ToastrService } from 'ngx-toastr';
 
 type TestimonialFormMode = 'create' | 'edit';
@@ -12,11 +13,12 @@ type TestimonialFormMode = 'create' | 'edit';
 @Component({
   selector: 'app-admin-testimonial-form-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule],
+  imports: [CommonModule, FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule, TranslateButtonComponent],
   templateUrl: './testimonial-form-page.component.html',
   styleUrl: './testimonial-form-page.component.scss',
 })
 export class AdminTestimonialFormPageComponent implements OnInit {
+  readonly Language = Language;
   mode: TestimonialFormMode = 'create';
   testimonialId = '';
   loading = false;
@@ -24,6 +26,7 @@ export class AdminTestimonialFormPageComponent implements OnInit {
   notFound = false;
   error: string | null = null;
   draft: Partial<IApiContentItem> = this.createEmptyDraft();
+  translateErrors: Record<string, string> = {};
 
   constructor(
     private readonly contentService: ContentService,

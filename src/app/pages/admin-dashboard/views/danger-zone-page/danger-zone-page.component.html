@@ -1,0 +1,49 @@
+<section>
+  <div class='base-shell w-100'>
+    <div class="admin-page-header">
+      <div>
+        <p class="admin-page-kicker">Sistema</p>
+        <h2 class="admin-page-title">Zona de peligro</h2>
+        <p class="admin-page-copy mb-0">Acciones irreversibles del sistema. Úsalas con precaución.</p>
+      </div>
+    </div>
+
+    <div class="dz-grid">
+      @for (action of actions; track action.id) {
+      <div class="dz-card" [class.dz-card--force]="action.isForce">
+        <div class="dz-card__icon">{{ action.isForce ? '🔥' : '⚠️' }}</div>
+        <div class="dz-card__content">
+          <h6 class="dz-card__title">{{ action.title }}</h6>
+          <p class="dz-card__desc">{{ action.description }}</p>
+        </div>
+        <div class="dz-card__action">
+          <button cButton [color]="action.isForce ? 'danger' : 'warning'" [variant]="action.isForce ? undefined : 'outline'" size="sm" type="button" [disabled]="!!loadingId" (click)="openConfirm(action)">
+            @if (loadingId === action.id) {
+            <c-spinner size="sm" class="me-1" />
+            }
+            {{ action.buttonLabel }}
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+
+@if (pendingAction) {
+<div class="dz-overlay" (click)="closeConfirm()">
+  <div class="dz-dialog" (click)="$event.stopPropagation()">
+    <div class="dz-dialog__icon">{{ pendingAction.isForce ? '🔥' : '⚠️' }}</div>
+    <h5 class="dz-dialog__title">{{ pendingAction.confirmTitle }}</h5>
+    <p class="dz-dialog__body" [innerHTML]="pendingAction.confirmBody"></p>
+    <div class="dz-dialog__actions">
+      <button cButton [color]="pendingAction.isForce ? 'danger' : 'warning'" type="button" (click)="confirmAction()">
+        Confirmar
+      </button>
+      <button cButton color="secondary" variant="outline" type="button" (click)="closeConfirm()">
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
+}

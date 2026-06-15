@@ -1,0 +1,67 @@
+<section>
+  <div class="base-shell">
+    <div class="admin-page-header">
+      <div>
+        <p class="admin-page-kicker">Apariencia</p>
+        <h2 class="admin-page-title">Temas de color</h2>
+        <p class="admin-page-copy mb-0">Gestiona la paleta de colores del portfolio público. El tema activo se aplica automáticamente.</p>
+      </div>
+      <a routerLink="/admin/dashboard/themes/create" cButton color="primary">
+        + Nuevo tema
+      </a>
+    </div>
+
+    @if (loading) {
+      <div class="d-flex justify-content-center py-5"><c-spinner /></div>
+    } @else {
+      <div class="themes-grid">
+        @for (theme of themes; track theme._id) {
+          <div class="admin-page-surface themes-card" [class.themes-card--active]="theme.active">
+            <div class="themes-card__swatch" [style.background]="theme.colors.baseColor"></div>
+            <div class="themes-card__body">
+              <div class="themes-card__info">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="themes-card__name">{{ theme.name }}</span>
+                  @if (theme.active) { <c-badge color="success">Activo</c-badge> }
+                </div>
+                <span class="themes-card__hex">{{ theme.colors.baseColor }}</span>
+                <div class="themes-card__palette mt-1">
+                  <span class="themes-swatch" title="Color principal" [style.background]="theme.colors.baseColor"></span>
+                  <span class="themes-swatch" title="Fondo claro" [style.background]="theme.colors.veryLightGray || '#ecf0f1'"></span>
+                  <span class="themes-swatch" title="Texto oscuro" [style.background]="theme.colors.darkGray || '#2e4052'"></span>
+                  <span class="themes-swatch" title="Texto secundario" [style.background]="theme.colors.mediumGray || '#7f8c8d'"></span>
+                  <span class="themes-swatch" title="Bordes y divisores" [style.background]="theme.colors.lightMediumGray || '#bdc3c7'"></span>
+                </div>
+              </div>
+              <div class="themes-card__actions">
+                @if (!theme.active) {
+                  <button cButton color="success" variant="outline" size="sm" type="button"
+                    [disabled]="!!actionLoadingId"
+                    (click)="activateTheme(theme)">
+                    @if (actionLoadingId === theme._id) { <c-spinner size="sm" class="me-1" /> }
+                    Activar
+                  </button>
+                }
+                <a [routerLink]="['/admin/dashboard/themes/edit', theme._id]"
+                  cButton color="secondary" variant="outline" size="sm">
+                  Editar
+                </a>
+                @if (!theme.active) {
+                  <button cButton color="danger" variant="outline" size="sm" type="button"
+                    [disabled]="!!actionLoadingId"
+                    (click)="deleteTheme(theme)">
+                    Eliminar
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (themes.length === 0) {
+          <p class="text-muted">No hay temas. Crea el primero.</p>
+        }
+      </div>
+    }
+  </div>
+</section>

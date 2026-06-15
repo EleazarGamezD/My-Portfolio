@@ -3,8 +3,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
-import { ToastrService } from 'ngx-toastr';
 import { SkillsListComponent } from '@pages/admin-dashboard/components/skills-list/skills-list.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-skills-page',
@@ -16,7 +16,7 @@ export class AdminSkillsPageComponent implements OnInit {
   skills: IApiTechSkill[] = [];
   loading = true;
   deletingSkillId: string | null = null;
-  readonly pageSize = 6;
+  readonly pageSize = 8;
   pagination: IPaginationResponse<IApiTechSkill> = {
     data: [],
     totalItems: 0,
@@ -30,7 +30,7 @@ export class AdminSkillsPageComponent implements OnInit {
     private readonly contentService: ContentService,
     private readonly toastr: ToastrService,
     private readonly cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.loadSkillsPage();

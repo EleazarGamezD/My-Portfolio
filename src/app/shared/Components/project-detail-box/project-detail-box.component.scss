@@ -1,3 +1,19 @@
+.background-around {
+  position: relative;
+  overflow: hidden;
+  background: var(--very-light-gray, #ecf0f1);
+}
+
+.project-detail-background {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
 section {
   padding-top: 0 !important;
 
@@ -8,15 +24,17 @@ section {
 
 .project-detail-shell {
   position: relative;
+  z-index: 1;
 }
 
 .project-detail-card,
 .project-empty-state {
-  border: 1px solid rgba(24, 24, 24, 0.08);
+  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
   border-radius: 32px;
   background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 30px 70px rgba(24, 24, 24, 0.08);
+  box-shadow: 0 30px 70px color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
   backdrop-filter: blur(18px);
+  margin-top: 92px;
 }
 
 .project-detail-card {
@@ -36,13 +54,19 @@ section {
 }
 
 .project-media-frame {
+  position: relative;
   overflow: hidden;
   border-radius: 26px;
   min-height: 380px;
   background:
-    radial-gradient(circle at top left, rgba(239, 99, 44, 0.2), transparent 32%),
-    linear-gradient(135deg, #fff4ec 0%, #ffffff 48%, #f4f6fb 100%);
-  border: 1px solid rgba(24, 24, 24, 0.06);
+    radial-gradient(circle at top left, color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent 82%), transparent 32%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, white 90%, var(--base-color, #c84b31) 10%) 0%,
+      #ffffff 48%,
+      color-mix(in srgb, white 88%, var(--very-light-gray, #ecf0f1) 12%) 100%
+    );
+  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 8%, transparent 92%);
 }
 
 .project-hero-image,
@@ -65,7 +89,7 @@ section {
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
-  color: #181818;
+  color: var(--dark-gray, #2e4052);
 }
 
 .project-gallery {
@@ -86,8 +110,8 @@ section {
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 
   &.is-active {
-    border-color: #ef632c;
-    box-shadow: 0 14px 28px rgba(239, 99, 44, 0.2);
+    border-color: var(--base-color, #c84b31);
+    box-shadow: 0 14px 28px color-mix(in srgb, var(--base-color, #c84b31) 22%, transparent 78%);
   }
 
   &:hover {
@@ -95,17 +119,23 @@ section {
   }
 }
 
-.project-kicker {
+.project-headline-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.project-featured-flag {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
   padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(239, 99, 44, 0.12);
-  color: #b14b21;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
+  background: color-mix(in srgb, var(--dark-gray, #2e4052) 90%, transparent 10%);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -117,8 +147,50 @@ section {
 .project-summary {
   font-size: 1.08rem;
   line-height: 1.8;
-  color: rgba(24, 24, 24, 0.78);
+  color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 72%, var(--dark-gray, #2e4052) 28%);
   margin-bottom: 28px;
+}
+
+.project-github-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: -10px 0 28px;
+}
+
+.project-github-stat {
+  min-width: 112px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--dark-gray, #2e4052) 4%, transparent 96%);
+  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
+  color: var(--dark-gray, #2e4052);
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--base-color, #c84b31) 30%, transparent 70%);
+    background: color-mix(in srgb, var(--base-color, #c84b31) 8%, transparent 92%);
+    color: var(--dark-gray, #2e4052);
+  }
+
+  strong {
+    font-size: 1rem;
+    line-height: 1;
+  }
+}
+
+.project-github-stat-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 76%, var(--dark-gray, #2e4052) 24%);
 }
 
 .project-meta-list {
@@ -127,9 +199,34 @@ section {
   margin-bottom: 28px;
 }
 
+.project-technologies-panel {
+  margin-top: 28px;
+  padding: 22px 24px;
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 3%, transparent 97%) 0%,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 1%, transparent 99%) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 8%, transparent 92%);
+  display: grid;
+  gap: 16px;
+}
+
 .project-meta-item {
   display: grid;
   gap: 10px;
+}
+
+.project-meta-item-featured {
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--base-color, #c84b31) 10%, transparent 90%) 0%,
+    color-mix(in srgb, var(--base-color, #c84b31) 4%, transparent 96%) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 20%, transparent 80%);
 }
 
 .project-meta-label {
@@ -137,12 +234,18 @@ section {
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-weight: 700;
-  color: rgba(24, 24, 24, 0.56);
+  color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 76%, var(--dark-gray, #2e4052) 24%);
+}
+
+.project-featured-description {
+  margin: 0;
+  color: color-mix(in srgb, var(--dark-gray, #2e4052) 82%, var(--medium-gray, #7f8c8d) 18%);
+  line-height: 1.7;
 }
 
 .project-meta-value {
   font-size: 1rem;
-  color: #181818;
+  color: var(--dark-gray, #2e4052);
   word-break: break-word;
 }
 
@@ -161,7 +264,7 @@ section {
 .project-chip {
   padding: 10px 14px;
   border-radius: 999px;
-  background: #181818;
+  background: var(--dark-gray, #2e4052);
   color: #fff;
   font-size: 0.92rem;
   line-height: 1;
@@ -173,9 +276,9 @@ section {
   gap: 0.65rem;
   padding: 0.85rem 1rem;
   border-radius: 1rem;
-  background: rgba(24, 24, 24, 0.04);
-  border: 1px solid rgba(24, 24, 24, 0.08);
-  color: #181818;
+  background: color-mix(in srgb, var(--dark-gray, #2e4052) 4%, transparent 96%);
+  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 10%, transparent 90%);
+  color: var(--dark-gray, #2e4052);
 
   img {
     width: 1.8rem;
@@ -187,8 +290,8 @@ section {
   small {
     padding: 0.2rem 0.55rem;
     border-radius: 999px;
-    background: rgba(239, 99, 44, 0.14);
-    color: #b14b21;
+    background: color-mix(in srgb, var(--base-color, #c84b31) 16%, transparent 84%);
+    color: color-mix(in srgb, var(--base-color, #c84b31) 78%, var(--dark-gray, #2e4052) 22%);
     font-size: 0.68rem;
     font-weight: 800;
     letter-spacing: 0.06em;
@@ -196,21 +299,25 @@ section {
   }
 
   &.is-primary {
-    border-color: rgba(239, 99, 44, 0.26);
-    background: rgba(239, 99, 44, 0.08);
+    border-color: color-mix(in srgb, var(--base-color, #c84b31) 28%, transparent 72%);
+    background: color-mix(in srgb, var(--base-color, #c84b31) 8%, transparent 92%);
   }
 }
 
 .project-description-block {
   padding: 22px 24px;
   border-radius: 24px;
-  background: linear-gradient(180deg, rgba(24, 24, 24, 0.03) 0%, rgba(24, 24, 24, 0.01) 100%);
-  border: 1px solid rgba(24, 24, 24, 0.06);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 3%, transparent 97%) 0%,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 1%, transparent 99%) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 8%, transparent 92%);
 
   p {
     font-size: 1rem;
     line-height: 1.9;
-    color: rgba(24, 24, 24, 0.8);
+    color: color-mix(in srgb, var(--medium-gray, #7f8c8d) 62%, var(--dark-gray, #2e4052) 38%);
   }
 }
 
@@ -249,6 +356,11 @@ section {
 
   .project-description-block {
     padding: 18px;
+  }
+
+  .project-technologies-panel {
+    padding: 18px;
+    margin-top: 20px;
   }
 
   .project-actions {

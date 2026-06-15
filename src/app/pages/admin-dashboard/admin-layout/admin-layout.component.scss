@@ -1,0 +1,148 @@
+.admin-sidebar__header {
+  padding: 1rem 1rem 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-sidebar__close-btn {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.8) !important;
+  padding: 0.35rem;
+  border-radius: 0.45rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff !important;
+  }
+
+  svg {
+    color: inherit !important;
+    display: block;
+  }
+}
+
+.admin-sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.admin-sidebar__brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.9rem;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 70%, var(--base-color, #c84b31) 30%),
+    var(--base-color, #c84b31)
+  );
+  color: #eff6ff;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.admin-sidebar__brand-copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.admin-sidebar__brand-copy small {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.72rem;
+}
+
+.admin-confirmation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1055;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.48);
+}
+
+.admin-confirmation-modal {
+  width: min(100%, 440px);
+  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent);
+  border-radius: 1.25rem;
+  background: var(--cui-card-bg);
+  color: var(--cui-body-color);
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.22);
+  overflow: hidden;
+}
+
+.admin-confirmation-modal__header {
+  padding: 1.25rem 1.25rem 0.75rem;
+  background: color-mix(in srgb, var(--base-color, #c84b31) 8%, var(--cui-card-bg) 92%);
+  border-bottom: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 14%, transparent);
+
+  h5 {
+    color: var(--cui-body-color);
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.admin-confirmation-modal__body {
+  padding: 1rem 1.25rem;
+  color: var(--cui-body-color);
+  line-height: 1.65;
+}
+
+.admin-confirmation-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1.25rem 1.25rem;
+  gap: 0.75rem;
+  border-top: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 14%, transparent);
+  background: var(--cui-card-bg);
+}
+
+.admin-confirmation-modal__cancel,
+.admin-confirmation-modal__confirm {
+  border-radius: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.admin-confirmation-modal__cancel {
+  border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 35%, transparent) !important;
+  background: transparent !important;
+  color: var(--cui-body-color) !important;
+
+  &:hover {
+    background: color-mix(in srgb, var(--cui-body-color) 8%, var(--cui-modal-bg, var(--cui-card-bg)) 92%) !important;
+    box-shadow: 0 12px 30px color-mix(in srgb, var(--dark-gray, #2e4052) 14%, transparent);
+  }
+}
+
+.admin-confirmation-modal__confirm {
+  border: 1px solid var(--base-color, #c84b31) !important;
+  background: linear-gradient(
+    135deg,
+    var(--base-color, #c84b31),
+    color-mix(in srgb, var(--base-color, #c84b31) 72%, var(--dark-gray, #2e4052) 28%)
+  ) !important;
+  color: #fff8f4 !important;
+
+  &:hover {
+    box-shadow: 0 14px 32px color-mix(in srgb, var(--base-color, #c84b31) 30%, transparent);
+  }
+}

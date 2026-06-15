@@ -8,6 +8,7 @@ export interface IAdminUser {
   lastLoginAt: string | null;
   createdAt?: string;
   updatedAt?: string;
+  mustChangePassword?: boolean;
 }
 
 export interface IAdminLoginRequest {
@@ -19,6 +20,7 @@ export interface IAdminLoginResponse {
   authenticated: boolean;
   accessToken: string;
   tokenType: 'Bearer';
+  mustChangePassword?: boolean;
   user: IAdminUser;
 }
 
@@ -37,4 +39,35 @@ export interface IAdminDashboardFilters {
   day?: string;
   from?: string;
   to?: string;
+}
+
+export interface ISetupAccountRequest {
+  email: string;
+  username: string;
+  displayName: string;
+  password: string;
+}
+
+export interface ISetupAccountResponse {
+  configured: boolean;
+  accessToken: string;
+  tokenType: 'Bearer';
+  user: IAdminUser;
+}
+
+export interface IForgotPasswordRequest {
+  email: string;
+}
+
+export interface IForgotPasswordResponse {
+  sent: boolean;
+}
+
+export interface IResetPasswordRequest {
+  token: string;
+  newPassword: string;
+}
+
+export interface IResetPasswordResponse {
+  reset: boolean;
 }

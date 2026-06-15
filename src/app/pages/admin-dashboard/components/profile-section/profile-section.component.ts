@@ -12,16 +12,18 @@ import {
 } from '@coreui/angular';
 import { PhotoEditorComponent } from '../shared/photo-editor/photo-editor.component';
 import { ShowErrorsComponent } from '../shared/show-errors/show-errors.component';
+import { Language, TranslateButtonComponent } from '../shared/translate-button/translate-button.component';
 
 @Component({
     selector: 'app-admin-profile-section',
     standalone: true,
-    imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, PhotoEditorComponent, ShowErrorsComponent],
+    imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, PhotoEditorComponent, ShowErrorsComponent, TranslateButtonComponent],
     templateUrl: './profile-section.component.html',
     styleUrl: './profile-section.component.scss',
 })
 export class AdminProfileSectionComponent {
     @ViewChildren('heroSlideCard') private heroSlideCards?: QueryList<ElementRef<HTMLDivElement>>;
+    readonly Language = Language;
     readonly heroSlideTitleMaxLength = 60;
     readonly heroSlideDescriptionMaxLength = 350;
     @Input() profile: IApiProfile | null = null;
@@ -30,6 +32,9 @@ export class AdminProfileSectionComponent {
     @Output() saveProfile = new EventEmitter<void>();
     @Output() heroSlideImageAssetsChange = new EventEmitter<{ index: number; assets: IProjectAsset[] }>();
     @Output() imageUploadError = new EventEmitter<string>();
+
+    /** Tracks translation errors per field key, shown below each input/textarea. */
+    translateErrors: Record<string, string> = {};
 
     constructor(public readonly i18nService: I18nService) { }
 

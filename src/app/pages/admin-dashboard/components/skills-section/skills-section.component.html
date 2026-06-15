@@ -8,158 +8,137 @@
       <c-badge color="light" shape="rounded-pill">{{ totalItems }}</c-badge>
     </div>
 
-    <div class="dashboard-create-box skills-create-box">
+    <!-- ── Top form: create OR edit ─────────────────────────────────── -->
+    <div #topFormRef class="dashboard-create-box skills-create-box" [class.skills-create-box--edit]="topFormMode === 'edit'">
       <div class="skills-create-box__header">
         <div>
-          <h6 class="mb-1">{{ createTitle }}</h6>
-          <p class="mb-0">El nombre se replica a espanol e ingles automaticamente.</p>
+          <h6 class="mb-1">{{ topFormTitle }}</h6>
+          <p class="mb-0">{{ topFormCopy }}</p>
         </div>
       </div>
 
-      <div class="row g-4 align-items-start">
-        <div class="col-lg-5">
-          <label class="form-label">Nombre de la skill</label>
-          <input
-            cFormControl
-            sizing="sm"
-            type="text"
-            [ngModel]="draftLabel"
-            (ngModelChange)="onDraftLabelChange($event)"
-            placeholder="Angular" />
-        </div>
+      <!-- Unified create/edit form — same layout for both modes -->
+      <div class="skill-form-body">
+        <!-- Left: fields + actions -->
+        <div class="skill-form-fields">
+          <div class="mb-3">
+            <label class="form-label">Nombre de la skill</label>
+            <input cFormControl sizing="sm" type="text" [ngModel]="draftLabel" (ngModelChange)="onDraftLabelChange($event)" [placeholder]="topFormMode === 'edit' ? '' : 'Angular'" />
+          </div>
 
-        <div class="col-lg-4">
-          <label class="form-label">Skill icon</label>
-          <app-add-photo
-            [storageKey]="draftStorageKey"
-            [maxPhotos]="1"
-            [maxMb]="3"
-            [title]="'Icono de la skill'"
-            [subTitle]="'Sube el icono de la skill'"
-            [label]="'Seleccionar icono'"
-            [hint]="'Arrastra o selecciona una imagen'"
-            [urlsPreviews]="draftIconPreviewUrls"
-            (assetsChange)="draftIconAssetsChange.emit($event)"
-            (uploadError)="imageUploadError.emit($event)">
-          </app-add-photo>
-        </div>
+          <div class="mb-3" *ngIf="topFormMode === 'edit' && topFormEditSkill">
+            <label class="form-label">Estado</label>
+            <label class="skill-card__toggle">
+              <input cFormCheckInput type="checkbox" [(ngModel)]="topFormEditSkill.active" />
+              Activa
+            </label>
+          </div>
 
-        <div class="col-lg-3 skills-create-box__actions">
-          <button
-            cButton
-            color="primary"
-            type="button"
-            (click)="createSkill.emit()"
-            [disabled]="isActionLoading('techSkills-create')">
-            Crear skill
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
-      <c-spinner size="sm" color="primary"></c-spinner>
-      <span>Cargando skills...</span>
-    </div>
-
-    <div class="skills-grid" *ngIf="!contentLoading && skills.length > 0; else emptySkills">
-      <article class="skill-card" *ngFor="let skill of skills">
-        <div class="skill-card__summary">
-          <div class="skill-card__media">
-            <ng-container *ngIf="getSkillIconAssets(skill)[0] as iconAsset; else iconPlaceholder">
-              <img [src]="iconAsset.url || iconAsset.file || ''" [alt]="getSkillLabel(skill)" />
+          <!-- Action buttons — always horizontal, never squashed -->
+          <div class="skill-form-actions">
+            <ng-container *ngIf="topFormMode === 'create'">
+              <button cButton color="primary" size="sm" type="button" (click)="createSkill.emit()" [disabled]="isActionLoading('techSkills-create')">
+                Crear skill
+              </button>
             </ng-container>
-            <ng-template #iconPlaceholder>
+            <ng-container *ngIf="topFormMode === 'edit'">
+              <button cButton color="secondary" variant="outline" size="sm" type="button" (click)="cancelTopFormEdit()">Cancelar</button>
+              <button cButton color="primary" size="sm" type="button" (click)="commitTopFormEdit()" [disabled]="topFormEditSkill ? isActionLoading('techSkills-save-' + topFormEditSkill._id) : false">
+                Guardar cambios
+              </button>
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- Right: compact icon uploader -->
+        <div class="skill-form-icon">
+          <label class="form-label mb-2">Icono</label>
+          <div class="skill-icon-upload-box">
+            <ng-container *ngIf="topFormMode === 'edit' && topFormEditSkill; else createIconUploader">
+              <app-photo-editor [assets]="getSkillIconAssets(topFormEditSkill)" [maxPhotos]="1" [variant]="'single'" [title]="''" [subTitle]="''" [emptyLabel]="'+ Icono'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Quitar'" (assetsChange)="onTopFormIconChange($event)" (uploadError)="imageUploadError.emit($event)">
+              </app-photo-editor>
+            </ng-container>
+            <ng-template #createIconUploader>
+              <app-add-photo [storageKey]="draftStorageKey" [maxPhotos]="1" [maxMb]="3" [title]="''" [subTitle]="''" [label]="'Seleccionar'" [hint]="''" [urlsPreviews]="draftIconPreviewUrls" (assetsChange)="onTopFormIconChange($event)" (uploadError)="imageUploadError.emit($event)">
+              </app-add-photo>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /skills-create-box -->
+
+    <!-- ── Skills list as card grid ───────────────────────────────────── -->
+    <ng-container *ngIf="!hideList">
+      <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
+        <c-spinner size="sm" color="primary"></c-spinner>
+        <span>Cargando skills...</span>
+      </div>
+
+      <div class="sl-grid" *ngIf="!contentLoading && skills.length > 0; else emptySkills">
+        <div class="sl-card" *ngFor="let skill of skills" [class.sl-card--editing]="isEditing(skill) && !useTopFormForEdit">
+          <!-- Single gear dropdown: Editar / Eliminar -->
+          <div class="sl-card__toolbar">
+            <app-admin-action-menu [canDeactivate]="false" [canEdit]="true" [canDelete]="true" [editLink]="null" (actionSelected)="onSkillAction(skill, $event)">
+            </app-admin-action-menu>
+          </div>
+
+          <!-- Icon -->
+          <div class="sl-card__icon">
+            <ng-container *ngIf="getSkillIconUrl(skill) as iconUrl; else slIconPlaceholder">
+              <img [src]="iconUrl" [alt]="getSkillLabel(skill)" />
+            </ng-container>
+            <ng-template #slIconPlaceholder>
               <span>{{ getSkillLabel(skill).charAt(0) || '?' }}</span>
             </ng-template>
           </div>
 
-          <div class="skill-card__meta">
-            <h6>{{ getSkillLabel(skill) || 'Skill sin nombre' }}</h6>
-            <div class="skill-card__badges">
-              <c-badge [color]="skill.active ? 'success' : 'secondary'">
-                {{ skill.active ? 'activa' : 'inactiva' }}
-              </c-badge>
+          <!-- Name -->
+          <strong class="sl-card__name">{{ getSkillLabel(skill) || 'Sin nombre' }}</strong>
+
+          <!-- Inline editor (only when !useTopFormForEdit) -->
+          <div class="sl-card__editor" *ngIf="!useTopFormForEdit && isEditing(skill)">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label form-label--sm">Nombre</label>
+                <input cFormControl sizing="sm" type="text" [ngModel]="getSkillLabel(skill)" (ngModelChange)="onSkillLabelChange(skill, $event)" />
+              </div>
+              <div class="col-12">
+                <label class="form-label form-label--sm">Icono</label>
+                <app-photo-editor [assets]="getSkillIconAssets(skill)" [maxPhotos]="1" [variant]="'single'" [title]="'Icono'" [subTitle]="'Agrega, cambia o elimina el icono.'" [emptyLabel]="'Agregar'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Eliminar'" (assetsChange)="skillIconAssetsChange.emit({ skill, assets: $event })" (uploadError)="imageUploadError.emit($event)"></app-photo-editor>
+              </div>
+              <div class="col-12">
+                <label class="skill-card__toggle">
+                  <input cFormCheckInput type="checkbox" [(ngModel)]="skill.active" />
+                  Activa
+                </label>
+              </div>
             </div>
-          </div>
-
-          <app-admin-action-menu
-            [canDeactivate]="false"
-            [canEdit]="true"
-            [canDelete]="true"
-            [editLink]="null"
-            (actionSelected)="onSkillAction(skill, $event)">
-          </app-admin-action-menu>
-        </div>
-
-        <div class="skill-card__editor" *ngIf="isEditing(skill)">
-          <div class="row g-4">
-            <div class="col-lg-5">
-              <label class="form-label">Nombre de la skill</label>
-              <input
-                cFormControl
-                sizing="sm"
-                type="text"
-                [ngModel]="getSkillLabel(skill)"
-                (ngModelChange)="onSkillLabelChange(skill, $event)" />
+            <div class="d-flex justify-content-end gap-2 mt-2">
+              <button cButton color="secondary" variant="outline" size="sm" type="button" (click)="cancelEdit(skill)">Cancelar</button>
+              <button cButton color="primary" size="sm" type="button" (click)="commitEdit(skill)" [disabled]="isActionLoading('techSkills-save-' + skill._id)">Guardar</button>
             </div>
-
-            <div class="col-lg-4">
-              <label class="form-label">Icono de la skill</label>
-              <app-photo-editor
-                [assets]="getSkillIconAssets(skill)"
-                [maxPhotos]="1"
-                [variant]="'single'"
-                [title]="'Icono de la skill'"
-                [subTitle]="'Agrega, cambia o elimina el icono.'"
-                [emptyLabel]="'Agregar icono'"
-                [addButtonLabel]="'Agregar'"
-                [changeButtonLabel]="'Cambiar'"
-                [removeButtonLabel]="'Eliminar'"
-                (assetsChange)="skillIconAssetsChange.emit({ skill, assets: $event })"
-                (uploadError)="imageUploadError.emit($event)"></app-photo-editor>
-            </div>
-
-            <div class="col-lg-3">
-              <label class="form-label">Estado</label>
-              <label class="skill-card__toggle">
-                <input cFormCheckInput type="checkbox" [(ngModel)]="skill.active" />
-                Activa
-              </label>
-            </div>
-          </div>
-
-          <div class="skill-card__actions">
-            <button cButton color="secondary" variant="outline" type="button" (click)="cancelEdit(skill)">Cancelar</button>
-            <button
-              cButton
-              color="primary"
-              type="button"
-              (click)="commitEdit(skill)"
-              [disabled]="isActionLoading('techSkills-save-' + skill._id)">
-              Guardar cambios
-            </button>
           </div>
         </div>
-      </article>
-    </div>
-
-    <ng-template #emptySkills>
-      <p class="text-muted mb-0" *ngIf="!contentLoading">{{ emptyMessage }}</p>
-    </ng-template>
-
-    <div class="skills-pagination" *ngIf="hasPagination">
-      <p class="skills-pagination__summary mb-0">
-        Pagina {{ currentPage }} de {{ totalPages }}
-      </p>
-      <div class="skills-pagination__actions">
-        <button cButton color="secondary" variant="outline" type="button" (click)="changePage(currentPage - 1)">
-          Anterior
-        </button>
-        <button cButton color="secondary" variant="outline" type="button" (click)="changePage(currentPage + 1)">
-          Siguiente
-        </button>
       </div>
-    </div>
+
+      <ng-template #emptySkills>
+        <p class="text-muted mb-0" *ngIf="!contentLoading">{{ emptyMessage }}</p>
+      </ng-template>
+
+      <div class="skills-pagination" *ngIf="hasPagination">
+        <p class="skills-pagination__summary mb-0">
+          Pagina {{ currentPage }} de {{ totalPages }}
+        </p>
+        <div class="skills-pagination__actions">
+          <button cButton color="secondary" variant="outline" type="button" (click)="changePage(currentPage - 1)">
+            Anterior
+          </button>
+          <button cButton color="secondary" variant="outline" type="button" (click)="changePage(currentPage + 1)">
+            Siguiente
+          </button>
+        </div>
+      </div>
+    </ng-container>
   </c-card-body>
 </c-card>

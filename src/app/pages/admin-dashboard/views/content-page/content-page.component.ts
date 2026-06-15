@@ -13,6 +13,7 @@ import {
   AdminContentSectionComponent,
   AdminContentSectionVariant,
 } from '@pages/admin-dashboard/components/content-section/content-section.component';
+import { OrderedCvContentListComponent } from '@pages/admin-dashboard/components/ordered-cv-content-list/ordered-cv-content-list.component';
 import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/skills-section/skills-section.component';
 
 type ContentResourcePage = Exclude<ContentResourceName, 'resumes'>;
@@ -30,7 +31,7 @@ interface AdminContentPageData {
 @Component({
   selector: 'app-admin-content-page',
   standalone: true,
-  imports: [CommonModule, AlertModule, AdminContentSectionComponent, AdminSkillsSectionComponent],
+  imports: [CommonModule, AlertModule, AdminContentSectionComponent, AdminSkillsSectionComponent, OrderedCvContentListComponent],
   templateUrl: './content-page.component.html',
   styleUrl: './content-page.component.scss',
 })
@@ -57,12 +58,11 @@ export class AdminContentPageComponent implements OnInit {
     this.config = this.route.snapshot.data as AdminContentPageData;
     if (this.config.variant === 'skills') {
       await this.loadSkillPage();
-      await this.facade.ensureContentReady();
       this.cdr.detectChanges();
       return;
     }
 
-    await this.facade.ensureContentReady();
+    await this.loadCurrentContentSection();
     this.cdr.detectChanges();
   }
 
@@ -72,6 +72,10 @@ export class AdminContentPageComponent implements OnInit {
 
   get draft(): Partial<IApiContentItem> {
     return this.facade.getContentDraft(this.config.resourceName);
+  }
+
+  get isOrderedCvContent(): boolean {
+    return this.config.variant === 'education' || this.config.variant === 'certifications';
   }
 
   get skillItems(): IApiTechSkill[] {
@@ -105,6 +109,34 @@ export class AdminContentPageComponent implements OnInit {
 
   async changeSkillPage(page: number): Promise<void> {
     await this.loadSkillPage(page);
+  }
+
+  async reorderOrderedCvContent(previousIndex: number, currentIndex: number): Promise<void> {
+    if (this.config.resourceName !== 'education' && this.config.resourceName !== 'certifications') {
+      return;
+    }
+
+    await this.facade.reorderContentItems(this.config.resourceName, previousIndex, currentIndex);
+  }
+
+  private async loadCurrentContentSection(): Promise<void> {
+    switch (this.config.resourceName) {
+      case 'experience':
+        await this.facade.loadExperienceContent();
+        return;
+      case 'education':
+        await this.facade.loadEducationContent();
+        return;
+      case 'certifications':
+        await this.facade.loadCertificationsContent();
+        return;
+      case 'testimonials':
+        await this.facade.loadTestimonialsContent();
+        return;
+      case 'socialLinks':
+        await this.facade.loadSocialLinksContent();
+        return;
+    }
   }
 
   private async loadSkillPage(page = this.skillPagination.currentPage): Promise<void> {

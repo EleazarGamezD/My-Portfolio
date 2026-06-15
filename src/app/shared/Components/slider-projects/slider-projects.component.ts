@@ -1,19 +1,20 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiProfile } from '@core/interfaces/content/content.interface';
-import {IProject} from '@core/interfaces/projects/projects.interfaces';
+import { IProject } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
-import { ProjectsService } from '@services/projects/projects.service';
-import {SliderProjectItemComponent} from "../slider-project-item/slider-project-item.component";
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
+import { ProjectsService } from '@services/projects/projects.service';
+import { SliderProjectItemComponent } from "../slider-project-item/slider-project-item.component";
 
 @Component({
   selector: 'app-slider-projects',
   imports: [SliderProjectItemComponent],
   templateUrl: './slider-projects.component.html',
-  styleUrl: './slider-projects.component.scss'
+  styleUrl: './slider-projects.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SliderProjectsComponent implements OnInit {
   profile: IApiProfile | null = null;
@@ -23,7 +24,7 @@ export class SliderProjectsComponent implements OnInit {
     private projectsService: ProjectsService,
     private readonly contentService: ContentService,
     private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   ProjectsArray: IProject[] = []
   isLoading = true
@@ -62,5 +63,20 @@ export class SliderProjectsComponent implements OnInit {
       resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeApiIcon) ||
       createPortfolioPlaceholder('API Icon', 360, 360)
     );
+  }
+
+  get sectionBackgroundImage() {
+    if (this.profile?.metadata?.portfolioMedia?.projectsSectionTransparentBackground) {
+      return 'none';
+    }
+
+    const backgroundUrl =
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.projectsSectionBackground) ||
+      'https://placehold.co/1920x1200';
+    return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
+  }
+
+  trackProject(index: number, project: IProject): string {
+    return project._id || project.slug || project.title?.es || project.title?.en || `${index}`;
   }
 }

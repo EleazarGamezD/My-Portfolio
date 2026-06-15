@@ -1,0 +1,62 @@
+<section>
+  <div class="base-shell">
+    <div class="admin-page-header">
+      <div>
+        <p class="admin-page-kicker">Contenido de contacto</p>
+        <h2 class="admin-page-title">Contáctame</h2>
+        <p class="admin-page-copy mb-0">Configura el título y el texto del bloque previo al formulario de contacto.</p>
+      </div>
+      <button cButton color="primary" type="button" (click)="save()" [disabled]="facade.isActionLoading('profile-save') || !facade.profile">
+        {{ facade.isActionLoading('profile-save') ? 'Guardando...' : 'Guardar contacto' }}
+      </button>
+    </div>
+
+    <c-card class="admin-page-surface">
+      <c-card-body>
+        <div *ngIf="facade.contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
+          <c-spinner size="sm" color="primary"></c-spinner>
+          <span>Cargando contenido de contacto...</span>
+        </div>
+
+        <div *ngIf="!facade.contentLoading && facade.profile" class="contact-page-grid">
+          <div class="dashboard-detail-card contact-page-title-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="dashboard-detail-label">Título</span>
+            </div>
+            <input cFormControl type="text" [(ngModel)]="contactTitle" [maxlength]="titleMaxLength" placeholder="Di hola!, Say hello!, Say hi!" />
+            <p class="contact-page-help">Puedes colocar varios saludos separados por coma. El template los mostrará como texto rotativo.</p>
+            <div class="d-flex justify-content-between mt-1">
+              <small class="text-body-secondary ms-auto">{{ contactTitle.length }}/{{ titleMaxLength }}</small>
+            </div>
+          </div>
+
+          <div class="dashboard-detail-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="dashboard-detail-label">Texto ES</span>
+              <app-translate-button [fromText]="contactBodyEs" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="contactBodyEn = $event; translateErrors['bodyEs'] = ''" (translationError)="translateErrors['bodyEs'] = $event" />
+            </div>
+            <textarea cFormControl rows="6" [(ngModel)]="contactBodyEs" [maxlength]="bodyMaxLength" placeholder="Texto introductorio para contacto"></textarea>
+            <div class="d-flex justify-content-between mt-1">
+              <small *ngIf="translateErrors['bodyEs']" class="translate-error">{{ translateErrors['bodyEs'] }}</small>
+              <small class="text-body-secondary ms-auto">{{ contactBodyEs.length }}/{{ bodyMaxLength }}</small>
+            </div>
+          </div>
+
+          <div class="dashboard-detail-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="dashboard-detail-label">Texto EN</span>
+              <app-translate-button [fromText]="contactBodyEn" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="contactBodyEs = $event; translateErrors['bodyEn'] = ''" (translationError)="translateErrors['bodyEn'] = $event" />
+            </div>
+            <textarea cFormControl rows="6" [(ngModel)]="contactBodyEn" [maxlength]="bodyMaxLength" placeholder="Contact intro text"></textarea>
+            <div class="d-flex justify-content-between mt-1">
+              <small *ngIf="translateErrors['bodyEn']" class="translate-error">{{ translateErrors['bodyEn'] }}</small>
+              <small class="text-body-secondary ms-auto">{{ contactBodyEn.length }}/{{ bodyMaxLength }}</small>
+            </div>
+          </div>
+        </div>
+
+        <p *ngIf="!facade.contentLoading && !facade.profile" class="text-muted mb-0">No se encontró el perfil.</p>
+      </c-card-body>
+    </c-card>
+  </div>
+</section>

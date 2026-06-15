@@ -8,15 +8,16 @@ import { AdminPortfolioMediaSectionComponent } from '@pages/admin-dashboard/comp
   standalone: true,
   imports: [CommonModule, AdminPortfolioMediaSectionComponent],
   templateUrl: './portfolio-media-page.component.html',
+  styleUrls: ['./portfolio-media-page.component.scss'],
 })
 export class AdminPortfolioMediaPageComponent implements OnInit {
   constructor(
     public readonly facade: AdminDashboardFacade,
     private readonly cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
-    await this.facade.ensureContentReady();
+    await this.facade.loadProfileContent();
     this.cdr.detectChanges();
   }
 }

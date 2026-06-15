@@ -1,0 +1,199 @@
+.skill-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skill-picker__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.skill-picker__header-info {
+  .form-label {
+    font-weight: 700;
+    color: var(--cui-emphasis-color);
+    margin-bottom: 0.25rem;
+  }
+}
+
+.skill-picker__copy {
+  color: var(--cui-secondary-color);
+  font-size: 0.875rem;
+}
+
+.skill-picker__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.skill-picker__count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--cui-secondary-color);
+  background: var(--cui-secondary-bg);
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--cui-border-color);
+}
+
+// ── Grid ─────────────────────────────────────────────────────────────────────
+
+.skill-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  // Always reserve space for 2 full rows (8 cards) to prevent layout jumps on last page
+  min-height: calc(2 * 130px + 0.75rem);
+  align-content: start;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    min-height: calc(4 * 130px + 3 * 0.75rem);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// ── Card ─────────────────────────────────────────────────────────────────────
+
+.skill-picker__card {
+  border: 1.5px solid var(--cui-border-color);
+  border-radius: 1rem;
+  background: var(--cui-card-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  text-align: center;
+  width: 100%;
+  padding: 0.9rem 0.75rem 0.75rem;
+  cursor: pointer;
+  min-height: 130px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--base-color, #c84b31) 38%, transparent 62%);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  &.is-selected {
+    border-color: color-mix(in srgb, var(--base-color, #c84b31) 60%, transparent 40%);
+    background: color-mix(in srgb, var(--base-color, #c84b31) 5%, var(--cui-card-bg) 95%);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  &.is-primary {
+    background: color-mix(in srgb, var(--base-color, #c84b31) 10%, var(--cui-card-bg) 90%);
+  }
+}
+
+.skill-picker__card-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--base-color, #c84b31) 10%, var(--cui-secondary-bg) 90%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--base-color, #c84b31);
+  font-weight: 800;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.skill-picker__card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+  gap: 0.2rem;
+  width: 100%;
+
+  strong {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--cui-emphasis-color);
+    word-break: break-word;
+    line-height: 1.3;
+  }
+}
+
+.skill-picker__primary-badge {
+  font-size: 0.7rem;
+  color: var(--base-color, #c84b31);
+  font-weight: 700;
+}
+
+.skill-picker__card-actions {
+  margin-top: 0.15rem;
+  width: 100%;
+}
+
+.skill-picker__set-primary {
+  display: block;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  border: 1px solid var(--cui-border-color);
+  background: var(--cui-secondary-bg);
+  color: var(--cui-secondary-color);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &.is-active {
+    background: color-mix(in srgb, var(--base-color, #c84b31) 15%, var(--cui-card-bg) 85%);
+    border-color: var(--base-color, #c84b31);
+    color: var(--base-color, #c84b31);
+  }
+}
+
+// ── Pagination ────────────────────────────────────────────────────────────────
+
+.skill-picker__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.skill-picker__total {
+  font-size: 0.85rem;
+  color: var(--cui-secondary-color);
+  font-weight: 600;
+}
+
+.skill-picker__page-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+// ── Library ───────────────────────────────────────────────────────────────────
+
+.skill-picker__library {
+  margin-top: 0.5rem;
+}

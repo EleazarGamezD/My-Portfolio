@@ -1,0 +1,27 @@
+.contact-page-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.contact-page-title-card {
+  grid-column: 1 / -1;
+}
+
+.translate-error {
+  color: #c84630;
+  font-size: 0.78rem;
+}
+
+.contact-page-help {
+  color: rgba(31, 48, 68, 0.62);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  margin: 0.45rem 0 0;
+}
+
+@media (max-width: 991px) {
+  .contact-page-grid {
+    grid-template-columns: 1fr;
+  }
+}

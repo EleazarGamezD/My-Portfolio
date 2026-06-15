@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,12 +7,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { IApiProfile } from '@core/interfaces/content/content.interface';
+import { ContentService } from '@core/services/content/content.service';
+import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { EmailService } from '@services/email/email.service';
 import { RecaptchaService } from '@services/recaptcha/recaptcha.service';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
-import { I18nService } from '@core/services/i18n/i18n.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
+
 
 @Component({
   selector: 'app-contact-me',
@@ -20,9 +24,11 @@ import { environment } from 'src/environments/environment';
   providers: [EmailService, RecaptchaService],
   templateUrl: './contact-me.component.html',
   styleUrl: './contact-me.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContactMeComponent implements OnInit {
   contactForm!: FormGroup;
+  profile: IApiProfile | null = null;
   siteKey: string = environment.reCaptchaSiteKey;
   recaptcha: string = '';
   isBrowser: boolean;
@@ -33,6 +39,8 @@ export class ContactMeComponent implements OnInit {
     private recaptchaV3Service: ReCaptchaV3Service,
     private recaptchaService: RecaptchaService,
     private toastr: ToastrService,
+    private readonly contentService: ContentService,
+    private readonly cdr: ChangeDetectorRef,
     public i18nService: I18nService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
@@ -55,6 +63,8 @@ export class ContactMeComponent implements OnInit {
       subject: ['', Validators.required],
       message: ['', Validators.required],
     });
+
+    void this.loadProfile();
   }
 
   async onSubmit() {
@@ -68,8 +78,10 @@ export class ContactMeComponent implements OnInit {
       this.toastr.error(this.t('toast.error.invalidForm'), this.t('toast.error.title'), {
         timeOut: 3000,
       });
+      this.cdr.markForCheck();
     } else {
       this.sendingEmail = true;
+      this.cdr.markForCheck();
       try {
         // 1. get token from reCaptcha
         const token = (await this.recaptchaV3Service
@@ -107,11 +119,33 @@ export class ContactMeComponent implements OnInit {
         });
       } finally {
         this.sendingEmail = false;
+        this.cdr.markForCheck();
       }
     }
   }
 
   t(key: string) {
     return this.i18nService.t(key);
+  }
+
+  get sectionBackgroundImage() {
+    if (this.profile?.metadata?.portfolioMedia?.contactSectionTransparentBackground) {
+      return 'none';
+    }
+
+    const backgroundUrl =
+      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.contactSectionBackground) ||
+      'https://placehold.co/1920x1200';
+    return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
+  }
+
+  private async loadProfile(): Promise<void> {
+    try {
+      this.profile = await this.contentService.getProfile();
+    } catch (error) {
+      console.warn('Failed to load profile content for contact section.', error);
+    } finally {
+      this.cdr.markForCheck();
+    }
   }
 }

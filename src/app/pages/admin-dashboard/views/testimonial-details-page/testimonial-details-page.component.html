@@ -1,92 +1,79 @@
 <section>
-  <div class="admin-page-header">
-    <div>
-      <p class="admin-page-kicker">Social Proof</p>
-      <h2 class="admin-page-title">Detalle del testimonio</h2>
-      <p class="admin-page-copy mb-0">Vista completa del testimonio con sus acciones principales.</p>
+  <div class="base-shell">
+    <div class="admin-page-header">
+      <div>
+        <p class="admin-page-kicker">Social Proof</p>
+        <h2 class="admin-page-title">Detalle del testimonio</h2>
+        <p class="admin-page-copy mb-0">Vista completa del testimonio con sus acciones principales.</p>
+      </div>
+      <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/testimonials']">Volver al listado</a>
     </div>
-    <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/testimonials']">Volver al listado</a>
-  </div>
 
-  <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
-  <c-alert *ngIf="notFound" color="warning">No se encontro el testimonio solicitado.</c-alert>
+    <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
+    <c-alert *ngIf="notFound" color="warning">No se encontro el testimonio solicitado.</c-alert>
 
-  <c-card class="admin-page-surface testimonial-details-shell" *ngIf="!notFound && item">
-    <c-card-body>
-      <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-        <span class="spinner-border spinner-border-sm"></span>
-        <span>Cargando testimonio...</span>
-      </div>
+    <c-card class="admin-page-surface testimonial-details-shell" *ngIf="!notFound && item">
+      <c-card-body>
+        <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
+          <span class="spinner-border spinner-border-sm"></span>
+          <span>Cargando testimonio...</span>
+        </div>
 
-      <div class="testimonial-details" *ngIf="!loading">
-        <section>
-          <div class="testimonial-details__hero">
-            <div class="testimonial-details__copy">
-              <span class="testimonial-details__eyebrow">Referencia profesional</span>
-              <h3>{{ personName }}</h3>
-              <p>{{ personPosition }} · {{ personCompany }}</p>
-            </div>
-
-            <div class="testimonial-details__meta">
-              <div class="testimonial-meta-card">
-                <span>Estado</span>
-                <c-badge [color]="activeColor">{{ activeLabel }}</c-badge>
+        <div class="testimonial-details" *ngIf="!loading">
+          <section>
+            <div class="testimonial-details__hero">
+              <div class="testimonial-details__copy">
+                <span class="testimonial-details__eyebrow">Referencia profesional</span>
+                <h3>{{ personName }}</h3>
+                <p>{{ personPosition }} · {{ personCompany }}</p>
               </div>
-              <div class="testimonial-meta-card">
-                <span>Slug</span>
-                <strong>{{ item.slug || 'Generado por backend' }}</strong>
+
+              <div class="testimonial-details__meta">
+                <div class="testimonial-meta-card">
+                  <span>Estado</span>
+                  <c-badge [color]="activeColor">{{ activeLabel }}</c-badge>
+                </div>
+                <div class="testimonial-meta-card">
+                  <span>Slug</span>
+                  <strong>{{ item.slug || 'Generado por backend' }}</strong>
+                </div>
               </div>
             </div>
+          </section>
+
+          <div class="testimonial-details__grid">
+            <section>
+              <div class="testimonial-panel">
+                <div class="testimonial-panel__head">
+                  <h3>Testimonio ES</h3>
+                </div>
+                <p class="testimonial-panel__body">{{ testimonialEs }}</p>
+              </div>
+            </section>
+
+            <section>
+              <div class="testimonial-panel">
+                <div class="testimonial-panel__head">
+                  <h3>Testimonio EN</h3>
+                </div>
+                <p class="testimonial-panel__body">{{ testimonialEn }}</p>
+              </div>
+            </section>
           </div>
-        </section>
 
-        <div class="testimonial-details__grid">
-          <section>
-            <div class="testimonial-panel">
-              <div class="testimonial-panel__head">
-                <h3>Testimonio ES</h3>
-              </div>
-              <p class="testimonial-panel__body">{{ testimonialEs }}</p>
-            </div>
-          </section>
-
-          <section>
-            <div class="testimonial-panel">
-              <div class="testimonial-panel__head">
-                <h3>Testimonio EN</h3>
-              </div>
-              <p class="testimonial-panel__body">{{ testimonialEn }}</p>
-            </div>
-          </section>
+          <div class="testimonial-details__actions">
+            <a cButton color="primary" [routerLink]="['/admin/dashboard/testimonials/edit', item._id || '']">
+              Editar
+            </a>
+            <button cButton color="secondary" variant="outline" type="button" (click)="toggleActive()" [disabled]="actionLoading">
+              {{ item.active ? 'Inactivar' : 'Activar' }}
+            </button>
+            <button cButton color="danger" variant="outline" type="button" (click)="deleteItem()" [disabled]="actionLoading">
+              Eliminar
+            </button>
+          </div>
         </div>
-
-        <div class="testimonial-details__actions">
-          <a
-            cButton
-            color="primary"
-            [routerLink]="['/admin/dashboard/testimonials/edit', item._id || '']">
-            Editar
-          </a>
-          <button
-            cButton
-            color="secondary"
-            variant="outline"
-            type="button"
-            (click)="toggleActive()"
-            [disabled]="actionLoading">
-            {{ item.active ? 'Inactivar' : 'Activar' }}
-          </button>
-          <button
-            cButton
-            color="danger"
-            variant="outline"
-            type="button"
-            (click)="deleteItem()"
-            [disabled]="actionLoading">
-            Eliminar
-          </button>
-        </div>
-      </div>
-    </c-card-body>
-  </c-card>
+      </c-card-body>
+    </c-card>
+  </div>
 </section>

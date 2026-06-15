@@ -11,17 +11,21 @@ import {
     SpinnerModule,
     TableModule,
 } from '@coreui/angular';
+import { Language, TranslateButtonComponent } from '../shared/translate-button/translate-button.component';
 
-export type AdminContentSectionVariant = 'skills' | 'experience' | 'testimonials' | 'socialLinks';
+export type AdminContentSectionVariant = 'skills' | 'experience' | 'education' | 'certifications' | 'testimonials' | 'socialLinks';
 
 @Component({
     selector: 'app-admin-content-section',
     standalone: true,
-    imports: [CommonModule, FormsModule, BadgeModule, ButtonModule, CardModule, FormModule, SpinnerModule, TableModule],
+    imports: [CommonModule, FormsModule, BadgeModule, ButtonModule, CardModule, FormModule, SpinnerModule, TableModule, TranslateButtonComponent],
     templateUrl: './content-section.component.html',
     styleUrl: './content-section.component.scss',
 })
 export class AdminContentSectionComponent {
+    readonly Language = Language;
+    translateErrors: Record<string, string> = {};
+
     @Input({ required: true }) sectionTitle = '';
     @Input({ required: true }) createTitle = '';
     @Input({ required: true }) emptyMessage = '';
@@ -65,5 +69,27 @@ export class AdminContentSectionComponent {
 
     getIconClass(item: IApiContentItem): string {
         return typeof item.icon === 'string' && item.icon.trim() ? item.icon.trim() : 'fa-solid fa-link';
+    }
+
+    setDraftCurrentPeriod(value: boolean): void {
+        this.draft.period ??= {};
+        this.draft.period.current = value;
+
+        if (value) {
+            this.draft.period.end = null;
+        }
+    }
+
+    setItemCurrentPeriod(item: IApiContentItem, value: boolean): void {
+        item.period ??= {};
+        item.period.current = value;
+
+        if (value) {
+            item.period.end = null;
+        }
+    }
+
+    setTranslateError(key: string, error: string): void {
+        this.translateErrors[key] = error;
     }
 }

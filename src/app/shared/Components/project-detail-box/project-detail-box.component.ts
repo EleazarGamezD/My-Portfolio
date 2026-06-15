@@ -1,57 +1,45 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, Input, OnChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import { ProjectsService } from '@core/services/projects/projects.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
-import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
   selector: 'app-project-detail-box',
   imports: [CommonModule],
   templateUrl: './project-detail-box.component.html',
   styleUrl: './project-detail-box.component.scss',
+  animations: [
+    trigger('imageEaseOut', [
+      transition('* => *', [
+        style({ opacity: 0.35, transform: 'scale(1.012)', filter: 'blur(2px)' }),
+        animate('520ms ease-out', style({ opacity: 1, transform: 'scale(1)', filter: 'blur(0)' })),
+      ]),
+    ]),
+  ],
 })
-export class ProjectDetailBoxComponent implements OnInit {
-  project: IProject | undefined;
+export class ProjectDetailBoxComponent implements OnChanges {
+  @Input() project: IProject | null = null;
   activeImage: string | null = null;
+  private lastTrackedProjectId: string | null = null;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
-    private readonly projectsService: ProjectsService,
     public i18nService: I18nService,
     private analyticsService: AnalyticsService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
   ) { }
 
-  ngOnInit() {
-    this.route.paramMap.subscribe(async (params) => {
-      const projectIdOrSlug = params.get('id') || '';
-      this.project = undefined;
+  ngOnChanges(): void {
+    this.activeImage = this.galleryImages[0] || null;
 
-      if (!projectIdOrSlug) {
-        return;
-      }
-
-      try {
-        this.project = await this.projectsService.getProjectByIdOrSlug(projectIdOrSlug);
-        this.activeImage = this.galleryImages[0] || null;
-
-        // Track project view
-        if (this.project?._id) {
-          this.analyticsService.trackProjectView(this.project._id.toString());
-        }
-      } catch (error) {
-        console.warn(`Failed to load project detail for "${projectIdOrSlug}" from API.`, error);
-      } finally {
-        this.changeDetectorRef.detectChanges();
-        requestTemplateReinit();
-      }
-    });
+    if (this.project?._id && this.lastTrackedProjectId !== this.project._id) {
+      this.analyticsService.trackProjectView(this.project._id.toString());
+      this.lastTrackedProjectId = this.project._id;
+    }
   }
 
   get projectTitle() {
@@ -67,7 +55,7 @@ export class ProjectDetailBoxComponent implements OnInit {
     }
     return this.i18nService.selectText(
       this.project.description?.es || this.project.summary?.es || '',
-      this.project.description?.en || this.project.summary?.en || this.project.description?.es || '',
+      this.project.description?.en || this.project.description?.es || this.project.summary?.en || this.project.summary?.es || '',
     );
   }
 
@@ -114,12 +102,37 @@ export class ProjectDetailBoxComponent implements OnInit {
     return this.activeImage || this.galleryImages[0] || null;
   }
 
+  get isFeatured() {
+    return Boolean(this.project?.featured);
+  }
+
+  get detailBackgroundImage() {
+    return this.heroImage || null;
+  }
+
+  get detailBackgroundStyle() {
+    return this.detailBackgroundImage ? this.buildBackgroundImage(this.detailBackgroundImage) : null;
+  }
+
   get hasLiveDemo() {
     return !!this.project?.projectLink && this.project.projectLink.startsWith('http');
   }
 
   get hasSourceCode() {
     return !!this.project?.codeLink && this.project.codeLink.startsWith('http');
+  }
+
+  get hasGitHubStats() {
+    return Boolean(this.project?.githubStats);
+  }
+
+  formatCount(value?: number) {
+    const amount = Number(value ?? 0);
+    if (amount >= 1000) {
+      return `${(amount / 1000).toFixed(amount >= 10000 ? 0 : 1)}k`;
+    }
+
+    return String(amount);
   }
 
   selectImage(image: string) {
@@ -143,6 +156,10 @@ export class ProjectDetailBoxComponent implements OnInit {
 
   private resolveProjectAsset(asset?: string | IProjectAsset | null) {
     return resolveImageAssetUrl(asset);
+  }
+
+  private buildBackgroundImage(image: string) {
+    return `linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.58)), url(${image})`;
   }
 
   backToHome() {

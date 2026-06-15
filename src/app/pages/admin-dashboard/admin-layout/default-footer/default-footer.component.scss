@@ -1,0 +1,29 @@
+.admin-footer-copy,
+.admin-footer-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-footer-copy a,
+.admin-footer-credit a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.admin-footer-copy a:hover,
+.admin-footer-copy a:focus-visible,
+.admin-footer-credit a:hover,
+.admin-footer-credit a:focus-visible {
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .admin-footer-copy,
+  .admin-footer-credit {
+    justify-content: center;
+    width: 100%;
+  }
+}

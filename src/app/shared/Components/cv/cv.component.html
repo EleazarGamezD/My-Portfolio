@@ -6,21 +6,16 @@
 </section>
 <section class="background-repeat position-relative sm-pt-0 mobile-cover" [style.background-image]="'url(' + cvSectionBackground + ')'">
   <div class="position-absolute left-minus-100px top-150px d-none d-lg-inline-block" data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)">
-    <img [src]="cloudIcon" alt="" style='max-width: 270px; max-height: 270px' />
+    <img [src]="cloudIcon" alt="" style='max-width: 270px; max-height: 270px' loading="lazy" />
   </div>
   <div class="position-absolute right-minus-50px text-end bottom-150px d-none d-lg-inline-block" data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)">
-    <img [src]="webDevelopmentIcon" class="w-70" alt="" style='max-width: 280px; max-height: 280px' />
+    <img [src]="webDevelopmentIcon" class="w-70" alt="" style='max-width: 280px; max-height: 280px' loading="lazy" />
   </div>
   <div class="container-fluid overlap-section p-0">
     <div class="row g-0 justify-content-end overlap-section-one-fourth mb-6 overflow-hidden" data-anime='{ "el": "childs", "translateX": [50, 0],"opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'>
       <div class="col-xl-6 col-lg-8 col-md-10 bg-base-color p-5 lg-p-5 sm-p-12 overflow-hidden">
         <div class="row">
           <div class="col-12">
-            <!-- Loading State -->
-            <div *ngIf="loading" class="text-center py-5">
-              <p class="text-dark-gray">{{ t('common.loading') || 'Loading...' }}</p>
-            </div>
-
             <!-- Error State -->
             <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
               {{ error }}
@@ -30,7 +25,7 @@
             <div *ngIf="!loading && !error && resumes.length > 0">
               <h3 class="fs-22 text-dark-gray fw-500 mb-20px">{{ t('cv.resumes') || 'My Resumes' }}</h3>
               <div class="row g-3">
-                <div *ngFor="let resume of resumes" class="col-12">
+                <div *ngFor="let resume of resumes; trackBy: trackResume" class="col-12">
                   <div class="card bg-light border-0 p-4">
                     <div class="d-flex justify-content-between align-items-center">
                       <div>
@@ -41,7 +36,7 @@
                           {{ getResumeDescription(resume) }}
                         </p>
                       </div>
-                      <button type="button" class="btn btn-link btn-large text-dark-gray thin fw-500" (click)="downloadCV(resume)" title="Download" [disabled]="!resume.base64">
+                      <button type="button" class="btn btn-link btn-large text-dark-gray thin fw-500" (click)="downloadCV(resume)" title="Download" [disabled]="!canDownloadCV(resume)">
                         <i class="fa-solid fa-download"></i>
                         {{ t('cv.download') || 'Download' }}
                       </button>

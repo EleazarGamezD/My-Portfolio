@@ -17,6 +17,8 @@ export class ContentService extends GlobalHttpService {
   private profilePromise: Promise<IApiProfile> | null = null;
   private techSkillsPromise: Promise<IApiTechSkill[]> | null = null;
   private experiencePromise: Promise<IApiContentItem[]> | null = null;
+  private educationPromise: Promise<IApiContentItem[]> | null = null;
+  private certificationsPromise: Promise<IApiContentItem[]> | null = null;
   private testimonialsPromise: Promise<IApiContentItem[]> | null = null;
   private socialLinksPromise: Promise<IApiContentItem[]> | null = null;
   private resumesPromise: Promise<IApiResume[]> | null = null;
@@ -38,6 +40,14 @@ export class ContentService extends GlobalHttpService {
 
     return items.filter((item): item is IApiContentItem => Boolean(item)).map((item) => ({
       ...item,
+      label: { es: item.label?.es ?? '', en: item.label?.en ?? '' },
+      title: { es: item.title?.es ?? '', en: item.title?.en ?? '' },
+      description: { es: item.description?.es ?? '', en: item.description?.en ?? '' },
+      period: {
+        start: item.period?.start ?? '',
+        end: item.period?.end ?? null,
+        current: item.period?.current ?? false,
+      },
       metadata: item.metadata && typeof item.metadata === 'object' ? item.metadata : {},
       name:
         typeof item.name === 'string' && item.name.trim()
@@ -144,18 +154,11 @@ export class ContentService extends GlobalHttpService {
   }
 
   async getTechSkills(): Promise<IApiTechSkill[]> {
-    this.techSkillsPromise ??= this.withCacheResetOnError(
-      this.makeRequest<IApiTechSkill[], null>(
-        API_CONTENT_ROUTES.getTechSkills,
-        null,
-        RequestMethod.GET,
-      ),
-      () => {
-        this.techSkillsPromise = null;
-      },
+    return this.makeRequest<IApiTechSkill[], null>(
+      API_CONTENT_ROUTES.getTechSkills,
+      null,
+      RequestMethod.GET,
     );
-
-    return this.techSkillsPromise;
   }
 
   async getTechSkillsPaginated(options: IPaginationOptions): Promise<IPaginationResponse<IApiTechSkill>> {
@@ -174,6 +177,32 @@ export class ContentService extends GlobalHttpService {
     );
 
     return this.experiencePromise;
+  }
+
+  async getEducation(): Promise<IApiContentItem[]> {
+    this.educationPromise ??= this.withCacheResetOnError(
+      this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getEducation, null, RequestMethod.GET).then(
+        (items) => this.normalizeContentItems(items),
+      ),
+      () => {
+        this.educationPromise = null;
+      },
+    );
+
+    return this.educationPromise;
+  }
+
+  async getCertifications(): Promise<IApiContentItem[]> {
+    this.certificationsPromise ??= this.withCacheResetOnError(
+      this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getCertifications, null, RequestMethod.GET).then(
+        (items) => this.normalizeContentItems(items),
+      ),
+      () => {
+        this.certificationsPromise = null;
+      },
+    );
+
+    return this.certificationsPromise;
   }
 
   async getTestimonials(): Promise<IApiContentItem[]> {
@@ -244,7 +273,7 @@ export class ContentService extends GlobalHttpService {
     return response;
   }
 
-  private invalidateResourceCache(resourceName: string) {
+  invalidateResourceCache(resourceName: string) {
     switch (resourceName) {
       case 'profile':
         this.profilePromise = null;
@@ -254,6 +283,12 @@ export class ContentService extends GlobalHttpService {
         return;
       case 'experience':
         this.experiencePromise = null;
+        return;
+      case 'education':
+        this.educationPromise = null;
+        return;
+      case 'certifications':
+        this.certificationsPromise = null;
         return;
       case 'testimonials':
         this.testimonialsPromise = null;
@@ -267,5 +302,16 @@ export class ContentService extends GlobalHttpService {
       default:
         return;
     }
+  }
+
+  invalidateAllContentCache() {
+    this.profilePromise = null;
+    this.techSkillsPromise = null;
+    this.experiencePromise = null;
+    this.educationPromise = null;
+    this.certificationsPromise = null;
+    this.testimonialsPromise = null;
+    this.socialLinksPromise = null;
+    this.resumesPromise = null;
   }
 }

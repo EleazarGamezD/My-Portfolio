@@ -1,31 +1,20 @@
 <section class="p-0 bg-dark-gray">
-  <div
-    class="swiper full-screen ipad-top-space-margin md-h-600px sm-h-500px swiper-number-pagination-style-01 base-color"
-    data-slider-options='{ "slidesPerView": 1, "loop": true, "pagination": { "el": ".swiper-number", "clickable": true }, "navigation": { "nextEl": ".slider-one-slide-next-1", "prevEl": ".slider-one-slide-prev-1" }, "autoplay": { "delay": 5000, "disableOnInteraction": false },  "keyboard": { "enabled": true, "onlyInViewport": true }, "effect": "slide" }'
-    data-number-pagination="1"
-    data-anime-text='{ "translateY": [50,0], "opacity": [0,1], "easing": "easeOutQuad", "duration": 500, "delay": { "staggervalue": 20 } }'
-  >
+  <div class="swiper full-screen ipad-top-space-margin md-h-600px sm-h-500px swiper-number-pagination-style-01 base-color" data-slider-options='{ "slidesPerView": 1, "loop": true, "pagination": { "el": ".swiper-number", "clickable": true }, "navigation": { "nextEl": ".slider-one-slide-next-1", "prevEl": ".slider-one-slide-prev-1" }, "autoplay": { "delay": 5000, "disableOnInteraction": false },  "keyboard": { "enabled": true, "onlyInViewport": true }, "effect": "slide" }' data-number-pagination="1" data-anime-text='{ "translateY": [50,0], "opacity": [0,1], "easing": "easeOutQuad", "duration": 500, "delay": { "staggervalue": 20 } }'>
     <div class="swiper-wrapper">
-      @for (sliderContent of sliderContentArray; track $index) {
-        <div class="swiper-slide">
-          <app-home-swiper-slide-element [sliderContent]="sliderContent" [priority]="$index === 0" />
-        </div>
+      @for (sliderContent of sliderContentArray; track trackSlide($index, sliderContent)) {
+      <div class="swiper-slide">
+        <app-home-swiper-slide-element [sliderContent]="sliderContent" [priority]="$index === 0" />
+      </div>
       }
     </div>
     <!-- start slider pagination -->
-    <div
-      class="swiper-pagination container right-0px text-center swiper-pagination-clickable swiper-number fs-14 xs-w-100"
-    ></div>
+    <div class="swiper-pagination container right-0px text-center swiper-pagination-clickable swiper-number fs-14 xs-w-100"></div>
     <!-- end slider pagination -->
     <!-- start slider navigation -->
-    <div
-      class="slider-one-slide-prev-1 icon-very-small text-white swiper-button-prev slider-navigation-style-06 bg-black-transparent-light h-55px w-55px d-none d-sm-flex border-radius-100"
-    >
+    <div class="slider-one-slide-prev-1 icon-very-small text-white swiper-button-prev slider-navigation-style-06 bg-black-transparent-light h-55px w-55px d-none d-sm-flex border-radius-100">
       <i class="fa-solid fa-chevron-left"></i>
     </div>
-    <div
-      class="slider-one-slide-next-1 icon-very-small text-white swiper-button-next slider-navigation-style-06 bg-black-transparent-light h-55px w-55px d-none d-sm-flex border-radius-100"
-    >
+    <div class="slider-one-slide-next-1 icon-very-small text-white swiper-button-next slider-navigation-style-06 bg-black-transparent-light h-55px w-55px d-none d-sm-flex border-radius-100">
       <i class="fa-solid fa-chevron-right"></i>
     </div>
     <!-- end slider navigation -->

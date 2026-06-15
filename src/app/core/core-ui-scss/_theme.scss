@@ -1,0 +1,283 @@
+@use '@coreui/coreui/scss/mixins/transition' as *;
+@use '@coreui/coreui/scss/mixins/color-mode' as *;
+
+body {
+  background-color: var(--cui-tertiary-bg);
+  font-family: var(--primary-font, "Jost", sans-serif);
+}
+
+:root {
+  --cui-primary: var(--base-color, #c84b31);
+  --cui-info: var(--base-color, #c84b31);
+  --cui-body-bg: var(--very-light-gray, #ecf0f1);
+  --cui-body-color: var(--dark-gray, #2e4052);
+  --cui-secondary-bg: #ffffff;
+  --cui-tertiary-bg: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 82%, white 18%);
+  --cui-border-color: color-mix(in srgb, var(--dark-gray, #2e4052) 14%, white 86%);
+  --cui-emphasis-color: var(--dark-gray, #2e4052);
+  --cui-card-bg: #ffffff;
+  --cui-card-color: var(--dark-gray, #2e4052);
+  --cui-card-border-color: color-mix(in srgb, var(--dark-gray, #2e4052) 10%, white 90%);
+  --cui-modal-bg: #ffffff;
+  --cui-modal-color: var(--dark-gray, #2e4052);
+  --cui-link-color: var(--base-color, #c84b31);
+  --cui-link-hover-color: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
+  --cui-header-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 76%, var(--base-color, #c84b31) 24%);
+  --cui-sidebar-bg: color-mix(in srgb, var(--dark-gray, #2e4052) 88%, black 12%);
+  --cui-sidebar-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 86%, white 14%);
+  --cui-secondary-color: var(--dark-gray, #2e4052);
+}
+
+.wrapper {
+  width: 100%;
+  padding-inline: var(--cui-sidebar-occupy-start, 0) var(--cui-sidebar-occupy-end, 0);
+  will-change: auto;
+  @include transition(padding 0.15s);
+}
+
+.header > .container-fluid,
+.sidebar-header {
+  min-height: calc(4rem + 1px); // stylelint-disable-line function-disallowed-list
+}
+
+.sidebar-brand-full {
+  margin-left: 3px;
+}
+
+.sidebar-header {
+  .nav-underline-border {
+    --cui-nav-underline-border-link-padding-x: 1rem;
+    --cui-nav-underline-border-gap: 0;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    min-height: calc(4rem + 1px); // stylelint-disable-line function-disallowed-list
+  }
+}
+
+.sidebar-toggler {
+  margin-inline-start: auto;
+}
+
+.sidebar-narrow,
+.sidebar-narrow-unfoldable:not(:hover) {
+  .sidebar-toggler {
+    margin-inline-end: auto;
+  }
+}
+
+.sidebar {
+  --cui-sidebar-nav-link-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 82%, var(--base-color, #c84b31) 18%);
+  --cui-sidebar-nav-link-hover-color: #ffffff;
+  --cui-sidebar-nav-link-active-bg: var(--base-color, #c84b31);
+  --cui-sidebar-nav-link-active-color: #ffffff;
+  --cui-sidebar-border: rgba(255, 255, 255, 0.06);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 92%, black 8%) 0%,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 78%, var(--base-color, #c84b31) 22%) 100%
+  );
+}
+
+.header {
+  --cui-header-color: #f5f7fb;
+  --cui-header-nav-link-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 88%, white 12%);
+  --cui-header-nav-link-hover-color: #ffffff;
+  --cui-header-nav-link-active-color: #ffffff;
+  --cui-header-toggler-icon-color: #ffffff;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 92%, black 8%) 0%,
+    color-mix(in srgb, var(--dark-gray, #2e4052) 70%, var(--base-color, #c84b31) 30%) 54%,
+    var(--base-color, #c84b31) 100%
+  );
+  color: #f5f7fb;
+
+  // Ensure the sidebar toggle button icon is always visible on the dark header
+  button.header-toggler,
+  .btn.header-toggler {
+    color: #ffffff !important;
+  }
+
+  .nav-link {
+    color: #ffffff !important;
+
+    &:hover,
+    &.active {
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
+  }
+}
+
+.header > .container-fluid + .container-fluid {
+  min-height: 3rem;
+}
+
+.breadcrumb {
+  color: #ffffff;
+  --cui-breadcrumb-divider-color: rgba(255, 255, 255, 0.7);
+  --cui-breadcrumb-item-active-color: rgba(255, 255, 255, 0.85);
+
+  a {
+    color: #ffffff;
+  }
+}
+
+.footer {
+  min-height: calc(3rem + 1px); // stylelint-disable-line function-disallowed-list
+}
+
+@include color-mode(dark) {
+  // ── True dark mode: variables go DIRECTLY here (not inside :root {}) ─────────
+  // `@include color-mode(dark)` generates `[data-coreui-theme="dark"] { ... }`.
+  // The attribute is set on <html>, so variables placed here land on the root
+  // element directly — no `:root {}` wrapper needed (that would create a
+  // descendant selector that never matches).
+
+  // Content area
+  --cui-body-bg: #0f1117;
+  --cui-body-color: #dde3ec;
+  --cui-secondary-bg: #181d2a;
+  --cui-tertiary-bg: #1e2535;
+  --cui-border-color: #2a3144;
+  --cui-border-color-translucent: rgba(74, 85, 104, 0.38);
+
+  // Text hierarchy
+  --cui-secondary-color: #8b98b0;
+  --cui-tertiary-color: #5e6b82;
+  --cui-emphasis-color: #ffffff;
+
+  // Cards / surfaces
+  --cui-card-bg: #181d2a;
+  --cui-card-cap-bg: #1e2535;
+  --cui-card-cap-color: #dde3ec;
+  --cui-card-border-color: #2a3144;
+  --cui-card-color: #dde3ec;
+
+  // Form controls
+  --cui-input-bg: #0f1117;
+  --cui-input-disabled-bg: #181d2a;
+  --cui-input-border-color: #313a50;
+  --cui-input-color: #dde3ec;
+  --cui-input-placeholder-color: #5e6b82;
+  --cui-input-focus-border-color: color-mix(in srgb, var(--base-color, #c84b31) 72%, white 28%);
+  --cui-input-focus-bg: #181d2a;
+  --cui-form-select-bg: #0f1117;
+
+  // Tables
+  --cui-table-bg: transparent;
+  --cui-table-striped-bg: rgba(255, 255, 255, 0.024);
+  --cui-table-hover-bg: rgba(255, 255, 255, 0.048);
+  --cui-table-border-color: #2a3144;
+  --cui-table-color: #dde3ec;
+  --cui-table-striped-color: #dde3ec;
+  --cui-table-hover-color: #dde3ec;
+
+  // Dropdowns
+  --cui-dropdown-bg: #1e2535;
+  --cui-dropdown-border-color: #2a3144;
+  --cui-dropdown-color: #dde3ec;
+  --cui-dropdown-link-color: #dde3ec;
+  --cui-dropdown-link-hover-bg: rgba(255, 255, 255, 0.07);
+  --cui-dropdown-link-hover-color: #ffffff;
+  --cui-dropdown-link-active-bg: var(--base-color, #c84b31);
+  --cui-dropdown-link-active-color: #ffffff;
+  --cui-dropdown-header-color: #8b98b0;
+  --cui-dropdown-divider-bg: #2a3144;
+
+  // Modals
+  --cui-modal-bg: #1e2535;
+  --cui-modal-border-color: #2a3144;
+  --cui-modal-header-bg: #181d2a;
+  --cui-modal-footer-bg: #181d2a;
+  --cui-modal-color: #dde3ec;
+
+  // Pagination
+  --cui-pagination-bg: #181d2a;
+  --cui-pagination-border-color: #2a3144;
+  --cui-pagination-color: #dde3ec;
+  --cui-pagination-hover-bg: rgba(255, 255, 255, 0.07);
+  --cui-pagination-hover-border-color: #2a3144;
+  --cui-pagination-hover-color: #ffffff;
+  --cui-pagination-active-bg: var(--base-color, #c84b31);
+  --cui-pagination-active-border-color: var(--base-color, #c84b31);
+  --cui-pagination-disabled-bg: #181d2a;
+  --cui-pagination-disabled-border-color: #2a3144;
+  --cui-pagination-disabled-color: #5e6b82;
+
+  // List groups
+  --cui-list-group-bg: #181d2a;
+  --cui-list-group-border-color: #2a3144;
+  --cui-list-group-color: #dde3ec;
+  --cui-list-group-action-hover-bg: rgba(255, 255, 255, 0.07);
+  --cui-list-group-action-hover-color: #ffffff;
+
+  // Tooltips / popovers
+  --cui-tooltip-bg: #1e2535;
+  --cui-tooltip-color: #dde3ec;
+  --cui-popover-bg: #1e2535;
+  --cui-popover-border-color: #2a3144;
+  --cui-popover-body-color: #dde3ec;
+  --cui-popover-header-bg: #181d2a;
+  --cui-popover-header-color: #dde3ec;
+
+  // Links use theme accent
+  --cui-link-color: color-mix(in srgb, var(--base-color, #c84b31) 78%, white 22%);
+  --cui-link-hover-color: color-mix(in srgb, var(--base-color, #c84b31) 62%, white 38%);
+
+  body {
+    background-color: var(--cui-body-bg);
+  }
+
+  // Sidebar: keep the dark theme gradient
+  .sidebar {
+    --cui-sidebar-nav-link-color: color-mix(in srgb, var(--very-light-gray, #ecf0f1) 82%, var(--base-color, #c84b31) 18%);
+    --cui-sidebar-nav-link-hover-color: #ffffff;
+    --cui-sidebar-nav-link-active-bg: var(--base-color, #c84b31);
+    --cui-sidebar-nav-link-active-color: #ffffff;
+    --cui-sidebar-border: rgba(255, 255, 255, 0.04);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--dark-gray, #2e4052) 92%, black 8%) 0%,
+      color-mix(in srgb, var(--dark-gray, #2e4052) 76%, var(--base-color, #c84b31) 24%) 60%,
+      color-mix(in srgb, var(--base-color, #c84b31) 64%, black 36%) 100%
+    );
+  }
+
+  // Header: keep the dark theme gradient
+  .header {
+    --cui-header-color: #f5f7fb;
+    --cui-header-nav-link-color: rgba(255, 255, 255, 0.88);
+    --cui-header-nav-link-hover-color: #ffffff;
+    --cui-header-nav-link-active-color: #ffffff;
+    --cui-header-toggler-icon-color: #ffffff;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--dark-gray, #2e4052) 92%, black 8%) 0%,
+      color-mix(in srgb, var(--dark-gray, #2e4052) 72%, var(--base-color, #c84b31) 28%) 42%,
+      color-mix(in srgb, var(--base-color, #c84b31) 84%, white 16%) 100%
+    );
+
+    button.header-toggler,
+    .btn.header-toggler {
+      color: #ffffff !important;
+    }
+
+    .nav-link {
+      color: #ffffff !important;
+
+      &:hover,
+      &.active {
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+    }
+  }
+
+  .footer {
+    --cui-footer-bg: var(--cui-secondary-bg);
+    --cui-footer-color: var(--cui-body-color);
+    --cui-footer-border-color: var(--cui-border-color);
+  }
+}

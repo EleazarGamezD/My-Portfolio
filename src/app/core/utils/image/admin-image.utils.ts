@@ -1,18 +1,18 @@
-import imageCompression from 'browser-image-compression';
 import {
   IBase64ImageAsset,
   IImageCompressionOptions,
   IStoredImageAsset,
 } from '@core/interfaces/media/admin-media.interface';
+import imageCompression from 'browser-image-compression';
 
 type ResolvableImageAsset =
   | string
   | {
-      url?: string;
-      file?: string;
-      base64?: string;
-      extension?: string;
-    }
+    url?: string;
+    file?: string;
+    base64?: string;
+    extension?: string;
+  }
   | null
   | undefined;
 

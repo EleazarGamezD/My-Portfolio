@@ -1,4 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+
+// ── Force toastr container to always be fixed to the viewport, never to the document ──
+// ngx-toastr appends #toast-container to body — but if any ancestor has `position:relative`
+// or `overflow`, the container can anchor to the page instead of the viewport.
+// Using `position: fixed` with high z-index ensures it's always visible regardless of scroll.
+#toast-container {
+  position: fixed !important;
+  z-index: 99999 !important;
+  pointer-events: none;
+
+  > div {
+    pointer-events: all;
+  }
+}
+
 html.admin-route-active,
 body.admin-route-active {
   height: auto !important;
@@ -12,4 +27,103 @@ body.admin-route-active {
 body.admin-route-active section {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
+}
+
+// ── Restore Bootstrap/CoreUI button hover for admin routes ────────────────────
+// The portfolio's global style.css sets .btn:hover { background-color: inherit }
+// which makes hover backgrounds white and causes invisible text on CMS buttons.
+// We restore the proper CoreUI CSS-variable-driven hover behavior here.
+body.admin-route-active {
+  .btn-primary,
+  .btn[class*='btn-primary'] {
+    --cui-btn-bg: var(--base-color, #c84b31);
+    --cui-btn-border-color: var(--base-color, #c84b31);
+    --cui-btn-hover-bg: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
+    --cui-btn-hover-border-color: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
+    --cui-btn-active-bg: color-mix(in srgb, var(--base-color, #c84b31) 76%, black 24%);
+    --cui-btn-active-border-color: color-mix(in srgb, var(--base-color, #c84b31) 76%, black 24%);
+    --cui-btn-color: #fff;
+    --cui-btn-hover-color: #fff;
+    --cui-btn-active-color: #fff;
+  }
+
+  .btn-outline-primary,
+  .btn[class*='btn-outline-primary'] {
+    --cui-btn-color: var(--base-color, #c84b31);
+    --cui-btn-border-color: color-mix(in srgb, var(--base-color, #c84b31) 58%, transparent 42%);
+    --cui-btn-hover-bg: var(--base-color, #c84b31);
+    --cui-btn-hover-border-color: var(--base-color, #c84b31);
+    --cui-btn-active-bg: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
+    --cui-btn-active-border-color: color-mix(in srgb, var(--base-color, #c84b31) 82%, black 18%);
+    --cui-btn-hover-color: #fff;
+    --cui-btn-active-color: #fff;
+  }
+
+  .text-primary {
+    color: var(--base-color, #c84b31) !important;
+  }
+
+  input[type='checkbox'].form-check-input,
+  input[type='checkbox'][cformcheckinput],
+  input[type='checkbox'][cFormCheckInput] {
+    width: 0.86rem !important;
+    min-width: 0.86rem;
+    height: 0.86rem !important;
+    border: 1px solid color-mix(in srgb, var(--dark-gray, #2e4052) 35%, white 65%);
+    border-radius: 0.14rem !important;
+    background-color: white;
+    background-size: 0.58rem 0.58rem;
+    cursor: pointer;
+    vertical-align: middle;
+
+    &:checked {
+      border-color: var(--base-color, #c84b31);
+      background-color: var(--base-color, #c84b31);
+    }
+  }
+
+  .bg-primary,
+  .badge.bg-primary {
+    background-color: var(--base-color, #c84b31) !important;
+    border-color: var(--base-color, #c84b31) !important;
+  }
+
+  .btn:hover:not(:disabled),
+  .btn:focus-visible:not(:disabled) {
+    background-color: var(--cui-btn-hover-bg, var(--bs-btn-hover-bg)) !important;
+    border-color: var(--cui-btn-hover-border-color, var(--bs-btn-hover-border-color)) !important;
+    color: var(--cui-btn-hover-color, var(--bs-btn-hover-color)) !important;
+  }
+
+  .btn:active:not(:disabled),
+  .btn:first-child:active:not(:disabled) {
+    background-color: var(--cui-btn-active-bg, var(--bs-btn-active-bg)) !important;
+    border-color: var(--cui-btn-active-border-color, var(--bs-btn-active-border-color)) !important;
+    color: var(--cui-btn-active-color, var(--bs-btn-active-color)) !important;
+  }
+
+  // ── Header hamburger toggle — always white icon on dark header ───────────────
+  // Portfolio's style.css may set .btn { color: dark-value }, overriding the
+  // inherited #f5f7fb from .header. This rule restores it with higher specificity.
+  .header .btn.header-toggler,
+  .header button.header-toggler {
+    color: #ffffff !important;
+
+    svg {
+      color: #ffffff !important;
+      fill: currentColor;
+    }
+  }
+
+  app-admin-layout .base-shell {
+    width: 100%;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 0;
+    padding-right: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 200px);
+    gap: 1.5rem;
+  }
 }

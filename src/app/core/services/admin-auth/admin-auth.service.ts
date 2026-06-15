@@ -9,9 +9,16 @@ import {
   IAdminMeResponse,
   IAdminUser,
   IAdminUsersResponse,
+  IForgotPasswordRequest,
+  IForgotPasswordResponse,
+  IResetPasswordRequest,
+  IResetPasswordResponse,
+  ISetupAccountRequest,
+  ISetupAccountResponse,
 } from '@core/interfaces/admin/admin.interface';
 import { API_ADMIN_ROUTES } from '@core/routes/admin/admin.routes';
 import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
+import { RequestStateService } from '@core/services/request-state/request-state.service';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
 
@@ -23,9 +30,10 @@ export class AdminAuthService extends GlobalHttpService {
     httpClient: HttpClient,
     storageMap: StorageMap,
     ngZone: NgZone,
+    requestStateService: RequestStateService,
     @Inject(PLATFORM_ID) platformId: object,
   ) {
-    super(httpClient, storageMap, ngZone, platformId);
+    super(httpClient, storageMap, ngZone, requestStateService, platformId);
   }
 
   async login(email: string, password: string) {
@@ -39,6 +47,35 @@ export class AdminAuthService extends GlobalHttpService {
     await this.setStorage(NgStorage.USER_EMAIL, response.user.email);
 
     return response;
+  }
+
+  async setupAccount(payload: ISetupAccountRequest) {
+    const response = await this.makeRequest<ISetupAccountResponse, ISetupAccountRequest>(
+      API_ADMIN_ROUTES.setupAccount,
+      payload,
+      RequestMethod.POST,
+    );
+
+    await this.setStorage(NgStorage.TOKEN, response.accessToken);
+    await this.setStorage(NgStorage.USER_EMAIL, response.user.email);
+
+    return response;
+  }
+
+  async forgotPassword(email: string) {
+    return this.makeRequest<IForgotPasswordResponse, IForgotPasswordRequest>(
+      API_ADMIN_ROUTES.forgotPassword,
+      { email },
+      RequestMethod.POST,
+    );
+  }
+
+  async resetPassword(token: string, newPassword: string) {
+    return this.makeRequest<IResetPasswordResponse, IResetPasswordRequest>(
+      API_ADMIN_ROUTES.resetPassword,
+      { token, newPassword },
+      RequestMethod.POST,
+    );
   }
 
   async getCurrentAdmin() {
@@ -72,6 +109,52 @@ export class AdminAuthService extends GlobalHttpService {
       payload,
       RequestMethod.PATCH,
     );
+  }
+
+  async runSeedInitial(preset: 'starter' | 'demo-personal' = 'starter'): Promise<{ message: string; seeded?: boolean; count?: number }> {
+    if (preset === 'demo-personal') {
+      return this.makeRequest<{ message: string; seeded?: boolean; count?: number }, object>(
+        API_ADMIN_ROUTES.seedDemoPersonal,
+        {},
+        RequestMethod.POST,
+      );
+    }
+
+    return this.makeRequest<{ message: string; seeded?: boolean; count?: number }, object>(
+      API_ADMIN_ROUTES.seedInitial,
+      {},
+      RequestMethod.POST,
+    );
+  }
+
+  async getSeedStatus() {
+    return this.makeRequest<{
+      hasAdminUsers: boolean;
+      hasStarterContent: boolean;
+      hasThemes: boolean;
+      isFullyConfigured: boolean;
+      shouldRunStarterSeed: boolean;
+      shouldCreateBootstrapAdmin: boolean;
+      shouldSeedThemes: boolean;
+    }, null>(API_ADMIN_ROUTES.seedStatus, null, RequestMethod.GET);
+  }
+
+  async ensureInitialPlatformSetup() {
+    const status = await this.getSeedStatus();
+
+    if (!status.shouldRunStarterSeed && !status.shouldCreateBootstrapAdmin && !status.shouldSeedThemes) {
+      return {
+        ensured: false,
+        status,
+      };
+    }
+
+    const result = await this.runSeedInitial('starter');
+    return {
+      ensured: true,
+      status,
+      result,
+    };
   }
 
   async isAuthenticated() {

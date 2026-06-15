@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
@@ -10,6 +11,7 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   imports: [CommonModule],
   templateUrl: './features.component.html',
   styleUrl: './features.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeaturesComponent implements OnInit {
   stack: IApiContentItem[] = [];
@@ -26,7 +28,7 @@ export class FeaturesComponent implements OnInit {
     } catch (error) {
       console.warn('Failed to load tech skills from API.', error);
     } finally {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.markForCheck();
       requestTemplateReinit();
     }
   }
@@ -40,5 +42,13 @@ export class FeaturesComponent implements OnInit {
       item.label?.es ?? item.value ?? '',
       item.label?.en ?? item.label?.es ?? item.value ?? '',
     );
+  }
+
+  getItemIconUrl(item: IApiContentItem): string | null {
+    return resolveImageAssetUrl(item.icon ?? null);
+  }
+
+  trackStackItem(_: number, item: IApiContentItem): string {
+    return item.slug || item.value || `${_}`;
   }
 }

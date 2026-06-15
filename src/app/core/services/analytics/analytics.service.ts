@@ -4,6 +4,7 @@ import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.en
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { API_ANALYTICS_ROUTES } from '@core/routes/analytics/analytics.routes';
 import { I18nService } from '@core/services/i18n/i18n.service';
+import { RequestStateService } from '@core/services/request-state/request-state.service';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
 
@@ -21,8 +22,10 @@ export interface IDashboardMetrics {
   filters?: Record<string, unknown>;
   groupedTotals: Array<{ _id: string; total: number }>;
   groupedByPath: Array<{ _id: string; total: number }>;
-  groupedByProject: Array<{ _id: string | null; total: number }>;
+  groupedByProject: Array<{ _id: string | null; projectName: string; total: number }>;
+  allProjectViews: Array<{ _id: string | null; projectName: string; total: number }>;
   groupedByLanguage: Array<{ _id: string; total: number }>;
+  groupedByDay: Array<{ _id: string; total: number }>;
   recentEvents: Array<{
     _id?: string;
     type: string;
@@ -46,9 +49,10 @@ export class AnalyticsService extends GlobalHttpService {
     storageMap: StorageMap,
     private readonly i18nService: I18nService,
     ngZone: NgZone,
+    requestStateService: RequestStateService,
     @Inject(PLATFORM_ID) platformId: object,
   ) {
-    super(httpClient, storageMap, ngZone, platformId);
+    super(httpClient, storageMap, ngZone, requestStateService, platformId);
     this.sessionIdReady = this.initializeSessionId();
   }
 

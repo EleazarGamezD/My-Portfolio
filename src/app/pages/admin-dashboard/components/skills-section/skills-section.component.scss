@@ -8,7 +8,7 @@
 
 .skills-copy {
   margin-top: 0.3rem;
-  color: #748494;
+  color: var(--cui-secondary-color);
 }
 
 .skills-create-box {
@@ -19,13 +19,13 @@
   margin-bottom: 1rem;
 
   h6 {
-    color: #163447;
+    color: var(--cui-emphasis-color);
     font-size: 1.05rem;
     font-weight: 800;
   }
 
   p {
-    color: #748494;
+    color: var(--cui-secondary-color);
   }
 }
 
@@ -41,11 +41,9 @@
 }
 
 .skill-card {
-  border: 1px solid rgba(170, 190, 204, 0.34);
+  border: 1px solid var(--cui-border-color);
   border-radius: 1.35rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(244, 249, 252, 0.99)),
-    radial-gradient(circle at top left, rgba(13, 93, 136, 0.07), transparent 46%);
+  background: var(--cui-card-bg);
   padding: 1rem;
 }
 
@@ -63,8 +61,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ecf4fb, #dfeef8);
-  border: 1px solid rgba(151, 178, 196, 0.3);
+  background: var(--cui-secondary-bg);
+  border: 1px solid var(--cui-border-color);
   color: #0d5d88;
   font-size: 1.3rem;
   font-weight: 800;
@@ -83,7 +81,7 @@
 
   h6 {
     margin: 0;
-    color: #18384d;
+    color: var(--cui-emphasis-color);
     font-size: 1.05rem;
     font-weight: 800;
   }
@@ -96,7 +94,7 @@
 .skill-card__editor {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(170, 190, 204, 0.28);
+  border-top: 1px solid var(--cui-border-color);
 }
 
 .skill-card__actions {
@@ -112,8 +110,277 @@
   gap: 0.55rem;
   min-height: 2.75rem;
   font-weight: 700;
-  color: #274154;
+  color: var(--cui-body-color);
 }
+
+.skills-create-box--edit {
+  border-left: 3px solid var(--base-color, #c84b31);
+  background: color-mix(in srgb, var(--base-color, #c84b31) 4%, var(--cui-card-bg) 96%);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+// ── Skill library card grid ────────────────────────────────────────────────
+
+.sl-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 1rem;
+
+  @media (max-width: 991.98px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 575.98px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.sl-card {
+  position: relative;
+  border: 1.5px solid var(--cui-border-color);
+  border-radius: 1rem;
+  background: var(--cui-card-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  text-align: center;
+  padding: 0.75rem 0.65rem;
+  min-height: 110px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--base-color, #c84b31) 40%, transparent 60%);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  }
+
+  &--editing {
+    border-color: var(--base-color, #c84b31);
+  }
+}
+
+.sl-card__toolbar {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  display: flex;
+  gap: 0.25rem;
+  // Scale down the action-menu trigger to match the card size
+  ::ng-deep .action-trigger {
+    width: 1.55rem;
+    height: 1.55rem;
+  }
+}
+
+.sl-card__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--base-color, #c84b31) 10%, var(--cui-secondary-bg) 90%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--base-color, #c84b31);
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1.25rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.sl-card__name {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--cui-emphasis-color);
+  word-break: break-word;
+  line-height: 1.3;
+}
+
+.sl-card__editor {
+  width: 100%;
+  border-top: 1px solid var(--cui-border-color);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  text-align: left;
+}
+
+// ── Form body: fields left, icon right ────────────────────────────────────
+.skill-form-body {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.skill-form-fields {
+  flex: 1;
+  min-width: 0;
+}
+
+.skill-form-icon {
+  flex-shrink: 0;
+  width: 140px;
+}
+
+.skill-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+
+// Compact icon uploader box — overrides PhotoEditorComponent & AddPhotoComponent
+.skill-icon-upload-box {
+  width: 140px;
+  overflow: hidden;
+
+  // PhotoEditor overrides
+  ::ng-deep .photo-editor {
+    gap: 6px;
+  }
+  ::ng-deep .photo-editor__header {
+    display: none !important;
+  }
+  ::ng-deep .photo-editor__stage {
+    min-height: 110px !important;
+    max-height: 110px !important;
+    height: 110px !important;
+    padding: 6px;
+    border-radius: 10px;
+  }
+  ::ng-deep .photo-editor__stage-image {
+    min-height: 96px !important;
+    max-height: 96px !important;
+    height: 96px !important;
+    border-radius: 6px;
+    object-fit: contain;
+  }
+  ::ng-deep .photo-editor__empty {
+    min-height: 110px !important;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 6px;
+  }
+  ::ng-deep .photo-editor__empty-icon {
+    font-size: 1.8rem;
+  }
+  ::ng-deep .photo-editor__empty-label {
+    font-size: 0.72rem;
+    text-align: center;
+  }
+  ::ng-deep .photo-editor__actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+  ::ng-deep .photo-editor__btn {
+    min-width: 0 !important;
+    padding: 5px 8px !important;
+    font-size: 0.72rem !important;
+    border-radius: 6px !important;
+    width: 100%;
+  }
+}
+
+// Compact icon uploader box — overrides PhotoEditorComponent & AddPhotoComponent
+.skill-icon-upload-box {
+  width: 140px;
+  overflow: hidden;
+
+  // ── PhotoEditor overrides ──────────────────────────────────
+  ::ng-deep .photo-editor {
+    gap: 6px;
+  }
+  ::ng-deep .photo-editor__header {
+    display: none !important;
+  }
+  ::ng-deep .photo-editor__stage {
+    min-height: 110px !important;
+    max-height: 110px !important;
+    height: 110px !important;
+    padding: 6px;
+    border-radius: 10px;
+  }
+  ::ng-deep .photo-editor__stage-image {
+    min-height: 96px !important;
+    max-height: 96px !important;
+    height: 96px !important;
+    border-radius: 6px;
+    object-fit: contain;
+  }
+  ::ng-deep .photo-editor__empty {
+    min-height: 110px !important;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 6px;
+  }
+  ::ng-deep .photo-editor__empty-icon { font-size: 1.8rem; }
+  ::ng-deep .photo-editor__empty-label { font-size: 0.72rem; text-align: center; }
+  ::ng-deep .photo-editor__actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+  ::ng-deep .photo-editor__btn {
+    min-width: 0 !important;
+    width: 100%;
+    padding: 5px 8px !important;
+    font-size: 0.72rem !important;
+    border-radius: 6px !important;
+  }
+
+  // ── AddPhoto overrides ─────────────────────────────────────
+  ::ng-deep .photo-upload-container {
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+  ::ng-deep .photo-upload-header {
+    display: none !important;
+  }
+  ::ng-deep .photo-board {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+  }
+  ::ng-deep .photo-upload-grid {
+    // Single-column grid that fits the 140px box
+    grid-template-columns: 1fr !important;
+    gap: 4px !important;
+  }
+  ::ng-deep .photo-upload-item {
+    min-height: 110px !important;
+    max-height: 110px !important;
+    height: 110px !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+  }
+  ::ng-deep .photo-upload-item img {
+    border-radius: 8px !important;
+  }
+  ::ng-deep .photo-upload-item.drop-tile {
+    border-radius: 10px !important;
+    min-height: 110px !important;
+    max-height: 110px !important;
+    height: 110px !important;
+  }
+  ::ng-deep .drop-icon { font-size: 2rem !important; }
+  ::ng-deep .label-text { font-size: 0.72rem !important; }
+  ::ng-deep .hint-text { display: none !important; }
+}
+
+
+
+
+.form-label--sm {
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+}
+
 
 .skills-pagination {
   margin-top: 1.35rem;
@@ -122,11 +389,11 @@
   justify-content: space-between;
   gap: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(170, 190, 204, 0.28);
+  border-top: 1px solid var(--cui-border-color);
 }
 
 .skills-pagination__summary {
-  color: #6d7d8c;
+  color: var(--cui-secondary-color);
   font-weight: 600;
 }
 

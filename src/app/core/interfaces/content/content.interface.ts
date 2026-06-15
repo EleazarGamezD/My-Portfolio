@@ -22,10 +22,18 @@ export interface IApiPortfolioMedia {
   aboutPrimaryImage?: string | IProjectAsset | null;
   aboutSecondaryImage?: string | IProjectAsset | null;
   footerCenterImage?: string | IProjectAsset | null;
+  aboutSectionBackground?: string | IProjectAsset | null;
+  aboutSectionTransparentBackground?: boolean;
   cvHeroBackground?: string | IProjectAsset | null;
   cvSectionBackground?: string | IProjectAsset | null;
   heroSlideFallbackImage?: string | IProjectAsset | null;
   projectFallbackImage?: string | IProjectAsset | null;
+  projectsSectionBackground?: string | IProjectAsset | null;
+  projectsSectionTransparentBackground?: boolean;
+  testimonialsSectionBackground?: string | IProjectAsset | null;
+  testimonialsSectionTransparentBackground?: boolean;
+  contactSectionBackground?: string | IProjectAsset | null;
+  contactSectionTransparentBackground?: boolean;
   decorativeCloudIcon?: string | IProjectAsset | null;
   decorativeWebDevelopmentIcon?: string | IProjectAsset | null;
   decorativeMultitaskIcon?: string | IProjectAsset | null;
@@ -38,6 +46,8 @@ export interface IApiPortfolioMedia {
 
 export interface IApiProfileMetadata {
   about?: ILocalizedText;
+  contactIntroTitle?: ILocalizedText;
+  contactIntro?: ILocalizedText;
   heroSlides?: IApiHeroSlide[];
   portfolioMedia?: IApiPortfolioMedia;
 }
@@ -59,6 +69,8 @@ export interface IApiContentItem {
   order?: number;
   active?: boolean;
   metadata?: Record<string, unknown>;
+  /** Skill IDs associated with this content item (e.g. experience entry). Stored in metadata.skillIds. */
+  skillIds?: string[];
 }
 
 export interface IApiTechSkill extends IApiContentItem {

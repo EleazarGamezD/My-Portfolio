@@ -1,0 +1,141 @@
+// Here you can add other styles
+
+// custom .chartjs-tooltip-body-item padding
+@use 'charts';
+
+// custom tweaks for scrollbar styling (wip)
+@use 'scrollbar';
+
+// ── Global form controls: pill border-radius for all inputs, textareas and selects ──
+.form-control,
+input.form-control,
+textarea.form-control,
+select.form-control {
+  border-radius: 0.95rem !important;
+}
+
+// ── Global select override: remove browser default arrow, add themed chevron ──
+select.form-control {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem !important;
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 1rem 1rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232e4052' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+[data-coreui-theme='dark'] select.form-control {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23dde3ec' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+// ── Global fix: CSS transform on cards breaks position:fixed in Popper.js dropdowns.
+// Cards that contain c-dropdown menus must NOT use transform on hover.
+// Use box-shadow depth to simulate the "lift" effect instead.
+.skill-card:hover {
+  transform: none !important;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.14), 0 4px 14px rgba(0, 0, 0, 0.06) !important;
+}
+
+// Ensure all Popper.js-managed dropdown menus have a high enough z-index to appear above all surfaces
+.dropdown-menu.show {
+  z-index: 1080 !important;
+}
+
+
+.calendar-cell.today {
+  --cui-calendar-cell-today-color: var(--cui-info) !important;
+}
+
+// custom select week cursor pointer
+.select-week .calendar-row.current {
+  cursor: pointer;
+}
+
+.sidebar {
+  --cui-sidebar-width: 17rem;
+}
+
+body.admin-route-active {
+  .admin-sidebar.sidebar-narrow,
+  .admin-sidebar.sidebar-narrow-unfoldable:not(:hover) {
+    overflow: hidden;
+
+    .admin-sidebar__header {
+      padding-inline: 0.5rem;
+      overflow: hidden;
+    }
+
+    .admin-sidebar__brand {
+      width: 100%;
+      justify-content: center;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .admin-sidebar__brand-copy {
+      display: none;
+    }
+
+    .admin-sidebar__brand-mark {
+      width: 2.35rem;
+      height: 2.35rem;
+    }
+
+    .sidebar-nav {
+      --cui-sidebar-nav-padding-x: 0.5rem;
+      --cui-sidebar-nav-link-padding-x: 0.5rem;
+      overflow: hidden;
+    }
+
+    .nav-link {
+      width: 100%;
+      min-width: 0;
+      justify-content: center;
+      font-size: 0;
+      overflow: hidden;
+      text-indent: 0;
+      white-space: nowrap;
+      gap: 0;
+      padding-inline: 0.5rem;
+    }
+
+    .nav-link > *:not(.nav-icon) {
+      display: none;
+    }
+
+    .nav-link .nav-link-text,
+    .nav-link .nav-group-toggle,
+    .nav-link .nav-badge,
+    .nav-link .nav-group-items,
+    .nav-title {
+      display: none;
+    }
+
+    .nav-link .nav-icon,
+    .nav-link .nav-icon svg {
+      flex: 0 0 auto;
+      width: 1.25rem;
+      min-width: 1.25rem;
+      margin-inline-end: 0;
+      font-size: var(--cui-sidebar-nav-link-icon-font-size);
+    }
+
+    .sidebar-footer,
+    .sidebar-toggler,
+    .sidebar-toggler::before {
+      overflow: hidden;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .sidebar:not(.hide):not(.sidebar-narrow):not(.sidebar-narrow-unfoldable:not(:hover)):not(
+      .sidebar-narrow-unfoldable
+    ):not(.sidebar-overlaid):not(.sidebar-end)
+    ~ * {
+    --cui-sidebar-occupy-start: 17rem;
+  }
+}

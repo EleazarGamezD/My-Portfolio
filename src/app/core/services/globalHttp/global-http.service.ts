@@ -2,10 +2,12 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
+import { RequestStateService } from '@core/services/request-state/request-state.service';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { StorageService } from '@services/storage/storage.service';
 import { catchError, defaultIfEmpty, lastValueFrom, map, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,7 @@ export class GlobalHttpService extends StorageService {
     public _http: HttpClient,
     storageMap: StorageMap,
     private readonly ngZone: NgZone,
+    private readonly requestStateService: RequestStateService,
     @Inject(PLATFORM_ID) platformId: object,
   ) {
     super(storageMap, platformId);
@@ -57,6 +60,7 @@ export class GlobalHttpService extends StorageService {
       const response = await this.makeHttpRequest<T>(route, payload, method);
       return this.ngZone.run(() => response);
     } catch (error) {
+      await this.handleAuthFailure(error);
       console.error('Error:', error);
       throw this.ngZone.run(() => error);
     }
@@ -79,16 +83,52 @@ export class GlobalHttpService extends StorageService {
     const requestOptions: object =
       method === RequestMethod.GET ? { headers } : { body: options, headers };
 
-    return lastValueFrom(
-      this._http
-        .request<T>(method, url, requestOptions)
-        .pipe(
-          map((response) => response as T),
-          defaultIfEmpty(null as T),
-          catchError((error: HttpErrorResponse) =>
-            throwError(() => error),
+    this.requestStateService.beginRequest();
+
+    try {
+      return await lastValueFrom(
+        this._http
+          .request<T>(method, url, requestOptions)
+          .pipe(
+            map((response) => response as T),
+            defaultIfEmpty(null as T),
+            catchError((error: HttpErrorResponse) =>
+              throwError(() => error),
+            ),
           ),
-        ),
+      );
+    } finally {
+      this.requestStateService.endRequest();
+    }
+  }
+
+  private async handleAuthFailure(error: unknown): Promise<void> {
+    if (!(error instanceof HttpErrorResponse) || error.status !== 401 || typeof window === 'undefined') {
+      return;
+    }
+
+    const currentPath = window.location.pathname;
+    const isProtectedAdminRoute =
+      currentPath.startsWith('/admin')
+      && !currentPath.startsWith('/admin/login')
+      && !currentPath.startsWith('/admin/forgot-password')
+      && !currentPath.startsWith('/admin/reset-password')
+      && !currentPath.startsWith('/admin/setup-account');
+
+    if (!isProtectedAdminRoute) {
+      return;
+    }
+
+    await this.deleteStorage(NgStorage.TOKEN);
+    await this.deleteStorage(NgStorage.USER_EMAIL);
+    await this.deleteStorage(NgStorage.TOKEN_EXPIRES_AT);
+
+    const redirectTo = encodeURIComponent(
+      `${window.location.pathname}${window.location.search}${window.location.hash}`,
     );
+
+    this.ngZone.runOutsideAngular(() => {
+      window.location.assign(`/admin/login?sessionExpired=1&redirectTo=${redirectTo}`);
+    });
   }
 }

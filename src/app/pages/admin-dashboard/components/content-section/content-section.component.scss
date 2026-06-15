@@ -1,5 +1,109 @@
 @use '../../admin-dashboard.shared' as *;
 
+.content-section-table {
+  width: 100%;
+
+  th,
+  td {
+    vertical-align: middle;
+  }
+}
+
+.content-section-table__actions-header {
+  min-width: 11rem;
+  white-space: nowrap;
+}
+
+.content-section-period-cell {
+  display: grid;
+  grid-template-columns: minmax(5rem, 1fr) minmax(5rem, 1fr);
+  gap: 0.5rem;
+  min-width: 11rem;
+}
+
+.content-section-translatable-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.5rem;
+
+  textarea,
+  .translate-error {
+    grid-column: 1 / -1;
+  }
+}
+
+.content-section-field {
+  display: grid;
+  gap: 0.35rem;
+
+  span {
+    color: color-mix(in srgb, var(--dark-gray, #2e4052) 72%, white 28%);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+}
+
+.content-section-current-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.45rem;
+  color: var(--dark-gray, #2e4052);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  input {
+    margin: 0;
+  }
+}
+
+.content-section-current-check--compact {
+  grid-column: 1 / -1;
+  margin-top: 0;
+  font-size: 0.78rem;
+}
+
+
+.content-section-table--social-links {
+  table-layout: fixed;
+
+  tr {
+    height: 4.75rem;
+  }
+
+  td {
+    height: 4.75rem;
+    vertical-align: middle;
+  }
+
+  .social-links-icon-cell {
+    width: 6rem;
+  }
+
+  td:nth-child(2) {
+    width: 11rem;
+  }
+
+  .social-links-link-cell {
+    width: auto;
+  }
+
+  td:last-child,
+  .content-section-table__actions-header {
+    width: 11rem;
+    min-width: 11rem;
+    white-space: nowrap;
+  }
+
+  input[cformcontrol],
+  input[cFormControl] {
+    width: 100%;
+  }
+}
+
 .social-links-icon-cell {
   width: 92px;
 }
@@ -10,14 +114,22 @@
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid rgba(37, 99, 235, 0.16);
+  border: 1px solid color-mix(in srgb, var(--base-color, #c84b31) 18%, transparent 82%);
   border-radius: 999px;
-  background: rgba(239, 246, 255, 0.8);
-  color: #2563eb;
+  background: color-mix(in srgb, white 72%, var(--base-color, #c84b31) 28%);
+  color: color-mix(in srgb, var(--dark-gray, #2e4052) 68%, var(--base-color, #c84b31) 32%);
   font-size: 1.1rem;
 }
 
 .social-links-name {
-  color: #0f172a;
+  color: var(--dark-gray, #2e4052);
   font-weight: 600;
+}
+
+@media (max-width: 991.98px) {
+  .content-section-table--social-links {
+    td:nth-child(2) {
+      width: 10rem;
+    }
+  }
 }

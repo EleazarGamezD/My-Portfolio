@@ -4,4 +4,5 @@ export enum NgStorage {
   TOKEN_EXPIRES_AT = 'token_expires_at',
   ANALYTICS_SESSION_ID = 'analytics_session_id',
   IMAGES = 'images',
+  LOADER = 'loader',
 }

@@ -1,0 +1,48 @@
+{
+  "headers": [
+    {
+      "source": "/index.csr.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(es|en)/projectDetails/(.*)",
+      "destination": "/index.csr.html"
+    },
+    {
+      "source": "/projectDetails/(.*)",
+      "destination": "/index.csr.html"
+    },
+    {
+      "source": "/(es|en)/admin/(.*)",
+      "destination": "/index.csr.html"
+    },
+    {
+      "source": "/(es|en)/admin",
+      "destination": "/index.csr.html"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/index.csr.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/index.csr.html"
+    }
+  ]
+}

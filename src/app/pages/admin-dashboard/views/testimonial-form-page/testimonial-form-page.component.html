@@ -1,116 +1,126 @@
 <section>
-  <div class="admin-page-header">
-    <div>
-      <p class="admin-page-kicker">Social Proof</p>
-      <h2 class="admin-page-title">{{ pageTitle }}</h2>
-      <p class="admin-page-copy mb-0">{{ pageCopy }}</p>
+  <div class="base-shell">
+    <div class="admin-page-header">
+      <div>
+        <p class="admin-page-kicker">Social Proof</p>
+        <h2 class="admin-page-title">{{ pageTitle }}</h2>
+        <p class="admin-page-copy mb-0">{{ pageCopy }}</p>
+      </div>
+      <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/testimonials']">Volver al listado</a>
     </div>
-    <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/testimonials']">Volver al listado</a>
-  </div>
 
-  <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
-  <c-alert *ngIf="notFound" color="warning">No se encontro el testimonio solicitado.</c-alert>
+    <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
+    <c-alert *ngIf="notFound" color="warning">No se encontro el testimonio solicitado.</c-alert>
 
-  <c-card class="admin-page-surface testimonial-form-shell" *ngIf="!notFound">
-    <c-card-body>
-      <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-        <span class="spinner-border spinner-border-sm"></span>
-        <span>Cargando testimonio...</span>
-      </div>
-
-      <div class="testimonial-editor" *ngIf="!loading">
-        <section>
-          <div class="testimonial-hero">
-            <div class="testimonial-hero__copy">
-              <span class="testimonial-hero__eyebrow">{{ mode === 'create' ? 'Nuevo testimonio' : 'Edicion puntual' }}</span>
-              <h3>{{ personName || 'Define la proxima referencia profesional' }}</h3>
-              <p>
-                Registra el nombre de la persona, su cargo, empresa y el testimonio en ambos idiomas.
-                El slug se genera automaticamente en backend.
-              </p>
-            </div>
-
-            <div class="testimonial-hero__meta">
-              <div class="testimonial-meta-card">
-                <span>Estado</span>
-                <strong>{{ draft.active ? 'Visible en portfolio' : 'Oculto en portfolio' }}</strong>
-              </div>
-              <div class="testimonial-meta-card">
-                <span>Origen</span>
-                <strong>{{ personCompany || 'Empresa pendiente' }}</strong>
-              </div>
-              <div class="testimonial-meta-card">
-                <span>Cargo</span>
-                <strong>{{ personPosition || 'Cargo pendiente' }}</strong>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div class="testimonial-editor__grid">
-          <section>
-            <div class="testimonial-panel">
-              <div class="testimonial-panel__head">
-                <h3>Datos base</h3>
-                <p>Identidad de la persona y estado de publicacion del testimonio.</p>
-              </div>
-
-              <div class="testimonial-field-grid testimonial-field-grid--base">
-                <div class="testimonial-field testimonial-field--wide">
-                  <label class="form-label">Nombre</label>
-                  <input cFormControl type="text" [ngModel]="personName" (ngModelChange)="onNameChange($event)" placeholder="Arian Valdivieso" />
-                </div>
-
-                <div>
-                  <label class="form-label">Cargo</label>
-                  <input cFormControl type="text" [ngModel]="personPosition" (ngModelChange)="onPositionChange($event)" placeholder="Engineering Manager" />
-                </div>
-
-                <div>
-                  <label class="form-label">Empresa</label>
-                  <input cFormControl type="text" [ngModel]="personCompany" (ngModelChange)="onCompanyChange($event)" placeholder="Meraki Office" />
-                </div>
-
-                <div class="testimonial-current-toggle">
-                  <label class="form-label d-block">Estado</label>
-                  <label class="testimonial-form__check">
-                    <input cFormCheckInput type="checkbox" [(ngModel)]="draft.active" />
-                    Activo
-                  </label>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <div class="testimonial-panel">
-              <div class="testimonial-panel__head">
-                <h3>Testimonio</h3>
-                <p>Contenido que se mostrara en el bloque publico de referencias.</p>
-              </div>
-
-              <div class="testimonial-field-grid testimonial-field-grid--textareas">
-                <div>
-                  <label class="form-label">Testimonio ES</label>
-                  <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es" placeholder="Eleazar demostro ser un miembro excepcional del equipo..."></textarea>
-                </div>
-
-                <div>
-                  <label class="form-label">Testimonio EN</label>
-                  <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en" placeholder="Eleazar proved to be an exceptional member of the team..."></textarea>
-                </div>
-              </div>
-            </div>
-          </section>
+    <c-card class="admin-page-surface testimonial-form-shell" *ngIf="!notFound">
+      <c-card-body>
+        <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
+          <span class="spinner-border spinner-border-sm"></span>
+          <span>Cargando testimonio...</span>
         </div>
-      </div>
 
-      <div class="testimonial-form__footer" *ngIf="!loading">
-        <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/testimonials']">Cancelar</a>
-        <button cButton color="primary" type="button" (click)="submit()" [disabled]="saving">
-          {{ mode === 'create' ? 'Crear testimonio' : 'Guardar cambios' }}
-        </button>
-      </div>
-    </c-card-body>
-  </c-card>
+        <div class="testimonial-editor" *ngIf="!loading">
+          <section>
+            <div class="testimonial-hero">
+              <div class="testimonial-hero__copy">
+                <span class="testimonial-hero__eyebrow">{{ mode === 'create' ? 'Nuevo testimonio' : 'Edicion puntual' }}</span>
+                <h3>{{ personName || 'Define la proxima referencia profesional' }}</h3>
+                <p>
+                  Registra el nombre de la persona, su cargo, empresa y el testimonio en ambos idiomas.
+                  El slug se genera automaticamente en backend.
+                </p>
+              </div>
+
+              <div class="testimonial-hero__meta">
+                <div class="testimonial-meta-card">
+                  <span>Estado</span>
+                  <strong>{{ draft.active ? 'Visible en portfolio' : 'Oculto en portfolio' }}</strong>
+                </div>
+                <div class="testimonial-meta-card">
+                  <span>Origen</span>
+                  <strong>{{ personCompany || 'Empresa pendiente' }}</strong>
+                </div>
+                <div class="testimonial-meta-card">
+                  <span>Cargo</span>
+                  <strong>{{ personPosition || 'Cargo pendiente' }}</strong>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="testimonial-editor__grid">
+            <section>
+              <div class="testimonial-panel">
+                <div class="testimonial-panel__head">
+                  <h3>Datos base</h3>
+                  <p>Identidad de la persona y estado de publicacion del testimonio.</p>
+                </div>
+
+                <div class="testimonial-field-grid testimonial-field-grid--base">
+                  <div class="testimonial-field testimonial-field--wide">
+                    <label class="form-label">Nombre</label>
+                    <input cFormControl type="text" [ngModel]="personName" (ngModelChange)="onNameChange($event)" placeholder="Arian Valdivieso" />
+                  </div>
+
+                  <div>
+                    <label class="form-label">Cargo</label>
+                    <input cFormControl type="text" [ngModel]="personPosition" (ngModelChange)="onPositionChange($event)" placeholder="Engineering Manager" />
+                  </div>
+
+                  <div>
+                    <label class="form-label">Empresa</label>
+                    <input cFormControl type="text" [ngModel]="personCompany" (ngModelChange)="onCompanyChange($event)" placeholder="Meraki Office" />
+                  </div>
+
+                  <div class="testimonial-current-toggle">
+                    <label class="form-label d-block">Estado</label>
+                    <label class="testimonial-form__check">
+                      <input cFormCheckInput type="checkbox" [(ngModel)]="draft.active" />
+                      Activo
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section>
+              <div class="testimonial-panel">
+                <div class="testimonial-panel__head">
+                  <h3>Testimonio</h3>
+                  <p>Contenido que se mostrara en el bloque publico de referencias.</p>
+                </div>
+
+                <div class="testimonial-field-grid testimonial-field-grid--textareas">
+                  <div>
+                    <label class="form-label">Testimonio ES</label>
+                    <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es" placeholder="Eleazar demostro ser un miembro excepcional del equipo..."></textarea>
+                    <div class="d-flex justify-content-between align-items-center mt-1">
+                      <app-translate-button [fromText]="draft.description!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.description!.en = $event; translateErrors['descEs'] = ''" (translationError)="translateErrors['descEs'] = $event" />
+                      <small *ngIf="translateErrors['descEs']" class="translate-error">{{ translateErrors['descEs'] }}</small>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="form-label">Testimonio EN</label>
+                    <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en" placeholder="Eleazar proved to be an exceptional member of the team..."></textarea>
+                    <div class="d-flex justify-content-between align-items-center mt-1">
+                      <app-translate-button [fromText]="draft.description!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.description!.es = $event; translateErrors['descEn'] = ''" (translationError)="translateErrors['descEn'] = $event" />
+                      <small *ngIf="translateErrors['descEn']" class="translate-error">{{ translateErrors['descEn'] }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="testimonial-form__footer" *ngIf="!loading">
+          <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/testimonials']">Cancelar</a>
+          <button cButton color="primary" type="button" (click)="submit()" [disabled]="saving">
+            {{ mode === 'create' ? 'Crear testimonio' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </c-card-body>
+    </c-card>
+  </div>
 </section>

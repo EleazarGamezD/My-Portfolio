@@ -2,6 +2,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiResume } from '@core/interfaces/content/content.interface';
+import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { ContentService } from '@core/services/content/content.service';
 import {
@@ -26,6 +27,7 @@ interface ResumeSlotDraft {
   fileName: string;
   mimeType: string;
   base64: string;
+  downloadUrl: string;
   metadata: Record<string, unknown>;
 }
 
@@ -94,7 +96,7 @@ export class AdminResumesPageComponent implements OnInit {
       return;
     }
 
-    if (!slot.base64.trim()) {
+    if (!slot.base64.trim() && !slot.downloadUrl.trim() && !slot.fileName.trim()) {
       this.error = `Debes cargar un archivo para ${slot.heading.toLowerCase()}.`;
       this.showErrorToast(this.error, 'Hojas de vida');
       return;
@@ -115,7 +117,7 @@ export class AdminResumesPageComponent implements OnInit {
         active: true,
         fileName: slot.fileName,
         mimeType: slot.mimeType || 'application/pdf',
-        base64: slot.base64,
+        base64: slot.base64.trim() || undefined,
         metadata: {
           ...slot.metadata,
           language: slot.language,
@@ -189,6 +191,7 @@ export class AdminResumesPageComponent implements OnInit {
       slot.fileName = item.fileName || '';
       slot.mimeType = item.mimeType || 'application/pdf';
       slot.base64 = item.base64 || '';
+      slot.downloadUrl = item.href || '';
       slot.order = typeof item.order === 'number' ? item.order : slot.order;
       slot.metadata = typeof item.metadata === 'object' && item.metadata !== null ? item.metadata : {};
     }
@@ -214,6 +217,7 @@ export class AdminResumesPageComponent implements OnInit {
       fileName: '',
       mimeType: 'application/pdf',
       base64: '',
+      downloadUrl: '',
       metadata: { language },
     };
   }
@@ -296,5 +300,18 @@ export class AdminResumesPageComponent implements OnInit {
     }
 
     this.toastr.error(message, title, { timeOut: 3500 });
+  }
+
+  downloadGeneratedPdf(lang: ResumeLanguage): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const url = API_CONTENT_ROUTES.generateCvPdf(lang);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = lang === 'es' ? 'cv-es.pdf' : 'resume-en.pdf';
+    anchor.target = '_blank';
+    anchor.rel = 'noopener';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiContentItem, IApiProfile } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -11,6 +11,7 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   imports: [],
   templateUrl: './career-path.component.html',
   styleUrl: './career-path.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CareerPathComponent implements OnInit {
   careerPathArray: IApiContentItem[] = [];
@@ -87,5 +88,9 @@ export class CareerPathComponent implements OnInit {
       resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeWebBackground) ||
       createPortfolioPlaceholder('Web Background', 520, 520)
     );
+  }
+
+  trackCareerItem(index: number, item: IApiContentItem): string {
+    return item._id || item.slug || item.value || item.label?.es || item.label?.en || `${index}`;
   }
 }

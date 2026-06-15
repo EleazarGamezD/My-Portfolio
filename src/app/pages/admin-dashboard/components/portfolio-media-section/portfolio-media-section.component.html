@@ -16,166 +16,72 @@
     </div>
 
     <div *ngIf="!contentLoading && profile" class="portfolio-media-grid">
-      <app-photo-editor
-        [assets]="getSingleAsset('headerLogo')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Logo del header'"
-        [subTitle]="'Logo principal de la navegacion.'"
-        [emptyLabel]="'Agregar logo'"
-        (assetsChange)="setSingleAsset('headerLogo', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <app-photo-editor [assets]="getSingleAsset('headerLogo')" [maxPhotos]="1" [maxMb]="mediaMaxMb" [variant]="'single'" [title]="'Logo del header'" [subTitle]="'Logo principal de la navegacion.'" [emptyLabel]="'Agregar logo'" (assetsChange)="setSingleAsset('headerLogo', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('footerCenterImage')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Imagen central del footer'"
-        [subTitle]="'Badge o elemento visual del pie de pagina.'"
-        [emptyLabel]="'Agregar imagen'"
-        (assetsChange)="setSingleAsset('footerCenterImage', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <app-photo-editor [assets]="getSingleAsset('footerCenterImage')" [maxPhotos]="1" [maxMb]="mediaMaxMb" [variant]="'single'" [title]="'Imagen central del footer'" [subTitle]="'Badge o elemento visual del pie de pagina.'" [emptyLabel]="'Agregar imagen'" (assetsChange)="setSingleAsset('footerCenterImage', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('aboutPrimaryImage')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Foto sobre mi A'"
-        [subTitle]="'Primera imagen del bloque Sobre mi.'"
-        [emptyLabel]="'Agregar foto'"
-        (assetsChange)="setSingleAsset('aboutPrimaryImage', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <app-photo-editor [assets]="getSingleAsset('aboutPrimaryImage')" [maxPhotos]="1" [maxMb]="mediaMaxMb" [variant]="'single'" [title]="'Foto sobre mi A'" [subTitle]="'Primera imagen del bloque Sobre mi.'" [emptyLabel]="'Agregar foto'" (assetsChange)="setSingleAsset('aboutPrimaryImage', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('aboutSecondaryImage')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Foto sobre mi B'"
-        [subTitle]="'Segunda imagen del bloque Sobre mi.'"
-        [emptyLabel]="'Agregar foto'"
-        (assetsChange)="setSingleAsset('aboutSecondaryImage', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <app-photo-editor [assets]="getSingleAsset('aboutSecondaryImage')" [maxPhotos]="1" [maxMb]="mediaMaxMb" [variant]="'single'" [title]="'Foto sobre mi B'" [subTitle]="'Segunda imagen del bloque Sobre mi.'" [emptyLabel]="'Agregar foto'" (assetsChange)="setSingleAsset('aboutSecondaryImage', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('cvHeroBackground')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Fondo hero CV'"
-        [subTitle]="'Fondo superior de la seccion de hojas de vida.'"
-        [emptyLabel]="'Agregar fondo'"
-        (assetsChange)="setSingleAsset('cvHeroBackground', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <div class="portfolio-media-config-card">
+        <app-photo-editor [assets]="getSingleAsset('aboutSectionBackground')" [maxPhotos]="1" [maxMb]="backgroundMaxMb" [variant]="'single'" [title]="'Fondo seccion Sobre mi'" [subTitle]="'Patron de fondo del bloque Sobre mi.'" [emptyLabel]="'Agregar fondo'" (assetsChange)="setSingleAsset('aboutSectionBackground', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('cvSectionBackground')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Fondo contenido CV'"
-        [subTitle]="'Fondo del cuerpo de la seccion de hojas de vida.'"
-        [emptyLabel]="'Agregar fondo'"
-        (assetsChange)="setSingleAsset('cvSectionBackground', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+        <label class="portfolio-media-toggle">
+          <input type="checkbox" [checked]="isTransparentBackground('aboutSectionTransparentBackground')" (change)="setBooleanField('aboutSectionTransparentBackground', $any($event.target).checked)" />
+          <span>Usar fondo transparente</span>
+        </label>
+      </div>
 
-      <app-photo-editor
-        [assets]="getSingleAsset('heroSlideFallbackImage')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Fallback slider home'"
-        [subTitle]="'Imagen de respaldo para slides sin media.'"
-        [emptyLabel]="'Agregar fallback'"
-        (assetsChange)="setSingleAsset('heroSlideFallbackImage', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <app-photo-editor [assets]="getSingleAsset('cvHeroBackground')" [maxPhotos]="1" [maxMb]="backgroundMaxMb" [variant]="'single'" [title]="'Fondo hero CV'" [subTitle]="'Fondo superior de la seccion de hojas de vida.'" [emptyLabel]="'Agregar fondo'" (assetsChange)="setSingleAsset('cvHeroBackground', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('projectFallbackImage')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Fallback proyectos'"
-        [subTitle]="'Imagen de respaldo para cards de proyecto.'"
-        [emptyLabel]="'Agregar fallback'"
-        (assetsChange)="setSingleAsset('projectFallbackImage', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <app-photo-editor [assets]="getSingleAsset('cvSectionBackground')" [maxPhotos]="1" [maxMb]="backgroundMaxMb" [variant]="'single'" [title]="'Fondo contenido CV'" [subTitle]="'Fondo del cuerpo de la seccion de hojas de vida.'" [emptyLabel]="'Agregar fondo'" (assetsChange)="setSingleAsset('cvSectionBackground', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('decorativeCloudIcon')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Decorativo nube'"
-        [subTitle]="'Icono lateral de la seccion de CV.'"
-        [emptyLabel]="'Agregar decorativo'"
-        (assetsChange)="setSingleAsset('decorativeCloudIcon', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <app-photo-editor [assets]="getSingleAsset('heroSlideFallbackImage')" [maxPhotos]="1" [maxMb]="backgroundMaxMb" [variant]="'single'" [title]="'Fallback slider home'" [subTitle]="'Imagen de respaldo para slides sin media.'" [emptyLabel]="'Agregar fallback'" (assetsChange)="setSingleAsset('heroSlideFallbackImage', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('decorativeWebDevelopmentIcon')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Decorativo web dev'"
-        [subTitle]="'Icono lateral de la seccion de CV.'"
-        [emptyLabel]="'Agregar decorativo'"
-        (assetsChange)="setSingleAsset('decorativeWebDevelopmentIcon', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <app-photo-editor [assets]="getSingleAsset('projectFallbackImage')" [maxPhotos]="1" [maxMb]="backgroundMaxMb" [variant]="'single'" [title]="'Fallback proyectos'" [subTitle]="'Imagen de respaldo para cards de proyecto.'" [emptyLabel]="'Agregar fallback'" (assetsChange)="setSingleAsset('projectFallbackImage', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('decorativeMultitaskIcon')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Decorativo multitarea'"
-        [subTitle]="'Decorativo de la seccion de proyectos.'"
-        [emptyLabel]="'Agregar decorativo'"
-        (assetsChange)="setSingleAsset('decorativeMultitaskIcon', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <div class="portfolio-media-config-card">
+        <app-photo-editor [assets]="getSingleAsset('projectsSectionBackground')" [maxPhotos]="1" [maxMb]="backgroundMaxMb" [variant]="'single'" [title]="'Fondo seccion Proyectos'" [subTitle]="'Patron de fondo del slider principal de proyectos.'" [emptyLabel]="'Agregar fondo'" (assetsChange)="setSingleAsset('projectsSectionBackground', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('decorativeApiIcon')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Decorativo API'"
-        [subTitle]="'Decorativo de proyectos y trayectoria.'"
-        [emptyLabel]="'Agregar decorativo'"
-        (assetsChange)="setSingleAsset('decorativeApiIcon', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+        <label class="portfolio-media-toggle">
+          <input type="checkbox" [checked]="isTransparentBackground('projectsSectionTransparentBackground')" (change)="setBooleanField('projectsSectionTransparentBackground', $any($event.target).checked)" />
+          <span>Usar fondo transparente</span>
+        </label>
+      </div>
 
-      <app-photo-editor
-        [assets]="getSingleAsset('decorativeServerIcon')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Decorativo server'"
-        [subTitle]="'Decorativo de testimonios.'"
-        [emptyLabel]="'Agregar decorativo'"
-        (assetsChange)="setSingleAsset('decorativeServerIcon', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <div class="portfolio-media-config-card">
+        <app-photo-editor [assets]="getSingleAsset('testimonialsSectionBackground')" [maxPhotos]="1" [maxMb]="backgroundMaxMb" [variant]="'single'" [title]="'Fondo seccion Testimonios'" [subTitle]="'Patron de fondo del carrusel de referencias.'" [emptyLabel]="'Agregar fondo'" (assetsChange)="setSingleAsset('testimonialsSectionBackground', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getSingleAsset('decorativeRainDigits')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Decorativo rain digits'"
-        [subTitle]="'Patron repetido de la seccion de trayectoria.'"
-        [emptyLabel]="'Agregar decorativo'"
-        (assetsChange)="setSingleAsset('decorativeRainDigits', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+        <label class="portfolio-media-toggle">
+          <input type="checkbox" [checked]="isTransparentBackground('testimonialsSectionTransparentBackground')" (change)="setBooleanField('testimonialsSectionTransparentBackground', $any($event.target).checked)" />
+          <span>Usar fondo transparente</span>
+        </label>
+      </div>
 
-      <app-photo-editor
-        [assets]="getSingleAsset('decorativeWebBackground')"
-        [maxPhotos]="1"
-        [variant]="'single'"
-        [title]="'Decorativo web background'"
-        [subTitle]="'Ilustracion de apoyo en trayectoria.'"
-        [emptyLabel]="'Agregar decorativo'"
-        (assetsChange)="setSingleAsset('decorativeWebBackground', $event)"
-        (uploadError)="imageUploadError.emit($event)" />
+      <div class="portfolio-media-config-card">
+        <app-photo-editor [assets]="getSingleAsset('contactSectionBackground')" [maxPhotos]="1" [maxMb]="backgroundMaxMb" [variant]="'single'" [title]="'Fondo seccion Contacto'" [subTitle]="'Patron de fondo del formulario de contacto.'" [emptyLabel]="'Agregar fondo'" (assetsChange)="setSingleAsset('contactSectionBackground', $event)" (uploadError)="imageUploadError.emit($event)" />
 
-      <app-photo-editor
-        [assets]="getTestimonialLogos()"
-        [maxPhotos]="8"
-        [variant]="'gallery'"
-        [title]="'Logos de testimonios'"
-        [subTitle]="'Franja opcional de logos bajo el carrusel de referencias.'"
-        [emptyLabel]="'Agregar logos'"
-        [addButtonLabel]="'Agregar logo'"
-        (assetsChange)="setTestimonialLogos($event)"
-        (uploadError)="imageUploadError.emit($event)" />
+        <label class="portfolio-media-toggle">
+          <input type="checkbox" [checked]="isTransparentBackground('contactSectionTransparentBackground')" (change)="setBooleanField('contactSectionTransparentBackground', $any($event.target).checked)" />
+          <span>Usar fondo transparente</span>
+        </label>
+      </div>
+
+      <app-photo-editor [assets]="getSingleAsset('decorativeCloudIcon')" [maxPhotos]="1" [maxMb]="mediaMaxMb" [variant]="'single'" [title]="'Decorativo nube'" [subTitle]="'Icono lateral de la seccion de CV.'" [emptyLabel]="'Agregar decorativo'" (assetsChange)="setSingleAsset('decorativeCloudIcon', $event)" (uploadError)="imageUploadError.emit($event)" />
+
+      <app-photo-editor [assets]="getSingleAsset('decorativeWebDevelopmentIcon')" [maxPhotos]="1" [maxMb]="mediaMaxMb" [variant]="'single'" [title]="'Decorativo web dev'" [subTitle]="'Icono lateral de la seccion de CV.'" [emptyLabel]="'Agregar decorativo'" (assetsChange)="setSingleAsset('decorativeWebDevelopmentIcon', $event)" (uploadError)="imageUploadError.emit($event)" />
+
+      <app-photo-editor [assets]="getSingleAsset('decorativeMultitaskIcon')" [maxPhotos]="1" [maxMb]="mediaMaxMb" [variant]="'single'" [title]="'Decorativo multitarea'" [subTitle]="'Decorativo de la seccion de proyectos.'" [emptyLabel]="'Agregar decorativo'" (assetsChange)="setSingleAsset('decorativeMultitaskIcon', $event)" (uploadError)="imageUploadError.emit($event)" />
+
+      <app-photo-editor [assets]="getSingleAsset('decorativeApiIcon')" [maxPhotos]="1" [maxMb]="mediaMaxMb" [variant]="'single'" [title]="'Decorativo API'" [subTitle]="'Decorativo de proyectos y trayectoria.'" [emptyLabel]="'Agregar decorativo'" (assetsChange)="setSingleAsset('decorativeApiIcon', $event)" (uploadError)="imageUploadError.emit($event)" />
+
+      <app-photo-editor [assets]="getSingleAsset('decorativeServerIcon')" [maxPhotos]="1" [maxMb]="mediaMaxMb" [variant]="'single'" [title]="'Decorativo server'" [subTitle]="'Decorativo de testimonios.'" [emptyLabel]="'Agregar decorativo'" (assetsChange)="setSingleAsset('decorativeServerIcon', $event)" (uploadError)="imageUploadError.emit($event)" />
+
+      <app-photo-editor [assets]="getSingleAsset('decorativeRainDigits')" [maxPhotos]="1" [maxMb]="backgroundMaxMb" [variant]="'single'" [title]="'Decorativo rain digits'" [subTitle]="'Patron repetido de la seccion de trayectoria.'" [emptyLabel]="'Agregar decorativo'" (assetsChange)="setSingleAsset('decorativeRainDigits', $event)" (uploadError)="imageUploadError.emit($event)" />
+
+      <app-photo-editor [assets]="getSingleAsset('decorativeWebBackground')" [maxPhotos]="1" [maxMb]="backgroundMaxMb" [variant]="'single'" [title]="'Decorativo web background'" [subTitle]="'Ilustracion de apoyo en trayectoria.'" [emptyLabel]="'Agregar decorativo'" (assetsChange)="setSingleAsset('decorativeWebBackground', $event)" (uploadError)="imageUploadError.emit($event)" />
+
     </div>
 
     <p *ngIf="!contentLoading && !profile" class="text-muted mb-0">No se encontro el perfil.</p>

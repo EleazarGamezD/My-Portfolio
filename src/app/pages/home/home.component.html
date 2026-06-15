@@ -1,59 +1,45 @@
-<!-- start banner slider -->
-<app-home-banner-slider />
-<!-- end banner slider -->
+<div #portfolioView class="home-view">
+  <!-- start banner slider -->
+  <app-home-banner-slider />
+  <!-- end banner slider -->
 
-<!-- start features section -->
-<div id="skills"></div>
+  <!-- start small about section -->
+  <div id="small-about"></div>
+  <app-small-about-resume />
+  <!-- end small about section -->
 
-<app-features />
+  <!-- start features section -->
+  <div id="skills"></div>
+  <app-features />
+  <!-- end features section -->
 
-<!-- end features section -->
+  <!-- start career path section -->
+  <div id="career-path"></div>
+  <app-career-path />
+  <!-- end career path section -->
 
-<!-- start small about section -->
-<div id="small-about"></div>
+  <!-- start slider projects section -->
+  <div id="slider-projects"></div>
+  <app-slider-projects />
+  <!-- end slider projects section -->
 
-<app-small-about-resume />
+  <!-- start hello section section -->
+  <div id="hello"></div>
+  <div id="contact-me"></div>
+  <app-contact-me-hello />
+  <!-- end hello section section -->
 
-<!-- end small about section -->
+  <!-- start contact me section -->
+  <app-contact-me />
+  <!-- end section -->
 
-<!-- start career path section -->
-<div id="career-path"></div>
+  <!-- start cvs section -->
+  <div id="cvs"></div>
+  <app-cv />
+  <!-- end cvs section -->
 
-<app-career-path />
-
-<!-- end career path section -->
-
-<!-- start slider projects section -->
-<div id="slider-projects"></div>
-
-<app-slider-projects />
-
-<!-- end slider projects section -->
-
-<!-- start hello section section -->
-<div id="hello"></div>
-<div id="contact-me"></div>
-
-<app-contact-me-hello />
-
-<!-- end hello section section -->
-
-<!-- start contact me section -->
-
-<app-contact-me />
-
-<!-- end section -->
-
-<!-- start cvs section -->
-<div id="cvs"></div>
-
-<app-cv />
-
-<!-- end cvs section -->
-
-<!-- start work reference section -->
-<div id="work-references"></div>
-
-<app-work-references />
-
-<!-- end work reference section -->
+  <!-- start work reference section -->
+  <div id="work-references"></div>
+  <app-work-references />
+  <!-- end work reference section -->
+</div>

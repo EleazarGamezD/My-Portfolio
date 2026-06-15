@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
@@ -9,11 +9,17 @@ import { ProjectsService } from '@core/services/projects/projects.service';
 import { StorageService } from '@core/services/storage/storage.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
-import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/skills-section/skills-section.component';
 import { AddPhotoComponent } from '@pages/admin-dashboard/components/shared/add-photo/add-photo.component';
 import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/photo-editor/photo-editor.component';
+import { SkillPickerComponent } from '@pages/admin-dashboard/components/shared/skill-picker/skill-picker.component';
+import { Language, TranslateButtonComponent } from '@pages/admin-dashboard/components/shared/translate-button/translate-button.component';
 
 type ProjectFormMode = 'create' | 'edit';
+
+export enum ProjectStatusEnum {
+  DRAFT = 'draft',
+  PUBLISHED = 'published',
+}
 
 @Component({
   selector: 'app-admin-project-form-page',
@@ -26,19 +32,26 @@ type ProjectFormMode = 'create' | 'edit';
     ButtonModule,
     CardModule,
     FormModule,
-    AdminSkillsSectionComponent,
+    SkillPickerComponent,
     AddPhotoComponent,
     PhotoEditorComponent,
+    TranslateButtonComponent,
   ],
   templateUrl: './project-form-page.component.html',
   styleUrl: './project-form-page.component.scss',
 })
 export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
+  readonly Language = Language;
+  readonly ProjectStatusEnum = ProjectStatusEnum;
+  readonly projectStatusOptions = [
+    { value: ProjectStatusEnum.DRAFT, label: 'Borrador' },
+    { value: ProjectStatusEnum.PUBLISHED, label: 'Publicado' },
+  ];
   mode: ProjectFormMode = 'create';
   draft: Partial<IProject> = this.createEmptyDraft();
   projectId = '';
   notFound = false;
-  showSkillsLibrary = false;
+  translateErrors: Record<string, string> = {};
 
   constructor(
     public readonly facade: AdminDashboardFacade,
@@ -47,11 +60,11 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly storageService: StorageService,
     private readonly cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     this.mode = (this.route.snapshot.data['mode'] as ProjectFormMode) || 'create';
-    await this.facade.ensureContentReady();
+    await this.facade.loadProjectEditorDependencies();
     this.cdr.detectChanges();
 
     if (this.mode === 'create') {
@@ -93,32 +106,24 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
       : 'Actualiza los datos del proyecto desde un formulario dedicado en lugar de editar dentro de la tabla.';
   }
 
-  get availableSkills(): IApiTechSkill[] {
-    return this.facade.techSkills;
+  onSkillsChange(newIds: string[]): void {
+    this.draft.skillIds = newIds;
+    this.syncDraftSkills();
+    this.cdr.detectChanges();
   }
 
-  get selectedSkills(): IApiTechSkill[] {
-    const selectedIds = this.draft.skillIds ?? [];
-    if (selectedIds.length === 0) {
-      return [];
-    }
+  onPrimarySkillChange(primaryId: string | null): void {
+    this.draft.primarySkillId = primaryId;
+    this.syncDraftSkills();
+    this.cdr.detectChanges();
+  }
 
-    const skillMap = new Map(
-      this.availableSkills
-        .filter((skill): skill is IApiTechSkill & { _id: string } => typeof skill._id === 'string' && Boolean(skill._id))
-        .map((skill) => [skill._id, skill]),
-    );
+  getSkillLabel(skill: IApiTechSkill): string {
+    return skill.label?.es || skill.label?.en || skill.value || '';
+  }
 
-    const orderedSkills: IApiTechSkill[] = [];
-
-    for (const id of selectedIds) {
-      const skill = skillMap.get(id);
-      if (skill) {
-        orderedSkills.push(skill);
-      }
-    }
-
-    return orderedSkills;
+  getSkillIconUrl(skill: IApiTechSkill): string | null {
+    return resolveImageAssetUrl(skill.icon ?? null);
   }
 
   get coverAssets(): IProjectAsset[] {
@@ -135,11 +140,18 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
   }
 
   get coverPreviewUrls(): string[] {
-    return this.coverAssets.map((asset) => resolveImageAssetUrl(asset)).filter((url): url is string => Boolean(url));
+    // Only pass server-side URLs (assets with a .url property).
+    // Base64/file assets are managed internally by add-photo via storage — feeding
+    // them back as urlsPreviews would trigger an infinite ngOnChanges → syncImages loop.
+    return this.coverAssets
+      .filter((asset): asset is { url: string } => typeof asset !== 'string' && Boolean(asset.url))
+      .map((asset) => asset.url);
   }
 
   get galleryPreviewUrls(): string[] {
-    return this.galleryAssets.map((asset) => resolveImageAssetUrl(asset)).filter((url): url is string => Boolean(url));
+    return this.galleryAssets
+      .filter((asset): asset is { url: string } => typeof asset !== 'string' && Boolean(asset.url))
+      .map((asset) => asset.url);
   }
 
   get coverStorageKey(): string {
@@ -152,7 +164,7 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
 
   async submit(): Promise<void> {
     this.syncDraftSkills();
-    this.draft.stack = this.selectedSkills
+    this.draft.stack = (this.draft.skills ?? [])
       .map((skill) => this.getSkillLabel(skill))
       .filter((value): value is string => Boolean(value));
 
@@ -189,48 +201,6 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
     this.facade.onImageUploadError(message);
   }
 
-  toggleSkillSelection(skillId: string): void {
-    const currentIds = new Set(this.draft.skillIds ?? []);
-
-    if (currentIds.has(skillId)) {
-      currentIds.delete(skillId);
-    } else {
-      currentIds.add(skillId);
-    }
-
-    this.draft.skillIds = Array.from(currentIds);
-    this.syncDraftSkills();
-  }
-
-  setPrimarySkill(skillId: string): void {
-    if (!this.isSkillSelected(skillId)) {
-      return;
-    }
-
-    this.draft.primarySkillId = skillId;
-    this.syncDraftSkills();
-  }
-
-  isSkillSelected(skillId: string): boolean {
-    return (this.draft.skillIds ?? []).includes(skillId);
-  }
-
-  isPrimarySkill(skillId: string): boolean {
-    return this.draft.primarySkillId === skillId;
-  }
-
-  getSkillLabel(skill: IApiTechSkill): string {
-    return skill.label?.es || skill.label?.en || skill.value || '';
-  }
-
-  getSkillIconUrl(skill: IApiTechSkill): string | null {
-    return resolveImageAssetUrl(skill.icon ?? null);
-  }
-
-  toggleSkillsLibrary(): void {
-    this.showSkillsLibrary = !this.showSkillsLibrary;
-  }
-
   private async clearImageDraftStorage(): Promise<void> {
     await Promise.all([
       this.storageService.deleteStorage(this.coverStorageKey),
@@ -260,22 +230,29 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
 
   private syncDraftSkills(): void {
     const availableSkillIds = new Set(
-      this.availableSkills
+      this.facade.techSkills
         .filter((skill): skill is IApiTechSkill & { _id: string } => typeof skill._id === 'string' && Boolean(skill._id))
         .map((skill) => skill._id),
     );
 
     const derivedIds =
-      this.draft.skillIds?.filter((id): id is string => typeof id === 'string' && availableSkillIds.has(id)) ??
-      [];
+      this.draft.skillIds?.filter((id): id is string => typeof id === 'string' && availableSkillIds.has(id)) ?? [];
 
     this.draft.skillIds = [...new Set(derivedIds)];
-    this.draft.skills = this.selectedSkills;
+
+    const skillMap = new Map(
+      this.facade.techSkills
+        .filter((s): s is IApiTechSkill & { _id: string } => typeof s._id === 'string')
+        .map((s) => [s._id, s]),
+    );
+    this.draft.skills = this.draft.skillIds
+      .map((id) => skillMap.get(id))
+      .filter((s): s is IApiTechSkill & { _id: string } => !!s) as IApiTechSkill[];
 
     if (!this.draft.primarySkillId || !this.draft.skillIds.includes(this.draft.primarySkillId)) {
       this.draft.primarySkillId = this.draft.skillIds[0] ?? null;
     }
 
-    this.draft.primarySkill = this.selectedSkills.find((skill) => skill._id === this.draft.primarySkillId) ?? null;
+    this.draft.primarySkill = (this.draft.skills ?? []).find((skill) => skill._id === this.draft.primarySkillId) ?? null;
   }
 }

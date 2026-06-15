@@ -1,4 +1,4 @@
-<section class="background-repeat overlap-height position-relative pt-4 md-pt-8" style="background-image: url('images/demo-spa-salon-home-bg-01.jpg')">
+<section class="background-repeat overlap-height position-relative pt-4 md-pt-8" [style.background-image]="sectionBackgroundImage">
   <div class="position-absolute left-minus-100px top-50 d-none d-lg-inline-block" data-bottom-top="transform: translateY(-50px)" data-top-bottom="transform: translateY(50px)">
     <img [src]="serverIcon" alt="" style='max-width: 250px; max-height: 250px' />
   </div>
@@ -7,7 +7,7 @@
       <div class="col-xl-10 testimonials-style-11 position-relative ps-15 pe-15 sm-ps-15px sm-pe-15px text-center">
         <div class="swiper slider-custom-text" data-slider-options='{ "loop": true, "keyboard": { "enabled": true, "onlyInViewport": true }, "autoplay": { "delay": 4000, "disableOnInteraction": false }, "navigation": { "nextEl": ".swiper-button-next-nav", "prevEl": ".swiper-button-previous-nav", "effect": "fade" } }'>
           <div class="swiper-wrapper">
-            @for(testimonial of workReferences; track $index){
+            @for(testimonial of workReferences; track trackTestimonial($index, testimonial)){
             <!-- start testimonial item -->
             <div class="swiper-slide text-center">
               <h6 class="alt-font lh-40 text-dark-gray mb-20px">
@@ -33,11 +33,11 @@
     </div>
     <div class="row row-cols-2 row-cols-lg-6 row-cols-sm-3 text-center justify-content-center clients-style-05" data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'>
 
-      @for ( icon of downSideIcons; track $index ){
+      @for ( icon of downSideIcons; track trackLogo($index, icon) ){
       <!-- start client item -->
       <div class="col md-mb-30px">
         <div class="client-box">
-          <a href="#"><img src="{{icon.url}}" class="h-110px" alt="" /></a>
+          <a href="#"><img src="{{icon.url}}" class="h-110px" alt="Client or technology logo" loading="lazy" /></a>
         </div>
       </div>
       <!-- end client item -->

@@ -1,0 +1,114 @@
+<!--<c-header class="mb-4 d-print-none" position="sticky">-->
+<ng-container>
+  <c-container [fluid]="true" class="border-bottom px-4">
+    <button [cSidebarToggle]="sidebarId()" cHeaderToggler class="btn" toggle="visible" style="margin-inline-start: -14px" aria-label="Toggle sidebar navigation">
+      <svg cIcon name="cilMenu" size="lg"></svg>
+    </button>
+    <c-header-nav class="d-none d-md-flex">
+      <c-nav-item>
+        <a cNavLink routerLink="/admin/dashboard/overview" routerLinkActive="active">Dashboard</a>
+      </c-nav-item>
+    </c-header-nav>
+
+    <c-header-nav class="d-none d-md-flex ms-auto">
+      <c-nav-item>
+        <a cNavLink routerLink="/" class="admin-header__portfolio-link">
+          Volver al portfolio
+        </a>
+      </c-nav-item>
+    </c-header-nav>
+
+    <c-header-nav class="ms-auto ms-md-0">
+      <div class="nav-item py-1">
+        <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+      </div>
+      <ng-container *ngTemplateOutlet="themeDropdown" />
+      <div class="nav-item py-1">
+        <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+      </div>
+    </c-header-nav>
+
+    <c-header-nav class="mx-0">
+      <ng-container *ngTemplateOutlet="userDropdown" />
+    </c-header-nav>
+  </c-container>
+  <c-container [fluid]="true" class="px-4">
+    <c-breadcrumb class="mb-0">
+      <c-breadcrumb-item>
+        <a [routerLink]="['/admin/dashboard/overview']">Dashboard</a>
+      </c-breadcrumb-item>
+      <c-breadcrumb-item [active]="true">{{ currentSectionLabel() }}</c-breadcrumb-item>
+    </c-breadcrumb>
+  </c-container>
+</ng-container>
+<!--</c-header>-->
+
+<ng-template #userDropdown>
+  <c-dropdown [popperOptions]="{ placement: 'bottom-start' }" variant="nav-item">
+    <button [caret]="false" cDropdownToggle class="py-0 pe-0" aria-label="Open user menu">
+      <span class="admin-user-trigger">{{ userInitials }}</span>
+    </button>
+    <ul cDropdownMenu class="pt-0 w-auto">
+      <li>
+        <h6 cDropdownHeader class="bg-body-secondary text-body-secondary fw-semibold py-2 rounded-top">
+          Account
+        </h6>
+      </li>
+      <li>
+        <div class="admin-user-meta">
+          <strong>{{ currentAdminName }}</strong> <br />
+          <small>{{ currentAdminRole }}</small>
+        </div>
+      </li>
+      <li>
+        <h6 cDropdownHeader class="bg-body-secondary text-body-secondary fw-semibold py-2">
+          Settings
+        </h6>
+      </li>
+      <li></li>
+      <li>
+        <a cDropdownItem [routerLink]="['/admin/dashboard/profile']">
+          <svg cIcon class="me-2" name="cilUser"></svg>
+          Mi Perfil
+        </a>
+      </li>
+      <li>
+        <a cDropdownItem [routerLink]="['/admin/dashboard/themes']">
+          <svg cIcon class="me-2" name="cilPaint"></svg>
+          Temas
+        </a>
+      </li>
+      <li>
+        <a cDropdownItem [routerLink]="['/admin/dashboard/resumes']">
+          <svg cIcon class="me-2" name="cilDescription"></svg>
+          Hojas de vida
+        </a>
+      </li>
+      <li>
+        <hr cDropdownDivider />
+      </li>
+      <li>
+        <a cDropdownItem (click)="closeSession()">
+          <svg cIcon class="me-2" name="cilAccountLogout"></svg>
+          Cerrar sesión
+        </a>
+      </li>
+    </ul>
+  </c-dropdown>
+</ng-template>
+
+<ng-template #themeDropdown>
+  <c-dropdown alignment="end" variant="nav-item">
+    <button [caret]="false" cDropdownToggle aria-label="Open theme picker">
+      <svg cIcon [name]="icons()" size="lg"></svg>
+    </button>
+    <div cDropdownMenu>
+      @for (mode of colorModes; track mode.name) {
+      <button (click)="colorMode.set(mode.name)" [active]="colorMode() === mode.name" cDropdownItem class="d-flex align-items-center">
+        <svg cIcon class="me-2" [name]="mode.icon" size="lg"></svg>
+        {{ mode.text }}
+      </button>
+      }
+    </div>
+  </c-dropdown>
+</ng-template>

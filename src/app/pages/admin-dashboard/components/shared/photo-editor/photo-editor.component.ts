@@ -5,6 +5,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -63,6 +64,7 @@ export class PhotoEditorComponent implements OnInit, OnChanges, OnDestroy {
 
   private readonly toast = inject(ToastrService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly zone = inject(NgZone);
   private initialized = false;
   private lastAssetSignature = '';
 
@@ -161,25 +163,31 @@ export class PhotoEditorComponent implements OnInit, OnChanges, OnDestroy {
     try {
       if (this.pendingAction === 'replace' && this.pendingTargetIndex !== null) {
         const replacement = await this.createEditableItem(selectedFiles[0]);
-        this.items[this.pendingTargetIndex] = replacement;
-        this.selectedIndex = this.pendingTargetIndex;
+        this.zone.run(() => {
+          this.items[this.pendingTargetIndex!] = replacement;
+          this.selectedIndex = this.pendingTargetIndex!;
+          this.emitAssets();
+        });
       } else {
         const availableSlots = this.maxPhotos() - this.items.length;
         const filesToAdd = selectedFiles.slice(0, Math.max(availableSlots, 0));
 
+        const newItems: EditablePhotoItem[] = [];
         for (const file of filesToAdd) {
           const item = await this.createEditableItem(file);
-          this.items.push(item);
+          newItems.push(item);
         }
-
-        this.selectedIndex = Math.max(this.items.length - 1, 0);
 
         if (selectedFiles.length > filesToAdd.length) {
           this.showToast('warning', `Sólo se agregaron ${filesToAdd.length} imágenes.`);
         }
-      }
 
-      this.emitAssets();
+        this.zone.run(() => {
+          this.items.push(...newItems);
+          this.selectedIndex = Math.max(this.items.length - 1, 0);
+          this.emitAssets();
+        });
+      }
     } catch (error) {
       console.error(error);
       const message = error instanceof Error ? error.message : 'No se pudo procesar la imagen.';

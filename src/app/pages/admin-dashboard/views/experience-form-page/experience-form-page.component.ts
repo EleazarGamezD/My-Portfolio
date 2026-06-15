@@ -5,6 +5,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
 import { ContentService } from '@core/services/content/content.service';
+import { Language, TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
+import { SkillPickerComponent } from '../../components/shared/skill-picker/skill-picker.component';
 import { ToastrService } from 'ngx-toastr';
 
 type ExperienceFormMode = 'create' | 'edit';
@@ -12,11 +14,12 @@ type ExperienceFormMode = 'create' | 'edit';
 @Component({
   selector: 'app-admin-experience-form-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule],
+  imports: [CommonModule, FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule, TranslateButtonComponent, SkillPickerComponent],
   templateUrl: './experience-form-page.component.html',
   styleUrl: './experience-form-page.component.scss',
 })
 export class AdminExperienceFormPageComponent implements OnInit {
+  readonly Language = Language;
   mode: ExperienceFormMode = 'create';
   experienceId = '';
   loading = false;
@@ -24,6 +27,10 @@ export class AdminExperienceFormPageComponent implements OnInit {
   notFound = false;
   error: string | null = null;
   draft: Partial<IApiContentItem> = this.createEmptyDraft();
+  translateErrors: Record<string, string> = {};
+
+  /** Selected skill IDs for this experience entry */
+  selectedSkillIds: string[] = [];
 
   constructor(
     private readonly contentService: ContentService,
@@ -35,13 +42,9 @@ export class AdminExperienceFormPageComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.mode = (this.route.snapshot.data['mode'] as ExperienceFormMode) || 'create';
-
-    if (this.mode === 'create') {
-      return;
+    if (this.mode === 'edit') {
+      await this.loadExperience();
     }
-
-    this.experienceId = this.route.snapshot.paramMap.get('id') || '';
-    await this.loadExperience();
   }
 
   get pageTitle(): string {
@@ -64,10 +67,8 @@ export class AdminExperienceFormPageComponent implements OnInit {
 
   onCompanyNameChange(value: string): void {
     const normalized = value.trimStart();
-
     this.draft.label ??= { es: '', en: '' };
     this.draft.title ??= { es: '', en: '' };
-
     this.draft.label.es = normalized;
     this.draft.label.en = normalized;
     this.draft.title.es = normalized;
@@ -77,10 +78,13 @@ export class AdminExperienceFormPageComponent implements OnInit {
   onCurrentRoleChange(value: boolean): void {
     this.draft.period ??= {};
     this.draft.period.current = value;
-
     if (value) {
       this.draft.period.end = null;
     }
+  }
+
+  onSkillsChange(ids: string[]): void {
+    this.selectedSkillIds = ids;
   }
 
   async submit(): Promise<void> {
@@ -99,21 +103,14 @@ export class AdminExperienceFormPageComponent implements OnInit {
 
     try {
       let order = this.draft.order ?? 0;
-
       if (this.mode === 'create') {
         const existingItems = await this.contentService.getExperience();
         order = existingItems.length + 1;
       }
 
       const payload: Partial<IApiContentItem> = {
-        label: {
-          es: companyName,
-          en: companyName,
-        },
-        title: {
-          es: companyName,
-          en: companyName,
-        },
+        label: { es: companyName, en: companyName },
+        title: { es: companyName, en: companyName },
         description: {
           es: this.draft.description?.es?.trim() || '',
           en: this.draft.description?.en?.trim() || '',
@@ -126,7 +123,10 @@ export class AdminExperienceFormPageComponent implements OnInit {
         },
         order,
         active: true,
-        metadata: this.draft.metadata ?? {},
+        metadata: {
+          ...(this.draft.metadata ?? {}),
+          skillIds: this.selectedSkillIds,
+        },
       };
 
       if (this.mode === 'create') {
@@ -148,18 +148,20 @@ export class AdminExperienceFormPageComponent implements OnInit {
   }
 
   private async loadExperience(): Promise<void> {
+    this.experienceId = this.route.snapshot.paramMap.get('id') || '';
     this.loading = true;
-
     try {
       const items = await this.contentService.getExperience();
       const item = items.find((entry) => entry._id === this.experienceId);
-
       if (!item) {
         this.notFound = true;
         return;
       }
-
       this.draft = structuredClone(item);
+      const metaSkillIds = item.metadata?.['skillIds'];
+      if (Array.isArray(metaSkillIds)) {
+        this.selectedSkillIds = metaSkillIds.filter((id): id is string => typeof id === 'string');
+      }
     } catch (error) {
       this.error = error instanceof Error ? error.message : 'No se pudo cargar la experiencia.';
       this.toastr.error(this.error, 'Dashboard');
@@ -175,11 +177,7 @@ export class AdminExperienceFormPageComponent implements OnInit {
       title: { es: '', en: '' },
       description: { es: '', en: '' },
       value: '',
-      period: {
-        start: '',
-        end: null,
-        current: false,
-      },
+      period: { start: '', end: null, current: false },
       order: 0,
       active: true,
       metadata: {},

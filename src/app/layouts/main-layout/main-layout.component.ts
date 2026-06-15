@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../../shared/Components/footer/footer.component';
 import { HeaderComponent } from '../../shared/Components/header/header.component';
+import { LoaderCircleComponent } from '../../shared/Components/loader-circle/loader-circlecomponent';
 import { ScrollIndicatorComponent } from '../../shared/Components/scroll-indicator/scroll-indicator.component';
 
 @Component({
@@ -9,6 +10,7 @@ import { ScrollIndicatorComponent } from '../../shared/Components/scroll-indicat
   imports: [
     HeaderComponent,
     FooterComponent,
+    LoaderCircleComponent,
     RouterOutlet,
     ScrollIndicatorComponent,
   ],

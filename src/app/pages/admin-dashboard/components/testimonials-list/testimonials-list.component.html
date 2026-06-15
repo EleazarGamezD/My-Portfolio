@@ -1,4 +1,4 @@
-<div class="testimonials-shell">
+<div>
   <div class="data-table-header">
     <div class="header-top">
       <div>
@@ -66,26 +66,13 @@
         {{ pagination.totalItems }} testimonios
       </div>
       <div class="testimonials-pagination__controls">
-        <button
-          type="button"
-          class="testimonials-pagination__button"
-          [disabled]="!pagination.hasPrevPage"
-          (click)="changePage(pagination.currentPage - 1)">
+        <button type="button" class="testimonials-pagination__button" [disabled]="!pagination.hasPrevPage" (click)="changePage(pagination.currentPage - 1)">
           Anterior
         </button>
-        <button
-          type="button"
-          class="testimonials-pagination__button"
-          *ngFor="let page of visiblePages"
-          [class.testimonials-pagination__button--active]="page === pagination.currentPage"
-          (click)="changePage(page)">
+        <button type="button" class="testimonials-pagination__button" *ngFor="let page of visiblePages" [class.testimonials-pagination__button--active]="page === pagination.currentPage" (click)="changePage(page)">
           {{ page }}
         </button>
-        <button
-          type="button"
-          class="testimonials-pagination__button"
-          [disabled]="!pagination.hasNextPage"
-          (click)="changePage(pagination.currentPage + 1)">
+        <button type="button" class="testimonials-pagination__button" [disabled]="!pagination.hasNextPage" (click)="changePage(pagination.currentPage + 1)">
           Siguiente
         </button>
       </div>

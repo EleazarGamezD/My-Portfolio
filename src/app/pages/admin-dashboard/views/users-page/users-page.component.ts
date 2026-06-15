@@ -18,7 +18,7 @@ export class AdminUsersPageComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    await this.facade.ensureContentReady();
+    await this.facade.loadAdminUsers();
     this.cdr.detectChanges();
   }
 }

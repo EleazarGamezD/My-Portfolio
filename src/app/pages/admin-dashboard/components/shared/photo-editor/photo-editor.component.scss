@@ -13,7 +13,7 @@
 
 .photo-editor__title {
   display: block;
-  color: #2f3b52;
+  color: var(--cui-emphasis-color);
   font-size: 1.45rem;
   font-weight: 700;
   line-height: 1.1;
@@ -21,7 +21,7 @@
 
 .photo-editor__subtitle {
   margin: 6px 0 0;
-  color: #6d7890;
+  color: var(--cui-secondary-color);
   font-size: 0.95rem;
 }
 
@@ -36,11 +36,9 @@
 }
 
 .photo-editor__stage {
-  border: 1px solid #eadceb;
+  border: 1px solid var(--cui-border-color);
   border-radius: 24px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(247, 244, 249, 0.96)),
-    radial-gradient(circle at top left, rgba(190, 152, 214, 0.16), transparent 44%);
+  background: var(--cui-card-bg);
   padding: 10px;
   min-height: 220px;
   overflow: hidden;
@@ -64,9 +62,9 @@
 }
 
 .photo-editor__thumb {
-  border: 1px solid #eadceb;
+  border: 1px solid var(--cui-border-color);
   border-radius: 18px;
-  background: #fff;
+  background: var(--cui-card-bg);
   padding: 6px;
   width: 92px;
   height: 92px;
@@ -130,11 +128,9 @@
 }
 
 .photo-editor__empty {
-  border: 1px dashed #a5aab8;
+  border: 1px dashed var(--cui-border-color);
   border-radius: 22px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 248, 251, 0.98)),
-    radial-gradient(circle at top left, rgba(185, 145, 201, 0.18), transparent 42%);
+  background: var(--cui-secondary-bg);
   min-height: 220px;
   padding: 28px;
   display: flex;
@@ -142,7 +138,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  color: #2f3b52;
+  color: var(--cui-body-color);
   cursor: pointer;
   transition:
     border-color 0.2s ease,

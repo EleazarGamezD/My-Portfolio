@@ -1,57 +1,205 @@
 <section>
+  <div class="base-shell">
     <div class="admin-page-header">
-        <div>
-            <p class="admin-page-kicker">Analitica</p>
-            <h2 class="admin-page-title">Resumen</h2>
-            <p class="admin-page-copy mb-0">Metricas principales, actividad reciente y resumenes de trafico del portafolio.</p>
-        </div>
-        <button cButton color="primary" variant="outline" type="button" (click)="facade.loadMetrics()">
-            Actualizar datos
-        </button>
+      <div>
+        <p class="admin-page-kicker">Analíticas</p>
+        <h2 class="admin-page-title">Resumen</h2>
+        <p class="admin-page-copy mb-0">Métricas principales, actividad reciente y resúmenes de tráfico del portafolio.</p>
+      </div>
     </div>
 
+    <!-- Filters -->
     <c-card class="admin-page-surface mb-4">
-        <c-card-body>
-            <div class="row g-3 align-items-end">
-                <div class="col-md-2">
-                    <label class="form-label" for="filterYear">Ano</label>
-                    <input id="filterYear" type="number" class="form-control" [(ngModel)]="facade.filters.year" min="2000" max="2100" />
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label" for="filterMonth">Mes</label>
-                    <input id="filterMonth" type="number" class="form-control" [(ngModel)]="facade.filters.month" min="1" max="12" />
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label" for="filterDay">Dia</label>
-                    <input id="filterDay" type="number" class="form-control" [(ngModel)]="facade.filters.day" min="1" max="31" />
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label" for="filterFrom">Desde</label>
-                    <input id="filterFrom" type="datetime-local" class="form-control" [(ngModel)]="facade.filters.from" />
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label" for="filterTo">Hasta</label>
-                    <input id="filterTo" type="datetime-local" class="form-control" [(ngModel)]="facade.filters.to" />
-                </div>
-                <div class="col-12 d-flex gap-2 justify-content-end">
-                    <button cButton color="secondary" variant="outline" type="button" (click)="facade.clearFilters()">Limpiar</button>
-                    <button cButton color="primary" type="button" (click)="facade.applyFilters()">Aplicar filtros</button>
-                </div>
-            </div>
-        </c-card-body>
+      <c-card-body>
+        <div class="row g-3 align-items-end">
+          <div class="col-md-3">
+            <label class="form-label" for="filterFrom">Desde</label>
+            <input id="filterFrom" cFormControl type="date" [(ngModel)]="facade.filters.from" />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label" for="filterTo">Hasta</label>
+            <input id="filterTo" cFormControl type="date" [(ngModel)]="facade.filters.to" />
+          </div>
+          <div class="col-12 d-flex gap-2 justify-content-end">
+            <button cButton color="secondary" variant="outline" type="button" (click)="clearFilters()">Limpiar</button>
+            <button cButton color="primary" type="button" (click)="applyFilters()">Aplicar filtros</button>
+          </div>
+        </div>
+      </c-card-body>
     </c-card>
 
+    <!-- Error -->
     <c-alert *ngIf="facade.error" color="danger" class="admin-page-message">
-        {{ facade.error }}
+      {{ facade.error }}
     </c-alert>
 
+    <!-- Loading -->
     <div *ngIf="facade.loading" class="text-center py-5">
-        <c-spinner color="primary" label="Cargando metricas del resumen"></c-spinner>
+      <c-spinner color="primary" label="Cargando métricas del resumen"></c-spinner>
     </div>
 
-    <app-admin-overview-section *ngIf="!facade.loading && facade.metrics" [metrics]="facade.metrics"></app-admin-overview-section>
-
+    <!-- No data -->
     <c-alert *ngIf="!facade.loading && !facade.metrics" color="info">
-        No hay metricas disponibles.
+      No hay métricas disponibles.
     </c-alert>
+
+    <ng-container *ngIf="!facade.loading && facade.metrics as metrics">
+
+      <!-- KPI Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-3 col-sm-6">
+          <c-card class="h-100 text-center">
+            <c-card-body>
+              <div class="fs-2 fw-bold text-primary">{{ metrics.totalEvents }}</div>
+              <div class="text-body-secondary small">Total Eventos</div>
+            </c-card-body>
+          </c-card>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <c-card class="h-100 text-center">
+            <c-card-body>
+              <div class="fs-2 fw-bold text-success">{{ kpiProjectViews }}</div>
+              <div class="text-body-secondary small">Vistas de Proyectos</div>
+            </c-card-body>
+          </c-card>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <c-card class="h-100 text-center">
+            <c-card-body>
+              <div class="fs-2 fw-bold text-warning">{{ kpiCvDownloads }}</div>
+              <div class="text-body-secondary small">Descargas CV</div>
+            </c-card-body>
+          </c-card>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <c-card class="h-100 text-center">
+            <c-card-body>
+              <div class="fs-2 fw-bold text-info">{{ kpiPageViews }}</div>
+              <div class="text-body-secondary small">Visitas de Página</div>
+            </c-card-body>
+          </c-card>
+        </div>
+      </div>
+
+      <!-- Timeline chart (full width) -->
+      <c-card class="mb-4" *ngIf="timelineChart">
+        <c-card-header>Actividad por día</c-card-header>
+        <c-card-body>
+          <c-chart
+            type="line"
+            [customTooltips]="false"
+            [data]="timelineChart.data"
+            [options]="timelineChart.options"
+            [height]="250">
+          </c-chart>
+        </c-card-body>
+      </c-card>
+
+      <!-- Charts row -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-5">
+          <c-card class="h-100" *ngIf="eventTypeChart">
+            <c-card-header>Tipos de Evento</c-card-header>
+            <c-card-body>
+              <c-chart
+                type="doughnut"
+                [customTooltips]="false"
+                [data]="eventTypeChart.data"
+                [options]="eventTypeChart.options"
+                [height]="260">
+              </c-chart>
+            </c-card-body>
+          </c-card>
+        </div>
+        <div class="col-md-7">
+          <c-card class="h-100" *ngIf="projectViewsChart">
+            <c-card-header>Top 10 Proyectos</c-card-header>
+            <c-card-body>
+              <c-chart
+                type="bar"
+                [customTooltips]="false"
+                [data]="projectViewsChart.data"
+                [options]="projectViewsChart.options"
+                [height]="260">
+              </c-chart>
+            </c-card-body>
+          </c-card>
+        </div>
+      </div>
+
+      <!-- All projects chart (scrollable) -->
+      <c-card class="mb-4" *ngIf="allProjectViewsChart">
+        <c-card-header>Todos los proyectos vistos</c-card-header>
+        <c-card-body style="overflow-y: auto; max-height: 400px; padding-bottom: 0;">
+          <c-chart
+            type="bar"
+            [customTooltips]="false"
+            [data]="allProjectViewsChart.data"
+            [options]="allProjectViewsChart.options"
+            [height]="allProjectViewsChart.height">
+          </c-chart>
+        </c-card-body>
+      </c-card>
+
+      <!-- Tables row -->
+      <div class="row g-3 mb-4">
+        <!-- Top paths -->
+        <div class="col-md-6">
+          <c-card class="h-100">
+            <c-card-header>Top rutas</c-card-header>
+            <c-card-body>
+              <table cTable [hover]="true" [responsive]="true" [striped]="true" class="mb-0">
+                <thead>
+                  <tr>
+                    <th>Ruta</th>
+                    <th class="text-end">Visitas</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of metrics.groupedByPath">
+                    <td style="word-break: break-all; font-size: 0.82rem;">{{ item._id }}</td>
+                    <td class="text-end">{{ item.total }}</td>
+                  </tr>
+                  <tr *ngIf="!metrics.groupedByPath?.length">
+                    <td colspan="2" class="text-center text-body-secondary">Sin datos</td>
+                  </tr>
+                </tbody>
+              </table>
+            </c-card-body>
+          </c-card>
+        </div>
+
+        <!-- Recent events -->
+        <div class="col-md-6">
+          <c-card class="h-100">
+            <c-card-header>Eventos recientes</c-card-header>
+            <c-card-body>
+              <table cTable [hover]="true" [responsive]="true" [striped]="true" class="mb-0">
+                <thead>
+                  <tr>
+                    <th>Tipo</th>
+                    <th>Ruta</th>
+                    <th>Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let event of metrics.recentEvents | slice:0:10">
+                    <td>
+                      <span class="badge bg-secondary">{{ getEventTypeLabel(event.type) }}</span>
+                    </td>
+                    <td style="word-break: break-all; font-size: 0.82rem; max-width: 200px;">{{ event.path }}</td>
+                    <td class="text-nowrap small">{{ event.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+                  </tr>
+                  <tr *ngIf="!metrics.recentEvents?.length">
+                    <td colspan="3" class="text-center text-body-secondary">Sin datos</td>
+                  </tr>
+                </tbody>
+              </table>
+            </c-card-body>
+          </c-card>
+        </div>
+      </div>
+
+    </ng-container>
+  </div>
 </section>

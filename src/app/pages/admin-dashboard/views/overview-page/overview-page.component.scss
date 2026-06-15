@@ -1,7 +1,13 @@
 @use '../admin-page.shared' as *;
 
-.spinner-border {
-  color: #2563eb;
-  width: 3rem;
-  height: 3rem;
+:host {
+  .legend {
+    small {
+      font-size: x-small;
+    }
+  }
+}
+
+.base-shell {
+    min-height: 0px !important;
 }
