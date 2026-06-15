@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
@@ -9,7 +9,7 @@ import { TestimonialsListComponent } from '@pages/admin-dashboard/components/tes
 @Component({
   selector: 'app-admin-testimonials-page',
   standalone: true,
-  imports: [CommonModule, AlertModule, TestimonialsListComponent],
+  imports: [AlertModule, TestimonialsListComponent],
   templateUrl: './testimonials-page.component.html',
 })
 export class AdminTestimonialsPageComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,7 +7,7 @@ import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 @Component({
   selector: 'app-admin-setup-account',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './admin-setup-account.component.html',
   styleUrl: './admin-setup-account.component.scss',
 })

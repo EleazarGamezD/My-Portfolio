@@ -16,58 +16,67 @@
     <p class="admin-page-copy mb-0">Arrastra cada fila para cambiar el orden de visualizacion en el portfolio. Editar y crear se manejan desde su propio formulario.</p>
   </div>
 
-  <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-    <c-spinner color="primary" size="sm"></c-spinner>
-    <span>Cargando experiencias...</span>
-  </div>
-
-  <div class="empty-state" *ngIf="!loading && items.length === 0">
-    <p>No se encontraron experiencias.</p>
-  </div>
-
-  <div class="experience-surface" *ngIf="!loading && items.length > 0">
-    <div class="reorder-banner" *ngIf="isReordering()">
-      Guardando nuevo orden...
+  @if (loading) {
+    <div class="d-flex align-items-center gap-2 text-body-secondary">
+      <c-spinner color="primary" size="sm"></c-spinner>
+      <span>Cargando experiencias...</span>
     </div>
+  }
 
-    <div class="table-responsive">
-      <table [striped]="true" [hover]="true" cTable>
-        <thead>
-          <tr>
-            <th class="handle-column">Mover</th>
-            <th>#</th>
-            <th>Etiqueta</th>
-            <th>Periodo</th>
-            <th>Descripcion</th>
-            <th class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody cdkDropList [cdkDropListData]="items" (cdkDropListDropped)="onDrop($event)">
-          <tr *ngFor="let item of items; let index = index" cdkDrag>
-            <td class="handle-column">
-              <button type="button" class="drag-handle" cdkDragHandle aria-label="Mover experiencia">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path>
-                </svg>
-              </button>
-            </td>
-            <td>
-              <span class="experience-index">{{ index + 1 }}</span>
-            </td>
-            <td>
-              <div class="experience-title">{{ getItemName(item) }}</div>
-            </td>
-            <td class="experience-period">{{ getPeriod(item) }}</td>
-            <td class="experience-description">{{ getDescription(item) }}</td>
-            <td class="text-center">
-              <div class="d-flex justify-content-center align-items-center">
-                <app-admin-action-menu [canEdit]="true" [editLink]="getEditLink(item)" [canDelete]="true" [canDeactivate]="false" (actionSelected)="handleAction(item, $event)">
-                </app-admin-action-menu>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  @if (!loading && items.length === 0) {
+    <div class="empty-state">
+      <p>No se encontraron experiencias.</p>
     </div>
-  </div>
+  }
+
+  @if (!loading && items.length > 0) {
+    <div class="experience-surface">
+      @if (isReordering()) {
+        <div class="reorder-banner">
+          Guardando nuevo orden...
+        </div>
+      }
+      <div class="table-responsive">
+        <table [striped]="true" [hover]="true" cTable>
+          <thead>
+            <tr>
+              <th class="handle-column">Mover</th>
+              <th>#</th>
+              <th>Etiqueta</th>
+              <th>Periodo</th>
+              <th>Descripcion</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody cdkDropList [cdkDropListData]="items" (cdkDropListDropped)="onDrop($event)">
+            @for (item of items; track item; let index = $index) {
+              <tr cdkDrag>
+                <td class="handle-column">
+                  <button type="button" class="drag-handle" cdkDragHandle aria-label="Mover experiencia">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path>
+                    </svg>
+                  </button>
+                </td>
+                <td>
+                  <span class="experience-index">{{ index + 1 }}</span>
+                </td>
+                <td>
+                  <div class="experience-title">{{ getItemName(item) }}</div>
+                </td>
+                <td class="experience-period">{{ getPeriod(item) }}</td>
+                <td class="experience-description">{{ getDescription(item) }}</td>
+                <td class="text-center">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <app-admin-action-menu [canEdit]="true" [editLink]="getEditLink(item)" [canDelete]="true" [canDeactivate]="false" (actionSelected)="handleAction(item, $event)">
+                    </app-admin-action-menu>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
 </div>

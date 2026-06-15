@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 
 @Component({
   selector: 'app-project-detail-box',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './project-detail-box.component.html',
   styleUrl: './project-detail-box.component.scss',
   animations: [

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -8,7 +8,7 @@ import { I18nService } from '@core/services/i18n/i18n.service';
 @Component({
     selector: 'app-admin-login',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink],
+    imports: [FormsModule, RouterLink],
     templateUrl: './admin-login.component.html',
     styleUrl: './admin-login.component.scss',
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   NavigationEnd,
@@ -36,7 +36,6 @@ import { DefaultHeaderComponent } from './default-header/default-header.componen
   selector: 'app-admin-layout',
   standalone: true,
   imports: [
-    CommonModule,
     RouterOutlet,
     RouterLink,
     BreadcrumbModule,
@@ -54,8 +53,8 @@ import { DefaultHeaderComponent } from './default-header/default-header.componen
     NgScrollbar,
     IconDirective,
     DefaultHeaderComponent,
-    DefaultFooterComponent,
-  ],
+    DefaultFooterComponent
+],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss',
 })

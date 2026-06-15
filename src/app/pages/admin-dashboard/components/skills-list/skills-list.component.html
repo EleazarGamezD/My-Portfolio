@@ -16,57 +16,64 @@
     <p class="admin-page-copy mb-0">Administra el catálogo visual de habilidades que luego se relacionan con los proyectos.</p>
   </div>
 
-  <div *ngIf="!loading && skills.length === 0" class="empty-state">
-    <p>No se encontraron habilidades.</p>
-  </div>
-
-  <div class="skills-surface" *ngIf="skills.length > 0 || loading">
-    <!-- Spinner shown inside surface during load/paginate -->
-    <div *ngIf="loading" class="skills-loading">
-      <c-spinner color="primary" size="sm"></c-spinner>
-      <span>Cargando...</span>
+  @if (!loading && skills.length === 0) {
+    <div class="empty-state">
+      <p>No se encontraron habilidades.</p>
     </div>
+  }
 
-    <div class="skills-grid" [class.skills-grid--loading]="loading">
-      <article class="skill-card" *ngFor="let skill of skills">
-        <div class="skill-card__menu">
-          <app-admin-action-menu [canEdit]="true" [editLink]="['/admin/dashboard/skills/edit', skill._id || '']" [canDelete]="!isDeleting(skill)" [canDeactivate]="false" (actionSelected)="handleAction(skill, $event)">
-          </app-admin-action-menu>
+  @if (skills.length > 0 || loading) {
+    <div class="skills-surface">
+      <!-- Spinner shown inside surface during load/paginate -->
+      @if (loading) {
+        <div class="skills-loading">
+          <c-spinner color="primary" size="sm"></c-spinner>
+          <span>Cargando...</span>
         </div>
-
-        <div class="skill-card__icon">
-          <ng-container *ngIf="getSkillIcon(skill) as iconUrl; else fallbackIcon">
-            <img [src]="iconUrl" [alt]="getSkillLabel(skill)" />
-          </ng-container>
-          <ng-template #fallbackIcon>
-            <span>{{ getSkillLabel(skill).charAt(0) || '?' }}</span>
-          </ng-template>
-        </div>
-
-        <div class="skill-card__body">
-          <h3>{{ getSkillLabel(skill) }}</h3>
-          <c-badge [color]="skill.active ? 'success' : 'secondary'">
-            {{ skill.active ? 'activa' : 'inactiva' }}
-          </c-badge>
-        </div>
-      </article>
-    </div>
-
-    <div class="skills-pagination" *ngIf="pagination.totalPages > 1">
-      <div class="skills-pagination__meta">
-        {{ pagination.totalItems }} habilidades
+      }
+      <div class="skills-grid" [class.skills-grid--loading]="loading">
+        @for (skill of skills; track skill) {
+          <article class="skill-card">
+            <div class="skill-card__menu">
+              <app-admin-action-menu [canEdit]="true" [editLink]="['/admin/dashboard/skills/edit', skill._id || '']" [canDelete]="!isDeleting(skill)" [canDeactivate]="false" (actionSelected)="handleAction(skill, $event)">
+              </app-admin-action-menu>
+            </div>
+            <div class="skill-card__icon">
+              @if (getSkillIcon(skill); as iconUrl) {
+                <img [src]="iconUrl" [alt]="getSkillLabel(skill)" />
+              } @else {
+                <span>{{ getSkillLabel(skill).charAt(0) || '?' }}</span>
+              }
+            </div>
+            <div class="skill-card__body">
+              <h3>{{ getSkillLabel(skill) }}</h3>
+              <c-badge [color]="skill.active ? 'success' : 'secondary'">
+                {{ skill.active ? 'activa' : 'inactiva' }}
+              </c-badge>
+            </div>
+          </article>
+        }
       </div>
-      <div class="skills-pagination__controls">
-        <button type="button" class="skills-pagination__button" [disabled]="!pagination.hasPrevPage" (click)="changePage(pagination.currentPage - 1)">
-          Anterior
-        </button>
-        <button type="button" class="skills-pagination__button" *ngFor="let page of visiblePages" [class.skills-pagination__button--active]="page === pagination.currentPage" (click)="changePage(page)">
-          {{ page }}
-        </button>
-        <button type="button" class="skills-pagination__button" [disabled]="!pagination.hasNextPage" (click)="changePage(pagination.currentPage + 1)">
-          Siguiente
-        </button>
-      </div>
+      @if (pagination.totalPages > 1) {
+        <div class="skills-pagination">
+          <div class="skills-pagination__meta">
+            {{ pagination.totalItems }} habilidades
+          </div>
+          <div class="skills-pagination__controls">
+            <button type="button" class="skills-pagination__button" [disabled]="!pagination.hasPrevPage" (click)="changePage(pagination.currentPage - 1)">
+              Anterior
+            </button>
+            @for (page of visiblePages; track page) {
+              <button type="button" class="skills-pagination__button" [class.skills-pagination__button--active]="page === pagination.currentPage" (click)="changePage(page)">
+                {{ page }}
+              </button>
+            }
+            <button type="button" class="skills-pagination__button" [disabled]="!pagination.hasNextPage" (click)="changePage(pagination.currentPage + 1)">
+              Siguiente
+            </button>
+          </div>
+        </div>
+      }
     </div>
-  </div>
+  }
 </div>

@@ -9,126 +9,121 @@
       <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/skills']">Volver al listado</a>
     </div>
 
-    <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
-    <c-alert *ngIf="notFound" color="warning">No se encontro la skill solicitada.</c-alert>
+    @if (error) {
+      <c-alert color="danger">{{ error }}</c-alert>
+    }
+    @if (notFound) {
+      <c-alert color="warning">No se encontro la skill solicitada.</c-alert>
+    }
 
-    <c-card class="admin-page-surface skill-form-shell" *ngIf="!notFound">
-      <c-card-body>
-        <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-          <span class="spinner-border spinner-border-sm"></span>
-          <span>Cargando skill...</span>
-        </div>
-
-        <div class="skill-editor" *ngIf="!loading">
-          <section>
-            <div class="skill-hero">
-              <div class="skill-hero__topbar">
-                <span class="skill-hero__eyebrow">{{ mode === 'create' ? 'Nueva Tecnología' : 'Editar Tecnología' }}</span>
-
-                <div class="skill-status-pill" [class.skill-status-pill--inactive]="!draft.active">
-                  <span class="skill-status-pill__dot"></span>
-                  {{ statusLabel }}
-                </div>
-              </div>
-
-              <div class="skill-hero__copy">
-                <h3>{{ draftLabel || 'Define la próxima tecnología en tu catálogo' }}</h3>
-                <p>
-                  Usa un nombre claro, decide si debe estar activa y carga un icono consistente para reutilizarlo en
-                  proyectos, filtros y vistas públicas.
-                </p>
-
-                <div class="skill-hero__meta">
-                  <div class="skill-hero__meta-card">
-                    <span class="skill-hero__meta-label">Idiomas</span>
-                    <strong>ES + EN unificado</strong>
-                    <small>El mismo label se replica en ambos idiomas.</small>
-                  </div>
-
-                  <div class="skill-hero__meta-card">
-                    <span class="skill-hero__meta-label">Slug</span>
-                    <strong>Auto generado</strong>
-                    <small>El backend lo crea al guardar, no lo editas aquí.</small>s
-                  </div>
-                </div>
-              </div>
-
-              <aside class="skill-hero__preview">
-                <div class="skill-preview-card">
-                  <p class="skill-preview-card__eyebrow">Vista previa</p>
-
-                  <div class="skill-preview-card__tile">
-                    <div class="skill-preview-card__icon">
-                      <ng-container *ngIf="previewUrls[0] as previewUrl; else previewFallback">
-                        <img [src]="previewUrl" [alt]="draftLabel || 'Vista previa de skill'" aria-label="Vista previa de skill" />
-                      </ng-container>
-                      <ng-template #previewFallback>
-                        <span>{{ draftLabel.charAt(0) || '?' }}</span>
-                      </ng-template>
-                    </div>
-
-                    <div class="skill-preview-card__copy">
-                      <strong>{{ draftLabel || 'Nombre de la skill' }}</strong>
-                      <span>{{ statusLabel }}</span>
-                    </div>
-                  </div>
-                </div>
-              </aside>
+    @if (!notFound) {
+      <c-card class="admin-page-surface skill-form-shell">
+        <c-card-body>
+          @if (loading) {
+            <div class="d-flex align-items-center gap-2 text-body-secondary">
+              <span class="spinner-border spinner-border-sm"></span>
+              <span>Cargando skill...</span>
             </div>
-
-          </section>
-
-          <div class="skill-editor__grid">
-            <section>
-              <div class="skill-panel skill-panel--form">
-                <div class="skill-panel__head">
-                  <h3>Datos base</h3>
-                  <p>La base de la skill queda concentrada en un solo label y un estado simple.</p>
-                </div>
-
-                <div class="skill-field-stack">
-                  <div>
-                    <label class="form-label">Nombre de la skill</label>
-                    <input cFormControl type="text" [ngModel]="draftLabel" (ngModelChange)="onLabelChange($event)" placeholder="Angular" />
-                  </div>
-
-                  <div class="skill-toggle-card">
-                    <div>
-                      <span class="skill-toggle-card__label">Visibilidad</span>
-                      <strong>{{ draft.active ? 'Disponible para proyectos' : 'Oculta en la seleccion' }}</strong>
-                      <p>{{ draft.active ? 'Se puede usar en proyectos y vistas públicas.' : 'Se conserva en catálogo pero no se propone en la interfaz.' }}</p>
+          }
+          @if (!loading) {
+            <div class="skill-editor">
+              <section>
+                <div class="skill-hero">
+                  <div class="skill-hero__topbar">
+                    <span class="skill-hero__eyebrow">{{ mode === 'create' ? 'Nueva Tecnología' : 'Editar Tecnología' }}</span>
+                    <div class="skill-status-pill" [class.skill-status-pill--inactive]="!draft.active">
+                      <span class="skill-status-pill__dot"></span>
+                      {{ statusLabel }}
                     </div>
-
-                    <label class="skill-form__check">
-                      <input cFormCheckInput type="checkbox" [(ngModel)]="draft.active" />
-                      Activa
-                    </label>
                   </div>
+                  <div class="skill-hero__copy">
+                    <h3>{{ draftLabel || 'Define la próxima tecnología en tu catálogo' }}</h3>
+                    <p>
+                      Usa un nombre claro, decide si debe estar activa y carga un icono consistente para reutilizarlo en
+                      proyectos, filtros y vistas públicas.
+                    </p>
+                    <div class="skill-hero__meta">
+                      <div class="skill-hero__meta-card">
+                        <span class="skill-hero__meta-label">Idiomas</span>
+                        <strong>ES + EN unificado</strong>
+                        <small>El mismo label se replica en ambos idiomas.</small>
+                      </div>
+                      <div class="skill-hero__meta-card">
+                        <span class="skill-hero__meta-label">Slug</span>
+                        <strong>Auto generado</strong>
+                        <small>El backend lo crea al guardar, no lo editas aquí.</small>s
+                      </div>
+                    </div>
+                  </div>
+                  <aside class="skill-hero__preview">
+                    <div class="skill-preview-card">
+                      <p class="skill-preview-card__eyebrow">Vista previa</p>
+                      <div class="skill-preview-card__tile">
+                        <div class="skill-preview-card__icon">
+                          @if (previewUrls[0]; as previewUrl) {
+                            <img [src]="previewUrl" [alt]="draftLabel || 'Vista previa de skill'" aria-label="Vista previa de skill" />
+                          } @else {
+                            <span>{{ draftLabel.charAt(0) || '?' }}</span>
+                          }
+                        </div>
+                        <div class="skill-preview-card__copy">
+                          <strong>{{ draftLabel || 'Nombre de la skill' }}</strong>
+                          <span>{{ statusLabel }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </aside>
                 </div>
+              </section>
+              <div class="skill-editor__grid">
+                <section>
+                  <div class="skill-panel skill-panel--form">
+                    <div class="skill-panel__head">
+                      <h3>Datos base</h3>
+                      <p>La base de la skill queda concentrada en un solo label y un estado simple.</p>
+                    </div>
+                    <div class="skill-field-stack">
+                      <div>
+                        <label class="form-label">Nombre de la skill</label>
+                        <input cFormControl type="text" [ngModel]="draftLabel" (ngModelChange)="onLabelChange($event)" placeholder="Angular" />
+                      </div>
+                      <div class="skill-toggle-card">
+                        <div>
+                          <span class="skill-toggle-card__label">Visibilidad</span>
+                          <strong>{{ draft.active ? 'Disponible para proyectos' : 'Oculta en la seleccion' }}</strong>
+                          <p>{{ draft.active ? 'Se puede usar en proyectos y vistas públicas.' : 'Se conserva en catálogo pero no se propone en la interfaz.' }}</p>
+                        </div>
+                        <label class="skill-form__check">
+                          <input cFormCheckInput type="checkbox" [(ngModel)]="draft.active" />
+                          Activa
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section>
+                  <div class="skill-panel skill-panel--media">
+                    <div class="skill-panel__head">
+                      <h3>Icono</h3>
+                      <p>Sube un icono limpio y reconocible. Esta misma pieza se reutiliza en tarjetas, filtros y detalles.</p>
+                    </div>
+                    <app-photo-editor [assets]="iconAssets" [maxPhotos]="1" [variant]="'single'" [title]="'Icono de la skill'" [subTitle]="'Agrega, cambia o elimina el icono principal.'" [emptyLabel]="'Agregar icono'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Eliminar'" (assetsChange)="onIconAssetsChange($event)" (uploadError)="onUploadError($event)">
+                    </app-photo-editor>
+                  </div>
+                </section>
               </div>
-            </section>
-
-            <section>
-              <div class="skill-panel skill-panel--media">
-                <div class="skill-panel__head">
-                  <h3>Icono</h3>
-                  <p>Sube un icono limpio y reconocible. Esta misma pieza se reutiliza en tarjetas, filtros y detalles.</p>
-                </div>
-
-                <app-photo-editor [assets]="iconAssets" [maxPhotos]="1" [variant]="'single'" [title]="'Icono de la skill'" [subTitle]="'Agrega, cambia o elimina el icono principal.'" [emptyLabel]="'Agregar icono'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Eliminar'" (assetsChange)="onIconAssetsChange($event)" (uploadError)="onUploadError($event)">
-                </app-photo-editor>
-              </div>
-            </section>
-          </div>
-        </div>
-
-        <div class="skill-form__footer" *ngIf="!loading">
-          <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/skills']">Cancelar</a>
-          <button cButton color="primary" type="button" (click)="submit()" [disabled]="saving">
-            {{ mode === 'create' ? 'Crear skill' : 'Guardar cambios' }}
-          </button>
-        </div>
-      </c-card-body>
-    </c-card>
+            </div>
+          }
+          @if (!loading) {
+            <div class="skill-form__footer">
+              <a cButton color="secondary" variant="outline" [routerLink]="['/admin/dashboard/skills']">Cancelar</a>
+              <button cButton color="primary" type="button" (click)="submit()" [disabled]="saving">
+                {{ mode === 'create' ? 'Crear skill' : 'Guardar cambios' }}
+              </button>
+            </div>
+          }
+        </c-card-body>
+      </c-card>
+    }
   </div>
 </section>

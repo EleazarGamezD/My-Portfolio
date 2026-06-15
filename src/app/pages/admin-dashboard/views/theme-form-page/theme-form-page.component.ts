@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -20,7 +20,7 @@ export const COLOR_FIELD_META: Array<{ key: keyof IThemeColors; label: string; h
 @Component({
   selector: 'app-admin-theme-form-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule, SpinnerComponent],
+  imports: [FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule, SpinnerComponent],
   templateUrl: './theme-form-page.component.html',
   styleUrl: './theme-form-page.component.scss',
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
@@ -10,13 +10,12 @@ import { BadgeModule, ButtonModule, SpinnerModule, TableModule } from '@coreui/a
   selector: 'app-testimonials-list',
   standalone: true,
   imports: [
-    CommonModule,
     RouterLink,
     TableModule,
     ButtonModule,
     BadgeModule,
-    SpinnerModule,
-  ],
+    SpinnerModule
+],
   templateUrl: './testimonials-list.component.html',
   styleUrl: './testimonials-list.component.scss',
 })

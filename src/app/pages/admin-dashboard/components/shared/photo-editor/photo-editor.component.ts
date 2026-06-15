@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -36,7 +36,7 @@ interface EditablePhotoItem {
 @Component({
   selector: 'app-photo-editor',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './photo-editor.component.html',
   styleUrl: './photo-editor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

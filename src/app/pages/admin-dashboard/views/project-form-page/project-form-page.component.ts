@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -25,7 +25,6 @@ export enum ProjectStatusEnum {
   selector: 'app-admin-project-form-page',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     RouterLink,
     AlertModule,
@@ -35,8 +34,8 @@ export enum ProjectStatusEnum {
     SkillPickerComponent,
     AddPhotoComponent,
     PhotoEditorComponent,
-    TranslateButtonComponent,
-  ],
+    TranslateButtonComponent
+],
   templateUrl: './project-form-page.component.html',
   styleUrl: './project-form-page.component.scss',
 })

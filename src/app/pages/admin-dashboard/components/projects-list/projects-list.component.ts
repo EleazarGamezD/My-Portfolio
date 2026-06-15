@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IPaginationResponse, IProject } from '@core/interfaces/projects/projects.interfaces';
@@ -11,14 +11,13 @@ import { AdminActionMenuAction, AdminActionMenuComponent } from '../admin-action
   selector: 'app-projects-list',
   standalone: true,
   imports: [
-    CommonModule,
     RouterLink,
     TableModule,
     ButtonModule,
     BadgeModule,
     SpinnerModule,
-    AdminActionMenuComponent,
-  ],
+    AdminActionMenuComponent
+],
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',
 })

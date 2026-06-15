@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { AdminPortfolioMediaSectionComponent } from '@pages/admin-dashboard/components/portfolio-media-section/portfolio-media-section.component';
@@ -6,7 +6,7 @@ import { AdminPortfolioMediaSectionComponent } from '@pages/admin-dashboard/comp
 @Component({
   selector: 'app-admin-portfolio-media-page',
   standalone: true,
-  imports: [CommonModule, AdminPortfolioMediaSectionComponent],
+  imports: [AdminPortfolioMediaSectionComponent],
   templateUrl: './portfolio-media-page.component.html',
   styleUrls: ['./portfolio-media-page.component.scss'],
 })

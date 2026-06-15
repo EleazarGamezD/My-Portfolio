@@ -1,5 +1,5 @@
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
@@ -17,7 +17,7 @@ interface OrderedCvContentReorderEvent {
 @Component({
   selector: 'app-ordered-cv-content-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, DragDropModule, SpinnerModule, TableModule, AdminActionMenuComponent],
+  imports: [RouterLink, DragDropModule, SpinnerModule, TableModule, AdminActionMenuComponent],
   templateUrl: './ordered-cv-content-list.component.html',
   styleUrl: './ordered-cv-content-list.component.scss',
 })

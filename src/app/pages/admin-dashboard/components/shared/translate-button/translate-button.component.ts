@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TranslateService } from '@core/services/translate/translate.service';
 import { ButtonModule, SpinnerComponent } from '@coreui/angular';
@@ -13,7 +13,7 @@ export enum LanguageLabel {
 @Component({
   selector: 'app-translate-button',
   standalone: true,
-  imports: [CommonModule, ButtonModule, SpinnerComponent],
+  imports: [ButtonModule, SpinnerComponent],
   templateUrl: './translate-button.component.html',
   styleUrl: './translate-button.component.scss',
 })

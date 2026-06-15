@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
@@ -16,14 +16,13 @@ interface ExperienceReorderEvent {
   selector: 'app-experience-list',
   standalone: true,
   imports: [
-    CommonModule,
     RouterLink,
     DragDropModule,
     TableModule,
     BadgeModule,
     SpinnerModule,
-    AdminActionMenuComponent,
-  ],
+    AdminActionMenuComponent
+],
   templateUrl: './experience-list.component.html',
   styleUrl: './experience-list.component.scss',
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiProfile, IApiResume } from '@core/interfaces/content/content.interface';
 import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
@@ -13,7 +13,7 @@ const CV_CONTENT_TIMEOUT_MS = 12000;
 
 @Component({
   selector: 'app-cv',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './cv.component.html',
   styleUrl: './cv.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

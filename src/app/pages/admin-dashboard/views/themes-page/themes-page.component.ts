@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ITheme } from '@core/interfaces/theme/theme.interface';
@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-admin-themes-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonModule, CardModule, BadgeComponent, SpinnerComponent],
+  imports: [RouterLink, ButtonModule, CardModule, BadgeComponent, SpinnerComponent],
   templateUrl: './themes-page.component.html',
   styleUrl: './themes-page.component.scss',
 })

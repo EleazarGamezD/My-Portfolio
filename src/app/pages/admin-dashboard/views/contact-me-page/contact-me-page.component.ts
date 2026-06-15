@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
@@ -8,7 +8,7 @@ import { Language, TranslateButtonComponent } from '../../components/shared/tran
 @Component({
   selector: 'app-admin-contact-me-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, TranslateButtonComponent],
+  imports: [FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, TranslateButtonComponent],
   templateUrl: './contact-me-page.component.html',
   styleUrl: './contact-me-page.component.scss',
 })

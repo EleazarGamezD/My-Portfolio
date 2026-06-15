@@ -16,66 +16,77 @@
     <p class="admin-page-copy mb-0">Vista tipo listado para administrar testimonios. Crear y editar usan su propio formulario dedicado.</p>
   </div>
 
-  <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-    <c-spinner color="primary" size="sm"></c-spinner>
-    <span>Cargando testimonios...</span>
-  </div>
-
-  <div class="empty-state" *ngIf="!loading && items.length === 0">
-    <p>No se encontraron testimonios.</p>
-  </div>
-
-  <div class="testimonials-surface" *ngIf="!loading && items.length > 0">
-    <div class="table-responsive">
-      <table [striped]="true" [hover]="true" cTable>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Cargo</th>
-            <th>Empresa</th>
-            <th>Estado</th>
-            <th class="text-center">Detalle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of items; let index = index">
-            <td>
-              <span class="testimonial-index">{{ ((pagination.currentPage - 1) * 10) + index + 1 }}</span>
-            </td>
-            <td>
-              <div class="testimonial-name">{{ getName(item) }}</div>
-            </td>
-            <td class="testimonial-meta">{{ getPosition(item) }}</td>
-            <td class="testimonial-meta">{{ getCompany(item) }}</td>
-            <td>
-              <c-badge [color]="getActiveColor(item)">{{ item.active ? 'Activo' : 'Inactivo' }}</c-badge>
-            </td>
-            <td class="text-center">
-              <a class="testimonial-detail-link" [routerLink]="['/admin/dashboard/testimonials', item._id || '']">
-                Ver detalles
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  @if (loading) {
+    <div class="d-flex align-items-center gap-2 text-body-secondary">
+      <c-spinner color="primary" size="sm"></c-spinner>
+      <span>Cargando testimonios...</span>
     </div>
+  }
 
-    <div class="testimonials-pagination" *ngIf="pagination.totalPages > 1">
-      <div class="testimonials-pagination__meta">
-        {{ pagination.totalItems }} testimonios
-      </div>
-      <div class="testimonials-pagination__controls">
-        <button type="button" class="testimonials-pagination__button" [disabled]="!pagination.hasPrevPage" (click)="changePage(pagination.currentPage - 1)">
-          Anterior
-        </button>
-        <button type="button" class="testimonials-pagination__button" *ngFor="let page of visiblePages" [class.testimonials-pagination__button--active]="page === pagination.currentPage" (click)="changePage(page)">
-          {{ page }}
-        </button>
-        <button type="button" class="testimonials-pagination__button" [disabled]="!pagination.hasNextPage" (click)="changePage(pagination.currentPage + 1)">
-          Siguiente
-        </button>
-      </div>
+  @if (!loading && items.length === 0) {
+    <div class="empty-state">
+      <p>No se encontraron testimonios.</p>
     </div>
-  </div>
+  }
+
+  @if (!loading && items.length > 0) {
+    <div class="testimonials-surface">
+      <div class="table-responsive">
+        <table [striped]="true" [hover]="true" cTable>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Cargo</th>
+              <th>Empresa</th>
+              <th>Estado</th>
+              <th class="text-center">Detalle</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of items; track item; let index = $index) {
+              <tr>
+                <td>
+                  <span class="testimonial-index">{{ ((pagination.currentPage - 1) * 10) + index + 1 }}</span>
+                </td>
+                <td>
+                  <div class="testimonial-name">{{ getName(item) }}</div>
+                </td>
+                <td class="testimonial-meta">{{ getPosition(item) }}</td>
+                <td class="testimonial-meta">{{ getCompany(item) }}</td>
+                <td>
+                  <c-badge [color]="getActiveColor(item)">{{ item.active ? 'Activo' : 'Inactivo' }}</c-badge>
+                </td>
+                <td class="text-center">
+                  <a class="testimonial-detail-link" [routerLink]="['/admin/dashboard/testimonials', item._id || '']">
+                    Ver detalles
+                  </a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      @if (pagination.totalPages > 1) {
+        <div class="testimonials-pagination">
+          <div class="testimonials-pagination__meta">
+            {{ pagination.totalItems }} testimonios
+          </div>
+          <div class="testimonials-pagination__controls">
+            <button type="button" class="testimonials-pagination__button" [disabled]="!pagination.hasPrevPage" (click)="changePage(pagination.currentPage - 1)">
+              Anterior
+            </button>
+            @for (page of visiblePages; track page) {
+              <button type="button" class="testimonials-pagination__button" [class.testimonials-pagination__button--active]="page === pagination.currentPage" (click)="changePage(page)">
+                {{ page }}
+              </button>
+            }
+            <button type="button" class="testimonials-pagination__button" [disabled]="!pagination.hasNextPage" (click)="changePage(pagination.currentPage + 1)">
+              Siguiente
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
 </div>

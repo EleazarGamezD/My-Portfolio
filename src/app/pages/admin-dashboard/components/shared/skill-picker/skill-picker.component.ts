@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
@@ -9,7 +9,7 @@ import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/s
 @Component({
   selector: 'app-skill-picker',
   standalone: true,
-  imports: [CommonModule, ButtonModule, AdminSkillsSectionComponent],
+  imports: [ButtonModule, AdminSkillsSectionComponent],
   templateUrl: './skill-picker.component.html',
   styleUrl: './skill-picker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -16,15 +16,14 @@ type SkillFormMode = 'create' | 'edit';
   selector: 'app-admin-skill-form-page',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     RouterLink,
     AlertModule,
     ButtonModule,
     CardModule,
     FormModule,
-    PhotoEditorComponent,
-  ],
+    PhotoEditorComponent
+],
   templateUrl: './skill-form-page.component.html',
   styleUrl: './skill-form-page.component.scss',
 })

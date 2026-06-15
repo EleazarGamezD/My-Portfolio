@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -14,7 +14,7 @@ type ExperienceFormMode = 'create' | 'edit';
 @Component({
   selector: 'app-admin-experience-form-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule, TranslateButtonComponent, SkillPickerComponent],
+  imports: [FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule, TranslateButtonComponent, SkillPickerComponent],
   templateUrl: './experience-form-page.component.html',
   styleUrl: './experience-form-page.component.scss',
 })

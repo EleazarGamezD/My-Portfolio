@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { ContentService } from '@core/services/content/content.service';
@@ -19,7 +19,7 @@ interface DangerAction {
 @Component({
   selector: 'app-danger-zone-page',
   standalone: true,
-  imports: [CommonModule, ButtonModule, SpinnerComponent],
+  imports: [ButtonModule, SpinnerComponent],
   templateUrl: './danger-zone-page.component.html',
   styleUrl: './danger-zone-page.component.scss',
 })

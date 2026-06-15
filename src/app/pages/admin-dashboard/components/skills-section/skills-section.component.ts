@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
@@ -16,7 +16,6 @@ import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/p
   selector: 'app-admin-skills-section',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     BadgeModule,
     ButtonModule,
@@ -25,8 +24,8 @@ import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/p
     SpinnerModule,
     AddPhotoComponent,
     PhotoEditorComponent,
-    AdminActionMenuComponent,
-  ],
+    AdminActionMenuComponent
+],
   templateUrl: './skills-section.component.html',
   styleUrl: './skills-section.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,

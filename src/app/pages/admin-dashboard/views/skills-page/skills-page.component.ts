@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-admin-skills-page',
   standalone: true,
-  imports: [CommonModule, SkillsListComponent],
+  imports: [SkillsListComponent],
   templateUrl: './skills-page.component.html',
 })
 export class AdminSkillsPageComponent implements OnInit {

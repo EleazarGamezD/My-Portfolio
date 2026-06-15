@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -7,7 +7,7 @@ import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 @Component({
   selector: 'app-admin-forgot-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink],
   templateUrl: './admin-forgot-password.component.html',
   styleUrl: './admin-forgot-password.component.scss',
 })

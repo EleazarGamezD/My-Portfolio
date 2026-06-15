@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
@@ -10,7 +10,7 @@ import { AdminActionMenuAction, AdminActionMenuComponent } from '../admin-action
 @Component({
   selector: 'app-skills-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonModule, BadgeModule, SpinnerModule, AdminActionMenuComponent],
+  imports: [RouterLink, ButtonModule, BadgeModule, SpinnerModule, AdminActionMenuComponent],
   templateUrl: './skills-list.component.html',
   styleUrl: './skills-list.component.scss',
 })

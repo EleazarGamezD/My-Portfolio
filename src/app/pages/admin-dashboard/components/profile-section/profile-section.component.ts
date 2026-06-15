@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiProfile, ILocalizedText } from '@core/interfaces/content/content.interface';
@@ -17,7 +17,7 @@ import { Language, TranslateButtonComponent } from '../shared/translate-button/t
 @Component({
     selector: 'app-admin-profile-section',
     standalone: true,
-    imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, PhotoEditorComponent, ShowErrorsComponent, TranslateButtonComponent],
+    imports: [FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, PhotoEditorComponent, ShowErrorsComponent, TranslateButtonComponent],
     templateUrl: './profile-section.component.html',
     styleUrl: './profile-section.component.scss',
 })

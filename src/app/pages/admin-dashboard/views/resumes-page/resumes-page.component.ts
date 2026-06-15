@@ -1,4 +1,4 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiResume } from '@core/interfaces/content/content.interface';
@@ -35,15 +35,14 @@ interface ResumeSlotDraft {
   selector: 'app-admin-resumes-page',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     AlertModule,
     BadgeModule,
     ButtonModule,
     CardModule,
     FormModule,
-    SpinnerModule,
-  ],
+    SpinnerModule
+],
   templateUrl: './resumes-page.component.html',
   styleUrl: './resumes-page.component.scss',
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { AlertModule } from '@coreui/angular';
@@ -7,7 +7,7 @@ import { ProjectsListComponent } from '@pages/admin-dashboard/components/project
 @Component({
   selector: 'app-admin-projects-page',
   standalone: true,
-  imports: [CommonModule, AlertModule, ProjectsListComponent],
+  imports: [AlertModule, ProjectsListComponent],
   templateUrl: './projects-page.component.html',
   styleUrl: './projects-page.component.scss',
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-admin-testimonial-details-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, AlertModule, BadgeModule, ButtonModule, CardModule],
+  imports: [RouterLink, AlertModule, BadgeModule, ButtonModule, CardModule],
   templateUrl: './testimonial-details-page.component.html',
   styleUrl: './testimonial-details-page.component.scss',
 })

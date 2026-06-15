@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IApiPortfolioMedia, IApiProfile } from '@core/interfaces/content/content.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
@@ -23,7 +23,7 @@ type PortfolioMediaBooleanField =
 @Component({
   selector: 'app-admin-portfolio-media-section',
   standalone: true,
-  imports: [CommonModule, ButtonModule, CardModule, SpinnerModule, PhotoEditorComponent],
+  imports: [ButtonModule, CardModule, SpinnerModule, PhotoEditorComponent],
   templateUrl: './portfolio-media-section.component.html',
   styleUrl: './portfolio-media-section.component.scss',
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IApiContentItem, IApiTechSkill } from '@core/interfaces/content/content.interface';
@@ -31,7 +31,7 @@ interface AdminContentPageData {
 @Component({
   selector: 'app-admin-content-page',
   standalone: true,
-  imports: [CommonModule, AlertModule, AdminContentSectionComponent, AdminSkillsSectionComponent, OrderedCvContentListComponent],
+  imports: [AlertModule, AdminContentSectionComponent, AdminSkillsSectionComponent, OrderedCvContentListComponent],
   templateUrl: './content-page.component.html',
   styleUrl: './content-page.component.scss',
 })

@@ -29,22 +29,27 @@
     </c-card>
 
     <!-- Error -->
-    <c-alert *ngIf="facade.error" color="danger" class="admin-page-message">
-      {{ facade.error }}
-    </c-alert>
+    @if (facade.error) {
+      <c-alert color="danger" class="admin-page-message">
+        {{ facade.error }}
+      </c-alert>
+    }
 
     <!-- Loading -->
-    <div *ngIf="facade.loading" class="text-center py-5">
-      <c-spinner color="primary" label="Cargando métricas del resumen"></c-spinner>
-    </div>
+    @if (facade.loading) {
+      <div class="text-center py-5">
+        <c-spinner color="primary" label="Cargando métricas del resumen"></c-spinner>
+      </div>
+    }
 
     <!-- No data -->
-    <c-alert *ngIf="!facade.loading && !facade.metrics" color="info">
-      No hay métricas disponibles.
-    </c-alert>
+    @if (!facade.loading && !facade.metrics) {
+      <c-alert color="info">
+        No hay métricas disponibles.
+      </c-alert>
+    }
 
-    <ng-container *ngIf="!facade.loading && facade.metrics as metrics">
-
+    @if (!facade.loading && facade.metrics; as metrics) {
       <!-- KPI Cards -->
       <div class="row g-3 mb-4">
         <div class="col-md-3 col-sm-6">
@@ -80,67 +85,71 @@
           </c-card>
         </div>
       </div>
-
       <!-- Timeline chart (full width) -->
-      <c-card class="mb-4" *ngIf="timelineChart">
-        <c-card-header>Actividad por día</c-card-header>
-        <c-card-body>
-          <c-chart
-            type="line"
-            [customTooltips]="false"
-            [data]="timelineChart.data"
-            [options]="timelineChart.options"
-            [height]="250">
-          </c-chart>
-        </c-card-body>
-      </c-card>
-
+      @if (timelineChart) {
+        <c-card class="mb-4">
+          <c-card-header>Actividad por día</c-card-header>
+          <c-card-body>
+            <c-chart
+              type="line"
+              [customTooltips]="false"
+              [data]="timelineChart.data"
+              [options]="timelineChart.options"
+              [height]="250">
+            </c-chart>
+          </c-card-body>
+        </c-card>
+      }
       <!-- Charts row -->
       <div class="row g-3 mb-4">
         <div class="col-md-5">
-          <c-card class="h-100" *ngIf="eventTypeChart">
-            <c-card-header>Tipos de Evento</c-card-header>
-            <c-card-body>
-              <c-chart
-                type="doughnut"
-                [customTooltips]="false"
-                [data]="eventTypeChart.data"
-                [options]="eventTypeChart.options"
-                [height]="260">
-              </c-chart>
-            </c-card-body>
-          </c-card>
+          @if (eventTypeChart) {
+            <c-card class="h-100">
+              <c-card-header>Tipos de Evento</c-card-header>
+              <c-card-body>
+                <c-chart
+                  type="doughnut"
+                  [customTooltips]="false"
+                  [data]="eventTypeChart.data"
+                  [options]="eventTypeChart.options"
+                  [height]="260">
+                </c-chart>
+              </c-card-body>
+            </c-card>
+          }
         </div>
         <div class="col-md-7">
-          <c-card class="h-100" *ngIf="projectViewsChart">
-            <c-card-header>Top 10 Proyectos</c-card-header>
-            <c-card-body>
-              <c-chart
-                type="bar"
-                [customTooltips]="false"
-                [data]="projectViewsChart.data"
-                [options]="projectViewsChart.options"
-                [height]="260">
-              </c-chart>
-            </c-card-body>
-          </c-card>
+          @if (projectViewsChart) {
+            <c-card class="h-100">
+              <c-card-header>Top 10 Proyectos</c-card-header>
+              <c-card-body>
+                <c-chart
+                  type="bar"
+                  [customTooltips]="false"
+                  [data]="projectViewsChart.data"
+                  [options]="projectViewsChart.options"
+                  [height]="260">
+                </c-chart>
+              </c-card-body>
+            </c-card>
+          }
         </div>
       </div>
-
       <!-- All projects chart (scrollable) -->
-      <c-card class="mb-4" *ngIf="allProjectViewsChart">
-        <c-card-header>Todos los proyectos vistos</c-card-header>
-        <c-card-body style="overflow-y: auto; max-height: 400px; padding-bottom: 0;">
-          <c-chart
-            type="bar"
-            [customTooltips]="false"
-            [data]="allProjectViewsChart.data"
-            [options]="allProjectViewsChart.options"
-            [height]="allProjectViewsChart.height">
-          </c-chart>
-        </c-card-body>
-      </c-card>
-
+      @if (allProjectViewsChart) {
+        <c-card class="mb-4">
+          <c-card-header>Todos los proyectos vistos</c-card-header>
+          <c-card-body style="overflow-y: auto; max-height: 400px; padding-bottom: 0;">
+            <c-chart
+              type="bar"
+              [customTooltips]="false"
+              [data]="allProjectViewsChart.data"
+              [options]="allProjectViewsChart.options"
+              [height]="allProjectViewsChart.height">
+            </c-chart>
+          </c-card-body>
+        </c-card>
+      }
       <!-- Tables row -->
       <div class="row g-3 mb-4">
         <!-- Top paths -->
@@ -156,19 +165,22 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of metrics.groupedByPath">
-                    <td style="word-break: break-all; font-size: 0.82rem;">{{ item._id }}</td>
-                    <td class="text-end">{{ item.total }}</td>
-                  </tr>
-                  <tr *ngIf="!metrics.groupedByPath?.length">
-                    <td colspan="2" class="text-center text-body-secondary">Sin datos</td>
-                  </tr>
+                  @for (item of metrics.groupedByPath; track item) {
+                    <tr>
+                      <td style="word-break: break-all; font-size: 0.82rem;">{{ item._id }}</td>
+                      <td class="text-end">{{ item.total }}</td>
+                    </tr>
+                  }
+                  @if (!metrics.groupedByPath?.length) {
+                    <tr>
+                      <td colspan="2" class="text-center text-body-secondary">Sin datos</td>
+                    </tr>
+                  }
                 </tbody>
               </table>
             </c-card-body>
           </c-card>
         </div>
-
         <!-- Recent events -->
         <div class="col-md-6">
           <c-card class="h-100">
@@ -183,23 +195,26 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let event of metrics.recentEvents | slice:0:10">
-                    <td>
-                      <span class="badge bg-secondary">{{ getEventTypeLabel(event.type) }}</span>
-                    </td>
-                    <td style="word-break: break-all; font-size: 0.82rem; max-width: 200px;">{{ event.path }}</td>
-                    <td class="text-nowrap small">{{ event.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
-                  </tr>
-                  <tr *ngIf="!metrics.recentEvents?.length">
-                    <td colspan="3" class="text-center text-body-secondary">Sin datos</td>
-                  </tr>
+                  @for (event of metrics.recentEvents | slice:0:10; track event) {
+                    <tr>
+                      <td>
+                        <span class="badge bg-secondary">{{ getEventTypeLabel(event.type) }}</span>
+                      </td>
+                      <td style="word-break: break-all; font-size: 0.82rem; max-width: 200px;">{{ event.path }}</td>
+                      <td class="text-nowrap small">{{ event.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+                    </tr>
+                  }
+                  @if (!metrics.recentEvents?.length) {
+                    <tr>
+                      <td colspan="3" class="text-center text-body-secondary">Sin datos</td>
+                    </tr>
+                  }
                 </tbody>
               </table>
             </c-card-body>
           </c-card>
         </div>
       </div>
-
-    </ng-container>
+    }
   </div>
 </section>

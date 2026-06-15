@@ -3,9 +3,17 @@
     <svg cIcon name="cilSettings"></svg>
   </button>
   <ul cDropdownMenu>
-    <li *ngIf="canEdit && editLink"><a cDropdownItem [routerLink]="editLink">Editar</a></li>
-    <li *ngIf="canEdit && !editLink"><button cDropdownItem (click)="onAction('edit', $event)">Editar</button></li>
-    <li *ngIf="canDeactivate"><button cDropdownItem (click)="onAction('deactivate', $event)">{{ deactivateLabel }}</button></li>
-    <li *ngIf="canDelete"><button cDropdownItem (click)="onAction('delete', $event)">Eliminar</button></li>
+    @if (canEdit && editLink) {
+      <li><a cDropdownItem [routerLink]="editLink">Editar</a></li>
+    }
+    @if (canEdit && !editLink) {
+      <li><button cDropdownItem (click)="onAction('edit', $event)">Editar</button></li>
+    }
+    @if (canDeactivate) {
+      <li><button cDropdownItem (click)="onAction('deactivate', $event)">{{ deactivateLabel }}</button></li>
+    }
+    @if (canDelete) {
+      <li><button cDropdownItem (click)="onAction('delete', $event)">Eliminar</button></li>
+    }
   </ul>
 </c-dropdown>

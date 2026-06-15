@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IconDirective } from '@coreui/icons-angular';
@@ -16,15 +16,14 @@ export type AdminActionMenuAction = 'edit' | 'delete' | 'deactivate';
   selector: 'app-admin-action-menu',
   standalone: true,
   imports: [
-    CommonModule,
     RouterLink,
     DropdownComponent,
     ButtonDirective,
     DropdownToggleDirective,
     DropdownMenuDirective,
     DropdownItemDirective,
-    IconDirective,
-  ],
+    IconDirective
+],
   templateUrl: './admin-action-menu.component.html',
   styleUrl: './admin-action-menu.component.scss',
 })

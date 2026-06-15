@@ -10,71 +10,74 @@
       <c-badge color="light" shape="rounded-pill">{{ adminUsers.length }}</c-badge>
     </div>
 
-    <div *ngIf="contentLoading" class="d-flex align-items-center gap-2 text-body-secondary">
-      <c-spinner size="sm" color="primary"></c-spinner>
-      <span>Cargando usuarios...</span>
-    </div>
+    @if (contentLoading) {
+      <div class="d-flex align-items-center gap-2 text-body-secondary">
+        <c-spinner size="sm" color="primary"></c-spinner>
+        <span>Cargando usuarios...</span>
+      </div>
+    }
 
-    <div class="table-responsive" *ngIf="!contentLoading">
-      <table [hover]="true" [striped]="true" cTable *ngIf="adminUsers.length > 0; else emptyAdminUsers" class="users-table">
-        <thead>
-          <tr>
-            <th>Cuenta</th>
-            <th>Nombre visible</th>
-            <th>Rol</th>
-            <th>Ultimo acceso</th>
-            <th class="text-center users-table__status-header">Activo</th>
-            <th class="text-end users-table__actions-header">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of adminUsers">
-            <td>
-              <div class="users-table__identity">
-                <strong>{{ user.email }}</strong>
-                <span>{{ '@' }}{{ user.username }}</span>
-                <c-badge *ngIf="isCurrentAdmin(user)" color="info" shape="rounded-pill">Sesion actual</c-badge>
-              </div>
-            </td>
-
-            <td class="users-table__display-name-cell">
-              <input cFormControl sizing="sm" type="text" [(ngModel)]="user.displayName" />
-            </td>
-
-            <td>
-              <div class="users-table__role-stack">
-                <c-badge [color]="getRoleColor(user.role)" class="align-self-start">{{ user.role }}</c-badge>
-                <select cFormControl [(ngModel)]="user.role" [disabled]="isCurrentAdmin(user)">
-                  <option value="super_admin">super_admin</option>
-                  <option value="admin">admin</option>
-                  <option value="editor">editor</option>
-                </select>
-              </div>
-            </td>
-
-            <td>
-              <div class="users-table__last-access">
-                <strong>{{ user.lastLoginAt ? (user.lastLoginAt | date:'mediumDate') : 'Nunca' }}</strong>
-                <span>{{ user.lastLoginAt ? (user.lastLoginAt | date:'shortTime') : 'Sin acceso previo' }}</span>
-              </div>
-            </td>
-
-            <td class="text-center users-table__status-cell">
-              <input cFormCheckInput type="checkbox" [(ngModel)]="user.active" [disabled]="isCurrentAdmin(user)" />
-            </td>
-
-            <td class="text-end dashboard-actions-cell users-table__actions-cell">
-              <button cButton color="primary" size="sm" type="button" (click)="saveUser.emit(user)" [disabled]="isActionLoading(user)">
-                Guardar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <ng-template #emptyAdminUsers>
-        <p class="text-muted mb-0">No se encontraron usuarios administradores.</p>
-      </ng-template>
-    </div>
+    @if (!contentLoading) {
+      <div class="table-responsive">
+        @if (adminUsers.length > 0) {
+          <table [hover]="true" [striped]="true" cTable class="users-table">
+            <thead>
+              <tr>
+                <th>Cuenta</th>
+                <th>Nombre visible</th>
+                <th>Rol</th>
+                <th>Ultimo acceso</th>
+                <th class="text-center users-table__status-header">Activo</th>
+                <th class="text-end users-table__actions-header">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (user of adminUsers; track user) {
+                <tr>
+                  <td>
+                    <div class="users-table__identity">
+                      <strong>{{ user.email }}</strong>
+                      <span>{{ '@' }}{{ user.username }}</span>
+                      @if (isCurrentAdmin(user)) {
+                        <c-badge color="info" shape="rounded-pill">Sesion actual</c-badge>
+                      }
+                    </div>
+                  </td>
+                  <td class="users-table__display-name-cell">
+                    <input cFormControl sizing="sm" type="text" [(ngModel)]="user.displayName" />
+                  </td>
+                  <td>
+                    <div class="users-table__role-stack">
+                      <c-badge [color]="getRoleColor(user.role)" class="align-self-start">{{ user.role }}</c-badge>
+                      <select cFormControl [(ngModel)]="user.role" [disabled]="isCurrentAdmin(user)">
+                        <option value="super_admin">super_admin</option>
+                        <option value="admin">admin</option>
+                        <option value="editor">editor</option>
+                      </select>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="users-table__last-access">
+                      <strong>{{ user.lastLoginAt ? (user.lastLoginAt | date:'mediumDate') : 'Nunca' }}</strong>
+                      <span>{{ user.lastLoginAt ? (user.lastLoginAt | date:'shortTime') : 'Sin acceso previo' }}</span>
+                    </div>
+                  </td>
+                  <td class="text-center users-table__status-cell">
+                    <input cFormCheckInput type="checkbox" [(ngModel)]="user.active" [disabled]="isCurrentAdmin(user)" />
+                  </td>
+                  <td class="text-end dashboard-actions-cell users-table__actions-cell">
+                    <button cButton color="primary" size="sm" type="button" (click)="saveUser.emit(user)" [disabled]="isActionLoading(user)">
+                      Guardar
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <p class="text-muted mb-0">No se encontraron usuarios administradores.</p>
+        }
+      </div>
+    }
   </c-card-body>
 </c-card>
