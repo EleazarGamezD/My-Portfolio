@@ -4,36 +4,36 @@
 
   <!-- Home - English -->
   <url>
-    <loc>/en</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="/en"/>
-    <xhtml:link rel="alternate" hreflang="es" href="/es"/>
+    <loc>https://eleazargamez.dev/en</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://eleazargamez.dev/en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://eleazargamez.dev/es"/>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Home - Spanish -->
   <url>
-    <loc>/es</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="/en"/>
-    <xhtml:link rel="alternate" hreflang="es" href="/es"/>
+    <loc>https://eleazargamez.dev/es</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://eleazargamez.dev/en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://eleazargamez.dev/es"/>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- CV - English -->
   <url>
-    <loc>/en/cv</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="/en/cv"/>
-    <xhtml:link rel="alternate" hreflang="es" href="/es/cv"/>
+    <loc>https://eleazargamez.dev/en/cv</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://eleazargamez.dev/en/cv"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://eleazargamez.dev/es/cv"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- CV - Spanish -->
   <url>
-    <loc>/es/cv</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="/en/cv"/>
-    <xhtml:link rel="alternate" hreflang="es" href="/es/cv"/>
+    <loc>https://eleazargamez.dev/es/cv</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://eleazargamez.dev/en/cv"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://eleazargamez.dev/es/cv"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
