@@ -1,36 +1,16 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-type ValidationErrorValue = { requiredLength?: string; requiredPattern?: string; min?: string };
+type ValidationErrorValue = {
+  requiredLength?: string;
+  requiredPattern?: string;
+  min?: string;
+};
 @Component({
   selector: 'app-show-errors',
   templateUrl: './show-errors.component.html',
   styleUrls: ['./show-errors.component.scss'],
-  animations: [
-    trigger('slideInError', [
-      state(
-        'void',
-        style({
-          height: '0px',
-          opacity: 0,
-          overflow: 'hidden',
-          transform: 'translateY(-10px)',
-        }),
-      ),
-      state(
-        '*',
-        style({
-          height: '*',
-          opacity: 1,
-          overflow: 'visible',
-          transform: 'translateY(0)',
-        }),
-      ),
-      transition('void => *', [animate('300ms ease-out')]),
-      transition('* => void', [animate('200ms ease-in')]),
-    ]),
-  ],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class ShowErrorsComponent {
@@ -38,7 +18,11 @@ export class ShowErrorsComponent {
   @Input() requiredField: string = '';
 
   shouldShowError(): boolean {
-    return !!(this.control && this.control.invalid && (this.control.dirty || this.control.touched));
+    return !!(
+      this.control &&
+      this.control.invalid &&
+      (this.control.dirty || this.control.touched)
+    );
   }
 
   get errorMessage(): string {

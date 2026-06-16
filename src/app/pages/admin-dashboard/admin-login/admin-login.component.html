@@ -8,13 +8,17 @@
             <h1 class="admin-title">Portfolio Control Panel</h1>
             <p class="admin-copy">Accede con tu usuario administrador para gestionar métricas y contenido dinámico.</p>
 
-            <div *ngIf="error" class="alert alert-danger" role="alert">
-              {{ error }}
-            </div>
+            @if (error) {
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+            }
 
-            <div *ngIf="infoMessage" class="alert alert-warning" role="alert">
-              {{ infoMessage }}
-            </div>
+            @if (infoMessage) {
+              <div class="alert alert-warning" role="alert">
+                {{ infoMessage }}
+              </div>
+            }
 
             <div class="mb-3">
               <label for="adminEmail" class="form-label">Email</label>

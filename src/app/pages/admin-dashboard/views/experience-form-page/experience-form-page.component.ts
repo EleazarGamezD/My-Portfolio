@@ -1,12 +1,26 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
-import { AlertModule, ButtonModule, CardModule, FormModule } from '@coreui/angular';
+import {
+  AlertModule,
+  ButtonModule,
+  CardModule,
+  FormModule,
+} from '@coreui/angular';
 import { ContentService } from '@core/services/content/content.service';
-import { Language, TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
+import {
+  Language,
+  TranslateButtonComponent,
+} from '../../components/shared/translate-button/translate-button.component';
 import { SkillPickerComponent } from '../../components/shared/skill-picker/skill-picker.component';
+import { ShowErrorsComponent } from '../../components/shared/show-errors/show-errors.component';
 import { ToastrService } from 'ngx-toastr';
 
 type ExperienceFormMode = 'create' | 'edit';
@@ -14,11 +28,28 @@ type ExperienceFormMode = 'create' | 'edit';
 @Component({
   selector: 'app-admin-experience-form-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, AlertModule, ButtonModule, CardModule, FormModule, TranslateButtonComponent, SkillPickerComponent],
+  imports: [
+    FormsModule,
+    RouterLink,
+    AlertModule,
+    ButtonModule,
+    CardModule,
+    FormModule,
+    TranslateButtonComponent,
+    SkillPickerComponent,
+    ShowErrorsComponent,
+  ],
   templateUrl: './experience-form-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './experience-form-page.component.scss',
 })
 export class AdminExperienceFormPageComponent implements OnInit {
+  private readonly contentService = inject(ContentService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   readonly Language = Language;
   mode: ExperienceFormMode = 'create';
   experienceId = '';
@@ -32,23 +63,18 @@ export class AdminExperienceFormPageComponent implements OnInit {
   /** Selected skill IDs for this experience entry */
   selectedSkillIds: string[] = [];
 
-  constructor(
-    private readonly contentService: ContentService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
-
   async ngOnInit(): Promise<void> {
-    this.mode = (this.route.snapshot.data['mode'] as ExperienceFormMode) || 'create';
+    this.mode =
+      (this.route.snapshot.data['mode'] as ExperienceFormMode) || 'create';
     if (this.mode === 'edit') {
       await this.loadExperience();
     }
   }
 
   get pageTitle(): string {
-    return this.mode === 'create' ? 'Crear experiencia laboral' : 'Editar experiencia laboral';
+    return this.mode === 'create'
+      ? 'Crear experiencia laboral'
+      : 'Editar experiencia laboral';
   }
 
   get pageCopy(): string {
@@ -115,7 +141,9 @@ export class AdminExperienceFormPageComponent implements OnInit {
           es: this.draft.description?.es?.trim() || '',
           en: this.draft.description?.en?.trim() || '',
         },
-        value: periodCurrent ? `${periodStart} - Actual` : `${periodStart} - ${periodEnd}`,
+        value: periodCurrent
+          ? `${periodStart} - Actual`
+          : `${periodStart} - ${periodEnd}`,
         period: {
           start: periodStart,
           end: periodCurrent ? null : periodEnd,
@@ -130,16 +158,26 @@ export class AdminExperienceFormPageComponent implements OnInit {
       };
 
       if (this.mode === 'create') {
-        await this.contentService.createContentItem<IApiContentItem>('experience', payload);
+        await this.contentService.createContentItem<IApiContentItem>(
+          'experience',
+          payload,
+        );
         this.toastr.success('Experiencia creada.', 'Panel');
       } else if (this.experienceId) {
-        await this.contentService.updateContentItem<IApiContentItem>('experience', this.experienceId, payload);
+        await this.contentService.updateContentItem<IApiContentItem>(
+          'experience',
+          this.experienceId,
+          payload,
+        );
         this.toastr.success('Experiencia actualizada.', 'Panel');
       }
 
       await this.router.navigate(['/admin/dashboard/experience']);
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo guardar la experiencia.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo guardar la experiencia.';
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.saving = false;
@@ -160,10 +198,15 @@ export class AdminExperienceFormPageComponent implements OnInit {
       this.draft = structuredClone(item);
       const metaSkillIds = item.metadata?.['skillIds'];
       if (Array.isArray(metaSkillIds)) {
-        this.selectedSkillIds = metaSkillIds.filter((id): id is string => typeof id === 'string');
+        this.selectedSkillIds = metaSkillIds.filter(
+          (id): id is string => typeof id === 'string',
+        );
       }
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo cargar la experiencia.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo cargar la experiencia.';
       this.toastr.error(this.error, 'Dashboard');
     } finally {
       this.loading = false;

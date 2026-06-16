@@ -1,5 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { AlertModule } from '@coreui/angular';
 import { ProjectsListComponent } from '@pages/admin-dashboard/components/projects-list/projects-list.component';
@@ -7,15 +12,14 @@ import { ProjectsListComponent } from '@pages/admin-dashboard/components/project
 @Component({
   selector: 'app-admin-projects-page',
   standalone: true,
-  imports: [CommonModule, AlertModule, ProjectsListComponent],
+  imports: [AlertModule, ProjectsListComponent],
   templateUrl: './projects-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './projects-page.component.scss',
 })
 export class AdminProjectsPageComponent implements OnInit {
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   async ngOnInit(): Promise<void> {
     await this.facade.loadProjectsPage();

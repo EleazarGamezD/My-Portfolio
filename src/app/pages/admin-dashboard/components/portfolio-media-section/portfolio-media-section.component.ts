@@ -1,6 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IApiPortfolioMedia, IApiProfile } from '@core/interfaces/content/content.interface';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import {
+  IApiPortfolioMedia,
+  IApiProfile,
+} from '@core/interfaces/content/content.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { ButtonModule, CardModule, SpinnerModule } from '@coreui/angular';
 import { PhotoEditorComponent } from '../shared/photo-editor/photo-editor.component';
@@ -23,8 +31,9 @@ type PortfolioMediaBooleanField =
 @Component({
   selector: 'app-admin-portfolio-media-section',
   standalone: true,
-  imports: [CommonModule, ButtonModule, CardModule, SpinnerModule, PhotoEditorComponent],
+  imports: [ButtonModule, CardModule, SpinnerModule, PhotoEditorComponent],
   templateUrl: './portfolio-media-section.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './portfolio-media-section.component.scss',
 })
 export class AdminPortfolioMediaSectionComponent {

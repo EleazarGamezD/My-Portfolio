@@ -1,15 +1,27 @@
-<article class="project-card-shell cursor-pointer" [class.project-card-shell-featured]="isFeatured" (click)="navigateToProject()">
+<article
+  class="project-card-shell cursor-pointer"
+  [class.project-card-shell-featured]="isFeatured"
+  (click)="navigateToProject()"
+>
   <div class="project-card-media">
-    <img [src]="previewImage" [alt]="title" class="project-card-image" loading="lazy" decoding="async" />
+    <img
+      [src]="previewImage"
+      [alt]="title"
+      class="project-card-image"
+      loading="lazy"
+      decoding="async"
+    />
     <span class="project-card-index">{{ projectIndex + 1 }}</span>
     @if (isFeatured) {
-      <span class="project-card-featured-badge">{{ t('project.card.featured') }}</span>
+      <span class="project-card-featured-badge">{{
+        t("project.card.featured")
+      }}</span>
     }
   </div>
 
   <div class="project-card-body">
     <div class="project-card-head">
-      <span class="project-card-kicker">{{ t('project.card.category') }}</span>
+      <span class="project-card-kicker">{{ t("project.card.category") }}</span>
       <h4 class="project-card-title">{{ title }}</h4>
     </div>
 
@@ -21,11 +33,15 @@
       <div class="project-card-github" aria-label="GitHub repository stats">
         <span class="project-card-github-pill">
           <span class="project-card-github-icon">Star</span>
-          {{ formatCount(project.githubStats?.stars) }}
+          {{
+            formatCount($safeNavigationMigration(project.githubStats?.stars))
+          }}
         </span>
         <span class="project-card-github-pill">
           <span class="project-card-github-icon">Fork</span>
-          {{ formatCount(project.githubStats?.forks) }}
+          {{
+            formatCount($safeNavigationMigration(project.githubStats?.forks))
+          }}
         </span>
       </div>
     }
@@ -36,7 +52,9 @@
           <span class="project-card-chip">{{ technology }}</span>
         }
         @if (stackCountRemainder > 0) {
-          <span class="project-card-chip project-card-chip-muted">+{{ stackCountRemainder }}</span>
+          <span class="project-card-chip project-card-chip-muted"
+            >+{{ stackCountRemainder }}</span
+          >
         }
       </div>
     }

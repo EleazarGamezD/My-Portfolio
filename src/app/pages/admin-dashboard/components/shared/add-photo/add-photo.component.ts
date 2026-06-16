@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -33,7 +33,7 @@ export type LocalImage = {
 @Component({
   selector: 'app-add-photo',
   standalone: true,
-  imports: [CommonModule, IconDirective],
+  imports: [IconDirective],
   templateUrl: './add-photo.component.html',
   styleUrls: ['./add-photo.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

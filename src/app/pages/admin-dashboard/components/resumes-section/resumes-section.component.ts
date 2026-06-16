@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiResume, ILocalizedText } from '@core/interfaces/content/content.interface';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -21,6 +21,7 @@ import {
     styleUrl: './resumes-section.component.scss',
 })
 export class AdminResumesSectionComponent {
+    readonly i18nService = inject(I18nService);
     readonly Language = Language;
     @Input() resumes: IApiResume[] = [];
     @Input() newResume: Partial<IApiResume> = {};
@@ -33,8 +34,6 @@ export class AdminResumesSectionComponent {
     @Output() resumeFileSelected = new EventEmitter<{ item: IApiResume; event: Event }>();
 
     translateErrors: Record<string, string> = {};
-
-    constructor(public readonly i18nService: I18nService) { }
 
     getLocalizedText(value?: ILocalizedText): string {
         if (!value) {

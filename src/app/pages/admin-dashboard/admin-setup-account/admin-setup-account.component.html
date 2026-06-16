@@ -8,7 +8,9 @@
             <h1 class="admin-title">Configura tu cuenta</h1>
             <p class="admin-copy">Crea tu usuario definitivo. La cuenta de bootstrap será eliminada automáticamente.</p>
 
-            <div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+            @if (error) {
+              <div class="alert alert-danger" role="alert">{{ error }}</div>
+            }
 
             <div class="mb-3">
               <label for="setupEmail" class="form-label">Email</label>

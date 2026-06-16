@@ -1,13 +1,13 @@
 <section class="pt-60px pb-60px background-repeat border-bottom border-color-light-gray">
   <div class="row justify-content-center mb-2">
-    <div class="col-lg-6 col-md-8 text-center" data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1],  "delay":0, "duration": 600, "staggervalue": 300, "easing": "easeOutQuad" }'>
+    <div class="col-lg-6 col-md-8 text-center">
       <h3 class="alt-font ls-minus-1px text-dark-gray w-65 xl-w-80 sm-w-100 mx-auto">
         {{ t('home.features.title') }}
       </h3>
     </div>
   </div>
   <div class="container-fluid ps-9 pe-9 lg-ps-1 lg-pe-1 md-ps-15px md-pe-15px">
-    <div class="row row-cols-1 row-cols-lg-4 row-cols-sm-2 justify-content-center" data-anime='{ "el": "childs", "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 100, "easing": "easeOutQuad" }'>
+    <div class="row row-cols-1 row-cols-lg-4 row-cols-sm-2 justify-content-center">
       @for (item of stack; track trackStackItem($index, item); let last = $last) {
       <!-- start features box item -->
       <div [ngClass]="{ 'border-end border-color-light-gray': !last }" class="col icon-with-text-style-03 xs-border-end-0 custom-margin-button">

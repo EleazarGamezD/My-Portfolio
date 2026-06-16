@@ -1,6 +1,17 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  PLATFORM_ID,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {
+  ResumeLanguage,
+  ResumeSlotDraft,
+} from '@core/interfaces/admin-dashboard/admin-dashboard.interface';
 import { IApiResume } from '@core/interfaces/content/content.interface';
 import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
@@ -13,29 +24,13 @@ import {
   FormModule,
   SpinnerModule,
 } from '@coreui/angular';
+import { ShowErrorsComponent } from '@pages/admin-dashboard/components/shared/show-errors/show-errors.component';
 import { ToastrService } from 'ngx-toastr';
-
-type ResumeLanguage = 'es' | 'en';
-
-interface ResumeSlotDraft {
-  language: ResumeLanguage;
-  heading: string;
-  title: string;
-  description: string;
-  order: number;
-  itemId: string | null;
-  fileName: string;
-  mimeType: string;
-  base64: string;
-  downloadUrl: string;
-  metadata: Record<string, unknown>;
-}
 
 @Component({
   selector: 'app-admin-resumes-page',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     AlertModule,
     BadgeModule,
@@ -43,11 +38,19 @@ interface ResumeSlotDraft {
     CardModule,
     FormModule,
     SpinnerModule,
+    ShowErrorsComponent,
   ],
   templateUrl: './resumes-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './resumes-page.component.scss',
 })
 export class AdminResumesPageComponent implements OnInit {
+  private readonly adminAuthService = inject(AdminAuthService);
+  private readonly contentService = inject(ContentService);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly platformId = inject(PLATFORM_ID);
+
   loading = true;
   error: string | null = null;
   successMessage: string | null = null;
@@ -57,14 +60,6 @@ export class AdminResumesPageComponent implements OnInit {
     this.createEmptySlot('es', 'CV Español', 1),
     this.createEmptySlot('en', 'CV Inglés', 2),
   ];
-
-  constructor(
-    private readonly adminAuthService: AdminAuthService,
-    private readonly contentService: ContentService,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private readonly platformId: object,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.loadResumes();
@@ -80,7 +75,10 @@ export class AdminResumesPageComponent implements OnInit {
       const resumes = await this.contentService.getResumes();
       this.hydrateSlots(resumes);
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudieron cargar las hojas de vida.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudieron cargar las hojas de vida.';
       this.showErrorToast(this.error, 'Hojas de vida');
       this.resetSlots();
     } finally {
@@ -96,7 +94,11 @@ export class AdminResumesPageComponent implements OnInit {
       return;
     }
 
-    if (!slot.base64.trim() && !slot.downloadUrl.trim() && !slot.fileName.trim()) {
+    if (
+      !slot.base64.trim() &&
+      !slot.downloadUrl.trim() &&
+      !slot.fileName.trim()
+    ) {
       this.error = `Debes cargar un archivo para ${slot.heading.toLowerCase()}.`;
       this.showErrorToast(this.error, 'Hojas de vida');
       return;
@@ -126,7 +128,11 @@ export class AdminResumesPageComponent implements OnInit {
       };
 
       if (slot.itemId) {
-        await this.contentService.updateContentItem('resumes', slot.itemId, payload);
+        await this.contentService.updateContentItem(
+          'resumes',
+          slot.itemId,
+          payload,
+        );
       } else {
         await this.contentService.createContentItem('resumes', payload);
       }
@@ -135,7 +141,10 @@ export class AdminResumesPageComponent implements OnInit {
       this.showSuccessToast(this.successMessage, 'Hojas de vida');
       await this.loadResumes();
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo guardar la hoja de vida.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo guardar la hoja de vida.';
       this.showErrorToast(this.error, 'Hojas de vida');
     } finally {
       this.savingLanguage = null;
@@ -157,7 +166,10 @@ export class AdminResumesPageComponent implements OnInit {
       this.error = null;
       this.cdr.detectChanges();
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudo leer el archivo seleccionado.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudo leer el archivo seleccionado.';
       this.showErrorToast(this.error, 'Hojas de vida');
     }
   }
@@ -179,21 +191,28 @@ export class AdminResumesPageComponent implements OnInit {
 
     for (const item of resumes) {
       const language = this.resolveResumeLanguage(item);
-      const slot = this.slots.find((candidate) => candidate.language === language);
+      const slot = this.slots.find(
+        (candidate) => candidate.language === language,
+      );
 
       if (!slot) {
         continue;
       }
 
       slot.itemId = item._id || null;
-      slot.title = this.readLocalizedValue(item.label, language) || this.readLocalizedValue(item.title, language);
+      slot.title =
+        this.readLocalizedValue(item.label, language) ||
+        this.readLocalizedValue(item.title, language);
       slot.description = this.readLocalizedValue(item.description, language);
       slot.fileName = item.fileName || '';
       slot.mimeType = item.mimeType || 'application/pdf';
       slot.base64 = item.base64 || '';
       slot.downloadUrl = item.href || '';
       slot.order = typeof item.order === 'number' ? item.order : slot.order;
-      slot.metadata = typeof item.metadata === 'object' && item.metadata !== null ? item.metadata : {};
+      slot.metadata =
+        typeof item.metadata === 'object' && item.metadata !== null
+          ? item.metadata
+          : {};
     }
   }
 
@@ -206,7 +225,11 @@ export class AdminResumesPageComponent implements OnInit {
     );
   }
 
-  private createEmptySlot(language: ResumeLanguage, heading: string, order: number): ResumeSlotDraft {
+  private createEmptySlot(
+    language: ResumeLanguage,
+    heading: string,
+    order: number,
+  ): ResumeSlotDraft {
     return {
       language,
       heading,
@@ -223,7 +246,10 @@ export class AdminResumesPageComponent implements OnInit {
   }
 
   private resolveResumeLanguage(item: IApiResume): ResumeLanguage {
-    const metadataLanguage = typeof item.metadata?.['language'] === 'string' ? item.metadata['language'] : '';
+    const metadataLanguage =
+      typeof item.metadata?.['language'] === 'string'
+        ? item.metadata['language']
+        : '';
     const normalizedLanguage = metadataLanguage.toLowerCase();
 
     if (normalizedLanguage === 'en') {
@@ -234,19 +260,25 @@ export class AdminResumesPageComponent implements OnInit {
       return 'es';
     }
 
-    const resumeIdentity = `${item.slug || ''} ${item.fileName || ''}`.toLowerCase();
+    const resumeIdentity =
+      `${item.slug || ''} ${item.fileName || ''}`.toLowerCase();
     return resumeIdentity.includes('en') ? 'en' : 'es';
   }
 
   private readLocalizedValue(
-    value: IApiResume['label'] | IApiResume['title'] | IApiResume['description'],
+    value:
+      | IApiResume['label']
+      | IApiResume['title']
+      | IApiResume['description'],
     language: ResumeLanguage,
   ): string {
     if (!value) {
       return '';
     }
 
-    return value[language]?.trim() || value.es?.trim() || value.en?.trim() || '';
+    return (
+      value[language]?.trim() || value.es?.trim() || value.en?.trim() || ''
+    );
   }
 
   private getSelectedFile(event: Event): File | null {
@@ -280,7 +312,8 @@ export class AdminResumesPageComponent implements OnInit {
 
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+      reader.onload = () =>
+        resolve(typeof reader.result === 'string' ? reader.result : '');
       reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
       reader.readAsDataURL(file);
     });

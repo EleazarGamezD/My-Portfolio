@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { IApiContentItem, IApiProfile } from '@core/interfaces/content/content.interface';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
+import {
+  IApiContentItem,
+  IApiProfile,
+} from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
@@ -14,14 +23,12 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CareerPathComponent implements OnInit {
+  i18nService = inject(I18nService);
+  private readonly contentService = inject(ContentService);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   careerPathArray: IApiContentItem[] = [];
   profile: IApiProfile | null = null;
-
-  constructor(
-    public i18nService: I18nService,
-    private readonly contentService: ContentService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit() {
     try {
@@ -71,26 +78,36 @@ export class CareerPathComponent implements OnInit {
 
   get apiIcon() {
     return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeApiIcon) ||
-      createPortfolioPlaceholder('API Icon', 360, 360)
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.decorativeApiIcon,
+      ) || createPortfolioPlaceholder('API Icon', 360, 360)
     );
   }
 
   get rainDigits() {
     return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeRainDigits) ||
-      createPortfolioPlaceholder('Rain Digits', 640, 640)
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.decorativeRainDigits,
+      ) || createPortfolioPlaceholder('Rain Digits', 640, 640)
     );
   }
 
   get webBackground() {
     return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeWebBackground) ||
-      createPortfolioPlaceholder('Web Background', 520, 520)
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.decorativeWebBackground,
+      ) || createPortfolioPlaceholder('Web Background', 520, 520)
     );
   }
 
   trackCareerItem(index: number, item: IApiContentItem): string {
-    return item._id || item.slug || item.value || item.label?.es || item.label?.en || `${index}`;
+    return (
+      item._id ||
+      item.slug ||
+      item.value ||
+      item.label?.es ||
+      item.label?.en ||
+      `${index}`
+    );
   }
 }

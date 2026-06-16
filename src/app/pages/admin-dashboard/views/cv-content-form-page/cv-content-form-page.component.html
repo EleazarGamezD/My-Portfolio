@@ -9,184 +9,196 @@
       <a cButton color="secondary" variant="outline" [routerLink]="backLink">Volver al listado</a>
     </div>
 
-    <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
-    <c-alert *ngIf="notFound" color="warning">No se encontro el registro solicitado.</c-alert>
+    @if (error) {
+      <c-alert color="danger">{{ error }}</c-alert>
+    }
+    @if (notFound) {
+      <c-alert color="warning">No se encontro el registro solicitado.</c-alert>
+    }
 
-    <c-card class="admin-page-surface cv-content-form-shell" *ngIf="!notFound">
-      <c-card-body>
-        <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-          <span class="spinner-border spinner-border-sm"></span>
-          <span>Cargando registro...</span>
-        </div>
-
-        <div class="cv-content-editor" *ngIf="!loading">
-          <section>
-            <div class="cv-content-hero">
-              <div class="cv-content-hero__copy">
-                <span class="cv-content-hero__eyebrow">{{ eyebrow }}</span>
-                <h3>{{ heroTitle }}</h3>
-                <p>El orden de aparicion no se edita aqui: se organiza desde el listado arrastrando filas.</p>
-              </div>
-
-              <div class="cv-content-hero__meta">
-                <div class="cv-content-meta-card">
-                  <span>Orden</span>
-                  <strong>{{ mode === 'create' ? 'Se agrega al final' : 'Se conserva hasta que lo muevas' }}</strong>
+    @if (!notFound) {
+      <c-card class="admin-page-surface cv-content-form-shell">
+        <c-card-body>
+          @if (loading) {
+            <div class="d-flex align-items-center gap-2 text-body-secondary">
+              <span class="spinner-border spinner-border-sm"></span>
+              <span>Cargando registro...</span>
+            </div>
+          }
+          @if (!loading) {
+            <div class="cv-content-editor">
+              <section>
+                <div class="cv-content-hero">
+                  <div class="cv-content-hero__copy">
+                    <span class="cv-content-hero__eyebrow">{{ eyebrow }}</span>
+                    <h3>{{ heroTitle }}</h3>
+                    <p>El orden de aparicion no se edita aqui: se organiza desde el listado arrastrando filas.</p>
+                  </div>
+                  <div class="cv-content-hero__meta">
+                    <div class="cv-content-meta-card">
+                      <span>Orden</span>
+                      <strong>{{ mode === 'create' ? 'Se agrega al final' : 'Se conserva hasta que lo muevas' }}</strong>
+                    </div>
+                    <div class="cv-content-meta-card">
+                      <span>Estado</span>
+                      <strong>Visible en CV</strong>
+                    </div>
+                    <div class="cv-content-meta-card">
+                      <span>{{ isEducation ? 'Periodo' : 'Fecha' }}</span>
+                      <strong>
+                        @if (isEducation) {
+                          {{ draft.period?.start || 'Inicio' }} - {{ draft.period?.current ? 'Actual' : (draft.period?.end || 'Fin') }}
+                        } @else {
+                          {{ draft.metadata?.['issuedAt'] || 'Fecha emision' }}
+                        }
+                      </strong>
+                    </div>
+                  </div>
                 </div>
-                <div class="cv-content-meta-card">
-                  <span>Estado</span>
-                  <strong>Visible en CV</strong>
-                </div>
-                <div class="cv-content-meta-card">
-                  <span>{{ isEducation ? 'Periodo' : 'Fecha' }}</span>
-                  <strong>
-                    <ng-container *ngIf="isEducation; else certificationDate">
-                      {{ draft.period?.start || 'Inicio' }} - {{ draft.period?.current ? 'Actual' : (draft.period?.end || 'Fin') }}
-                    </ng-container>
-                    <ng-template #certificationDate>
-                      {{ draft.metadata?.['issuedAt'] || 'Fecha emision' }}
-                    </ng-template>
-                  </strong>
-                </div>
+              </section>
+              <div class="cv-content-grid">
+                <section>
+                  <div class="cv-content-panel">
+                    <div class="cv-content-panel__head">
+                      <h3>Datos base</h3>
+                      <p>{{ isEducation ? 'Institucion, programa y periodo academico.' : 'Plataforma, certificado y datos verificables.' }}</p>
+                    </div>
+                    <div class="cv-content-field-grid">
+                      <div>
+                        <label class="form-label">{{ isEducation ? 'Institucion ES' : 'Plataforma / emisor ES' }}</label>
+                        <input cFormControl type="text" name="cv-content-label-es" [(ngModel)]="draft.label!.es" [placeholder]="isEducation ? 'Universidad / Instituto' : 'Udemy / Coursera / Platzi'" required #cvContentLabelEs="ngModel" />
+                        <app-show-errors [control]="cvContentLabelEs.control" [requiredField]="isEducation ? 'institucion' : 'plataforma / emisor'" />
+                        <div class="translate-row">
+                          <app-translate-button [fromText]="draft.label!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.label!.en = $event; translateErrors['labelEs'] = ''" (translationError)="translateErrors['labelEs'] = $event" />
+                          @if (translateErrors['labelEs']) {
+                            <small class="translate-error">{{ translateErrors['labelEs'] }}</small>
+                          }
+                        </div>
+                      </div>
+                      <div>
+                        <label class="form-label">{{ isEducation ? 'Institucion EN' : 'Plataforma / issuer EN' }}</label>
+                        <input cFormControl type="text" [(ngModel)]="draft.label!.en" [placeholder]="isEducation ? 'University / Institute' : 'Udemy / Coursera / Platzi'" />
+                        <div class="translate-row">
+                          <app-translate-button [fromText]="draft.label!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.label!.es = $event; translateErrors['labelEn'] = ''" (translationError)="translateErrors['labelEn'] = $event" />
+                          @if (translateErrors['labelEn']) {
+                            <small class="translate-error">{{ translateErrors['labelEn'] }}</small>
+                          }
+                        </div>
+                      </div>
+                      <div>
+                        <label class="form-label">{{ isEducation ? 'Titulo / programa ES' : 'Certificado ES' }}</label>
+                        <input cFormControl type="text" name="cv-content-title-es" [(ngModel)]="draft.title!.es" required #cvContentTitleEs="ngModel" />
+                        <app-show-errors [control]="cvContentTitleEs.control" [requiredField]="isEducation ? 'titulo / programa' : 'certificado'" />
+                        <div class="translate-row">
+                          <app-translate-button [fromText]="draft.title!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.title!.en = $event; translateErrors['titleEs'] = ''" (translationError)="translateErrors['titleEs'] = $event" />
+                          @if (translateErrors['titleEs']) {
+                            <small class="translate-error">{{ translateErrors['titleEs'] }}</small>
+                          }
+                        </div>
+                      </div>
+                      <div>
+                        <label class="form-label">{{ isEducation ? 'Titulo / programa EN' : 'Certificado EN' }}</label>
+                        <input cFormControl type="text" [(ngModel)]="draft.title!.en" />
+                        <div class="translate-row">
+                          <app-translate-button [fromText]="draft.title!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.title!.es = $event; translateErrors['titleEn'] = ''" (translationError)="translateErrors['titleEn'] = $event" />
+                          @if (translateErrors['titleEn']) {
+                            <small class="translate-error">{{ translateErrors['titleEn'] }}</small>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                    @if (isEducation) {
+                      <div class="cv-content-field-grid cv-content-field-grid--dates">
+                        <div>
+                          <label class="form-label">Fecha inicio</label>
+                          <input cFormControl type="date" name="cv-content-period-start" [(ngModel)]="draft.period!.start" required #cvContentPeriodStart="ngModel" />
+                          <app-show-errors [control]="cvContentPeriodStart.control" [requiredField]="'fecha inicio'" />
+                        </div>
+                        <div>
+                          <label class="form-label">Fecha fin</label>
+                          <input cFormControl type="date" name="cv-content-period-end" [(ngModel)]="draft.period!.end" [disabled]="currentPeriod" [required]="!currentPeriod" #cvContentPeriodEnd="ngModel" />
+                          <app-show-errors [control]="cvContentPeriodEnd.control" [requiredField]="'fecha fin'" />
+                        </div>
+                        <div class="cv-content-check-field">
+                          <label class="form-label d-block">Estado</label>
+                          <label class="cv-content-check">
+                            <input cFormCheckInput type="checkbox" [ngModel]="currentPeriod" (ngModelChange)="onCurrentPeriodChange($event)" />
+                            Cursando
+                          </label>
+                        </div>
+                      </div>
+                    } @else {
+                      <div class="cv-content-field-grid cv-content-field-grid--cert">
+                        <div>
+                          <label class="form-label">Fecha emision</label>
+                          <input cFormControl type="date" [(ngModel)]="draft.metadata!['issuedAt']" />
+                        </div>
+                        <div>
+                          <label class="form-label">ID credencial</label>
+                          <input cFormControl type="text" [(ngModel)]="draft.metadata!['credentialId']" placeholder="UC-xxxx" />
+                        </div>
+                      </div>
+                    }
+                    <div class="cv-content-field-grid cv-content-field-grid--link">
+                      <div>
+                        <label class="form-label">{{ isEducation ? 'Link de respaldo' : 'Link verificable' }}</label>
+                        <input cFormControl type="text" [(ngModel)]="draft.href" placeholder="https://..." />
+                      </div>
+                      <div class="cv-content-check-field">
+                        <label class="form-label d-block">Visibilidad</label>
+                        <label class="cv-content-check">
+                          <input cFormCheckInput type="checkbox" [(ngModel)]="draft.active" />
+                          Activo
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                @if (isEducation) {
+                  <section>
+                    <div class="cv-content-panel">
+                      <div class="cv-content-panel__head">
+                        <h3>Notas</h3>
+                        <p>Detalle opcional para el CV. Mantenerlo corto ayuda a conservar un formato ATS limpio.</p>
+                      </div>
+                      <div class="cv-content-field-grid">
+                        <div>
+                          <label class="form-label">Notas ES</label>
+                          <textarea cFormControl rows="5" [(ngModel)]="draft.description!.es"></textarea>
+                          <div class="translate-row">
+                            <app-translate-button [fromText]="draft.description!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.description!.en = $event; translateErrors['descEs'] = ''" (translationError)="translateErrors['descEs'] = $event" />
+                            @if (translateErrors['descEs']) {
+                              <small class="translate-error">{{ translateErrors['descEs'] }}</small>
+                            }
+                          </div>
+                        </div>
+                        <div>
+                          <label class="form-label">Notas EN</label>
+                          <textarea cFormControl rows="5" [(ngModel)]="draft.description!.en"></textarea>
+                          <div class="translate-row">
+                            <app-translate-button [fromText]="draft.description!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.description!.es = $event; translateErrors['descEn'] = ''" (translationError)="translateErrors['descEn'] = $event" />
+                            @if (translateErrors['descEn']) {
+                              <small class="translate-error">{{ translateErrors['descEn'] }}</small>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                }
               </div>
             </div>
-          </section>
-
-          <div class="cv-content-grid">
-            <section>
-              <div class="cv-content-panel">
-                <div class="cv-content-panel__head">
-                  <h3>Datos base</h3>
-                  <p>{{ isEducation ? 'Institucion, programa y periodo academico.' : 'Plataforma, certificado y datos verificables.' }}</p>
-                </div>
-
-                <div class="cv-content-field-grid">
-                  <div>
-                    <label class="form-label">{{ isEducation ? 'Institucion ES' : 'Plataforma / emisor ES' }}</label>
-                    <input cFormControl type="text" [(ngModel)]="draft.label!.es" [placeholder]="isEducation ? 'Universidad / Instituto' : 'Udemy / Coursera / Platzi'" />
-                    <div class="translate-row">
-                      <app-translate-button [fromText]="draft.label!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.label!.en = $event; translateErrors['labelEs'] = ''" (translationError)="translateErrors['labelEs'] = $event" />
-                      <small *ngIf="translateErrors['labelEs']" class="translate-error">{{ translateErrors['labelEs'] }}</small>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label class="form-label">{{ isEducation ? 'Institucion EN' : 'Plataforma / issuer EN' }}</label>
-                    <input cFormControl type="text" [(ngModel)]="draft.label!.en" [placeholder]="isEducation ? 'University / Institute' : 'Udemy / Coursera / Platzi'" />
-                    <div class="translate-row">
-                      <app-translate-button [fromText]="draft.label!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.label!.es = $event; translateErrors['labelEn'] = ''" (translationError)="translateErrors['labelEn'] = $event" />
-                      <small *ngIf="translateErrors['labelEn']" class="translate-error">{{ translateErrors['labelEn'] }}</small>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label class="form-label">{{ isEducation ? 'Titulo / programa ES' : 'Certificado ES' }}</label>
-                    <input cFormControl type="text" [(ngModel)]="draft.title!.es" />
-                    <div class="translate-row">
-                      <app-translate-button [fromText]="draft.title!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.title!.en = $event; translateErrors['titleEs'] = ''" (translationError)="translateErrors['titleEs'] = $event" />
-                      <small *ngIf="translateErrors['titleEs']" class="translate-error">{{ translateErrors['titleEs'] }}</small>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label class="form-label">{{ isEducation ? 'Titulo / programa EN' : 'Certificado EN' }}</label>
-                    <input cFormControl type="text" [(ngModel)]="draft.title!.en" />
-                    <div class="translate-row">
-                      <app-translate-button [fromText]="draft.title!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.title!.es = $event; translateErrors['titleEn'] = ''" (translationError)="translateErrors['titleEn'] = $event" />
-                      <small *ngIf="translateErrors['titleEn']" class="translate-error">{{ translateErrors['titleEn'] }}</small>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="cv-content-field-grid cv-content-field-grid--dates" *ngIf="isEducation; else certificationFields">
-                  <div>
-                    <label class="form-label">Fecha inicio</label>
-                    <input cFormControl type="date" [(ngModel)]="draft.period!.start" />
-                  </div>
-
-                  <div>
-                    <label class="form-label">Fecha fin</label>
-                    <input cFormControl type="date" [(ngModel)]="draft.period!.end" [disabled]="currentPeriod" />
-                  </div>
-
-                  <div class="cv-content-check-field">
-                    <label class="form-label d-block">Estado</label>
-                    <label class="cv-content-check">
-                      <input cFormCheckInput type="checkbox" [ngModel]="currentPeriod" (ngModelChange)="onCurrentPeriodChange($event)" />
-                      Cursando
-                    </label>
-                  </div>
-                </div>
-
-                <ng-template #certificationFields>
-                  <div class="cv-content-field-grid cv-content-field-grid--cert">
-                    <div>
-                      <label class="form-label">Fecha emision</label>
-                      <input cFormControl type="date" [(ngModel)]="draft.metadata!['issuedAt']" />
-                    </div>
-
-                    <div>
-                      <label class="form-label">ID credencial</label>
-                      <input cFormControl type="text" [(ngModel)]="draft.metadata!['credentialId']" placeholder="UC-xxxx" />
-                    </div>
-                  </div>
-                </ng-template>
-
-                <div class="cv-content-field-grid cv-content-field-grid--link">
-                  <div>
-                    <label class="form-label">{{ isEducation ? 'Link de respaldo' : 'Link verificable' }}</label>
-                    <input cFormControl type="text" [(ngModel)]="draft.href" placeholder="https://..." />
-                  </div>
-
-                  <div class="cv-content-check-field">
-                    <label class="form-label d-block">Visibilidad</label>
-                    <label class="cv-content-check">
-                      <input cFormCheckInput type="checkbox" [(ngModel)]="draft.active" />
-                      Activo
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section *ngIf="isEducation">
-              <div class="cv-content-panel">
-                <div class="cv-content-panel__head">
-                  <h3>Notas</h3>
-                  <p>Detalle opcional para el CV. Mantenerlo corto ayuda a conservar un formato ATS limpio.</p>
-                </div>
-
-                <div class="cv-content-field-grid">
-                  <div>
-                    <label class="form-label">Notas ES</label>
-                    <textarea cFormControl rows="5" [(ngModel)]="draft.description!.es"></textarea>
-                    <div class="translate-row">
-                      <app-translate-button [fromText]="draft.description!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.description!.en = $event; translateErrors['descEs'] = ''" (translationError)="translateErrors['descEs'] = $event" />
-                      <small *ngIf="translateErrors['descEs']" class="translate-error">{{ translateErrors['descEs'] }}</small>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label class="form-label">Notas EN</label>
-                    <textarea cFormControl rows="5" [(ngModel)]="draft.description!.en"></textarea>
-                    <div class="translate-row">
-                      <app-translate-button [fromText]="draft.description!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.description!.es = $event; translateErrors['descEn'] = ''" (translationError)="translateErrors['descEn'] = $event" />
-                      <small *ngIf="translateErrors['descEn']" class="translate-error">{{ translateErrors['descEn'] }}</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-        </div>
-
-        <div class="cv-content-form__footer" *ngIf="!loading">
-          <a cButton color="secondary" variant="outline" [routerLink]="backLink">Cancelar</a>
-          <button cButton color="primary" type="button" (click)="submit()" [disabled]="saving">
-            {{ mode === 'create' ? (isEducation ? 'Crear educacion' : 'Crear certificado') : 'Guardar cambios' }}
-          </button>
-        </div>
-      </c-card-body>
-    </c-card>
+          }
+          @if (!loading) {
+            <div class="cv-content-form__footer">
+              <a cButton color="secondary" variant="outline" [routerLink]="backLink">Cancelar</a>
+              <button cButton color="primary" type="button" (click)="submit()" [disabled]="saving">
+                {{ mode === 'create' ? (isEducation ? 'Crear educacion' : 'Crear certificado') : 'Guardar cambios' }}
+              </button>
+            </div>
+          }
+        </c-card-body>
+      </c-card>
+    }
   </div>
 </section>

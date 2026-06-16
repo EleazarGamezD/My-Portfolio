@@ -2,16 +2,10 @@ import { Injectable } from '@angular/core';
 import {
     compressImage,
     getBestImageFormat,
-    ICompressedImage,
     IImageCompressionOptions,
     isValidImageFile,
 } from '@core/utils/image-compression.util';
-
-export interface IImageUploadResult {
-    success: boolean;
-    data?: ICompressedImage;
-    error?: string;
-}
+import { IImageUploadResult } from '@core/interfaces/media/image-upload.interface';
 
 @Injectable({
     providedIn: 'root',

@@ -1,8 +1,14 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
-import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
+import { IDashboardMetrics } from '@core/interfaces/analytics/analytics.interface';
 import {
   AlertModule,
   ButtonDirective,
@@ -12,7 +18,7 @@ import {
   CardModule,
   FormModule,
   SpinnerModule,
-  TableDirective
+  TableDirective,
 } from '@coreui/angular';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { getStyle } from '@coreui/utils';
@@ -31,6 +37,7 @@ const EVENT_TYPE_LABELS: Record<string, string> = {
   selector: 'app-admin-overview-page',
   templateUrl: 'overview-page.component.html',
   styleUrls: ['overview-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommonModule,
     FormsModule,
@@ -48,15 +55,17 @@ const EVENT_TYPE_LABELS: Record<string, string> = {
   ],
 })
 export class AdminOverviewPageComponent implements OnInit {
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   eventTypeChart: { data: ChartData; options: ChartOptions } | null = null;
   projectViewsChart: { data: ChartData; options: ChartOptions } | null = null;
-  allProjectViewsChart: { data: ChartData; options: ChartOptions; height: number } | null = null;
+  allProjectViewsChart: {
+    data: ChartData;
+    options: ChartOptions;
+    height: number;
+  } | null = null;
   timelineChart: { data: ChartData; options: ChartOptions } | null = null;
-
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly cdr: ChangeDetectorRef,
-  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.facade.ensureOverviewReady();
@@ -88,7 +97,10 @@ export class AdminOverviewPageComponent implements OnInit {
     return this.getTotal('cv_download');
   }
 
-  private buildEventTypeChart(): { data: ChartData; options: ChartOptions } | null {
+  private buildEventTypeChart(): {
+    data: ChartData;
+    options: ChartOptions;
+  } | null {
     const metrics = this.facade.metrics;
     if (!metrics?.groupedTotals?.length) return null;
 
@@ -122,7 +134,10 @@ export class AdminOverviewPageComponent implements OnInit {
     };
   }
 
-  private buildProjectViewsChart(): { data: ChartData; options: ChartOptions } | null {
+  private buildProjectViewsChart(): {
+    data: ChartData;
+    options: ChartOptions;
+  } | null {
     const metrics = this.facade.metrics;
     if (!metrics?.groupedByProject?.length) return null;
 
@@ -153,7 +168,11 @@ export class AdminOverviewPageComponent implements OnInit {
     };
   }
 
-  private buildAllProjectViewsChart(): { data: ChartData; options: ChartOptions; height: number } | null {
+  private buildAllProjectViewsChart(): {
+    data: ChartData;
+    options: ChartOptions;
+    height: number;
+  } | null {
     const metrics = this.facade.metrics;
     if (!metrics?.allProjectViews?.length) return null;
 
@@ -186,7 +205,10 @@ export class AdminOverviewPageComponent implements OnInit {
     };
   }
 
-  private buildTimelineChart(): { data: ChartData; options: ChartOptions } | null {
+  private buildTimelineChart(): {
+    data: ChartData;
+    options: ChartOptions;
+  } | null {
     const metrics = this.facade.metrics;
     if (!metrics?.groupedByDay?.length) return null;
 

@@ -30,16 +30,28 @@
   <!-- end hello section section -->
 
   <!-- start contact me section -->
-  <app-contact-me />
+  @defer (on viewport) {
+    <app-contact-me />
+  } @placeholder {
+    <div class="deferred-section-placeholder" aria-hidden="true"></div>
+  }
   <!-- end section -->
 
   <!-- start cvs section -->
   <div id="cvs"></div>
-  <app-cv />
+  @defer (on viewport) {
+    <app-cv />
+  } @placeholder {
+    <div class="deferred-section-placeholder" aria-hidden="true"></div>
+  }
   <!-- end cvs section -->
 
   <!-- start work reference section -->
   <div id="work-references"></div>
-  <app-work-references />
+  @defer (on viewport) {
+    <app-work-references />
+  } @placeholder {
+    <div class="deferred-section-placeholder" aria-hidden="true"></div>
+  }
   <!-- end work reference section -->
 </div>

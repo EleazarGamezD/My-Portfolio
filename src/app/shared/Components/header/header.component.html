@@ -9,12 +9,13 @@
             <i class="feather icon-feather-file-minus icon-small me-5px lg-me-2px"></i>CV
           </a>
         </div>
-        <button
-          type="button"
-          class="lang-btn lang-btn-mobile d-inline-flex d-lg-none"
-          (click)="switchLanguage(alternateLanguage)"
-          [attr.aria-label]="'Switch language to ' + alternateLanguageLabel">
-          {{ alternateLanguageLabel }}
+        <button type="button" class="mobile-header-icon d-inline-flex d-lg-none" (click)="scrollTo('cvs')" [attr.aria-label]="t('nav.cv')">
+          <i class="feather icon-feather-file-minus" aria-hidden="true"></i>
+          <span>CV</span>
+        </button>
+        <button type="button" class="lang-btn lang-btn-mobile mobile-header-icon d-inline-flex d-lg-none" (click)="switchLanguage(alternateLanguage)" [attr.aria-label]="'Switch language to ' + alternateLanguageLabel">
+          <i class="feather icon-feather-globe" aria-hidden="true"></i>
+          <span>{{ alternateLanguageLabel }}</span>
         </button>
         <a class="navbar-brand" (click)="navigateTo('home')">
           <img [src]="headerLogo" alt="brand-logo" class="default-logo" fetchpriority="high" decoding="async" />

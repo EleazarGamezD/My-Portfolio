@@ -16,60 +16,69 @@
     <p class="admin-page-copy mb-0">{{ copy }}</p>
   </div>
 
-  <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-    <c-spinner color="primary" size="sm"></c-spinner>
-    <span>{{ loadingLabel }}</span>
-  </div>
-
-  <div class="empty-state" *ngIf="!loading && items.length === 0">
-    <p>{{ emptyLabel }}</p>
-  </div>
-
-  <div class="ordered-content-surface" *ngIf="!loading && items.length > 0">
-    <div class="reorder-banner" *ngIf="isReordering()">
-      Guardando nuevo orden...
+  @if (loading) {
+    <div class="d-flex align-items-center gap-2 text-body-secondary">
+      <c-spinner color="primary" size="sm"></c-spinner>
+      <span>{{ loadingLabel }}</span>
     </div>
+  }
 
-    <div class="table-responsive">
-      <table [striped]="true" [hover]="true" cTable>
-        <thead>
-          <tr>
-            <th class="handle-column">Mover</th>
-            <th>#</th>
-            <th>{{ firstColumnLabel }}</th>
-            <th>{{ secondColumnLabel }}</th>
-            <th>{{ dateColumnLabel }}</th>
-            <th>{{ getDetailColumnLabel() }}</th>
-            <th class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody cdkDropList [cdkDropListData]="items" (cdkDropListDropped)="onDrop($event)">
-          <tr *ngFor="let item of items; let index = index" cdkDrag>
-            <td class="handle-column">
-              <button type="button" class="drag-handle" cdkDragHandle [attr.aria-label]="'Mover ' + title">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path>
-                </svg>
-              </button>
-            </td>
-            <td>
-              <span class="ordered-content-index">{{ index + 1 }}</span>
-            </td>
-            <td>
-              <div class="ordered-content-title">{{ getItemName(item) }}</div>
-            </td>
-            <td class="ordered-content-secondary">{{ getSecondaryText(item) }}</td>
-            <td class="ordered-content-date">{{ getDateText(item) }}</td>
-            <td class="ordered-content-detail">{{ getDetailText(item) }}</td>
-            <td class="text-center">
-              <div class="d-flex justify-content-center align-items-center">
-                <app-admin-action-menu [canEdit]="true" [editLink]="getEditLink(item)" [canDelete]="true" [canDeactivate]="false" (actionSelected)="handleAction(item, $event)">
-                </app-admin-action-menu>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  @if (!loading && items.length === 0) {
+    <div class="empty-state">
+      <p>{{ emptyLabel }}</p>
     </div>
-  </div>
+  }
+
+  @if (!loading && items.length > 0) {
+    <div class="ordered-content-surface">
+      @if (isReordering()) {
+        <div class="reorder-banner">
+          Guardando nuevo orden...
+        </div>
+      }
+      <div class="table-responsive">
+        <table [striped]="true" [hover]="true" cTable>
+          <thead>
+            <tr>
+              <th class="handle-column">Mover</th>
+              <th>#</th>
+              <th>{{ firstColumnLabel }}</th>
+              <th>{{ secondColumnLabel }}</th>
+              <th>{{ dateColumnLabel }}</th>
+              <th>{{ getDetailColumnLabel() }}</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody cdkDropList [cdkDropListData]="items" (cdkDropListDropped)="onDrop($event)">
+            @for (item of items; track item; let index = $index) {
+              <tr cdkDrag>
+                <td class="handle-column">
+                  <button type="button" class="drag-handle" cdkDragHandle [attr.aria-label]="'Mover ' + title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path>
+                    </svg>
+                  </button>
+                </td>
+                <td>
+                  <span class="ordered-content-index">{{ index + 1 }}</span>
+                </td>
+                <td>
+                  <div class="ordered-content-title">{{ getItemName(item) }}</div>
+                </td>
+                <td class="ordered-content-secondary">{{ getSecondaryText(item) }}</td>
+                <td class="ordered-content-date">{{ getDateText(item) }}</td>
+                <td class="ordered-content-detail">{{ getDetailText(item) }}</td>
+                <td class="text-center">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <app-admin-action-menu [canEdit]="true" [editLink]="getEditLink(item)" [canDelete]="true" [canDeactivate]="false" (actionSelected)="handleAction(item, $event)">
+                    </app-admin-action-menu>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
 </div>

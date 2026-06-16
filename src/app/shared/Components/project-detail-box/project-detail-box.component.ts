@@ -1,40 +1,42 @@
-import { CommonModule } from '@angular/common';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
-import { IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
+import {
+  IProject,
+  IProjectAsset,
+} from '@core/interfaces/projects/projects.interfaces';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 
 @Component({
   selector: 'app-project-detail-box',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './project-detail-box.component.html',
   styleUrl: './project-detail-box.component.scss',
-  animations: [
-    trigger('imageEaseOut', [
-      transition('* => *', [
-        style({ opacity: 0.35, transform: 'scale(1.012)', filter: 'blur(2px)' }),
-        animate('520ms ease-out', style({ opacity: 1, transform: 'scale(1)', filter: 'blur(0)' })),
-      ]),
-    ]),
-  ],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class ProjectDetailBoxComponent implements OnChanges {
+export class ProjectDetailBoxComponent implements OnChanges, OnDestroy {
+  private router = inject(Router);
+  i18nService = inject(I18nService);
+  private analyticsService = inject(AnalyticsService);
+
   @Input() project: IProject | null = null;
   activeImage: string | null = null;
+  imageAnimationActive = true;
   private lastTrackedProjectId: string | null = null;
-
-  constructor(
-    private router: Router,
-    public i18nService: I18nService,
-    private analyticsService: AnalyticsService,
-  ) { }
+  private imageAnimationTimer: ReturnType<typeof setTimeout> | null = null;
 
   ngOnChanges(): void {
     this.activeImage = this.galleryImages[0] || null;
+    this.restartImageAnimation();
 
     if (this.project?._id && this.lastTrackedProjectId !== this.project._id) {
       this.analyticsService.trackProjectView(this.project._id.toString());
@@ -42,11 +44,20 @@ export class ProjectDetailBoxComponent implements OnChanges {
     }
   }
 
+  ngOnDestroy(): void {
+    if (this.imageAnimationTimer) {
+      clearTimeout(this.imageAnimationTimer);
+    }
+  }
+
   get projectTitle() {
     if (!this.project) {
       return '';
     }
-    return this.i18nService.selectText(this.project.title?.es || '', this.project.title?.en || this.project.title?.es || '');
+    return this.i18nService.selectText(
+      this.project.title?.es || '',
+      this.project.title?.en || this.project.title?.es || '',
+    );
   }
 
   get projectDescription() {
@@ -55,7 +66,11 @@ export class ProjectDetailBoxComponent implements OnChanges {
     }
     return this.i18nService.selectText(
       this.project.description?.es || this.project.summary?.es || '',
-      this.project.description?.en || this.project.description?.es || this.project.summary?.en || this.project.summary?.es || '',
+      this.project.description?.en ||
+        this.project.description?.es ||
+        this.project.summary?.en ||
+        this.project.summary?.es ||
+        '',
     );
   }
 
@@ -66,7 +81,10 @@ export class ProjectDetailBoxComponent implements OnChanges {
 
     return this.i18nService.selectText(
       this.project.summary?.es || this.project.description?.es || '',
-      this.project.summary?.en || this.project.description?.en || this.project.summary?.es || '',
+      this.project.summary?.en ||
+        this.project.description?.en ||
+        this.project.summary?.es ||
+        '',
     );
   }
 
@@ -79,7 +97,9 @@ export class ProjectDetailBoxComponent implements OnChanges {
 
   get projectTechnologyLabels() {
     if (this.projectTechnologies.length > 0) {
-      return this.projectTechnologies.map((skill) => this.getSkillLabel(skill)).filter(Boolean);
+      return this.projectTechnologies
+        .map((skill) => this.getSkillLabel(skill))
+        .filter(Boolean);
     }
 
     return Array.isArray(this.project?.stack) ? this.project.stack : [];
@@ -111,11 +131,15 @@ export class ProjectDetailBoxComponent implements OnChanges {
   }
 
   get detailBackgroundStyle() {
-    return this.detailBackgroundImage ? this.buildBackgroundImage(this.detailBackgroundImage) : null;
+    return this.detailBackgroundImage
+      ? this.buildBackgroundImage(this.detailBackgroundImage)
+      : null;
   }
 
   get hasLiveDemo() {
-    return !!this.project?.projectLink && this.project.projectLink.startsWith('http');
+    return (
+      !!this.project?.projectLink && this.project.projectLink.startsWith('http')
+    );
   }
 
   get hasSourceCode() {
@@ -136,7 +160,12 @@ export class ProjectDetailBoxComponent implements OnChanges {
   }
 
   selectImage(image: string) {
+    if (image === this.activeImage) {
+      return;
+    }
+
     this.activeImage = image;
+    this.restartImageAnimation();
   }
 
   getSkillLabel(skill: IApiTechSkill): string {
@@ -160,6 +189,19 @@ export class ProjectDetailBoxComponent implements OnChanges {
 
   private buildBackgroundImage(image: string) {
     return `linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.58)), url(${image})`;
+  }
+
+  private restartImageAnimation(): void {
+    this.imageAnimationActive = false;
+
+    if (this.imageAnimationTimer) {
+      clearTimeout(this.imageAnimationTimer);
+    }
+
+    this.imageAnimationTimer = setTimeout(() => {
+      this.imageAnimationActive = true;
+      this.imageAnimationTimer = null;
+    });
   }
 
   backToHome() {

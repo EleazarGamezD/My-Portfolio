@@ -1,28 +1,46 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Injectable, Inject, NgZone, PLATFORM_ID } from '@angular/core';
-import { IAdminDashboardFilters, IAdminUser } from '@core/interfaces/admin/admin.interface';
-import { IApiContentItem, IApiHeroSlide, IApiPortfolioMedia, IApiProfile, IApiResume, IApiTechSkill, ILocalizedText } from '@core/interfaces/content/content.interface';
-import { IPaginationResponse, IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
+import { Injectable, NgZone, PLATFORM_ID, inject } from '@angular/core';
+import {
+  IAdminDashboardFilters,
+  IAdminUser,
+} from '@core/interfaces/admin/admin.interface';
+import {
+  AdminConfirmationDialog,
+  ContentResourceName,
+} from '@core/interfaces/admin-dashboard/admin-dashboard.interface';
+import {
+  IApiContentItem,
+  IApiHeroSlide,
+  IApiPortfolioMedia,
+  IApiProfile,
+  IApiResume,
+  IApiTechSkill,
+  ILocalizedText,
+} from '@core/interfaces/content/content.interface';
+import {
+  IPaginationResponse,
+  IProject,
+  IProjectAsset,
+} from '@core/interfaces/projects/projects.interfaces';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
-import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
+import { IDashboardMetrics } from '@core/interfaces/analytics/analytics.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { ProjectsService } from '@core/services/projects/projects.service';
 import { ToastrService } from 'ngx-toastr';
 
-export type ContentResourceName = 'techSkills' | 'experience' | 'education' | 'certifications' | 'testimonials' | 'resumes' | 'socialLinks';
-
-interface AdminConfirmationDialog {
-  visible: boolean;
-  title: string;
-  message: string;
-  confirmLabel: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class AdminDashboardFacade {
+  private readonly adminAuthService = inject(AdminAuthService);
+  private readonly contentService = inject(ContentService);
+  private readonly projectsService = inject(ProjectsService);
+  private readonly i18nService = inject(I18nService);
+  private readonly toastr = inject(ToastrService);
+  private readonly ngZone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
+
   metrics: IDashboardMetrics | null = null;
   profile: IApiProfile | null = null;
   projects: IProject[] = [];
@@ -49,7 +67,10 @@ export class AdminDashboardFacade {
   newProjectCoverImageValue = '';
   newProjectImagesValue = '';
   readonly newResume: Partial<IApiResume> = this.createEmptyResumeDraft();
-  readonly newContentItems: Record<Exclude<ContentResourceName, 'resumes'>, Partial<IApiContentItem>> = {
+  readonly newContentItems: Record<
+    Exclude<ContentResourceName, 'resumes'>,
+    Partial<IApiContentItem>
+  > = {
     techSkills: this.createEmptySkillDraft(),
     experience: this.createEmptyContentDraft(),
     education: this.createEmptyContentDraft(),
@@ -84,27 +105,21 @@ export class AdminDashboardFacade {
   private metricsLoaded = false;
   private pendingConfirmationAction: (() => Promise<void>) | null = null;
 
-  constructor(
-    private readonly adminAuthService: AdminAuthService,
-    private readonly contentService: ContentService,
-    private readonly projectsService: ProjectsService,
-    private readonly i18nService: I18nService,
-    private readonly toastr: ToastrService,
-    private readonly ngZone: NgZone,
-    @Inject(PLATFORM_ID) private readonly platformId: object,
-  ) {}
-
   async ensureCurrentAdmin(): Promise<void> {
     if (this.currentAdminLoaded) {
       return;
     }
 
     try {
-      const currentAdminResponse = await this.adminAuthService.getCurrentAdmin();
+      const currentAdminResponse =
+        await this.adminAuthService.getCurrentAdmin();
       this.currentAdmin = currentAdminResponse.user;
       this.currentAdminLoaded = true;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to load current admin session';
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Failed to load current admin session';
 
       this.ngZone.run(() => {
         this.currentAdmin = null;
@@ -140,12 +155,15 @@ export class AdminDashboardFacade {
         this.loading = true;
         this.error = null;
       });
-      const metrics = await this.adminAuthService.getDashboardMetrics(this.filters);
+      const metrics = await this.adminAuthService.getDashboardMetrics(
+        this.filters,
+      );
       this.ngZone.run(() => {
         this.metrics = metrics;
       });
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to load metrics';
+      const message =
+        err instanceof Error ? err.message : 'Failed to load metrics';
       this.ngZone.run(() => {
         this.error = message;
       });
@@ -171,7 +189,9 @@ export class AdminDashboardFacade {
     await this.loadMetrics();
   }
 
-  async loadProjectsPage(page = this.projectsPagination.currentPage): Promise<void> {
+  async loadProjectsPage(
+    page = this.projectsPagination.currentPage,
+  ): Promise<void> {
     await this.loadContentResource('Projects', async () => {
       const projects = await this.projectsService.getProjectsPaginated({
         page,
@@ -193,7 +213,8 @@ export class AdminDashboardFacade {
       const profile = await this.contentService.getProfile();
 
       this.ngZone.run(() => {
-        this.profile = this.normalizeProfile(profile) ?? this.createEmptyProfileDraft();
+        this.profile =
+          this.normalizeProfile(profile) ?? this.createEmptyProfileDraft();
       });
     });
   }
@@ -389,21 +410,25 @@ export class AdminDashboardFacade {
       `This will permanently remove ${this.getProjectName(project)} from the portfolio.`,
       'Delete project',
       async () => {
-        await this.runContentAction(`project-delete-${project._id}`, async () => {
-          await this.projectsService.deleteProject(project._id!);
-          await this.loadProjectsPage();
+        await this.runContentAction(
+          `project-delete-${project._id}`,
+          async () => {
+            await this.projectsService.deleteProject(project._id!);
+            await this.loadProjectsPage();
 
-          if (
-            this.projects.length === 0 &&
-            this.projectsPagination.currentPage > 1 &&
-            this.projectsPagination.totalPages > 0
-          ) {
-            this.projectsPagination.currentPage = this.projectsPagination.totalPages;
-            await this.loadProjectsPage(this.projectsPagination.currentPage);
-          }
+            if (
+              this.projects.length === 0 &&
+              this.projectsPagination.currentPage > 1 &&
+              this.projectsPagination.totalPages > 0
+            ) {
+              this.projectsPagination.currentPage =
+                this.projectsPagination.totalPages;
+              await this.loadProjectsPage(this.projectsPagination.currentPage);
+            }
 
-          this.actionMessage = `Project ${this.getProjectName(project)} deleted.`;
-        });
+            this.actionMessage = `Project ${this.getProjectName(project)} deleted.`;
+          },
+        );
       },
     );
   }
@@ -454,14 +479,18 @@ export class AdminDashboardFacade {
     }
   }
 
-  async createContentItem(resourceName: Exclude<ContentResourceName, 'resumes'>): Promise<void> {
+  async createContentItem(
+    resourceName: Exclude<ContentResourceName, 'resumes'>,
+  ): Promise<void> {
     const draft = this.newContentItems[resourceName];
     const labelName = this.getLocalizedText(draft.label);
     const titleName = this.getLocalizedText(draft.title);
     const name = labelName !== '-' ? labelName : titleName;
 
     if (resourceName === 'techSkills') {
-      const normalizedLabel = this.normalizeSkillLabel(draft.label?.es || draft.label?.en || draft.value || '');
+      const normalizedLabel = this.normalizeSkillLabel(
+        draft.label?.es || draft.label?.en || draft.value || '',
+      );
 
       if (!normalizedLabel) {
         this.contentError = 'Skill label is required.';
@@ -501,10 +530,15 @@ export class AdminDashboardFacade {
     }
 
     const payload: Partial<IApiContentItem> = {
-      slug: draft.slug?.trim() || this.createInternalContentSlug(resourceName, draft, name),
+      slug:
+        draft.slug?.trim() ||
+        this.createInternalContentSlug(resourceName, draft, name),
       label: draft.label,
       title: draft.title?.es || draft.title?.en ? draft.title : draft.label,
-      description: draft.description?.es || draft.description?.en ? draft.description : { es: '', en: '' },
+      description:
+        draft.description?.es || draft.description?.en
+          ? draft.description
+          : { es: '', en: '' },
       value: draft.value,
       period: draft.period
         ? {
@@ -528,9 +562,17 @@ export class AdminDashboardFacade {
   }
 
   async createResume(): Promise<void> {
-    const name = this.getLocalizedText(this.newResume.label || this.newResume.title);
+    const name = this.getLocalizedText(
+      this.newResume.label || this.newResume.title,
+    );
 
-    if (!this.newResume.slug || name === '-' || !this.newResume.base64 || !this.newResume.fileName || !this.newResume.mimeType) {
+    if (
+      !this.newResume.slug ||
+      name === '-' ||
+      !this.newResume.base64 ||
+      !this.newResume.fileName ||
+      !this.newResume.mimeType
+    ) {
       this.contentError = 'Resume slug, label and file are required.';
       this.showErrorToast(this.contentError, 'Resumes');
       return;
@@ -539,8 +581,14 @@ export class AdminDashboardFacade {
     const payload: Partial<IApiResume> = {
       slug: this.newResume.slug,
       label: this.newResume.label,
-      title: this.newResume.title?.es || this.newResume.title?.en ? this.newResume.title : this.newResume.label,
-      description: this.newResume.description?.es || this.newResume.description?.en ? this.newResume.description : { es: '', en: '' },
+      title:
+        this.newResume.title?.es || this.newResume.title?.en
+          ? this.newResume.title
+          : this.newResume.label,
+      description:
+        this.newResume.description?.es || this.newResume.description?.en
+          ? this.newResume.description
+          : { es: '', en: '' },
       active: this.newResume.active ?? true,
       fileName: this.newResume.fileName,
       mimeType: this.newResume.mimeType,
@@ -556,30 +604,44 @@ export class AdminDashboardFacade {
     });
   }
 
-  async saveContentItem(resourceName: ContentResourceName, item: IApiContentItem | IApiResume): Promise<void> {
+  async saveContentItem(
+    resourceName: ContentResourceName,
+    item: IApiContentItem | IApiResume,
+  ): Promise<void> {
     if (!item._id) {
       this.contentError = 'Content item id is required to save changes.';
       this.showErrorToast(this.contentError, 'Content');
       return;
     }
 
-    const payload = resourceName === 'techSkills'
-      ? this.getTechSkillPayload(item as IApiTechSkill)
-      : this.getContentPayload(item);
+    const payload =
+      resourceName === 'techSkills'
+        ? this.getTechSkillPayload(item as IApiTechSkill)
+        : this.getContentPayload(item);
 
     if (resourceName === 'certifications' && payload.metadata) {
       delete payload.metadata['platform'];
       delete payload.metadata['issuer'];
     }
 
-    await this.runContentAction(`${resourceName}-save-${item._id}`, async () => {
-      await this.contentService.updateContentItem(resourceName, item._id!, payload);
-      await this.reloadContentCollection(resourceName);
-      this.actionMessage = `${this.getContentItemName(item)} updated.`;
-    });
+    await this.runContentAction(
+      `${resourceName}-save-${item._id}`,
+      async () => {
+        await this.contentService.updateContentItem(
+          resourceName,
+          item._id!,
+          payload,
+        );
+        await this.reloadContentCollection(resourceName);
+        this.actionMessage = `${this.getContentItemName(item)} updated.`;
+      },
+    );
   }
 
-  async deleteContentItem(resourceName: ContentResourceName, item: IApiContentItem | IApiResume): Promise<void> {
+  async deleteContentItem(
+    resourceName: ContentResourceName,
+    item: IApiContentItem | IApiResume,
+  ): Promise<void> {
     if (!item._id) {
       return;
     }
@@ -589,16 +651,25 @@ export class AdminDashboardFacade {
       `This will permanently remove ${this.getContentItemName(item)} from ${resourceName}.`,
       'Delete item',
       async () => {
-        await this.runContentAction(`${resourceName}-delete-${item._id}`, async () => {
-          await this.contentService.deleteContentItem(resourceName, item._id!);
-          await this.reloadContentCollection(resourceName);
-          this.actionMessage = `${this.getContentItemName(item)} deleted.`;
-        });
+        await this.runContentAction(
+          `${resourceName}-delete-${item._id}`,
+          async () => {
+            await this.contentService.deleteContentItem(
+              resourceName,
+              item._id!,
+            );
+            await this.reloadContentCollection(resourceName);
+            this.actionMessage = `${this.getContentItemName(item)} deleted.`;
+          },
+        );
       },
     );
   }
 
-  async reorderExperience(previousIndex: number, currentIndex: number): Promise<void> {
+  async reorderExperience(
+    previousIndex: number,
+    currentIndex: number,
+  ): Promise<void> {
     if (previousIndex === currentIndex) {
       return;
     }
@@ -626,7 +697,12 @@ export class AdminDashboardFacade {
         ...item,
         order: index + 1,
       }))
-      .filter((item) => item._id && item.order !== this.experience.find((current) => current._id === item._id)?.order);
+      .filter(
+        (item) =>
+          item._id &&
+          item.order !==
+            this.experience.find((current) => current._id === item._id)?.order,
+      );
 
     this.experience = reordered.map((item, index) => ({
       ...item,
@@ -657,7 +733,11 @@ export class AdminDashboardFacade {
     });
   }
 
-  async reorderContentItems(resourceName: 'education' | 'certifications', previousIndex: number, currentIndex: number): Promise<void> {
+  async reorderContentItems(
+    resourceName: 'education' | 'certifications',
+    previousIndex: number,
+    currentIndex: number,
+  ): Promise<void> {
     const currentItems = this.getContentItems(resourceName);
 
     if (
@@ -684,7 +764,12 @@ export class AdminDashboardFacade {
         ...item,
         order: index + 1,
       }))
-      .filter((item) => item._id && item.order !== currentItems.find((current) => current._id === item._id)?.order);
+      .filter(
+        (item) =>
+          item._id &&
+          item.order !==
+            currentItems.find((current) => current._id === item._id)?.order,
+      );
 
     const orderedItems = reordered.map((item, index) => ({
       ...item,
@@ -700,7 +785,11 @@ export class AdminDashboardFacade {
     await this.runContentAction(`${resourceName}-reorder`, async () => {
       await Promise.all(
         itemsToPersist.map((item) =>
-          this.contentService.updateContentItem(resourceName, item._id!, this.getContentPayload(item)),
+          this.contentService.updateContentItem(
+            resourceName,
+            item._id!,
+            this.getContentPayload(item),
+          ),
         ),
       );
 
@@ -755,7 +844,8 @@ export class AdminDashboardFacade {
       this.newResume.base64 = fileData;
       this.contentError = null;
     } catch (error) {
-      this.contentError = error instanceof Error ? error.message : 'Failed to read resume file';
+      this.contentError =
+        error instanceof Error ? error.message : 'Failed to read resume file';
       this.showErrorToast(this.contentError, 'Resumes');
     }
   }
@@ -773,7 +863,8 @@ export class AdminDashboardFacade {
       item.base64 = fileData;
       this.contentError = null;
     } catch (error) {
-      this.contentError = error instanceof Error ? error.message : 'Failed to read resume file';
+      this.contentError =
+        error instanceof Error ? error.message : 'Failed to read resume file';
       this.showErrorToast(this.contentError, 'Resumes');
     }
   }
@@ -796,7 +887,9 @@ export class AdminDashboardFacade {
   }
 
   isCurrentAdmin(user: IAdminUser): boolean {
-    return Boolean(this.currentAdmin?._id && user._id === this.currentAdmin._id);
+    return Boolean(
+      this.currentAdmin?._id && user._id === this.currentAdmin._id,
+    );
   }
 
   onProjectStackChange(project: IProject, value: string): void {
@@ -822,7 +915,10 @@ export class AdminDashboardFacade {
     this.contentError = null;
   }
 
-  onTechSkillIconAssetsChange(skill: IApiTechSkill, assets: IProjectAsset[]): void {
+  onTechSkillIconAssetsChange(
+    skill: IApiTechSkill,
+    assets: IProjectAsset[],
+  ): void {
     skill.icon = assets[0] ?? null;
     this.contentError = null;
   }
@@ -832,7 +928,10 @@ export class AdminDashboardFacade {
     this.contentError = null;
   }
 
-  onProjectGalleryAssetsChange(project: IProject, assets: IProjectAsset[]): void {
+  onProjectGalleryAssetsChange(
+    project: IProject,
+    assets: IProjectAsset[],
+  ): void {
     project.images = assets;
     this.contentError = null;
   }
@@ -857,7 +956,9 @@ export class AdminDashboardFacade {
     this.showErrorToast(message, 'Images');
   }
 
-  getContentItems(resourceName: Exclude<ContentResourceName, 'resumes'>): IApiContentItem[] {
+  getContentItems(
+    resourceName: Exclude<ContentResourceName, 'resumes'>,
+  ): IApiContentItem[] {
     switch (resourceName) {
       case 'techSkills':
         return this.techSkills;
@@ -874,7 +975,9 @@ export class AdminDashboardFacade {
     }
   }
 
-  getContentDraft(resourceName: Exclude<ContentResourceName, 'resumes'>): Partial<IApiContentItem> {
+  getContentDraft(
+    resourceName: Exclude<ContentResourceName, 'resumes'>,
+  ): Partial<IApiContentItem> {
     return this.newContentItems[resourceName];
   }
 
@@ -889,8 +992,13 @@ export class AdminDashboardFacade {
     Object.assign(this.newResume, this.createEmptyResumeDraft());
   }
 
-  private resetContentDraft(resourceName: Exclude<ContentResourceName, 'resumes'>): void {
-    Object.assign(this.newContentItems[resourceName], this.createEmptyContentDraft());
+  private resetContentDraft(
+    resourceName: Exclude<ContentResourceName, 'resumes'>,
+  ): void {
+    Object.assign(
+      this.newContentItems[resourceName],
+      this.createEmptyContentDraft(),
+    );
   }
 
   private createEmptyProjectDraft(): Partial<IProject> {
@@ -933,20 +1041,34 @@ export class AdminDashboardFacade {
     };
   }
 
-  private createInternalContentSlug(resourceName: Exclude<ContentResourceName, 'resumes'>, draft: Partial<IApiContentItem>, name: string): string {
+  private createInternalContentSlug(
+    resourceName: Exclude<ContentResourceName, 'resumes'>,
+    draft: Partial<IApiContentItem>,
+    name: string,
+  ): string {
     const rawSlug = [
       resourceName,
       name,
       draft.title?.es,
       draft.title?.en,
-      typeof draft.metadata?.['platform'] === 'string' ? draft.metadata['platform'] : '',
-      typeof draft.metadata?.['issuedAt'] === 'string' ? draft.metadata['issuedAt'] : '',
+      typeof draft.metadata?.['platform'] === 'string'
+        ? draft.metadata['platform']
+        : '',
+      typeof draft.metadata?.['issuedAt'] === 'string'
+        ? draft.metadata['issuedAt']
+        : '',
       Date.now().toString(36),
     ]
-      .filter((part): part is string => typeof part === 'string' && part.trim().length > 0)
+      .filter(
+        (part): part is string =>
+          typeof part === 'string' && part.trim().length > 0,
+      )
       .join('-');
 
-    return this.slugifyContentValue(rawSlug) || `${resourceName}-${Date.now().toString(36)}`;
+    return (
+      this.slugifyContentValue(rawSlug) ||
+      `${resourceName}-${Date.now().toString(36)}`
+    );
   }
 
   private slugifyContentValue(value: string): string {
@@ -1015,7 +1137,10 @@ export class AdminDashboardFacade {
       ...profile,
       label: { es: profile.label?.es ?? '', en: profile.label?.en ?? '' },
       title: { es: profile.title?.es ?? '', en: profile.title?.en ?? '' },
-      description: { es: profile.description?.es ?? '', en: profile.description?.en ?? '' },
+      description: {
+        es: profile.description?.es ?? '',
+        en: profile.description?.en ?? '',
+      },
       metadata: {
         ...metadata,
         about: {
@@ -1041,7 +1166,10 @@ export class AdminDashboardFacade {
   private normalizeHeroSlide(slide?: IApiHeroSlide): IApiHeroSlide {
     return {
       title: { es: slide?.title?.es ?? '', en: slide?.title?.en ?? '' },
-      description: { es: slide?.description?.es ?? '', en: slide?.description?.en ?? '' },
+      description: {
+        es: slide?.description?.es ?? '',
+        en: slide?.description?.en ?? '',
+      },
       image: slide?.image ?? null,
     };
   }
@@ -1059,24 +1187,31 @@ export class AdminDashboardFacade {
     this.profile.metadata.portfolioMedia ??= this.normalizePortfolioMedia();
   }
 
-  private normalizePortfolioMedia(media?: IApiPortfolioMedia | null): IApiPortfolioMedia {
+  private normalizePortfolioMedia(
+    media?: IApiPortfolioMedia | null,
+  ): IApiPortfolioMedia {
     return {
       headerLogo: media?.headerLogo ?? null,
       aboutPrimaryImage: media?.aboutPrimaryImage ?? null,
       aboutSecondaryImage: media?.aboutSecondaryImage ?? null,
       footerCenterImage: media?.footerCenterImage ?? null,
       aboutSectionBackground: media?.aboutSectionBackground ?? null,
-      aboutSectionTransparentBackground: media?.aboutSectionTransparentBackground ?? false,
+      aboutSectionTransparentBackground:
+        media?.aboutSectionTransparentBackground ?? false,
       cvHeroBackground: media?.cvHeroBackground ?? null,
       cvSectionBackground: media?.cvSectionBackground ?? null,
       heroSlideFallbackImage: media?.heroSlideFallbackImage ?? null,
       projectFallbackImage: media?.projectFallbackImage ?? null,
       projectsSectionBackground: media?.projectsSectionBackground ?? null,
-      projectsSectionTransparentBackground: media?.projectsSectionTransparentBackground ?? false,
-      testimonialsSectionBackground: media?.testimonialsSectionBackground ?? null,
-      testimonialsSectionTransparentBackground: media?.testimonialsSectionTransparentBackground ?? false,
+      projectsSectionTransparentBackground:
+        media?.projectsSectionTransparentBackground ?? false,
+      testimonialsSectionBackground:
+        media?.testimonialsSectionBackground ?? null,
+      testimonialsSectionTransparentBackground:
+        media?.testimonialsSectionTransparentBackground ?? false,
       contactSectionBackground: media?.contactSectionBackground ?? null,
-      contactSectionTransparentBackground: media?.contactSectionTransparentBackground ?? false,
+      contactSectionTransparentBackground:
+        media?.contactSectionTransparentBackground ?? false,
       decorativeCloudIcon: media?.decorativeCloudIcon ?? null,
       decorativeWebDevelopmentIcon: media?.decorativeWebDevelopmentIcon ?? null,
       decorativeMultitaskIcon: media?.decorativeMultitaskIcon ?? null,
@@ -1084,11 +1219,15 @@ export class AdminDashboardFacade {
       decorativeServerIcon: media?.decorativeServerIcon ?? null,
       decorativeRainDigits: media?.decorativeRainDigits ?? null,
       decorativeWebBackground: media?.decorativeWebBackground ?? null,
-      testimonialLogos: Array.isArray(media?.testimonialLogos) ? [...media!.testimonialLogos] : [],
+      testimonialLogos: Array.isArray(media?.testimonialLogos)
+        ? [...media!.testimonialLogos]
+        : [],
     };
   }
 
-  private getContentPayload(item: IApiContentItem | IApiResume): Partial<IApiContentItem & IApiResume> {
+  private getContentPayload(
+    item: IApiContentItem | IApiResume,
+  ): Partial<IApiContentItem & IApiResume> {
     return {
       slug: item.slug,
       label: item.label,
@@ -1108,7 +1247,9 @@ export class AdminDashboardFacade {
   }
 
   private getTechSkillPayload(item: IApiTechSkill): Partial<IApiTechSkill> {
-    const normalizedLabel = this.normalizeSkillLabel(item.label?.es || item.label?.en || item.value || '');
+    const normalizedLabel = this.normalizeSkillLabel(
+      item.label?.es || item.label?.en || item.value || '',
+    );
 
     return {
       label: { es: normalizedLabel, en: normalizedLabel },
@@ -1131,7 +1272,10 @@ export class AdminDashboardFacade {
       .join(' ');
   }
 
-  private async loadContentResource(resourceLabel: string, callback: () => Promise<void>): Promise<void> {
+  private async loadContentResource(
+    resourceLabel: string,
+    callback: () => Promise<void>,
+  ): Promise<void> {
     await this.ensureCurrentAdmin();
 
     if (!this.currentAdmin) {
@@ -1146,7 +1290,10 @@ export class AdminDashboardFacade {
 
       await callback();
     } catch (error) {
-      const message = error instanceof Error ? error.message : `Failed to load ${resourceLabel.toLowerCase()}`;
+      const message =
+        error instanceof Error
+          ? error.message
+          : `Failed to load ${resourceLabel.toLowerCase()}`;
       this.ngZone.run(() => {
         this.contentError = message;
       });
@@ -1159,7 +1306,9 @@ export class AdminDashboardFacade {
     }
   }
 
-  private async reloadContentCollection(resourceName: ContentResourceName): Promise<void> {
+  private async reloadContentCollection(
+    resourceName: ContentResourceName,
+  ): Promise<void> {
     switch (resourceName) {
       case 'techSkills':
         await this.loadTechSkillsContent();
@@ -1185,7 +1334,10 @@ export class AdminDashboardFacade {
     }
   }
 
-  private async runContentAction(actionKey: string, callback: () => Promise<void>): Promise<void> {
+  private async runContentAction(
+    actionKey: string,
+    callback: () => Promise<void>,
+  ): Promise<void> {
     try {
       this.ngZone.run(() => {
         this.actionLoadingKey = actionKey;
@@ -1197,7 +1349,8 @@ export class AdminDashboardFacade {
         this.showSuccessToast(this.actionMessage, 'Admin updated');
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to apply admin action';
+      const message =
+        error instanceof Error ? error.message : 'Failed to apply admin action';
       this.ngZone.run(() => {
         this.contentError = message;
       });
@@ -1256,7 +1409,8 @@ export class AdminDashboardFacade {
 
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+      reader.onload = () =>
+        resolve(typeof reader.result === 'string' ? reader.result : '');
       reader.onerror = () => reject(new Error('Failed to read file.'));
       reader.readAsDataURL(file);
     });

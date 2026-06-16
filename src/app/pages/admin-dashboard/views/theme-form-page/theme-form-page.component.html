@@ -29,7 +29,8 @@
             <c-card-header>Identificación</c-card-header>
             <c-card-body>
               <label class="form-label" for="themeName">Nombre del tema</label>
-              <input id="themeName" class="form-control" [(ngModel)]="name" placeholder="Ej: Azul Océano" />
+              <input id="themeName" class="form-control" name="theme-name" [(ngModel)]="name" placeholder="Ej: Azul Océano" required #themeName="ngModel" />
+              <app-show-errors [control]="themeName.control" [requiredField]="'nombre del tema'" />
             </c-card-body>
           </c-card>
 

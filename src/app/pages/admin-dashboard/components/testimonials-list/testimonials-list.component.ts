@@ -1,26 +1,33 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
-import { BadgeModule, ButtonModule, SpinnerModule, TableModule } from '@coreui/angular';
+import {
+  BadgeModule,
+  ButtonModule,
+  SpinnerModule,
+  TableModule,
+} from '@coreui/angular';
 
 @Component({
   selector: 'app-testimonials-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    TableModule,
-    ButtonModule,
-    BadgeModule,
-    SpinnerModule,
-  ],
+  imports: [RouterLink, TableModule, ButtonModule, BadgeModule, SpinnerModule],
   templateUrl: './testimonials-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './testimonials-list.component.scss',
 })
 export class TestimonialsListComponent {
+  private readonly i18nService = inject(I18nService);
+
   @Input() items: IApiContentItem[] = [];
   @Input() loading = false;
   @Input() pagination: IPaginationResponse<IApiContentItem> = {
@@ -32,8 +39,6 @@ export class TestimonialsListComponent {
     hasPrevPage: false,
   };
   @Output() pageChange = new EventEmitter<number>();
-
-  constructor(private readonly i18nService: I18nService) {}
 
   get visiblePages(): number[] {
     if (this.pagination.totalPages <= 1) {
@@ -62,10 +67,12 @@ export class TestimonialsListComponent {
       return metadataName;
     }
 
-    return this.i18nService.selectText(
-      item.label?.es || '',
-      item.label?.en || item.label?.es || '',
-    ) || '-';
+    return (
+      this.i18nService.selectText(
+        item.label?.es || '',
+        item.label?.en || item.label?.es || '',
+      ) || '-'
+    );
   }
 
   getPosition(item: IApiContentItem): string {
@@ -83,7 +90,11 @@ export class TestimonialsListComponent {
   }
 
   changePage(page: number): void {
-    if (page < 1 || page > this.pagination.totalPages || page === this.pagination.currentPage) {
+    if (
+      page < 1 ||
+      page > this.pagination.totalPages ||
+      page === this.pagination.currentPage
+    ) {
       return;
     }
 

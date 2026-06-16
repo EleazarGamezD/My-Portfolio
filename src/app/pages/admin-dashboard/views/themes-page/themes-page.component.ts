@@ -1,5 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ITheme } from '@core/interfaces/theme/theme.interface';
 import { ThemeService } from '@core/services/theme/theme.service';
@@ -14,20 +19,25 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-admin-themes-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonModule, CardModule, BadgeComponent, SpinnerComponent],
+  imports: [
+    RouterLink,
+    ButtonModule,
+    CardModule,
+    BadgeComponent,
+    SpinnerComponent,
+  ],
   templateUrl: './themes-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './themes-page.component.scss',
 })
 export class AdminThemesPageComponent implements OnInit {
+  private readonly themeService = inject(ThemeService);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   themes: ITheme[] = [];
   loading = true;
   actionLoadingId: string | null = null;
-
-  constructor(
-    private readonly themeService: ThemeService,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.loadThemes();
@@ -69,7 +79,8 @@ export class AdminThemesPageComponent implements OnInit {
       this.toastr.success('Tema eliminado.', 'Panel');
       await this.loadThemes();
     } catch (error) {
-      const msg = error instanceof Error ? error.message : 'No se pudo eliminar el tema.';
+      const msg =
+        error instanceof Error ? error.message : 'No se pudo eliminar el tema.';
       this.toastr.error(msg, 'Panel');
     } finally {
       this.actionLoadingId = null;

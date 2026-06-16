@@ -10,8 +10,12 @@
       </div>
     </div>
 
-    <c-alert *ngIf="error" color="danger">{{ error }}</c-alert>
-    <c-alert *ngIf="successMessage" color="success">{{ successMessage }}</c-alert>
+    @if (error) {
+      <c-alert color="danger">{{ error }}</c-alert>
+    }
+    @if (successMessage) {
+      <c-alert color="success">{{ successMessage }}</c-alert>
+    }
 
     <!-- Dynamic PDF generation -->
     <c-card class="admin-page-surface mb-4">
@@ -37,85 +41,85 @@
 
     <c-card class="admin-page-surface resumes-page-card">
       <c-card-body>
-        <div *ngIf="loading" class="d-flex align-items-center gap-2 text-body-secondary">
-          <c-spinner size="sm" color="primary"></c-spinner>
-          <span>Cargando hojas de vida...</span>
-        </div>
+        @if (loading) {
+          <div class="d-flex align-items-center gap-2 text-body-secondary">
+            <c-spinner size="sm" color="primary"></c-spinner>
+            <span>Cargando hojas de vida...</span>
+          </div>
+        }
 
-        <div class="resumes-page-shell" *ngIf="!loading">
-          <section>
-            <div class="resumes-page-intro">
-              <div class="resumes-page-intro__copy">
-                <span class="resumes-page-intro__eyebrow">Edicion directa</span>
-                <h3>Dos CVs fijos para el portfolio</h3>
-                <p>
-                  El backend genera el slug automaticamente, el archivo siempre queda activo y el nombre de descarga se construye desde el nombre visible.
-                </p>
-              </div>
-
-              <div class="resumes-page-intro__meta">
-                <div class="resumes-meta-card">
-                  <span>Slots</span>
-                  <strong>Español e Inglés</strong>
+        @if (!loading) {
+          <div class="resumes-page-shell">
+            <section>
+              <div class="resumes-page-intro">
+                <div class="resumes-page-intro__copy">
+                  <span class="resumes-page-intro__eyebrow">Edicion directa</span>
+                  <h3>Dos CVs fijos para el portfolio</h3>
+                  <p>
+                    El backend genera el slug automaticamente, el archivo siempre queda activo y el nombre de descarga se construye desde el nombre visible.
+                  </p>
                 </div>
-                <div class="resumes-meta-card">
-                  <span>Estado</span>
-                  <strong>Siempre activos</strong>
-                </div>
-                <div class="resumes-meta-card">
-                  <span>Descarga</span>
-                  <strong>Nombre del CV visible</strong>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <div class="resumes-slot-grid">
-            <section *ngFor="let slot of slots">
-              <div class="resume-slot-card">
-                <div class="resume-slot-card__header">
-                  <div>
-                    <span class="resume-slot-card__eyebrow">{{ slot.heading }}</span>
-                    <h3>{{ hasResume(slot) ? 'Actualizar archivo y contenido' : 'Crear slot faltante' }}</h3>
+                <div class="resumes-page-intro__meta">
+                  <div class="resumes-meta-card">
+                    <span>Slots</span>
+                    <strong>Español e Inglés</strong>
                   </div>
-                  <c-badge color="success" shape="rounded-pill">Activo</c-badge>
-                </div>
-
-                <div class="resume-slot-card__grid">
-                  <div class="resume-slot-card__field resume-slot-card__field--wide">
-                    <label class="form-label">Nombre visible</label>
-                    <input cFormControl type="text" [(ngModel)]="slot.title" [placeholder]="slot.heading === 'CV Español' ? 'Eleazar Gamez - CV Español' : 'Eleazar Gamez - CV English'" [attr.aria-label]="slot.heading === 'CV Español' ? 'Eleazar Gamez - CV Español' : 'Eleazar Gamez - CV English'" />
-                    <small class="text-body-secondary">
-                      Este mismo nombre se usa como etiqueta publica y como nombre del archivo descargado.
-                    </small>
+                  <div class="resumes-meta-card">
+                    <span>Estado</span>
+                    <strong>Siempre activos</strong>
                   </div>
-
-                  <div class="resume-slot-card__field resume-slot-card__field--wide">
-                    <label class="form-label">Descripcion visible</label>
-                    <textarea cFormControl rows="4" [(ngModel)]="slot.description" [placeholder]="slot.heading === 'CV Español' ? 'Curriculum profesional en español.' : 'Professional resume in English.'" [attr.aria-label]="slot.heading === 'CV Español' ? 'Curriculum profesional en español.' : 'Professional resume in English.'"></textarea>
+                  <div class="resumes-meta-card">
+                    <span>Descarga</span>
+                    <strong>Nombre del CV visible</strong>
                   </div>
-
-                  <div class="resume-slot-card__field resume-slot-card__field--wide">
-                    <label class="form-label">Archivo</label>
-                    <input cFormControl type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" (change)="onFileSelected(slot, $event)" [attr.aria-label]="'Seleccionar archivo para ' + slot.heading" />
-                    <small class="text-body-secondary">{{ getCurrentFileLabel(slot) }}</small>
-                  </div>
-                </div>
-
-                <div class="resume-slot-card__footer">
-                  <div class="resume-slot-card__status">
-                    <strong>{{ hasResume(slot) ? 'Ya existe en base de datos' : 'Aun no existe en base de datos' }}</strong>
-                    <span>El archivo se publica siempre como activo en el portfolio.</span>
-                  </div>
-
-                  <button cButton color="primary" type="button" (click)="saveSlot(slot)" [disabled]="isSaving(slot)">
-                    {{ isSaving(slot) ? 'Guardando...' : (hasResume(slot) ? 'Guardar cambios' : 'Crear CV') }}
-                  </button>
                 </div>
               </div>
             </section>
+            <div class="resumes-slot-grid">
+              @for (slot of slots; track slot) {
+                <section>
+                  <div class="resume-slot-card">
+                    <div class="resume-slot-card__header">
+                      <div>
+                        <span class="resume-slot-card__eyebrow">{{ slot.heading }}</span>
+                        <h3>{{ hasResume(slot) ? 'Actualizar archivo y contenido' : 'Crear slot faltante' }}</h3>
+                      </div>
+                      <c-badge color="success" shape="rounded-pill">Activo</c-badge>
+                    </div>
+                    <div class="resume-slot-card__grid">
+                      <div class="resume-slot-card__field resume-slot-card__field--wide">
+                        <label class="form-label">Nombre visible</label>
+                        <input cFormControl type="text" name="resume-title-{{ slot.language }}" [(ngModel)]="slot.title" [placeholder]="slot.heading === 'CV Español' ? 'Eleazar Gamez - CV Español' : 'Eleazar Gamez - CV English'" [attr.aria-label]="slot.heading === 'CV Español' ? 'Eleazar Gamez - CV Español' : 'Eleazar Gamez - CV English'" required #resumeTitle="ngModel" />
+                        <app-show-errors [control]="resumeTitle.control" [requiredField]="'nombre visible'" />
+                        <small class="text-body-secondary">
+                          Este mismo nombre se usa como etiqueta publica y como nombre del archivo descargado.
+                        </small>
+                      </div>
+                      <div class="resume-slot-card__field resume-slot-card__field--wide">
+                        <label class="form-label">Descripcion visible</label>
+                        <textarea cFormControl rows="4" [(ngModel)]="slot.description" [placeholder]="slot.heading === 'CV Español' ? 'Curriculum profesional en español.' : 'Professional resume in English.'" [attr.aria-label]="slot.heading === 'CV Español' ? 'Curriculum profesional en español.' : 'Professional resume in English.'"></textarea>
+                      </div>
+                      <div class="resume-slot-card__field resume-slot-card__field--wide">
+                        <label class="form-label">Archivo</label>
+                        <input cFormControl type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" (change)="onFileSelected(slot, $event)" [attr.aria-label]="'Seleccionar archivo para ' + slot.heading" />
+                        <small class="text-body-secondary">{{ getCurrentFileLabel(slot) }}</small>
+                      </div>
+                    </div>
+                    <div class="resume-slot-card__footer">
+                      <div class="resume-slot-card__status">
+                        <strong>{{ hasResume(slot) ? 'Ya existe en base de datos' : 'Aun no existe en base de datos' }}</strong>
+                        <span>El archivo se publica siempre como activo en el portfolio.</span>
+                      </div>
+                      <button cButton color="primary" type="button" (click)="saveSlot(slot)" [disabled]="isSaving(slot)">
+                        {{ isSaving(slot) ? 'Guardando...' : (hasResume(slot) ? 'Guardar cambios' : 'Crear CV') }}
+                      </button>
+                    </div>
+                  </div>
+                </section>
+              }
+            </div>
           </div>
-        </div>
+        }
       </c-card-body>
     </c-card>
   </div>

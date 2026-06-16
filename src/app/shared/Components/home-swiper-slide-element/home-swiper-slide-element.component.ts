@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  inject,
+} from '@angular/core';
 import { IApiHeroSlide } from '@core/interfaces/content/content.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -14,7 +19,7 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeSwiperSlideElementComponent {
-  constructor(public i18nService: I18nService) {}
+  i18nService = inject(I18nService);
 
   @Input({ required: true }) sliderContent: IApiHeroSlide = {};
   @Input() priority = false;
@@ -23,7 +28,9 @@ export class HomeSwiperSlideElementComponent {
   get description() {
     return this.i18nService.selectText(
       this.sliderContent.description?.es ?? '',
-      this.sliderContent.description?.en ?? this.sliderContent.description?.es ?? '',
+      this.sliderContent.description?.en ??
+        this.sliderContent.description?.es ??
+        '',
     );
   }
 
@@ -35,7 +42,10 @@ export class HomeSwiperSlideElementComponent {
   }
 
   get backgroundImage() {
-    return this.resolveImage(this.sliderContent.image) || createPortfolioPlaceholder('Hero Slide', 1600, 900);
+    return (
+      this.resolveImage(this.sliderContent.image) ||
+      createPortfolioPlaceholder('Hero Slide', 1600, 900)
+    );
   }
 
   onImageLoad() {

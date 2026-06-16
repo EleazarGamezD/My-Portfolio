@@ -1,5 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
@@ -7,11 +12,15 @@ import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 @Component({
   selector: 'app-admin-setup-account',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './admin-setup-account.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './admin-setup-account.component.scss',
 })
 export class AdminSetupAccountComponent implements OnInit, OnDestroy {
+  private readonly adminAuthService = inject(AdminAuthService);
+  private readonly router = inject(Router);
+
   email = '';
   username = '';
   displayName = '';
@@ -20,11 +29,6 @@ export class AdminSetupAccountComponent implements OnInit, OnDestroy {
   loading = false;
   error: string | null = null;
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
-
-  constructor(
-    private readonly adminAuthService: AdminAuthService,
-    private readonly router: Router,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     this.enableAdminThemeContext();
@@ -35,7 +39,13 @@ export class AdminSetupAccountComponent implements OnInit, OnDestroy {
   }
 
   async submit(): Promise<void> {
-    if (!this.email || !this.username || !this.displayName || !this.password || this.loading) {
+    if (
+      !this.email ||
+      !this.username ||
+      !this.displayName ||
+      !this.password ||
+      this.loading
+    ) {
       return;
     }
 
@@ -61,7 +71,8 @@ export class AdminSetupAccountComponent implements OnInit, OnDestroy {
       });
       await this.router.navigateByUrl('/admin/dashboard/overview');
     } catch (err) {
-      this.error = err instanceof Error ? err.message : 'Error al configurar la cuenta.';
+      this.error =
+        err instanceof Error ? err.message : 'Error al configurar la cuenta.';
     } finally {
       this.loading = false;
     }

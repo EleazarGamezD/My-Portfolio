@@ -1,17 +1,33 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IPaginationResponse, IProject } from '@core/interfaces/projects/projects.interfaces';
+import {
+  IPaginationResponse,
+  IProject,
+} from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
-import { BadgeModule, ButtonModule, SpinnerModule, TableModule } from '@coreui/angular';
-import { AdminActionMenuAction, AdminActionMenuComponent } from '../admin-action-menu/admin-action-menu.component';
+import {
+  BadgeModule,
+  ButtonModule,
+  SpinnerModule,
+  TableModule,
+} from '@coreui/angular';
+import {
+  AdminActionMenuAction,
+  AdminActionMenuComponent,
+} from '../admin-action-menu/admin-action-menu.component';
 
 @Component({
   selector: 'app-projects-list',
   standalone: true,
   imports: [
-    CommonModule,
     RouterLink,
     TableModule,
     ButtonModule,
@@ -20,9 +36,12 @@ import { AdminActionMenuAction, AdminActionMenuComponent } from '../admin-action
     AdminActionMenuComponent,
   ],
   templateUrl: './projects-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './projects-list.component.scss',
 })
 export class ProjectsListComponent {
+  private readonly i18nService = inject(I18nService);
+
   @Input() projects: IProject[] = [];
   @Input() loading = false;
   @Input() actionLoadingKey: string | null = null;
@@ -38,23 +57,27 @@ export class ProjectsListComponent {
   @Output() deactivateProject = new EventEmitter<IProject>();
   @Output() pageChange = new EventEmitter<number>();
 
-  constructor(private readonly i18nService: I18nService) {}
-
   getProjectTitle(project: IProject): string {
-    return this.i18nService.selectText(
-      project.title?.es || '',
-      project.title?.en || project.title?.es || '',
-    ) || '-';
+    return (
+      this.i18nService.selectText(
+        project.title?.es || '',
+        project.title?.en || project.title?.es || '',
+      ) || '-'
+    );
   }
 
   getSummary(project: IProject): string {
-    return this.i18nService.selectText(
-      project.summary?.es || '',
-      project.summary?.en || project.summary?.es || '',
-    ) || '-';
+    return (
+      this.i18nService.selectText(
+        project.summary?.es || '',
+        project.summary?.en || project.summary?.es || '',
+      ) || '-'
+    );
   }
 
-  getStatusColor(status?: string): 'success' | 'warning' | 'secondary' | 'info' {
+  getStatusColor(
+    status?: string,
+  ): 'success' | 'warning' | 'secondary' | 'info' {
     switch ((status || '').toLowerCase()) {
       case 'published':
       case 'active':
@@ -69,7 +92,10 @@ export class ProjectsListComponent {
   }
 
   getCoverPreview(project: IProject): string | null {
-    return resolveImageAssetUrl(project.coverImage) || resolveImageAssetUrl(project.images?.[0]);
+    return (
+      resolveImageAssetUrl(project.coverImage) ||
+      resolveImageAssetUrl(project.images?.[0])
+    );
   }
 
   formatPublishedDate(value?: string): string {
@@ -126,7 +152,11 @@ export class ProjectsListComponent {
   }
 
   changePage(page: number): void {
-    if (page < 1 || page > this.pagination.totalPages || page === this.pagination.currentPage) {
+    if (
+      page < 1 ||
+      page > this.pagination.totalPages ||
+      page === this.pagination.currentPage
+    ) {
       return;
     }
 

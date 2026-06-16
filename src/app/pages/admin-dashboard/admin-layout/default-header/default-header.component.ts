@@ -1,5 +1,11 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, computed, inject, input } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
@@ -27,6 +33,7 @@ import { IconDirective } from '@coreui/icons-angular';
 @Component({
   selector: 'app-default-header',
   templateUrl: './default-header.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ContainerComponent,
     HeaderTogglerDirective,
@@ -61,7 +68,10 @@ export class DefaultHeaderComponent extends HeaderComponent {
 
   readonly icons = computed(() => {
     const currentMode = this.colorMode();
-    return this.colorModes.find((mode) => mode.name === currentMode)?.icon ?? 'cilSun';
+    return (
+      this.colorModes.find((mode) => mode.name === currentMode)?.icon ??
+      'cilSun'
+    );
   });
 
   constructor() {
@@ -72,7 +82,11 @@ export class DefaultHeaderComponent extends HeaderComponent {
   currentSectionLabel = input('Overview');
 
   get currentAdminName(): string {
-    return this.#facade.currentAdmin?.displayName || this.#facade.currentAdmin?.email || 'Admin user';
+    return (
+      this.#facade.currentAdmin?.displayName ||
+      this.#facade.currentAdmin?.email ||
+      'Admin user'
+    );
   }
 
   get currentAdminRole(): string {
@@ -86,7 +100,10 @@ export class DefaultHeaderComponent extends HeaderComponent {
     }
 
     const parts = raw.split(/\s+/).filter(Boolean);
-    return parts.slice(0, 2).map((part) => part.charAt(0).toUpperCase()).join('');
+    return parts
+      .slice(0, 2)
+      .map((part) => part.charAt(0).toUpperCase())
+      .join('');
   }
 
   async closeSession(): Promise<void> {

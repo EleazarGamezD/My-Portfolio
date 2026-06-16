@@ -1,5 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { TranslateService } from '@core/services/translate/translate.service';
 import { ButtonModule, SpinnerComponent } from '@coreui/angular';
 export enum Language {
@@ -13,11 +20,14 @@ export enum LanguageLabel {
 @Component({
   selector: 'app-translate-button',
   standalone: true,
-  imports: [CommonModule, ButtonModule, SpinnerComponent],
+  imports: [ButtonModule, SpinnerComponent],
   templateUrl: './translate-button.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './translate-button.component.scss',
 })
 export class TranslateButtonComponent implements OnChanges {
+  private readonly translateService = inject(TranslateService);
+
   @Input() fromText = '';
   @Input() fromLang: Language = Language.ES;
   @Input() toLang: Language = Language.EN;
@@ -27,9 +37,10 @@ export class TranslateButtonComponent implements OnChanges {
 
   loading = false;
 
-  readonly langLabels: Record<Language, string> = { [Language.ES]: LanguageLabel.ES, [Language.EN]: LanguageLabel.EN };
-
-  constructor(private readonly translateService: TranslateService) { }
+  readonly langLabels: Record<Language, string> = {
+    [Language.ES]: LanguageLabel.ES,
+    [Language.EN]: LanguageLabel.EN,
+  };
 
   ngOnChanges(): void {
     this.translationError.emit('');

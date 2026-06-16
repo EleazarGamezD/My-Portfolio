@@ -1,5 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
@@ -9,10 +14,14 @@ import { TestimonialsListComponent } from '@pages/admin-dashboard/components/tes
 @Component({
   selector: 'app-admin-testimonials-page',
   standalone: true,
-  imports: [CommonModule, AlertModule, TestimonialsListComponent],
+  imports: [AlertModule, TestimonialsListComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './testimonials-page.component.html',
 })
 export class AdminTestimonialsPageComponent implements OnInit {
+  private readonly contentService = inject(ContentService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   items: IApiContentItem[] = [];
   loading = false;
   error: string | null = null;
@@ -26,11 +35,6 @@ export class AdminTestimonialsPageComponent implements OnInit {
   };
 
   private readonly pageSize = 10;
-
-  constructor(
-    private readonly contentService: ContentService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.loadPage(1);
@@ -55,7 +59,10 @@ export class AdminTestimonialsPageComponent implements OnInit {
       this.items = response.data;
       this.pagination = response;
     } catch (error) {
-      this.error = error instanceof Error ? error.message : 'No se pudieron cargar los testimonios.';
+      this.error =
+        error instanceof Error
+          ? error.message
+          : 'No se pudieron cargar los testimonios.';
       this.items = [];
     } finally {
       this.loading = false;

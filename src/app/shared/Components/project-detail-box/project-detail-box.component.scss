@@ -14,6 +14,24 @@
   z-index: 0;
 }
 
+.project-image-ease-out {
+  animation: project-image-ease-out 520ms ease-out;
+}
+
+@keyframes project-image-ease-out {
+  from {
+    opacity: 0.35;
+    transform: scale(1.012);
+    filter: blur(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
 section {
   padding-top: 0 !important;
 

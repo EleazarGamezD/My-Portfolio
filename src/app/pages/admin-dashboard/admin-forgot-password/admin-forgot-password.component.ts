@@ -1,5 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
@@ -7,18 +12,19 @@ import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 @Component({
   selector: 'app-admin-forgot-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink],
   templateUrl: './admin-forgot-password.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './admin-forgot-password.component.scss',
 })
 export class AdminForgotPasswordComponent implements OnInit, OnDestroy {
+  private readonly adminAuthService = inject(AdminAuthService);
+
   email = '';
   loading = false;
   error: string | null = null;
   sent = false;
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
-
-  constructor(private readonly adminAuthService: AdminAuthService) {}
 
   ngOnInit(): void {
     this.enableAdminThemeContext();
@@ -36,7 +42,8 @@ export class AdminForgotPasswordComponent implements OnInit, OnDestroy {
       await this.adminAuthService.forgotPassword(this.email);
       this.sent = true;
     } catch (err) {
-      this.error = err instanceof Error ? err.message : 'Error al enviar el email.';
+      this.error =
+        err instanceof Error ? err.message : 'Error al enviar el email.';
     } finally {
       this.loading = false;
     }

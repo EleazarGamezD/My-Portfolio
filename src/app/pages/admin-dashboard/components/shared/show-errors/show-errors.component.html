@@ -1,5 +1,10 @@
-@if (shouldShowError()) {
-  <div [@slideInError] class="text-danger mb-2 error-container">
+<div
+  class="text-danger mb-2 error-container"
+  [class.error-container--visible]="shouldShowError()"
+  [attr.aria-hidden]="!shouldShowError()"
+  aria-live="polite"
+>
+  @if (shouldShowError()) {
     {{ errorMessage }}
-  </div>
-}
+  }
+</div>

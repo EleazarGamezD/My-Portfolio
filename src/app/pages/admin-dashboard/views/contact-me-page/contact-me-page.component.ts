@@ -1,27 +1,46 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
-import { ButtonModule, CardModule, FormModule, SpinnerModule } from '@coreui/angular';
-import { Language, TranslateButtonComponent } from '../../components/shared/translate-button/translate-button.component';
+import {
+  ButtonModule,
+  CardModule,
+  FormModule,
+  SpinnerModule,
+} from '@coreui/angular';
+import {
+  Language,
+  TranslateButtonComponent,
+} from '../../components/shared/translate-button/translate-button.component';
 
 @Component({
   selector: 'app-admin-contact-me-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonModule, CardModule, FormModule, SpinnerModule, TranslateButtonComponent],
+  imports: [
+    FormsModule,
+    ButtonModule,
+    CardModule,
+    FormModule,
+    SpinnerModule,
+    TranslateButtonComponent,
+  ],
   templateUrl: './contact-me-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './contact-me-page.component.scss',
 })
 export class AdminContactMePageComponent implements OnInit {
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   readonly Language = Language;
   readonly titleMaxLength = 160;
   readonly bodyMaxLength = 520;
   translateErrors: Record<string, string> = {};
-
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.facade.loadProfileContent();
@@ -49,9 +68,11 @@ export class AdminContactMePageComponent implements OnInit {
   }
 
   get contactTitle(): string {
-    return this.facade.profile?.metadata?.contactIntroTitle?.es
-      ?? this.facade.profile?.metadata?.contactIntroTitle?.en
-      ?? '';
+    return (
+      this.facade.profile?.metadata?.contactIntroTitle?.es ??
+      this.facade.profile?.metadata?.contactIntroTitle?.en ??
+      ''
+    );
   }
 
   set contactTitle(value: string) {

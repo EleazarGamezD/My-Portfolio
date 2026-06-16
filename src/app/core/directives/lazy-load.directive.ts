@@ -4,6 +4,7 @@ import {
     Input,
     OnInit,
     Renderer2,
+    inject,
 } from '@angular/core';
 
 /**
@@ -15,15 +16,13 @@ import {
     standalone: true,
 })
 export class LazyLoadDirective implements OnInit {
+    private el = inject(ElementRef);
+    private renderer = inject(Renderer2);
+
     @Input() lazyImage: string = '';
     @Input() placeholder: string =
         'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23f0f0f0" width="400" height="300"/%3E%3C/svg%3E';
     @Input() errorImage: string = '';
-
-    constructor(
-        private el: ElementRef,
-        private renderer: Renderer2
-    ) { }
 
     ngOnInit(): void {
         this.setupLazyLoad();

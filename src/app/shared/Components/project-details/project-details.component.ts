@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { IProject } from '@core/interfaces/projects/projects.interfaces';
@@ -10,7 +18,6 @@ import { filter, map, distinctUntilChanged } from 'rxjs/operators';
 import { PagesBannerComponent } from '../pages-banner/pages-banner.component';
 import { ProjectDetailGroupComponent } from '../project-detail-group/project-detail-group.component';
 
-
 @Component({
   selector: 'app-project-details',
   standalone: true,
@@ -20,15 +27,13 @@ import { ProjectDetailGroupComponent } from '../project-detail-group/project-det
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectDetailsComponent implements OnInit, AfterViewInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly projectsService = inject(ProjectsService);
+  readonly i18nService = inject(I18nService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   project: IProject | null = null;
   private readonly destroyRef = inject(DestroyRef);
-
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly projectsService: ProjectsService,
-    public readonly i18nService: I18nService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
@@ -67,7 +72,10 @@ export class ProjectDetailsComponent implements OnInit, AfterViewInit {
   }
 
   get bannerBackgroundImage(): string {
-    return resolveImageAssetUrl(this.project?.coverImage) || 'https://placehold.co/1920x940';
+    return (
+      resolveImageAssetUrl(this.project?.coverImage) ||
+      'https://placehold.co/1920x940'
+    );
   }
 
   private async loadProject(projectIdOrSlug: string): Promise<void> {
@@ -79,9 +87,13 @@ export class ProjectDetailsComponent implements OnInit, AfterViewInit {
     }
 
     try {
-      this.project = await this.projectsService.getProjectByIdOrSlug(projectIdOrSlug);
+      this.project =
+        await this.projectsService.getProjectByIdOrSlug(projectIdOrSlug);
     } catch (error) {
-      console.warn(`Failed to load project detail for "${projectIdOrSlug}" from API.`, error);
+      console.warn(
+        `Failed to load project detail for "${projectIdOrSlug}" from API.`,
+        error,
+      );
     } finally {
       this.cdr.markForCheck();
       requestTemplateReinit();

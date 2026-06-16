@@ -1,5 +1,12 @@
 import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  PLATFORM_ID,
+  inject,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import {
   IApiContentItem,
@@ -19,6 +26,12 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent implements OnInit {
+  private readonly router = inject(Router);
+  i18nService = inject(I18nService);
+  private readonly contentService = inject(ContentService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly platformId = inject(PLATFORM_ID);
+
   date = new Date().getFullYear();
   profileContent: IApiProfile | null = null;
   footerImageSrc: string | null = null;
@@ -35,14 +48,6 @@ export class FooterComponent implements OnInit {
     },
   ];
 
-  constructor(
-    private readonly router: Router,
-    public i18nService: I18nService,
-    private readonly contentService: ContentService,
-    private readonly cdr: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private readonly platformId: object,
-  ) { }
-
   async ngOnInit(): Promise<void> {
     try {
       const [socialLinks, profile] = await Promise.all([
@@ -53,8 +58,9 @@ export class FooterComponent implements OnInit {
       this.social = socialLinks;
       this.profileContent = profile;
       this.footerImageSrc =
-        resolveImageAssetUrl(profile?.metadata?.portfolioMedia?.footerCenterImage) ||
-        createPortfolioPlaceholder('Footer Badge', 480, 480);
+        resolveImageAssetUrl(
+          profile?.metadata?.portfolioMedia?.footerCenterImage,
+        ) || createPortfolioPlaceholder('Footer Badge', 480, 480);
     } catch (error) {
       console.warn('Failed to load footer content from API.', error);
     } finally {
@@ -79,7 +85,11 @@ export class FooterComponent implements OnInit {
   }
 
   get profileOwnerName() {
-    return this.profileContent?.label?.es || this.profileContent?.label?.en || 'Portfolio Owner';
+    return (
+      this.profileContent?.label?.es ||
+      this.profileContent?.label?.en ||
+      'Portfolio Owner'
+    );
   }
 
   trackSocial(_: number, item: IApiContentItem): string {
@@ -98,7 +108,8 @@ export class FooterComponent implements OnInit {
       }
 
       const header = document.querySelector('header');
-      const headerHeight = header instanceof HTMLElement ? header.offsetHeight : 0;
+      const headerHeight =
+        header instanceof HTMLElement ? header.offsetHeight : 0;
       const headerOffset = headerHeight > 0 ? headerHeight + 12 : 24;
       const elementTop = element.getBoundingClientRect().top + window.scrollY;
       const targetTop = Math.max(elementTop - headerOffset, 0);

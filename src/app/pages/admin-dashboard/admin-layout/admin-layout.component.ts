@@ -1,5 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import {
   NavigationEnd,
   Router,
@@ -7,6 +13,7 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
+import { adminIconSubset } from '@core/icons/admin-icon-subset';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import {
@@ -24,7 +31,7 @@ import {
   SidebarToggleDirective,
   SidebarTogglerDirective,
 } from '@coreui/angular';
-import { IconDirective } from '@coreui/icons-angular';
+import { IconDirective, IconSetService } from '@coreui/icons-angular';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { Subscription, filter } from 'rxjs';
 import { ADMIN_SECTIONS, isAdminSection } from '../admin-sections';
@@ -36,7 +43,6 @@ import { DefaultHeaderComponent } from './default-header/default-header.componen
   selector: 'app-admin-layout',
   standalone: true,
   imports: [
-    CommonModule,
     RouterOutlet,
     RouterLink,
     BreadcrumbModule,
@@ -57,9 +63,15 @@ import { DefaultHeaderComponent } from './default-header/default-header.componen
     DefaultFooterComponent,
   ],
   templateUrl: './admin-layout.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './admin-layout.component.scss',
 })
 export class AdminLayoutComponent implements OnInit, OnDestroy {
+  private readonly adminAuthService = inject(AdminAuthService);
+  private readonly router = inject(Router);
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly iconSetService = inject(IconSetService);
+
   readonly navItems: INavData[] = adminNavItems;
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
   private readonly subscriptions = new Subscription();
@@ -67,11 +79,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   currentYear = new Date().getFullYear();
   currentSectionLabel = 'Overview';
 
-  constructor(
-    private readonly adminAuthService: AdminAuthService,
-    private readonly router: Router,
-    public readonly facade: AdminDashboardFacade,
-  ) { }
+  constructor() {
+    this.iconSetService.icons = { ...adminIconSubset };
+  }
 
   async ngOnInit(): Promise<void> {
     this.enableAdminThemeStyles();
@@ -81,21 +91,30 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       await this.facade.ensureCurrentAdmin();
       this.syncSectionFromUrl(this.router.url);
       this.subscriptions.add(
-        this.router.events.pipe(
-          filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        ).subscribe((event) => {
-          this.syncSectionFromUrl(event.urlAfterRedirects);
-          this.closeMobileSidebar();
-        }),
+        this.router.events
+          .pipe(
+            filter(
+              (event): event is NavigationEnd => event instanceof NavigationEnd,
+            ),
+          )
+          .subscribe((event) => {
+            this.syncSectionFromUrl(event.urlAfterRedirects);
+            this.closeMobileSidebar();
+          }),
       );
       this.subscriptions.add(
-        this.adminAuthService.watchStorage(NgStorage.TOKEN).subscribe((token) => {
-          if (!token) {
-            void this.router.navigate(['/admin/login'], {
-              queryParams: { sessionExpired: '1', redirectTo: this.router.url },
-            });
-          }
-        }),
+        this.adminAuthService
+          .watchStorage(NgStorage.TOKEN)
+          .subscribe((token) => {
+            if (!token) {
+              void this.router.navigate(['/admin/login'], {
+                queryParams: {
+                  sessionExpired: '1',
+                  redirectTo: this.router.url,
+                },
+              });
+            }
+          }),
       );
     } catch (error) {
       console.error('Failed to load current admin for layout:', error);
@@ -118,7 +137,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private syncSectionFromUrl(url: string): void {
     const segments = url.split('/').filter(Boolean);
     const dashboardIndex = segments.indexOf('dashboard');
-    const sectionKey = dashboardIndex >= 0 ? segments[dashboardIndex + 1] ?? 'overview' : 'overview';
+    const sectionKey =
+      dashboardIndex >= 0
+        ? (segments[dashboardIndex + 1] ?? 'overview')
+        : 'overview';
 
     if (!isAdminSection(sectionKey)) {
       this.currentSectionLabel = 'Overview';
@@ -126,7 +148,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     }
 
     this.currentSectionLabel =
-      ADMIN_SECTIONS.find((section) => section.key === sectionKey)?.label ?? 'Overview';
+      ADMIN_SECTIONS.find((section) => section.key === sectionKey)?.label ??
+      'Overview';
   }
 
   private enableAdminScrolling(): void {
@@ -152,7 +175,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const existingLink = document.getElementById(this.adminStylesheetId) as HTMLLinkElement | null;
+    const existingLink = document.getElementById(
+      this.adminStylesheetId,
+    ) as HTMLLinkElement | null;
     if (existingLink) {
       return;
     }
@@ -173,7 +198,11 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   private closeMobileSidebar(): void {
-    if (typeof window === 'undefined' || window.innerWidth >= 992 || !this.adminSidebar) {
+    if (
+      typeof window === 'undefined' ||
+      window.innerWidth >= 992 ||
+      !this.adminSidebar
+    ) {
       return;
     }
 
