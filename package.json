@@ -14,6 +14,10 @@
     "test": "ng test --karma-config ./karma.conf.js",
     "serve:ssr:My-Portfolio": "node dist/my-portfolio/server/server.mjs"
   },
+  "engines": {
+    "node": "24.x"
+  },
+  "packageManager": "npm@11.15.0",
   "private": true,
   "dependencies": {
     "@angular/animations": "^22.0.1",
