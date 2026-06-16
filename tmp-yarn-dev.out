@@ -126,3 +126,172 @@ chunk-3X67V32I.mjs  | contact-me-component | 26.13 kB |
 Application bundle generation complete. [0.692 seconds] - 2026-06-16T01:04:12.014Z
 
 Page reload sent to client(s).
+<<<<<<< HEAD
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Browser bundles    
+Initial chunk files | Names                | Raw size
+main-MRAEP5GR.js    | main                 | 84.81 kB | 
+
+Lazy chunk files    | Names                | Raw size
+chunk-YNWOHKOU.js   | home-component       | 95.92 kB | 
+chunk-J3DQDRAY.js   | contact-me-component | 26.04 kB | 
+
+
+Server bundles     
+Initial chunk files | Names                | Raw size
+main.server.mjs     | main.server          | 86.57 kB | 
+
+Lazy chunk files    | Names                | Raw size
+chunk-SXAVMGOG.mjs  | home-component       | 96.00 kB | 
+chunk-TYNUTL6K.mjs  | contact-me-component | 26.12 kB | 
+
+Application bundle generation complete. [0.849 seconds] - 2026-06-16T01:10:34.614Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Browser bundles      
+Initial chunk files   | Names                           |  Raw size
+styles-QIJUPK5T.css   | styles                          |   1.53 MB | 
+main-MRAEP5GR.js      | main                            |  84.81 kB | 
+chunk-DLZKDT22.js     | -                               |  10.99 kB | 
+chunk-R2JN2OR3.js     | -                               |  10.76 kB | 
+chunk-ADQHPJ32.js     | -                               |  10.23 kB | 
+chunk-I27UV6F4.js     | -                               |   5.58 kB | 
+chunk-5N5ORYBW.js     | -                               |   4.30 kB | 
+chunk-GZ7JC7JM.js     | -                               |   2.66 kB | 
+chunk-AJADXIOL.js     | -                               |   1.27 kB | 
+chunk-2CRQZVH7.js     | -                               |   1.23 kB | 
+polyfills-ZK7PU7SV.js | polyfills                       |  57 bytes | 
+
+                      | Initial total                   |   1.66 MB
+
+Lazy chunk files      | Names                           |  Raw size
+admin-coreui.css      | admin-coreui                    | 383.46 kB | 
+chunk-MZMUQXO2.js     | content-page-component          | 157.57 kB | 
+chunk-YNWOHKOU.js     | home-component                  |  95.92 kB | 
+chunk-B2UBTAJK.js     | -                               |  94.60 kB | 
+chunk-CA2N4V53.js     | profile-page-component          |  80.83 kB | 
+chunk-LO3ECD2S.js     | project-form-page-component     |  76.23 kB | 
+chunk-WTBHPBPU.js     | cv-content-form-page-component  |  68.52 kB | 
+chunk-WKWBJT3F.js     | project-details-component       |  62.69 kB | 
+chunk-TGZVCN5V.js     | portfolio-media-page-component  |  52.80 kB | 
+chunk-5SUTQJX5.js     | admin-layout-component          |  50.46 kB | 
+chunk-X2WP37HY.js     | skill-form-page-component       |  50.08 kB | 
+chunk-SRU6PBY6.js     | experience-form-page-component  |  48.30 kB | 
+chunk-NLW7SLYH.js     | theme-form-page-component       |  47.26 kB | 
+chunk-AGJWAG5E.js     | testimonial-form-page-component |  46.13 kB | 
+chunk-4EUOBN5N.js     | projects-page-component         |  44.02 kB | 
+...and 25 more lazy chunks files. Use "--verbose" to show all the files.
+
+
+Server bundles       
+Initial chunk files   | Names                           |  Raw size
+main.server.mjs       | main.server                     |  86.57 kB | 
+chunk-HKVELDL2.mjs    | -                               |  10.79 kB | 
+chunk-IHBJK3OG.mjs    | -                               |  10.31 kB | 
+chunk-GC7ZUQHR.mjs    | -                               |   9.65 kB | 
+chunk-4HFG4452.mjs    | -                               |   5.65 kB | 
+chunk-NUJ4J3EH.mjs    | -                               |   4.37 kB | 
+chunk-TMVOEG2S.mjs    | -                               |   2.69 kB | 
+chunk-3HGOK4M2.mjs    | -                               |   1.49 kB | 
+chunk-WMPASIPL.mjs    | -                               |   1.30 kB | 
+chunk-27NJUXY4.mjs    | -                               |   1.26 kB | 
+server.mjs            | server                          |   1.07 kB | 
+polyfills.server.mjs  | polyfills.server                | 245 bytes | 
+
+Lazy chunk files      | Names                           |  Raw size
+chunk-YFLQV3SI.mjs    | content-page-component          | 157.65 kB | 
+chunk-SXAVMGOG.mjs    | home-component                  |  96.00 kB | 
+chunk-G2JWDSK5.mjs    | -                               |  94.68 kB | 
+chunk-OZPSOLWN.mjs    | profile-page-component          |  80.90 kB | 
+chunk-V6FWET3L.mjs    | project-form-page-component     |  76.32 kB | 
+chunk-WYPIHGDW.mjs    | cv-content-form-page-component  |  68.59 kB | 
+chunk-ADFQL6R5.mjs    | project-details-component       |  62.76 kB | 
+chunk-4WHFELFW.mjs    | portfolio-media-page-component  |  52.87 kB | 
+chunk-OGA6MN4Z.mjs    | admin-layout-component          |  50.53 kB | 
+chunk-IVIHLW4M.mjs    | skill-form-page-component       |  50.15 kB | 
+chunk-5GURTTMC.mjs    | experience-form-page-component  |  48.38 kB | 
+chunk-7FXFKMDY.mjs    | theme-form-page-component       |  47.33 kB | 
+chunk-P4723TOG.mjs    | testimonial-form-page-component |  46.20 kB | 
+chunk-H7B2FKZ7.mjs    | projects-page-component         |  44.09 kB | 
+chunk-MSORWUN4.mjs    | resumes-page-component          |  41.64 kB | 
+...and 24 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.619 seconds] - 2026-06-16T01:13:04.790Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Browser bundles      
+Initial chunk files   | Names                           |  Raw size
+styles-QIJUPK5T.css   | styles                          |   1.53 MB | 
+main-MRAEP5GR.js      | main                            |  84.81 kB | 
+chunk-DLZKDT22.js     | -                               |  10.99 kB | 
+chunk-R2JN2OR3.js     | -                               |  10.76 kB | 
+chunk-ADQHPJ32.js     | -                               |  10.23 kB | 
+chunk-I27UV6F4.js     | -                               |   5.58 kB | 
+chunk-5N5ORYBW.js     | -                               |   4.30 kB | 
+chunk-GZ7JC7JM.js     | -                               |   2.66 kB | 
+chunk-AJADXIOL.js     | -                               |   1.27 kB | 
+chunk-2CRQZVH7.js     | -                               |   1.23 kB | 
+polyfills-ZK7PU7SV.js | polyfills                       |  57 bytes | 
+
+                      | Initial total                   |   1.66 MB
+
+Lazy chunk files      | Names                           |  Raw size
+admin-coreui.css      | admin-coreui                    | 383.46 kB | 
+chunk-MZMUQXO2.js     | content-page-component          | 157.57 kB | 
+chunk-YNWOHKOU.js     | home-component                  |  95.92 kB | 
+chunk-B2UBTAJK.js     | -                               |  94.60 kB | 
+chunk-CA2N4V53.js     | profile-page-component          |  80.83 kB | 
+chunk-LO3ECD2S.js     | project-form-page-component     |  76.23 kB | 
+chunk-WTBHPBPU.js     | cv-content-form-page-component  |  68.52 kB | 
+chunk-WKWBJT3F.js     | project-details-component       |  62.69 kB | 
+chunk-TGZVCN5V.js     | portfolio-media-page-component  |  52.80 kB | 
+chunk-5SUTQJX5.js     | admin-layout-component          |  50.46 kB | 
+chunk-X2WP37HY.js     | skill-form-page-component       |  50.08 kB | 
+chunk-SRU6PBY6.js     | experience-form-page-component  |  48.30 kB | 
+chunk-NLW7SLYH.js     | theme-form-page-component       |  47.26 kB | 
+chunk-AGJWAG5E.js     | testimonial-form-page-component |  46.13 kB | 
+chunk-4EUOBN5N.js     | projects-page-component         |  44.02 kB | 
+...and 25 more lazy chunks files. Use "--verbose" to show all the files.
+
+
+Server bundles       
+Initial chunk files   | Names                           |  Raw size
+main.server.mjs       | main.server                     |  86.57 kB | 
+chunk-HKVELDL2.mjs    | -                               |  10.79 kB | 
+chunk-IHBJK3OG.mjs    | -                               |  10.31 kB | 
+chunk-GC7ZUQHR.mjs    | -                               |   9.65 kB | 
+chunk-4HFG4452.mjs    | -                               |   5.65 kB | 
+chunk-NUJ4J3EH.mjs    | -                               |   4.37 kB | 
+chunk-TMVOEG2S.mjs    | -                               |   2.69 kB | 
+chunk-3HGOK4M2.mjs    | -                               |   1.49 kB | 
+chunk-WMPASIPL.mjs    | -                               |   1.30 kB | 
+chunk-27NJUXY4.mjs    | -                               |   1.26 kB | 
+server.mjs            | server                          |   1.07 kB | 
+polyfills.server.mjs  | polyfills.server                | 245 bytes | 
+
+Lazy chunk files      | Names                           |  Raw size
+chunk-YFLQV3SI.mjs    | content-page-component          | 157.65 kB | 
+chunk-SXAVMGOG.mjs    | home-component                  |  96.00 kB | 
+chunk-G2JWDSK5.mjs    | -                               |  94.68 kB | 
+chunk-OZPSOLWN.mjs    | profile-page-component          |  80.90 kB | 
+chunk-V6FWET3L.mjs    | project-form-page-component     |  76.32 kB | 
+chunk-WYPIHGDW.mjs    | cv-content-form-page-component  |  68.59 kB | 
+chunk-ADFQL6R5.mjs    | project-details-component       |  62.76 kB | 
+chunk-4WHFELFW.mjs    | portfolio-media-page-component  |  52.87 kB | 
+chunk-OGA6MN4Z.mjs    | admin-layout-component          |  50.53 kB | 
+chunk-IVIHLW4M.mjs    | skill-form-page-component       |  50.15 kB | 
+chunk-5GURTTMC.mjs    | experience-form-page-component  |  48.38 kB | 
+chunk-7FXFKMDY.mjs    | theme-form-page-component       |  47.33 kB | 
+chunk-P4723TOG.mjs    | testimonial-form-page-component |  46.20 kB | 
+chunk-H7B2FKZ7.mjs    | projects-page-component         |  44.09 kB | 
+chunk-MSORWUN4.mjs    | resumes-page-component          |  41.64 kB | 
+...and 24 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.673 seconds] - 2026-06-16T01:13:40.615Z
+
+=======
+>>>>>>> develop
