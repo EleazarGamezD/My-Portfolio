@@ -37,6 +37,11 @@
                 "glob": "**/*",
                 "input": "src/assets/images",
                 "output": "/assets/images"
+              },
+              {
+                "glob": "**/*.js",
+                "input": "src/assets/js",
+                "output": "/assets/js"
               }
             ],
             "styles": [
@@ -54,12 +59,7 @@
               "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss"
             ],
-            "scripts": [
-              "src/assets/js/jquery.js",
-              "src/assets/js/vendors.min.js",
-              "src/assets/js/main.js",
-              "src/assets/js/templateBridge.js"
-            ],
+            "scripts": [],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
