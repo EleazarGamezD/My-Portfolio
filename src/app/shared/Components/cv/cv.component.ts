@@ -1,6 +1,14 @@
-
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { IApiProfile, IApiResume } from '@core/interfaces/content/content.interface';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
+import {
+  IApiProfile,
+  IApiResume,
+} from '@core/interfaces/content/content.interface';
 import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
@@ -19,17 +27,15 @@ const CV_CONTENT_TIMEOUT_MS = 12000;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CvComponent implements OnInit {
+  i18nService = inject(I18nService);
+  private contentService = inject(ContentService);
+  private analyticsService = inject(AnalyticsService);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   resumes: IApiResume[] = [];
   profile: IApiProfile | null = null;
   loading = true;
   error: string | null = null;
-
-  constructor(
-    public i18nService: I18nService,
-    private contentService: ContentService,
-    private analyticsService: AnalyticsService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) { }
 
   ngOnInit(): void {
     this.loadResumes();
@@ -79,7 +85,11 @@ export class CvComponent implements OnInit {
   getResumeTitle(resume: IApiResume) {
     return this.i18nService.selectText(
       resume.title?.es ?? resume.label?.es ?? '',
-      resume.title?.en ?? resume.label?.en ?? resume.title?.es ?? resume.label?.es ?? '',
+      resume.title?.en ??
+        resume.label?.en ??
+        resume.title?.es ??
+        resume.label?.es ??
+        '',
     );
   }
 
@@ -94,7 +104,11 @@ export class CvComponent implements OnInit {
     const language = this.resolveResumeLanguage(resume);
     const fullName = this.i18nService.selectText(
       this.profile?.label?.es ?? this.profile?.title?.es ?? '',
-      this.profile?.label?.en ?? this.profile?.title?.en ?? this.profile?.label?.es ?? this.profile?.title?.es ?? '',
+      this.profile?.label?.en ??
+        this.profile?.title?.en ??
+        this.profile?.label?.es ??
+        this.profile?.title?.es ??
+        '',
     );
     const normalizedName = fullName
       .normalize('NFD')
@@ -113,9 +127,10 @@ export class CvComponent implements OnInit {
   }
 
   private resolveResumeLanguage(resume: IApiResume): 'es' | 'en' {
-    const rawLanguage = typeof resume.metadata?.['language'] === 'string'
-      ? resume.metadata['language']
-      : resume.language || '';
+    const rawLanguage =
+      typeof resume.metadata?.['language'] === 'string'
+        ? resume.metadata['language']
+        : resume.language || '';
     const normalizedLanguage = rawLanguage.trim().toLowerCase();
 
     if (normalizedLanguage === 'en') {
@@ -126,7 +141,8 @@ export class CvComponent implements OnInit {
       return 'es';
     }
 
-    const identity = `${resume.slug || ''} ${resume.fileName || ''} ${resume.title?.en || ''}`.toLowerCase();
+    const identity =
+      `${resume.slug || ''} ${resume.fileName || ''} ${resume.title?.en || ''}`.toLowerCase();
     return identity.includes('en') ? 'en' : 'es';
   }
 
@@ -136,41 +152,55 @@ export class CvComponent implements OnInit {
 
   get cvHeroBackground() {
     return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.cvHeroBackground) ||
-      createPortfolioPlaceholder('CV Hero', 1600, 900)
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.cvHeroBackground,
+      ) || createPortfolioPlaceholder('CV Hero', 1600, 900)
     );
   }
 
   get cvSectionBackground() {
     return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.cvSectionBackground) ||
-      createPortfolioPlaceholder('CV Section', 1600, 900)
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.cvSectionBackground,
+      ) || createPortfolioPlaceholder('CV Section', 1600, 900)
     );
   }
 
   get cloudIcon() {
     return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeCloudIcon) ||
-      createPortfolioPlaceholder('Cloud Icon', 420, 420)
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.decorativeCloudIcon,
+      ) || createPortfolioPlaceholder('Cloud Icon', 420, 420)
     );
   }
 
   get webDevelopmentIcon() {
     return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeWebDevelopmentIcon) ||
-      createPortfolioPlaceholder('Web Dev Icon', 420, 420)
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.decorativeWebDevelopmentIcon,
+      ) || createPortfolioPlaceholder('Web Dev Icon', 420, 420)
     );
   }
 
   trackResume(index: number, resume: IApiResume): string {
-    return resume._id || resume.slug || resume.fileName || resume.title?.es || resume.title?.en || `${index}`;
+    return (
+      resume._id ||
+      resume.slug ||
+      resume.fileName ||
+      resume.title?.es ||
+      resume.title?.en ||
+      `${index}`
+    );
   }
 
   private async withTimeout<T>(operation: Promise<T>): Promise<T> {
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
     const timeoutPromise = new Promise<never>((_, reject) => {
-      timeoutId = setTimeout(() => reject(new Error('CV content request timed out')), CV_CONTENT_TIMEOUT_MS);
+      timeoutId = setTimeout(
+        () => reject(new Error('CV content request timed out')),
+        CV_CONTENT_TIMEOUT_MS,
+      );
     });
 
     try {

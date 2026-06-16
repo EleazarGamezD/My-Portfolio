@@ -1,5 +1,15 @@
-
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DoCheck,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
@@ -15,6 +25,9 @@ import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/s
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SkillPickerComponent implements OnInit, OnChanges, DoCheck {
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   /** IDs of currently selected skills */
   @Input() selectedIds: string[] = [];
   /** Whether to show the "primary skill" feature (for projects) */
@@ -34,11 +47,6 @@ export class SkillPickerComponent implements OnInit, OnChanges, DoCheck {
   showSkillsLibrary = false;
   currentPage = 1;
   private _lastSkillCount = -1;
-
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly cdr: ChangeDetectorRef,
-  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.facade.loadTechSkillsContent();
@@ -105,7 +113,11 @@ export class SkillPickerComponent implements OnInit, OnChanges, DoCheck {
 
     this.selectedIdsChange.emit(updated);
 
-    if (this.showPrimary && this.primarySkillId === skillId && !updated.includes(skillId)) {
+    if (
+      this.showPrimary &&
+      this.primarySkillId === skillId &&
+      !updated.includes(skillId)
+    ) {
       this.primaryChange.emit(updated[0] ?? null);
     }
   }

@@ -1,7 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { IApiHeroSlide } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
-import {HomeSwiperSlideElementComponent} from '../home-swiper-slide-element/home-swiper-slide-element.component';
+import { HomeSwiperSlideElementComponent } from '../home-swiper-slide-element/home-swiper-slide-element.component';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
@@ -12,12 +18,10 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeBannerSliderComponent implements OnInit {
-  sliderContentArray: IApiHeroSlide[] = [];
+  private readonly contentService = inject(ContentService);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
-  constructor(
-    private readonly contentService: ContentService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {}
+  sliderContentArray: IApiHeroSlide[] = [];
 
   async ngOnInit() {
     try {
@@ -34,9 +38,7 @@ export class HomeBannerSliderComponent implements OnInit {
 
   trackSlide(index: number, slide: IApiHeroSlide): string {
     const imageKey =
-      typeof slide.image === 'string'
-        ? slide.image
-        : slide.image?.url || '';
+      typeof slide.image === 'string' ? slide.image : slide.image?.url || '';
 
     return imageKey || slide.title?.es || slide.title?.en || `${index}`;
   }

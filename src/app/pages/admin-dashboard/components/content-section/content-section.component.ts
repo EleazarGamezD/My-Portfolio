@@ -5,12 +5,14 @@ import {
   Input,
   Output,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IApiContentItem,
   ILocalizedText,
 } from '@core/interfaces/content/content.interface';
+import { AdminContentSectionVariant } from '@core/interfaces/admin-dashboard/admin-dashboard.interface';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import {
   BadgeModule,
@@ -24,14 +26,7 @@ import {
   Language,
   TranslateButtonComponent,
 } from '../shared/translate-button/translate-button.component';
-
-export type AdminContentSectionVariant =
-  | 'skills'
-  | 'experience'
-  | 'education'
-  | 'certifications'
-  | 'testimonials'
-  | 'socialLinks';
+import { ShowErrorsComponent } from '../shared/show-errors/show-errors.component';
 
 @Component({
   selector: 'app-admin-content-section',
@@ -46,12 +41,15 @@ export type AdminContentSectionVariant =
     SpinnerModule,
     TableModule,
     TranslateButtonComponent,
+    ShowErrorsComponent,
   ],
   templateUrl: './content-section.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './content-section.component.scss',
 })
 export class AdminContentSectionComponent {
+  readonly i18nService = inject(I18nService);
+
   readonly Language = Language;
   translateErrors: Record<string, string> = {};
 
@@ -68,8 +66,6 @@ export class AdminContentSectionComponent {
   @Output() createItem = new EventEmitter<void>();
   @Output() saveItem = new EventEmitter<IApiContentItem>();
   @Output() deleteItem = new EventEmitter<IApiContentItem>();
-
-  constructor(public readonly i18nService: I18nService) {}
 
   getLocalizedText(value?: ILocalizedText): string {
     if (!value) {

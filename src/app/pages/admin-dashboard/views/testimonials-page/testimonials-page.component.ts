@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
@@ -18,6 +19,9 @@ import { TestimonialsListComponent } from '@pages/admin-dashboard/components/tes
   templateUrl: './testimonials-page.component.html',
 })
 export class AdminTestimonialsPageComponent implements OnInit {
+  private readonly contentService = inject(ContentService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   items: IApiContentItem[] = [];
   loading = false;
   error: string | null = null;
@@ -31,11 +35,6 @@ export class AdminTestimonialsPageComponent implements OnInit {
   };
 
   private readonly pageSize = 10;
-
-  constructor(
-    private readonly contentService: ContentService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.loadPage(1);

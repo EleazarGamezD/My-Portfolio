@@ -4,6 +4,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -24,6 +25,7 @@ import {
 } from '@coreui/angular';
 import { AddPhotoComponent } from '@pages/admin-dashboard/components/shared/add-photo/add-photo.component';
 import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/photo-editor/photo-editor.component';
+import { ShowErrorsComponent } from '@pages/admin-dashboard/components/shared/show-errors/show-errors.component';
 import { SkillPickerComponent } from '@pages/admin-dashboard/components/shared/skill-picker/skill-picker.component';
 import {
   Language,
@@ -51,12 +53,20 @@ export enum ProjectStatusEnum {
     AddPhotoComponent,
     PhotoEditorComponent,
     TranslateButtonComponent,
+    ShowErrorsComponent,
   ],
   templateUrl: './project-form-page.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './project-form-page.component.scss',
 })
 export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly projectsService = inject(ProjectsService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly storageService = inject(StorageService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   readonly Language = Language;
   readonly ProjectStatusEnum = ProjectStatusEnum;
   readonly projectStatusOptions = [
@@ -68,15 +78,6 @@ export class AdminProjectFormPageComponent implements OnInit, OnDestroy {
   projectId = '';
   notFound = false;
   translateErrors: Record<string, string> = {};
-
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly projectsService: ProjectsService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly storageService: StorageService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     this.mode =

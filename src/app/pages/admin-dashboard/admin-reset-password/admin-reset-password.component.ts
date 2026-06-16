@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -17,6 +18,10 @@ import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
   styleUrl: './admin-reset-password.component.scss',
 })
 export class AdminResetPasswordComponent implements OnInit, OnDestroy {
+  private readonly adminAuthService = inject(AdminAuthService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   newPassword = '';
   confirmPassword = '';
   loading = false;
@@ -24,12 +29,6 @@ export class AdminResetPasswordComponent implements OnInit, OnDestroy {
   success = false;
   private token = '';
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
-
-  constructor(
-    private readonly adminAuthService: AdminAuthService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-  ) {}
 
   ngOnInit(): void {
     this.enableAdminThemeContext();

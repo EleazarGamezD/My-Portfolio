@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { AlertModule } from '@coreui/angular';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
@@ -17,10 +18,8 @@ import { ExperienceListComponent } from '@pages/admin-dashboard/components/exper
   styleUrl: './experience-page.component.scss',
 })
 export class AdminExperiencePageComponent implements OnInit {
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   async ngOnInit(): Promise<void> {
     await this.facade.loadExperienceContent();

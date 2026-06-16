@@ -1,7 +1,7 @@
 <section class="background-around">
   <div
     class="project-detail-background"
-    [@imageEaseOut]="detailBackgroundImage"
+    [class.project-image-ease-out]="imageAnimationActive"
     [style.background-image]="detailBackgroundStyle"
   ></div>
   <div class="container project-detail-shell pt-100px pb-100px">
@@ -15,7 +15,7 @@
                   [src]="heroImage"
                   [alt]="projectTitle"
                   class="project-hero-image"
-                  [@imageEaseOut]="heroImage"
+                  [class.project-image-ease-out]="imageAnimationActive"
                 />
               } @else {
                 <div class="project-media-placeholder">

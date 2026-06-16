@@ -4,9 +4,11 @@ import {
   Input,
   Output,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { ExperienceReorderEvent } from '@core/interfaces/admin-dashboard/admin-dashboard.interface';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { BadgeModule, SpinnerModule, TableModule } from '@coreui/angular';
@@ -14,11 +16,6 @@ import {
   AdminActionMenuAction,
   AdminActionMenuComponent,
 } from '../admin-action-menu/admin-action-menu.component';
-
-interface ExperienceReorderEvent {
-  previousIndex: number;
-  currentIndex: number;
-}
 
 @Component({
   selector: 'app-experience-list',
@@ -36,14 +33,14 @@ interface ExperienceReorderEvent {
   styleUrl: './experience-list.component.scss',
 })
 export class ExperienceListComponent {
+  private readonly i18nService = inject(I18nService);
+
   @Input() items: IApiContentItem[] = [];
   @Input() loading = false;
   @Input() actionLoadingKey: string | null = null;
 
   @Output() deleteExperience = new EventEmitter<IApiContentItem>();
   @Output() reorderExperience = new EventEmitter<ExperienceReorderEvent>();
-
-  constructor(private readonly i18nService: I18nService) {}
 
   getItemName(item: IApiContentItem): string {
     return (

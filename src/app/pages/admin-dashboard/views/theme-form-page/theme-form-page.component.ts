@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -19,6 +20,7 @@ import {
   FormModule,
   SpinnerComponent,
 } from '@coreui/angular';
+import { ShowErrorsComponent } from '../../components/shared/show-errors/show-errors.component';
 import { ToastrService } from 'ngx-toastr';
 
 type ThemeFormMode = 'create' | 'edit';
@@ -66,12 +68,19 @@ export const COLOR_FIELD_META: Array<{
     CardModule,
     FormModule,
     SpinnerComponent,
+    ShowErrorsComponent,
   ],
   templateUrl: './theme-form-page.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './theme-form-page.component.scss',
 })
 export class AdminThemeFormPageComponent implements OnInit {
+  private readonly themeService = inject(ThemeService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   readonly fontOptions = FONT_OPTIONS;
   readonly colorFields = COLOR_FIELD_META;
 
@@ -94,14 +103,6 @@ export class AdminThemeFormPageComponent implements OnInit {
     { value: 'complement', label: 'Complementario' },
     { value: 'analogic', label: 'Análogo' },
   ];
-
-  constructor(
-    private readonly themeService: ThemeService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     this.mode = (this.route.snapshot.data['mode'] as ThemeFormMode) || 'create';

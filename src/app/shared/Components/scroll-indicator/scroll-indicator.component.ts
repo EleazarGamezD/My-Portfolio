@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { I18nService } from '@core/services/i18n/i18n.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { I18nService } from '@core/services/i18n/i18n.service';
   styleUrl: './scroll-indicator.component.scss',
 })
 export class ScrollIndicatorComponent {
-  constructor(public i18nService: I18nService) {}
+  i18nService = inject(I18nService);
 
   t(key: string) {
     return this.i18nService.t(key);

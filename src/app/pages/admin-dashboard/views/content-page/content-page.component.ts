@@ -3,8 +3,10 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AdminContentPageData } from '@core/interfaces/admin-dashboard/admin-dashboard.interface';
 import {
   IApiContentItem,
   IApiTechSkill,
@@ -13,27 +15,13 @@ import { IPaginationResponse } from '@core/interfaces/projects/projects.interfac
 import { AlertModule } from '@coreui/angular';
 import {
   AdminDashboardFacade,
-  ContentResourceName,
 } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { ContentService } from '@core/services/content/content.service';
 import {
   AdminContentSectionComponent,
-  AdminContentSectionVariant,
 } from '@pages/admin-dashboard/components/content-section/content-section.component';
 import { OrderedCvContentListComponent } from '@pages/admin-dashboard/components/ordered-cv-content-list/ordered-cv-content-list.component';
 import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/skills-section/skills-section.component';
-
-type ContentResourcePage = Exclude<ContentResourceName, 'resumes'>;
-
-interface AdminContentPageData {
-  resourceName: ContentResourcePage;
-  variant: AdminContentSectionVariant;
-  sectionTitle: string;
-  createTitle: string;
-  emptyMessage: string;
-  kicker: string;
-  description: string;
-}
 
 @Component({
   selector: 'app-admin-content-page',
@@ -49,6 +37,11 @@ interface AdminContentPageData {
   styleUrl: './content-page.component.scss',
 })
 export class AdminContentPageComponent implements OnInit {
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly route = inject(ActivatedRoute);
+  private readonly contentService = inject(ContentService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   config!: AdminContentPageData;
   skillPagination: IPaginationResponse<IApiTechSkill> = {
     data: [],
@@ -59,13 +52,6 @@ export class AdminContentPageComponent implements OnInit {
     hasPrevPage: false,
   };
   readonly skillPageSize = 6;
-
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly route: ActivatedRoute,
-    private readonly contentService: ContentService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     this.config = this.route.snapshot.data as AdminContentPageData;

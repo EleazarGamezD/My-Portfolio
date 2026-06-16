@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { IApiContentItem, IApiProfile } from '@core/interfaces/content/content.interface';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
+import {
+  IApiContentItem,
+  IApiProfile,
+} from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
@@ -14,15 +23,13 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkReferencesComponent implements OnInit {
+  i18nService = inject(I18nService);
+  private readonly contentService = inject(ContentService);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   profile: IApiProfile | null = null;
   workReferences: IApiContentItem[] = [];
   downSideIcons: { url: string }[] = [];
-
-  constructor(
-    public i18nService: I18nService,
-    private readonly contentService: ContentService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) { }
 
   async ngOnInit() {
     try {
@@ -34,7 +41,9 @@ export class WorkReferencesComponent implements OnInit {
         ? testimonials.filter((item): item is IApiContentItem => Boolean(item))
         : [];
       this.profile = profile;
-      this.downSideIcons = (profile.metadata?.portfolioMedia?.testimonialLogos ?? [])
+      this.downSideIcons = (
+        profile.metadata?.portfolioMedia?.testimonialLogos ?? []
+      )
         .map((asset) => resolveImageAssetUrl(asset))
         .filter((url): url is string => Boolean(url))
         .map((url) => ({ url }));
@@ -53,7 +62,10 @@ export class WorkReferencesComponent implements OnInit {
     );
   }
 
-  getMetadataText(item: IApiContentItem | null | undefined, key: 'position' | 'company') {
+  getMetadataText(
+    item: IApiContentItem | null | undefined,
+    key: 'position' | 'company',
+  ) {
     const value = item?.[key];
     if (typeof value === 'string' && value.trim()) {
       return value;
@@ -85,24 +97,36 @@ export class WorkReferencesComponent implements OnInit {
 
   get serverIcon() {
     return (
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.decorativeServerIcon) ||
-      createPortfolioPlaceholder('Server Icon', 360, 360)
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.decorativeServerIcon,
+      ) || createPortfolioPlaceholder('Server Icon', 360, 360)
     );
   }
 
   get sectionBackgroundImage() {
-    if (this.profile?.metadata?.portfolioMedia?.testimonialsSectionTransparentBackground) {
+    if (
+      this.profile?.metadata?.portfolioMedia
+        ?.testimonialsSectionTransparentBackground
+    ) {
       return 'none';
     }
 
     const backgroundUrl =
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.testimonialsSectionBackground) ||
-      'https://placehold.co/1920x1200';
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.testimonialsSectionBackground,
+      ) || 'https://placehold.co/1920x1200';
     return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
   }
 
   trackTestimonial(index: number, item: IApiContentItem): string {
-    return item._id || item.slug || item.name || item.label?.es || item.label?.en || `${index}`;
+    return (
+      item._id ||
+      item.slug ||
+      item.name ||
+      item.label?.es ||
+      item.label?.en ||
+      `${index}`
+    );
   }
 
   trackLogo(index: number, item: { url: string }): string {

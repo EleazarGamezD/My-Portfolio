@@ -85,7 +85,8 @@
                     <div class="skill-field-stack">
                       <div>
                         <label class="form-label">Nombre de la skill</label>
-                        <input cFormControl type="text" [ngModel]="draftLabel" (ngModelChange)="onLabelChange($event)" placeholder="Angular" />
+                        <input cFormControl type="text" name="skill-label" [ngModel]="draftLabel" (ngModelChange)="onLabelChange($event)" placeholder="Angular" required #skillLabel="ngModel" />
+                        <app-show-errors [control]="skillLabel.control" [requiredField]="'nombre de la skill'" />
                       </div>
                       <div class="skill-toggle-card">
                         <div>

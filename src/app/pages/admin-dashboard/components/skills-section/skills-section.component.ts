@@ -8,6 +8,7 @@ import {
   OnChanges,
   Output,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
@@ -49,6 +50,8 @@ import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/p
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AdminSkillsSectionComponent implements OnChanges {
+  private readonly cdr = inject(ChangeDetectorRef);
+
   @Input({ required: true }) sectionTitle = '';
   @Input({ required: true }) createTitle = '';
   @Input({ required: true }) emptyMessage = '';
@@ -82,8 +85,6 @@ export class AdminSkillsSectionComponent implements OnChanges {
   // ── Inline edit (used when useTopFormForEdit = false) ───────────────────
   editingSkillId: string | null = null;
   private readonly snapshots = new Map<string, IApiTechSkill>();
-
-  constructor(private readonly cdr: ChangeDetectorRef) {}
 
   ngOnChanges(): void {
     // When the skills list refreshes after a save/create, clear the top-form edit state

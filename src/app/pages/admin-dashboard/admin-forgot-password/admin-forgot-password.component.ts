@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -17,13 +18,13 @@ import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
   styleUrl: './admin-forgot-password.component.scss',
 })
 export class AdminForgotPasswordComponent implements OnInit, OnDestroy {
+  private readonly adminAuthService = inject(AdminAuthService);
+
   email = '';
   loading = false;
   error: string | null = null;
   sent = false;
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
-
-  constructor(private readonly adminAuthService: AdminAuthService) {}
 
   ngOnInit(): void {
     this.enableAdminThemeContext();

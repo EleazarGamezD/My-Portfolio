@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { AdminPortfolioMediaSectionComponent } from '@pages/admin-dashboard/components/portfolio-media-section/portfolio-media-section.component';
@@ -16,10 +17,8 @@ import { AdminPortfolioMediaSectionComponent } from '@pages/admin-dashboard/comp
   styleUrls: ['./portfolio-media-page.component.scss'],
 })
 export class AdminPortfolioMediaPageComponent implements OnInit {
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   async ngOnInit(): Promise<void> {
     await this.facade.loadProfileContent();

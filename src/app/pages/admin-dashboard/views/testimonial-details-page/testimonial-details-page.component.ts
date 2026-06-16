@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
@@ -25,21 +26,19 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './testimonial-details-page.component.scss',
 })
 export class AdminTestimonialDetailsPageComponent implements OnInit {
+  private readonly contentService = inject(ContentService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly i18nService = inject(I18nService);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   testimonialId = '';
   item: IApiContentItem | null = null;
   loading = false;
   actionLoading = false;
   notFound = false;
   error: string | null = null;
-
-  constructor(
-    private readonly contentService: ContentService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly i18nService: I18nService,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     this.testimonialId = this.route.snapshot.paramMap.get('id') || '';

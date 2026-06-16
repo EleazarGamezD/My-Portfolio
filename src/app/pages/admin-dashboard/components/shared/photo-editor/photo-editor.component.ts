@@ -16,22 +16,18 @@ import {
   input,
 } from '@angular/core';
 import { IBase64ImageAsset } from '@core/interfaces/media/admin-media.interface';
+import {
+  EditablePhotoItem,
+  PhotoEditorAction,
+  PhotoEditorVariant,
+  ProjectAssetReference,
+} from '@core/interfaces/media/photo-editor.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import {
   createBase64ImageAsset,
   resolveImageAssetUrl,
 } from '@core/utils/image/admin-image.utils';
 import { ToastrService } from 'ngx-toastr';
-
-type PhotoEditorVariant = 'single' | 'gallery';
-type PhotoEditorAction = 'add' | 'replace';
-type ProjectAssetReference = string | IProjectAsset;
-
-interface EditablePhotoItem {
-  id: string;
-  previewUrl: string;
-  asset: IProjectAsset;
-}
 
 @Component({
   selector: 'app-photo-editor',

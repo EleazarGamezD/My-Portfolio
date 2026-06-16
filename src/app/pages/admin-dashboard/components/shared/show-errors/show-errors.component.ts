@@ -1,10 +1,3 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 type ValidationErrorValue = {
@@ -16,30 +9,6 @@ type ValidationErrorValue = {
   selector: 'app-show-errors',
   templateUrl: './show-errors.component.html',
   styleUrls: ['./show-errors.component.scss'],
-  animations: [
-    trigger('slideInError', [
-      state(
-        'void',
-        style({
-          height: '0px',
-          opacity: 0,
-          overflow: 'hidden',
-          transform: 'translateY(-10px)',
-        }),
-      ),
-      state(
-        '*',
-        style({
-          height: '*',
-          opacity: 1,
-          overflow: 'visible',
-          transform: 'translateY(0)',
-        }),
-      ),
-      transition('void => *', [animate('300ms ease-out')]),
-      transition('* => void', [animate('200ms ease-in')]),
-    ]),
-  ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],

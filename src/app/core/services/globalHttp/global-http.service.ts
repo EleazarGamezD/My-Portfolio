@@ -1,33 +1,35 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
+import { Injectable, NgZone, inject } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { RequestStateService } from '@core/services/request-state/request-state.service';
-import { StorageMap } from '@ngx-pwa/local-storage';
 import { StorageService } from '@services/storage/storage.service';
-import { catchError, defaultIfEmpty, lastValueFrom, map, throwError } from 'rxjs';
+import {
+  catchError,
+  defaultIfEmpty,
+  lastValueFrom,
+  map,
+  throwError,
+} from 'rxjs';
 import { environment } from '../../../../environments/environment';
-
 
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalHttpService extends StorageService {
-  constructor(
-    public _http: HttpClient,
-    storageMap: StorageMap,
-    private readonly ngZone: NgZone,
-    private readonly requestStateService: RequestStateService,
-    @Inject(PLATFORM_ID) platformId: object,
-  ) {
-    super(storageMap, platformId);
-  }
+  _http = inject(HttpClient);
+  private readonly ngZone = inject(NgZone);
+  private readonly requestStateService = inject(RequestStateService);
 
   /**
-    * Returns a promise that resolves to an HttpHeaders object containing the Authorization header with a valid bearer token.
-    * If the user is not logged in, an empty HttpHeaders object is returned.
-    * @returns {Promise<HttpHeaders>} A promise that resolves to an HttpHeaders object containing the Authorization header with a valid bearer token.
-    */
+   * Returns a promise that resolves to an HttpHeaders object containing the Authorization header with a valid bearer token.
+   * If the user is not logged in, an empty HttpHeaders object is returned.
+   * @returns {Promise<HttpHeaders>} A promise that resolves to an HttpHeaders object containing the Authorization header with a valid bearer token.
+   */
   public async getAuthHeaders(): Promise<HttpHeaders> {
     const token = (await this.getStorage(NgStorage.TOKEN)) as string;
     let headers = new HttpHeaders();
@@ -87,15 +89,11 @@ export class GlobalHttpService extends StorageService {
 
     try {
       return await lastValueFrom(
-        this._http
-          .request<T>(method, url, requestOptions)
-          .pipe(
-            map((response) => response as T),
-            defaultIfEmpty(null as T),
-            catchError((error: HttpErrorResponse) =>
-              throwError(() => error),
-            ),
-          ),
+        this._http.request<T>(method, url, requestOptions).pipe(
+          map((response) => response as T),
+          defaultIfEmpty(null as T),
+          catchError((error: HttpErrorResponse) => throwError(() => error)),
+        ),
       );
     } finally {
       this.requestStateService.endRequest();
@@ -103,17 +101,21 @@ export class GlobalHttpService extends StorageService {
   }
 
   private async handleAuthFailure(error: unknown): Promise<void> {
-    if (!(error instanceof HttpErrorResponse) || error.status !== 401 || typeof window === 'undefined') {
+    if (
+      !(error instanceof HttpErrorResponse) ||
+      error.status !== 401 ||
+      typeof window === 'undefined'
+    ) {
       return;
     }
 
     const currentPath = window.location.pathname;
     const isProtectedAdminRoute =
-      currentPath.startsWith('/admin')
-      && !currentPath.startsWith('/admin/login')
-      && !currentPath.startsWith('/admin/forgot-password')
-      && !currentPath.startsWith('/admin/reset-password')
-      && !currentPath.startsWith('/admin/setup-account');
+      currentPath.startsWith('/admin') &&
+      !currentPath.startsWith('/admin/login') &&
+      !currentPath.startsWith('/admin/forgot-password') &&
+      !currentPath.startsWith('/admin/reset-password') &&
+      !currentPath.startsWith('/admin/setup-account');
 
     if (!isProtectedAdminRoute) {
       return;
@@ -128,7 +130,9 @@ export class GlobalHttpService extends StorageService {
     );
 
     this.ngZone.runOutsideAngular(() => {
-      window.location.assign(`/admin/login?sessionExpired=1&redirectTo=${redirectTo}`);
+      window.location.assign(
+        `/admin/login?sessionExpired=1&redirectTo=${redirectTo}`,
+      );
     });
   }
 }

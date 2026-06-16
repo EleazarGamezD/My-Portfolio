@@ -6,8 +6,13 @@ import {
   Input,
   Output,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import {
+  OrderedCvContentReorderEvent,
+  OrderedCvContentVariant,
+} from '@core/interfaces/admin-dashboard/admin-dashboard.interface';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { SpinnerModule, TableModule } from '@coreui/angular';
@@ -15,13 +20,6 @@ import {
   AdminActionMenuAction,
   AdminActionMenuComponent,
 } from '../admin-action-menu/admin-action-menu.component';
-
-export type OrderedCvContentVariant = 'education' | 'certifications';
-
-interface OrderedCvContentReorderEvent {
-  previousIndex: number;
-  currentIndex: number;
-}
 
 @Component({
   selector: 'app-ordered-cv-content-list',
@@ -38,6 +36,8 @@ interface OrderedCvContentReorderEvent {
   styleUrl: './ordered-cv-content-list.component.scss',
 })
 export class OrderedCvContentListComponent {
+  private readonly i18nService = inject(I18nService);
+
   @Input({ required: true }) variant!: OrderedCvContentVariant;
   @Input() items: IApiContentItem[] = [];
   @Input() loading = false;
@@ -45,8 +45,6 @@ export class OrderedCvContentListComponent {
 
   @Output() deleteItem = new EventEmitter<IApiContentItem>();
   @Output() reorderItems = new EventEmitter<OrderedCvContentReorderEvent>();
-
-  constructor(private readonly i18nService: I18nService) {}
 
   get kicker(): string {
     return this.variant === 'education'

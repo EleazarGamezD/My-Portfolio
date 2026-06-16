@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import {
   FormModule,
 } from '@coreui/angular';
 import { PhotoEditorComponent } from '@pages/admin-dashboard/components/shared/photo-editor/photo-editor.component';
+import { ShowErrorsComponent } from '../../components/shared/show-errors/show-errors.component';
 import { ToastrService } from 'ngx-toastr';
 
 type SkillFormMode = 'create' | 'edit';
@@ -32,12 +34,19 @@ type SkillFormMode = 'create' | 'edit';
     CardModule,
     FormModule,
     PhotoEditorComponent,
+    ShowErrorsComponent,
   ],
   templateUrl: './skill-form-page.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './skill-form-page.component.scss',
 })
 export class AdminSkillFormPageComponent implements OnInit {
+  private readonly contentService = inject(ContentService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   mode: SkillFormMode = 'create';
   skillId = '';
   loading = false;
@@ -45,14 +54,6 @@ export class AdminSkillFormPageComponent implements OnInit {
   notFound = false;
   error: string | null = null;
   draft: Partial<IApiTechSkill> = this.createEmptyDraft();
-
-  constructor(
-    private readonly contentService: ContentService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     this.mode = (this.route.snapshot.data['mode'] as SkillFormMode) || 'create';

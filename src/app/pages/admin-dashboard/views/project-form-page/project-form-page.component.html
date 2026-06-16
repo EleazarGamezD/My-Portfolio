@@ -29,7 +29,8 @@
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label class="form-label">Titulo en espanol</label>
-                    <input cFormControl type="text" [(ngModel)]="draft.title!.es" aria-label="Titulo en espanol" />
+                    <input cFormControl type="text" name="project-title-es" [(ngModel)]="draft.title!.es" aria-label="Titulo en espanol" required #projectTitleEs="ngModel" />
+                    <app-show-errors [control]="projectTitleEs.control" [requiredField]="'titulo en espanol'" />
                     <div class="d-flex justify-content-between align-items-center mt-1">
                       <app-translate-button [fromText]="draft.title!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.title!.en = $event; translateErrors['titleEs'] = ''" (translationError)="translateErrors['titleEs'] = $event" />
                       @if (translateErrors['titleEs']) {

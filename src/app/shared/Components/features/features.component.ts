@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -14,13 +20,11 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeaturesComponent implements OnInit {
-  stack: IApiContentItem[] = [];
+  i18nService = inject(I18nService);
+  private readonly contentService = inject(ContentService);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
-  constructor(
-    public i18nService: I18nService,
-    private readonly contentService: ContentService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {}
+  stack: IApiContentItem[] = [];
 
   async ngOnInit() {
     try {

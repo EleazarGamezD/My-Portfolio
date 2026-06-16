@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { IApiProfile } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -13,15 +19,13 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SmallAboutResumeComponent implements OnInit {
+  i18nService = inject(I18nService);
+  private readonly contentService = inject(ContentService);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   profile: IApiProfile | null = null;
   primaryImageSrc = createPortfolioPlaceholder('About Photo A', 900, 1100);
   secondaryImageSrc = createPortfolioPlaceholder('About Photo B', 900, 1100);
-
-  constructor(
-    public i18nService: I18nService,
-    private readonly contentService: ContentService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) { }
 
   async ngOnInit() {
     try {
@@ -38,9 +42,9 @@ export class SmallAboutResumeComponent implements OnInit {
   get titleText() {
     return this.profile
       ? this.i18nService.selectText(
-        this.profile.title?.es ?? '',
-        this.profile.title?.en ?? this.profile.title?.es ?? '',
-      )
+          this.profile.title?.es ?? '',
+          this.profile.title?.en ?? this.profile.title?.es ?? '',
+        )
       : '';
   }
 
@@ -60,7 +64,9 @@ export class SmallAboutResumeComponent implements OnInit {
 
     return this.i18nService.selectText(
       this.profile.metadata?.about?.es ?? '',
-      this.profile.metadata?.about?.en ?? this.profile.metadata?.about?.es ?? '',
+      this.profile.metadata?.about?.en ??
+        this.profile.metadata?.about?.es ??
+        '',
     );
   }
 
@@ -71,10 +77,15 @@ export class SmallAboutResumeComponent implements OnInit {
 
     const aboutDescription = this.i18nService.selectText(
       this.profile.metadata?.about?.es ?? '',
-      this.profile.metadata?.about?.en ?? this.profile.metadata?.about?.es ?? '',
+      this.profile.metadata?.about?.en ??
+        this.profile.metadata?.about?.es ??
+        '',
     );
 
-    if (aboutDescription.trim() && aboutDescription.trim() !== this.primaryDescription.trim()) {
+    if (
+      aboutDescription.trim() &&
+      aboutDescription.trim() !== this.primaryDescription.trim()
+    ) {
       return aboutDescription;
     }
 
@@ -82,13 +93,16 @@ export class SmallAboutResumeComponent implements OnInit {
   }
 
   get sectionBackgroundImage() {
-    if (this.profile?.metadata?.portfolioMedia?.aboutSectionTransparentBackground) {
+    if (
+      this.profile?.metadata?.portfolioMedia?.aboutSectionTransparentBackground
+    ) {
       return 'none';
     }
 
     const backgroundUrl =
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSectionBackground) ||
-      'https://placehold.co/1920x1200';
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.aboutSectionBackground,
+      ) || 'https://placehold.co/1920x1200';
     return backgroundUrl ? `url('${backgroundUrl}')` : 'none';
   }
 
@@ -98,11 +112,13 @@ export class SmallAboutResumeComponent implements OnInit {
 
   private syncPortfolioMedia(): void {
     this.primaryImageSrc =
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutPrimaryImage) ||
-      createPortfolioPlaceholder('About Photo A', 900, 1100);
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.aboutPrimaryImage,
+      ) || createPortfolioPlaceholder('About Photo A', 900, 1100);
 
     this.secondaryImageSrc =
-      resolveImageAssetUrl(this.profile?.metadata?.portfolioMedia?.aboutSecondaryImage) ||
-      createPortfolioPlaceholder('About Photo B', 900, 1100);
+      resolveImageAssetUrl(
+        this.profile?.metadata?.portfolioMedia?.aboutSecondaryImage,
+      ) || createPortfolioPlaceholder('About Photo B', 900, 1100);
   }
 }

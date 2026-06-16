@@ -5,7 +5,6 @@ import {
   withEventReplay,
   withNoIncrementalHydration,
 } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   provideRouter,
   withInMemoryScrolling,
@@ -13,8 +12,6 @@ import {
   withViewTransitions,
 } from '@angular/router';
 import { routes } from '@core/routes/app.routes';
-import { DropdownModule, SidebarModule } from '@coreui/angular';
-import { IconSetService } from '@coreui/icons-angular';
 import { StorageModule } from '@ngx-pwa/local-storage';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { provideToastr } from 'ngx-toastr';
@@ -39,11 +36,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       RecaptchaV3Module,
       StorageModule.forRoot({}),
-      SidebarModule,
-      DropdownModule,
     ),
-    IconSetService,
-    provideAnimations(),
     provideToastr({
       positionClass: 'toast-top-right',
       preventDuplicates: true,

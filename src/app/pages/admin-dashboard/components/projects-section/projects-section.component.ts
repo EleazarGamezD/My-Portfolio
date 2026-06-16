@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ILocalizedText, IProject, IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -35,6 +35,7 @@ import { PhotoEditorComponent } from '../shared/photo-editor/photo-editor.compon
     styleUrl: './projects-section.component.scss',
 })
 export class AdminProjectsSectionComponent {
+    readonly i18nService = inject(I18nService);
     @Input() projects: IProject[] = [];
     @Input() newProject: Partial<IProject> = {};
     @Input() newProjectStackValue = '';
@@ -51,8 +52,6 @@ export class AdminProjectsSectionComponent {
     @Output() projectCoverAssetsChange = new EventEmitter<{ project: IProject; assets: IProjectAsset[] }>();
     @Output() projectGalleryAssetsChange = new EventEmitter<{ project: IProject; assets: IProjectAsset[] }>();
     @Output() imageUploadError = new EventEmitter<string>();
-
-    constructor(public readonly i18nService: I18nService) { }
 
     isActionLoading(actionKey: string): boolean {
         return this.actionLoadingKey === actionKey;

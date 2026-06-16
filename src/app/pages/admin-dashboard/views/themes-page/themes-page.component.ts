@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  inject,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ITheme } from '@core/interfaces/theme/theme.interface';
@@ -30,15 +31,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './themes-page.component.scss',
 })
 export class AdminThemesPageComponent implements OnInit {
+  private readonly themeService = inject(ThemeService);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   themes: ITheme[] = [];
   loading = true;
   actionLoadingId: string | null = null;
-
-  constructor(
-    private readonly themeService: ThemeService,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.loadThemes();

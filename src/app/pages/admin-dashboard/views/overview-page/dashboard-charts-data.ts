@@ -1,18 +1,8 @@
 import { Injectable } from '@angular/core';
+import { DeepPartial } from '@core/interfaces/common/deep-partial.interface';
+import { IChartProps } from '@core/interfaces/overview/dashboard-chart.interface';
 import { getStyle } from '@coreui/utils';
-import { ChartData, ChartDataset, ChartOptions, ChartType, PluginOptionsByType, ScaleOptions, TooltipLabelStyle } from 'chart.js';
-import { DeepPartial } from './utils';
-
-export interface IChartProps {
-  data?: ChartData;
-  labels?: any;
-  options?: ChartOptions;
-  colors?: any;
-  type: ChartType;
-  legend?: any;
-
-  [propName: string]: any;
-}
+import { ChartDataset, ChartOptions, PluginOptionsByType, ScaleOptions, TooltipLabelStyle } from 'chart.js';
 
 @Injectable({
   providedIn: 'root'

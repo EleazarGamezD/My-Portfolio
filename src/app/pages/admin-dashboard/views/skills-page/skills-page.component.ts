@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
@@ -18,6 +19,10 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './skills-page.component.html',
 })
 export class AdminSkillsPageComponent implements OnInit {
+  private readonly contentService = inject(ContentService);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   skills: IApiTechSkill[] = [];
   loading = true;
   deletingSkillId: string | null = null;
@@ -30,12 +35,6 @@ export class AdminSkillsPageComponent implements OnInit {
     hasNextPage: false,
     hasPrevPage: false,
   };
-
-  constructor(
-    private readonly contentService: ContentService,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.loadSkillsPage();

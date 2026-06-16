@@ -2,22 +2,14 @@ import {
   ChangeDetectorRef,
   Component,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
+import { DangerAction } from '@core/interfaces/admin-dashboard/admin-dashboard.interface';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { ContentService } from '@core/services/content/content.service';
 import { ThemeService } from '@core/services/theme/theme.service';
 import { ButtonModule, SpinnerComponent } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
-
-interface DangerAction {
-  id: string;
-  title: string;
-  description: string;
-  confirmTitle: string;
-  confirmBody: string;
-  buttonLabel: string;
-  isForce?: boolean;
-}
 
 @Component({
   selector: 'app-danger-zone-page',
@@ -28,6 +20,12 @@ interface DangerAction {
   styleUrl: './danger-zone-page.component.scss',
 })
 export class DangerZonePageComponent {
+  private readonly themeService = inject(ThemeService);
+  private readonly adminAuthService = inject(AdminAuthService);
+  private readonly contentService = inject(ContentService);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   loadingId: string | null = null;
 
   pendingAction: DangerAction | null = null;
@@ -76,14 +74,6 @@ export class DangerZonePageComponent {
       isForce: true,
     },
   ];
-
-  constructor(
-    private readonly themeService: ThemeService,
-    private readonly adminAuthService: AdminAuthService,
-    private readonly contentService: ContentService,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   openConfirm(action: DangerAction): void {
     this.pendingAction = action;

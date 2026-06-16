@@ -1,22 +1,21 @@
 import {
   Component,
   DestroyRef,
-  Inject,
   OnInit,
   DOCUMENT,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
-import { adminIconSubset } from '@core/icons/admin-icon-subset';
 import { IApiProfile } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { StorageService } from '@core/services/storage/storage.service';
+import { TemplateScriptsService } from '@core/services/template-scripts/template-scripts.service';
 import { ThemeService } from '@core/services/theme/theme.service';
-import { IconSetService } from '@coreui/icons-angular';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -28,26 +27,23 @@ import { filter } from 'rxjs/operators';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  private profileContent: IApiProfile | null = null;
+  private meta = inject(Meta);
+  private titleService = inject(Title);
+  private router = inject(Router);
+  private i18nService = inject(I18nService);
+  private readonly storageService = inject(StorageService);
+  private readonly contentService = inject(ContentService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly themeService = inject(ThemeService);
+  private readonly templateScriptsService = inject(TemplateScriptsService);
+  private document = inject<Document>(DOCUMENT);
 
-  constructor(
-    private meta: Meta,
-    private titleService: Title,
-    private router: Router,
-    private i18nService: I18nService,
-    private readonly storageService: StorageService,
-    private readonly contentService: ContentService,
-    private iconSetService: IconSetService,
-    private readonly destroyRef: DestroyRef,
-    private readonly themeService: ThemeService,
-    @Inject(DOCUMENT) private document: Document,
-  ) {
-    this.iconSetService.icons = { ...adminIconSubset };
-  }
+  private profileContent: IApiProfile | null = null;
 
   ngOnInit(): void {
     void this.themeService.loadAndApplyActiveTheme();
     void this.loadProfileSeoContent();
+    void this.templateScriptsService.loadWhenIdle();
 
     this.i18nService.syncLanguageFromUrl(this.router.url);
     this.updateSeo(this.router.url);

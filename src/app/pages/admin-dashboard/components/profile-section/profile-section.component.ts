@@ -7,6 +7,7 @@ import {
   QueryList,
   ViewChildren,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -46,6 +47,8 @@ import {
   styleUrl: './profile-section.component.scss',
 })
 export class AdminProfileSectionComponent {
+  readonly i18nService = inject(I18nService);
+
   @ViewChildren('heroSlideCard') private heroSlideCards?: QueryList<
     ElementRef<HTMLDivElement>
   >;
@@ -64,8 +67,6 @@ export class AdminProfileSectionComponent {
 
   /** Tracks translation errors per field key, shown below each input/textarea. */
   translateErrors: Record<string, string> = {};
-
-  constructor(public readonly i18nService: I18nService) {}
 
   getLocalizedText(value?: ILocalizedText): string {
     if (!value) {

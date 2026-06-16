@@ -4,6 +4,7 @@ import {
   OnInit,
   signal,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -18,6 +19,9 @@ import { Subscription } from 'rxjs';
   styleUrl: './loader-circle.component.scss',
 })
 export class LoaderCircleComponent implements OnInit, OnDestroy {
+  private readonly i18nService = inject(I18nService);
+  private readonly storageService = inject(StorageService);
+
   readonly isVisible = signal(false);
   readonly isRendered = signal(false);
 
@@ -25,11 +29,6 @@ export class LoaderCircleComponent implements OnInit, OnDestroy {
 
   private watchSubscription?: Subscription;
   private hideTimeoutId: ReturnType<typeof setTimeout> | null = null;
-
-  constructor(
-    private readonly i18nService: I18nService,
-    private readonly storageService: StorageService,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     const storedValue = await this.storageService.getStorage(NgStorage.LOADER);

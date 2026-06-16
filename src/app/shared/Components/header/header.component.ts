@@ -1,5 +1,13 @@
 import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  OnInit,
+  PLATFORM_ID,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import {
@@ -22,6 +30,13 @@ import { filter } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
+  private router = inject(Router);
+  i18nService = inject(I18nService);
+  private readonly contentService = inject(ContentService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
+  private platformId = inject(PLATFORM_ID);
+
   profileContent: IApiProfile | null = null;
   social: IApiContentItem[] = [
     {
@@ -37,14 +52,7 @@ export class HeaderComponent implements OnInit {
   ];
   isBrowser: boolean;
 
-  constructor(
-    private router: Router,
-    public i18nService: I18nService,
-    private readonly contentService: ContentService,
-    private readonly cdr: ChangeDetectorRef,
-    private readonly destroyRef: DestroyRef,
-    @Inject(PLATFORM_ID) private platformId: object,
-  ) {
+  constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
@@ -67,7 +75,9 @@ export class HeaderComponent implements OnInit {
 
     this.router.events
       .pipe(
-        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd,
+        ),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((event) => {
@@ -98,11 +108,13 @@ export class HeaderComponent implements OnInit {
 
   scrollTo(elementId: string) {
     if (!this.i18nService.isHomeUrl(this.router.url)) {
-      void this.router.navigate([`/${this.i18nService.currentLanguage()}`], {
-        queryParams: { scrollTo: elementId },
-      }).then(() => {
-        this.scrollToElement(elementId);
-      });
+      void this.router
+        .navigate([`/${this.i18nService.currentLanguage()}`], {
+          queryParams: { scrollTo: elementId },
+        })
+        .then(() => {
+          this.scrollToElement(elementId);
+        });
     } else {
       this.scrollToElement(elementId);
     }
@@ -134,7 +146,9 @@ export class HeaderComponent implements OnInit {
     if (language === this.i18nService.currentLanguage()) {
       return;
     }
-    this.router.navigateByUrl(this.i18nService.replaceLanguageInUrl(this.router.url, language));
+    this.router.navigateByUrl(
+      this.i18nService.replaceLanguageInUrl(this.router.url, language),
+    );
   }
 
   get alternateLanguage(): AppLanguage {
@@ -151,8 +165,9 @@ export class HeaderComponent implements OnInit {
 
   get headerLogo() {
     return (
-      resolveImageAssetUrl(this.profileContent?.metadata?.portfolioMedia?.headerLogo) ||
-      createPortfolioPlaceholder('Logo', 640, 240)
+      resolveImageAssetUrl(
+        this.profileContent?.metadata?.portfolioMedia?.headerLogo,
+      ) || createPortfolioPlaceholder('Logo', 640, 240)
     );
   }
 
@@ -175,7 +190,8 @@ export class HeaderComponent implements OnInit {
     }
 
     const header = document.querySelector('header');
-    const headerHeight = header instanceof HTMLElement ? header.offsetHeight : 0;
+    const headerHeight =
+      header instanceof HTMLElement ? header.offsetHeight : 0;
 
     return headerHeight > 0 ? headerHeight + 12 : 24;
   }

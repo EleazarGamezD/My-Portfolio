@@ -4,6 +4,7 @@ import {
   Input,
   Output,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IApiContentItem } from '@core/interfaces/content/content.interface';
@@ -25,6 +26,8 @@ import {
   styleUrl: './testimonials-list.component.scss',
 })
 export class TestimonialsListComponent {
+  private readonly i18nService = inject(I18nService);
+
   @Input() items: IApiContentItem[] = [];
   @Input() loading = false;
   @Input() pagination: IPaginationResponse<IApiContentItem> = {
@@ -36,8 +39,6 @@ export class TestimonialsListComponent {
     hasPrevPage: false,
   };
   @Output() pageChange = new EventEmitter<number>();
-
-  constructor(private readonly i18nService: I18nService) {}
 
   get visiblePages(): number[] {
     if (this.pagination.totalPages <= 1) {

@@ -1,4 +1,9 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import {
   IProject,
@@ -16,13 +21,11 @@ import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placehol
   styleUrl: './slider-project-item.component.scss',
 })
 export class SliderProjectItemComponent {
+  private router = inject(Router);
+  private i18nService = inject(I18nService);
+
   @Input() project: IProject = {} as IProject;
   @Input() projectIndex = 0;
-
-  constructor(
-    private router: Router,
-    private i18nService: I18nService,
-  ) {}
 
   navigateToProject() {
     const identifier =

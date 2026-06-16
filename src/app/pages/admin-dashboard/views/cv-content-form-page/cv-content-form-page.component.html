@@ -66,7 +66,8 @@
                     <div class="cv-content-field-grid">
                       <div>
                         <label class="form-label">{{ isEducation ? 'Institucion ES' : 'Plataforma / emisor ES' }}</label>
-                        <input cFormControl type="text" [(ngModel)]="draft.label!.es" [placeholder]="isEducation ? 'Universidad / Instituto' : 'Udemy / Coursera / Platzi'" />
+                        <input cFormControl type="text" name="cv-content-label-es" [(ngModel)]="draft.label!.es" [placeholder]="isEducation ? 'Universidad / Instituto' : 'Udemy / Coursera / Platzi'" required #cvContentLabelEs="ngModel" />
+                        <app-show-errors [control]="cvContentLabelEs.control" [requiredField]="isEducation ? 'institucion' : 'plataforma / emisor'" />
                         <div class="translate-row">
                           <app-translate-button [fromText]="draft.label!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.label!.en = $event; translateErrors['labelEs'] = ''" (translationError)="translateErrors['labelEs'] = $event" />
                           @if (translateErrors['labelEs']) {
@@ -86,7 +87,8 @@
                       </div>
                       <div>
                         <label class="form-label">{{ isEducation ? 'Titulo / programa ES' : 'Certificado ES' }}</label>
-                        <input cFormControl type="text" [(ngModel)]="draft.title!.es" />
+                        <input cFormControl type="text" name="cv-content-title-es" [(ngModel)]="draft.title!.es" required #cvContentTitleEs="ngModel" />
+                        <app-show-errors [control]="cvContentTitleEs.control" [requiredField]="isEducation ? 'titulo / programa' : 'certificado'" />
                         <div class="translate-row">
                           <app-translate-button [fromText]="draft.title!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.title!.en = $event; translateErrors['titleEs'] = ''" (translationError)="translateErrors['titleEs'] = $event" />
                           @if (translateErrors['titleEs']) {
@@ -109,11 +111,13 @@
                       <div class="cv-content-field-grid cv-content-field-grid--dates">
                         <div>
                           <label class="form-label">Fecha inicio</label>
-                          <input cFormControl type="date" [(ngModel)]="draft.period!.start" />
+                          <input cFormControl type="date" name="cv-content-period-start" [(ngModel)]="draft.period!.start" required #cvContentPeriodStart="ngModel" />
+                          <app-show-errors [control]="cvContentPeriodStart.control" [requiredField]="'fecha inicio'" />
                         </div>
                         <div>
                           <label class="form-label">Fecha fin</label>
-                          <input cFormControl type="date" [(ngModel)]="draft.period!.end" [disabled]="currentPeriod" />
+                          <input cFormControl type="date" name="cv-content-period-end" [(ngModel)]="draft.period!.end" [disabled]="currentPeriod" [required]="!currentPeriod" #cvContentPeriodEnd="ngModel" />
+                          <app-show-errors [control]="cvContentPeriodEnd.control" [requiredField]="'fecha fin'" />
                         </div>
                         <div class="cv-content-check-field">
                           <label class="form-label d-block">Estado</label>

@@ -2,12 +2,16 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
-  Inject,
   OnInit,
   PLATFORM_ID,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {
+  ResumeLanguage,
+  ResumeSlotDraft,
+} from '@core/interfaces/admin-dashboard/admin-dashboard.interface';
 import { IApiResume } from '@core/interfaces/content/content.interface';
 import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
@@ -20,23 +24,8 @@ import {
   FormModule,
   SpinnerModule,
 } from '@coreui/angular';
+import { ShowErrorsComponent } from '@pages/admin-dashboard/components/shared/show-errors/show-errors.component';
 import { ToastrService } from 'ngx-toastr';
-
-type ResumeLanguage = 'es' | 'en';
-
-interface ResumeSlotDraft {
-  language: ResumeLanguage;
-  heading: string;
-  title: string;
-  description: string;
-  order: number;
-  itemId: string | null;
-  fileName: string;
-  mimeType: string;
-  base64: string;
-  downloadUrl: string;
-  metadata: Record<string, unknown>;
-}
 
 @Component({
   selector: 'app-admin-resumes-page',
@@ -49,12 +38,19 @@ interface ResumeSlotDraft {
     CardModule,
     FormModule,
     SpinnerModule,
+    ShowErrorsComponent,
   ],
   templateUrl: './resumes-page.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './resumes-page.component.scss',
 })
 export class AdminResumesPageComponent implements OnInit {
+  private readonly adminAuthService = inject(AdminAuthService);
+  private readonly contentService = inject(ContentService);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly platformId = inject(PLATFORM_ID);
+
   loading = true;
   error: string | null = null;
   successMessage: string | null = null;
@@ -64,14 +60,6 @@ export class AdminResumesPageComponent implements OnInit {
     this.createEmptySlot('es', 'CV Español', 1),
     this.createEmptySlot('en', 'CV Inglés', 2),
   ];
-
-  constructor(
-    private readonly adminAuthService: AdminAuthService,
-    private readonly contentService: ContentService,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private readonly platformId: object,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.loadResumes();

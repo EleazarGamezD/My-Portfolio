@@ -63,15 +63,18 @@
                     <div class="testimonial-field-grid testimonial-field-grid--base">
                       <div class="testimonial-field testimonial-field--wide">
                         <label class="form-label">Nombre</label>
-                        <input cFormControl type="text" [ngModel]="personName" (ngModelChange)="onNameChange($event)" placeholder="Arian Valdivieso" />
+                        <input cFormControl type="text" name="testimonial-name" [ngModel]="personName" (ngModelChange)="onNameChange($event)" placeholder="Arian Valdivieso" required #testimonialName="ngModel" />
+                        <app-show-errors [control]="testimonialName.control" [requiredField]="'nombre'" />
                       </div>
                       <div>
                         <label class="form-label">Cargo</label>
-                        <input cFormControl type="text" [ngModel]="personPosition" (ngModelChange)="onPositionChange($event)" placeholder="Engineering Manager" />
+                        <input cFormControl type="text" name="testimonial-position" [ngModel]="personPosition" (ngModelChange)="onPositionChange($event)" placeholder="Engineering Manager" required #testimonialPosition="ngModel" />
+                        <app-show-errors [control]="testimonialPosition.control" [requiredField]="'cargo'" />
                       </div>
                       <div>
                         <label class="form-label">Empresa</label>
-                        <input cFormControl type="text" [ngModel]="personCompany" (ngModelChange)="onCompanyChange($event)" placeholder="Meraki Office" />
+                        <input cFormControl type="text" name="testimonial-company" [ngModel]="personCompany" (ngModelChange)="onCompanyChange($event)" placeholder="Meraki Office" required #testimonialCompany="ngModel" />
+                        <app-show-errors [control]="testimonialCompany.control" [requiredField]="'empresa'" />
                       </div>
                       <div class="testimonial-current-toggle">
                         <label class="form-label d-block">Estado</label>
@@ -92,7 +95,8 @@
                     <div class="testimonial-field-grid testimonial-field-grid--textareas">
                       <div>
                         <label class="form-label">Testimonio ES</label>
-                        <textarea cFormControl rows="6" [(ngModel)]="draft.description!.es" placeholder="Eleazar demostro ser un miembro excepcional del equipo..."></textarea>
+                        <textarea cFormControl rows="6" name="testimonial-description-es" [(ngModel)]="draft.description!.es" placeholder="Eleazar demostro ser un miembro excepcional del equipo..." required #testimonialDescriptionEs="ngModel"></textarea>
+                        <app-show-errors [control]="testimonialDescriptionEs.control" [requiredField]="'testimonio en espanol'" />
                         <div class="d-flex justify-content-between align-items-center mt-1">
                           <app-translate-button [fromText]="draft.description!.es || ''" [fromLang]="Language.ES" [toLang]="Language.EN" (translated)="draft.description!.en = $event; translateErrors['descEs'] = ''" (translationError)="translateErrors['descEs'] = $event" />
                           @if (translateErrors['descEs']) {
@@ -102,7 +106,8 @@
                       </div>
                       <div>
                         <label class="form-label">Testimonio EN</label>
-                        <textarea cFormControl rows="6" [(ngModel)]="draft.description!.en" placeholder="Eleazar proved to be an exceptional member of the team..."></textarea>
+                        <textarea cFormControl rows="6" name="testimonial-description-en" [(ngModel)]="draft.description!.en" placeholder="Eleazar proved to be an exceptional member of the team..." required #testimonialDescriptionEn="ngModel"></textarea>
+                        <app-show-errors [control]="testimonialDescriptionEn.control" [requiredField]="'testimonio en ingles'" />
                         <div class="d-flex justify-content-between align-items-center mt-1">
                           <app-translate-button [fromText]="draft.description!.en || ''" [fromLang]="Language.EN" [toLang]="Language.ES" (translated)="draft.description!.es = $event; translateErrors['descEn'] = ''" (translationError)="translateErrors['descEn'] = $event" />
                           @if (translateErrors['descEn']) {

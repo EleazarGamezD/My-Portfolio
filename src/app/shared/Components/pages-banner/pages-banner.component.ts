@@ -1,4 +1,9 @@
-import { Component, input, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  input,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
 import { I18nService } from '@core/services/i18n/i18n.service';
 
 @Component({
@@ -9,11 +14,11 @@ import { I18nService } from '@core/services/i18n/i18n.service';
   styleUrl: './pages-banner.component.scss',
 })
 export class PagesBannerComponent {
+  i18nService = inject(I18nService);
+
   title = input<string>('');
   breadcrumbLabel = input<string>('');
   backgroundImage = input<string>('https://placehold.co/1920x940');
-
-  constructor(public i18nService: I18nService) {}
 
   t(key: string) {
     return this.i18nService.t(key);

@@ -4,6 +4,7 @@ import {
   Input,
   Output,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
@@ -39,6 +40,8 @@ import {
   styleUrl: './projects-list.component.scss',
 })
 export class ProjectsListComponent {
+  private readonly i18nService = inject(I18nService);
+
   @Input() projects: IProject[] = [];
   @Input() loading = false;
   @Input() actionLoadingKey: string | null = null;
@@ -53,8 +56,6 @@ export class ProjectsListComponent {
   @Output() deleteProject = new EventEmitter<IProject>();
   @Output() deactivateProject = new EventEmitter<IProject>();
   @Output() pageChange = new EventEmitter<number>();
-
-  constructor(private readonly i18nService: I18nService) {}
 
   getProjectTitle(project: IProject): string {
     return (

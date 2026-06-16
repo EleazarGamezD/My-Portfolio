@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -19,6 +20,7 @@ import {
   TranslateButtonComponent,
 } from '../../components/shared/translate-button/translate-button.component';
 import { SkillPickerComponent } from '../../components/shared/skill-picker/skill-picker.component';
+import { ShowErrorsComponent } from '../../components/shared/show-errors/show-errors.component';
 import { ToastrService } from 'ngx-toastr';
 
 type ExperienceFormMode = 'create' | 'edit';
@@ -35,12 +37,19 @@ type ExperienceFormMode = 'create' | 'edit';
     FormModule,
     TranslateButtonComponent,
     SkillPickerComponent,
+    ShowErrorsComponent,
   ],
   templateUrl: './experience-form-page.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './experience-form-page.component.scss',
 })
 export class AdminExperienceFormPageComponent implements OnInit {
+  private readonly contentService = inject(ContentService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   readonly Language = Language;
   mode: ExperienceFormMode = 'create';
   experienceId = '';
@@ -53,14 +62,6 @@ export class AdminExperienceFormPageComponent implements OnInit {
 
   /** Selected skill IDs for this experience entry */
   selectedSkillIds: string[] = [];
-
-  constructor(
-    private readonly contentService: ContentService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     this.mode =

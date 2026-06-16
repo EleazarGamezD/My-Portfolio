@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import { AdminProfileSectionComponent } from '@pages/admin-dashboard/components/profile-section/profile-section.component';
@@ -17,10 +18,8 @@ import { AlertModule } from '@coreui/angular';
   styleUrl: './profile-page.component.scss',
 })
 export class AdminProfilePageComponent implements OnInit {
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   async ngOnInit(): Promise<void> {
     await this.facade.loadProfileContent();

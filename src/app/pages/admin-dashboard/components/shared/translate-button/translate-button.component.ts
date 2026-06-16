@@ -5,6 +5,7 @@ import {
   OnChanges,
   Output,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { TranslateService } from '@core/services/translate/translate.service';
 import { ButtonModule, SpinnerComponent } from '@coreui/angular';
@@ -25,6 +26,8 @@ export enum LanguageLabel {
   styleUrl: './translate-button.component.scss',
 })
 export class TranslateButtonComponent implements OnChanges {
+  private readonly translateService = inject(TranslateService);
+
   @Input() fromText = '';
   @Input() fromLang: Language = Language.ES;
   @Input() toLang: Language = Language.EN;
@@ -38,8 +41,6 @@ export class TranslateButtonComponent implements OnChanges {
     [Language.ES]: LanguageLabel.ES,
     [Language.EN]: LanguageLabel.EN,
   };
-
-  constructor(private readonly translateService: TranslateService) {}
 
   ngOnChanges(): void {
     this.translationError.emit('');

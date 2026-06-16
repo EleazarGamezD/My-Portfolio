@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
@@ -33,15 +34,13 @@ import {
   styleUrl: './contact-me-page.component.scss',
 })
 export class AdminContactMePageComponent implements OnInit {
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   readonly Language = Language;
   readonly titleMaxLength = 160;
   readonly bodyMaxLength = 520;
   translateErrors: Record<string, string> = {};
-
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.facade.loadProfileContent();

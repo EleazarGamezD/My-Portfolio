@@ -4,6 +4,7 @@ import {
   OnInit,
   ViewChild,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import {
   NavigationEnd,
@@ -12,6 +13,7 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
+import { adminIconSubset } from '@core/icons/admin-icon-subset';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import {
@@ -29,7 +31,7 @@ import {
   SidebarToggleDirective,
   SidebarTogglerDirective,
 } from '@coreui/angular';
-import { IconDirective } from '@coreui/icons-angular';
+import { IconDirective, IconSetService } from '@coreui/icons-angular';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { Subscription, filter } from 'rxjs';
 import { ADMIN_SECTIONS, isAdminSection } from '../admin-sections';
@@ -65,6 +67,11 @@ import { DefaultHeaderComponent } from './default-header/default-header.componen
   styleUrl: './admin-layout.component.scss',
 })
 export class AdminLayoutComponent implements OnInit, OnDestroy {
+  private readonly adminAuthService = inject(AdminAuthService);
+  private readonly router = inject(Router);
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly iconSetService = inject(IconSetService);
+
   readonly navItems: INavData[] = adminNavItems;
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
   private readonly subscriptions = new Subscription();
@@ -72,11 +79,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   currentYear = new Date().getFullYear();
   currentSectionLabel = 'Overview';
 
-  constructor(
-    private readonly adminAuthService: AdminAuthService,
-    private readonly router: Router,
-    public readonly facade: AdminDashboardFacade,
-  ) {}
+  constructor() {
+    this.iconSetService.icons = { ...adminIconSubset };
+  }
 
   async ngOnInit(): Promise<void> {
     this.enableAdminThemeStyles();

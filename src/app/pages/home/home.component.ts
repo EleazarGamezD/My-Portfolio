@@ -4,6 +4,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { ContentService } from '@core/services/content/content.service';
@@ -40,6 +41,11 @@ import { WorkReferencesComponent } from '../../shared/Components/work-references
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+  private readonly storageService = inject(StorageService);
+  private readonly contentService = inject(ContentService);
+  private readonly projectsService = inject(ProjectsService);
+  private readonly themeService = inject(ThemeService);
+
   private static readonly reloadScrollHandledStorageKey =
     'home-reload-scroll-handled';
   private destroyed = false;
@@ -49,13 +55,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     'header .default-logo',
     '.hero-slide-image',
   ];
-
-  constructor(
-    private readonly storageService: StorageService,
-    private readonly contentService: ContentService,
-    private readonly projectsService: ProjectsService,
-    private readonly themeService: ThemeService,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.storageService.setStorage(NgStorage.LOADER, true);

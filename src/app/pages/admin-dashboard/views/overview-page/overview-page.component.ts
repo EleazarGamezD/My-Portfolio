@@ -4,10 +4,11 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
-import { IDashboardMetrics } from '@core/services/analytics/analytics.service';
+import { IDashboardMetrics } from '@core/interfaces/analytics/analytics.interface';
 import {
   AlertModule,
   ButtonDirective,
@@ -54,6 +55,9 @@ const EVENT_TYPE_LABELS: Record<string, string> = {
   ],
 })
 export class AdminOverviewPageComponent implements OnInit {
+  readonly facade = inject(AdminDashboardFacade);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   eventTypeChart: { data: ChartData; options: ChartOptions } | null = null;
   projectViewsChart: { data: ChartData; options: ChartOptions } | null = null;
   allProjectViewsChart: {
@@ -62,11 +66,6 @@ export class AdminOverviewPageComponent implements OnInit {
     height: number;
   } | null = null;
   timelineChart: { data: ChartData; options: ChartOptions } | null = null;
-
-  constructor(
-    public readonly facade: AdminDashboardFacade,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.facade.ensureOverviewReady();

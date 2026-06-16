@@ -65,15 +65,18 @@
                     <div class="experience-field-grid experience-field-grid--base">
                       <div class="experience-field experience-field--wide">
                         <label class="form-label">Nombre de la empresa</label>
-                        <input cFormControl type="text" [ngModel]="companyName" (ngModelChange)="onCompanyNameChange($event)" placeholder="L4 Ventures LLC" />
+                        <input cFormControl type="text" name="experience-company-name" [ngModel]="companyName" (ngModelChange)="onCompanyNameChange($event)" placeholder="L4 Ventures LLC" required #experienceCompanyName="ngModel" />
+                        <app-show-errors [control]="experienceCompanyName.control" [requiredField]="'nombre de la empresa'" />
                       </div>
                       <div>
                         <label class="form-label">Inicio</label>
-                        <input cFormControl type="text" [(ngModel)]="draft.period!.start" placeholder="2025" />
+                        <input cFormControl type="text" name="experience-period-start" [(ngModel)]="draft.period!.start" placeholder="2025" required #experiencePeriodStart="ngModel" />
+                        <app-show-errors [control]="experiencePeriodStart.control" [requiredField]="'inicio'" />
                       </div>
                       <div>
                         <label class="form-label">Fin</label>
-                        <input cFormControl type="text" [(ngModel)]="draft.period!.end" [disabled]="isCurrentRole" placeholder="2026" />
+                        <input cFormControl type="text" name="experience-period-end" [(ngModel)]="draft.period!.end" [disabled]="isCurrentRole" placeholder="2026" [required]="!isCurrentRole" #experiencePeriodEnd="ngModel" />
+                        <app-show-errors [control]="experiencePeriodEnd.control" [requiredField]="'fin'" />
                       </div>
                       <div class="experience-current-toggle experience-current-toggle--inline">
                         <label class="form-label d-block">Estado del cargo</label>

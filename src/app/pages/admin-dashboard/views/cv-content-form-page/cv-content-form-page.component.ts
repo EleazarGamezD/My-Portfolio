@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -19,6 +20,7 @@ import {
   Language,
   TranslateButtonComponent,
 } from '../../components/shared/translate-button/translate-button.component';
+import { ShowErrorsComponent } from '../../components/shared/show-errors/show-errors.component';
 
 type CvContentResource = 'education' | 'certifications';
 type CvContentFormMode = 'create' | 'edit';
@@ -34,12 +36,19 @@ type CvContentFormMode = 'create' | 'edit';
     CardModule,
     FormModule,
     TranslateButtonComponent,
+    ShowErrorsComponent,
   ],
   templateUrl: './cv-content-form-page.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './cv-content-form-page.component.scss',
 })
 export class AdminCvContentFormPageComponent implements OnInit {
+  private readonly contentService = inject(ContentService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   readonly Language = Language;
   mode: CvContentFormMode = 'create';
   resource: CvContentResource = 'education';
@@ -50,14 +59,6 @@ export class AdminCvContentFormPageComponent implements OnInit {
   error: string | null = null;
   draft: Partial<IApiContentItem> = this.createEmptyDraft();
   translateErrors: Record<string, string> = {};
-
-  constructor(
-    private readonly contentService: ContentService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly toastr: ToastrService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     this.mode =

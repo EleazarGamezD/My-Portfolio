@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -18,19 +19,17 @@ import { I18nService } from '@core/services/i18n/i18n.service';
   styleUrl: './admin-login.component.scss',
 })
 export class AdminLoginComponent implements OnInit, OnDestroy {
+  private readonly adminAuthService = inject(AdminAuthService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  readonly i18nService = inject(I18nService);
+
   email = '';
   password = '';
   loading = false;
   error: string | null = null;
   infoMessage: string | null = null;
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
-
-  constructor(
-    private readonly adminAuthService: AdminAuthService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    public readonly i18nService: I18nService,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     this.enableAdminThemeContext();
