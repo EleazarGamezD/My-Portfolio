@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DeepPartial } from '@core/interfaces/common/deep-partial.interface';
 import { IChartProps } from '@core/interfaces/overview/dashboard-chart.interface';
 import { getStyle } from '@coreui/utils';
-import { ChartDataset, ChartOptions, PluginOptionsByType, ScaleOptions, TooltipLabelStyle } from 'chart.js';
+import { ChartDataset, ChartOptions, ScaleOptions, TooltipLabelStyle } from 'chart.js';
 
 @Injectable({
   providedIn: 'root'
@@ -110,7 +109,7 @@ export class DashboardChartsData {
       }
     ];
 
-    const plugins: DeepPartial<PluginOptionsByType<any>> = {
+    const plugins: ChartOptions['plugins'] = {
       legend: {
         display: false
       },

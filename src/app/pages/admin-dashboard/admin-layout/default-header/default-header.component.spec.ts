@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
+import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
+import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
 import {
   AvatarModule,
   BadgeModule,
@@ -14,7 +16,7 @@ import {
   SidebarModule
 } from '@coreui/angular';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
-import { iconSubset } from '../../../icons/icon-subset';
+import { adminIconSubset } from '@core/icons/admin-icon-subset';
 import { DefaultHeaderComponent } from './default-header.component';
 
 describe('DefaultHeaderComponent', () => {
@@ -25,14 +27,29 @@ describe('DefaultHeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
     imports: [GridModule, HeaderModule, IconModule, NavModule, BadgeModule, AvatarModule, DropdownModule, BreadcrumbModule, SidebarModule, ProgressModule, ButtonGroupModule, ReactiveFormsModule, DefaultHeaderComponent],
-    providers: [IconSetService, provideRouter([])]
+    providers: [
+      IconSetService,
+      provideRouter([]),
+      {
+        provide: AdminAuthService,
+        useValue: {
+          logout: () => Promise.resolve(),
+        },
+      },
+      {
+        provide: AdminDashboardFacade,
+        useValue: {
+          currentAdmin: null,
+        },
+      },
+    ]
 })
       .compileComponents();
   });
 
   beforeEach(() => {
     iconSetService = TestBed.inject(IconSetService);
-    iconSetService.icons = { ...iconSubset };
+    iconSetService.icons = { ...adminIconSubset };
 
     fixture = TestBed.createComponent(DefaultHeaderComponent);
     component = fixture.componentInstance;
