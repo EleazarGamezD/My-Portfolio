@@ -114,3 +114,31 @@
 .icon-feather-globe::before {
   content: "\e877";
 }
+
+.portfolio-social-icon {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-family: bootstrap-icons;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: 1;
+  text-rendering: auto;
+}
+
+.portfolio-social-icon[data-social-icon="github"]::before {
+  content: "\f3ed";
+}
+
+.portfolio-social-icon[data-social-icon="linkedin"]::before {
+  content: "\f472";
+}
+
+.portfolio-social-icon[data-social-icon="twitter-x"]::before {
+  content: "\f8db";
+}
+
+.portfolio-social-icon[data-social-icon="link"]::before {
+  content: "\f470";
+}

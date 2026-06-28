@@ -2,26 +2,36 @@
 <footer class="half-footer pb-45px border-top border-color-light-gray background-repeat">
   <div class="container">
     @if (profileContent && footerImageSrc) {
-      <div class="overlap-section position-absolute left-0px right-0px text-center d-none d-md-inline-block" data-anime='{ "el": "childs", "translateY": [0, 0], "scale": [0.7, 1], "rotateZ": [50, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'>
-        <img [src]="footerImageSrc" alt="Footer decorative image" class="lg-w-20 img-fluid" loading="eager" fetchpriority="low" decoding="async" />
-      </div>
+    <div class="overlap-section position-absolute left-0px right-0px text-center d-none d-md-inline-block" data-anime='{ "el": "childs", "translateY": [0, 0], "scale": [0.7, 1], "rotateZ": [50, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'>
+      <img [src]="footerImageSrc" alt="Footer decorative image" class="lg-w-20 img-fluid" loading="eager" fetchpriority="low" decoding="async" />
+    </div>
     }
     <div class="row">
       <div class="col-lg-3 col-md-4 col-sm-6 last-paragraph-no-margin me-auto z-index-1 text-center text-sm-start xs-mb-20px">
-        <span class="fs-20 fw-500 text-dark-gray d-block mb-5px">{{ t('footer.location.title') }}</span>
+        <span class="fs-20 fw-500 text-dark-gray d-block mb-5px">{{
+          t("footer.location.title")
+          }}</span>
         <p class="w-100">
           @if (profileContent?.location) {
           {{ profileContent?.location }}
           } @else {
-          {{ t('footer.location.line1') }}<br />{{ t('footer.location.line2') }}
+          {{ t("footer.location.line1") }}<br />{{
+          t("footer.location.line2")
+          }}
           }
         </p>
       </div>
 
       <div class="col-lg-3 col-md-4 col-sm-6 last-paragraph-no-margin text-center text-sm-end z-index-1">
-        <span class="fs-20 fw-500 text-dark-gray d-block mb-5px">{{ t('footer.availability.title') }}</span>
-        <a (click)="scrollTo('slider-projects')">{{ profileContent?.availability || t('footer.availability.projects') }}</a><br />
-        <a (click)="scrollTo('contact-me')">{{ t('footer.availability.contact') }}</a>
+        <span class="fs-20 fw-500 text-dark-gray d-block mb-5px">{{
+          t("footer.availability.title")
+          }}</span>
+        <a (click)="scrollTo('slider-projects')">{{
+          profileContent?.availability || t("footer.availability.projects")
+          }}</a><br />
+        <a (click)="scrollTo('contact-me')">{{
+          t("footer.availability.contact")
+          }}</a>
       </div>
     </div>
     <div class="row align-items-center justify-content-center mt-20px mb-10px md-mb-20px">
@@ -32,7 +42,7 @@
         <ul class="large-icon dark mb-0">
           @for (item of social; track trackSocial($index, item)) {
           <li>
-            <a class="social-link" href="{{ item.href }}" target="_blank" rel="noopener noreferrer"><i class="{{ item.icon }}"></i><span></span></a>
+            <a class="social-link" href="{{ item.href }}" target="_blank" rel="noopener noreferrer"><i class="portfolio-social-icon" [attr.data-social-icon]="socialIconName(item)" aria-hidden="true"></i><span></span></a>
           </li>
           }
         </ul>
@@ -44,8 +54,10 @@
     <div class="row align-items-center">
       <div class="col-md-6 last-paragraph-no-margin text-center text-md-start sm-mb-10px">
         <p>
-          &COPY; {{date }}
-          <a class="text-decoration-line-bottom text-dark-gray fw-500">{{ profileOwnerName }}</a>
+          &COPY; {{ date }}
+          <a class="text-decoration-line-bottom text-dark-gray fw-500">{{
+            profileOwnerName
+            }}</a>
         </p>
       </div>
       <div class="col-md-6 text-center text-md-end last-paragraph-no-margin">

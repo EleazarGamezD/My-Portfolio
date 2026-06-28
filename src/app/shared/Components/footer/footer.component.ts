@@ -16,6 +16,7 @@ import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
 import { createPortfolioPlaceholder } from '@core/utils/image/portfolio-placeholder.utils';
+import { resolvePortfolioSocialIcon } from '@core/utils/social/social-icon.utils';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
 
 @Component({
@@ -38,12 +39,12 @@ export class FooterComponent implements OnInit {
   social: IApiContentItem[] = [
     {
       label: { es: 'GitHub', en: 'GitHub' },
-      icon: 'fa-brands fa-github',
+      icon: 'bi bi-github',
       href: 'https://github.com/',
     },
     {
       label: { es: 'LinkedIn', en: 'LinkedIn' },
-      icon: 'fa-brands fa-linkedin',
+      icon: 'bi bi-linkedin',
       href: 'https://www.linkedin.com/',
     },
   ];
@@ -94,6 +95,10 @@ export class FooterComponent implements OnInit {
 
   trackSocial(_: number, item: IApiContentItem): string {
     return item.slug || item.value || item.href || `${_}`;
+  }
+
+  socialIconName(item: IApiContentItem): string {
+    return resolvePortfolioSocialIcon(item);
   }
 
   private scrollToElement(elementId: string) {
