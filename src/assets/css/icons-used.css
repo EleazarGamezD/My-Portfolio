@@ -81,7 +81,9 @@
 }
 
 .fa-x-twitter::before {
-  content: "\e61f";
+  content: "X";
+  font-family: Arial, sans-serif;
+  font-weight: 700;
 }
 
 .fa-download::before {
