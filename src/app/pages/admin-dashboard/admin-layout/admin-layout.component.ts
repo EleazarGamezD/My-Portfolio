@@ -16,6 +16,7 @@ import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import { adminIconSubset } from '@core/icons/admin-icon-subset';
 import { AdminAuthService } from '@core/services/admin-auth/admin-auth.service';
 import { AdminDashboardFacade } from '@core/services/admin-dashboard/admin-dashboard.facade';
+import { StorageService } from '@services/storage/storage.service';
 import {
   BreadcrumbModule,
   ButtonModule,
@@ -71,6 +72,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   readonly facade = inject(AdminDashboardFacade);
   private readonly iconSetService = inject(IconSetService);
+  private readonly storageService = inject(StorageService);
 
   readonly navItems: INavData[] = adminNavItems;
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
@@ -103,18 +105,16 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
           }),
       );
       this.subscriptions.add(
-        this.adminAuthService
-          .watchStorage(NgStorage.TOKEN)
-          .subscribe((token) => {
-            if (!token) {
-              void this.router.navigate(['/admin/login'], {
-                queryParams: {
-                  sessionExpired: '1',
-                  redirectTo: this.router.url,
-                },
-              });
-            }
-          }),
+        this.storageService.watchStorage(NgStorage.TOKEN).subscribe((token) => {
+          if (!token) {
+            void this.router.navigate(['/admin/login'], {
+              queryParams: {
+                sessionExpired: '1',
+                redirectTo: this.router.url,
+              },
+            });
+          }
+        }),
       );
     } catch (error) {
       console.error('Failed to load current admin for layout:', error);

@@ -1,0 +1,109 @@
+@font-face {
+  font-family: "Font Awesome 6 Free";
+  src: url("../fonts/fa-solid-900.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Font Awesome 6 Brands";
+  src: url("../fonts/fa-brands-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Font Awesome 6 Free";
+  src: url("../fonts/fa-regular-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "feather";
+  src: url("../fonts/feather.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.fa,
+.fa-solid,
+.fa-regular,
+.fa-brands,
+.feather {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-rendering: auto;
+}
+
+.fa,
+.fa-solid {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+}
+
+.fa-regular {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 400;
+}
+
+.fa-brands {
+  font-family: "Font Awesome 6 Brands";
+  font-weight: 400;
+}
+
+.feather {
+  font-family: "feather";
+}
+
+.fa-chevron-left::before {
+  content: "\f053";
+}
+
+.fa-chevron-right::before {
+  content: "\f054";
+}
+
+.fa-github::before {
+  content: "\f09b";
+}
+
+.fa-linkedin::before {
+  content: "\f08c";
+}
+
+.fa-x-twitter::before {
+  content: "\e61f";
+}
+
+.fa-download::before {
+  content: "\f019";
+}
+
+.fa-gear::before {
+  content: "\f013";
+}
+
+.fa-paper-plane::before {
+  content: "\f1d8";
+}
+
+.fa-link::before {
+  content: "\f0c1";
+}
+
+.icon-feather-file-minus::before {
+  content: "\e86d";
+}
+
+.icon-feather-globe::before {
+  content: "\e877";
+}

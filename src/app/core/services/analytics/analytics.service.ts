@@ -8,12 +8,14 @@ import {
 import { API_ANALYTICS_ROUTES } from '@core/routes/analytics/analytics.routes';
 import { I18nService } from '@core/services/i18n/i18n.service';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
+import { StorageService } from '@services/storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnalyticsService extends GlobalHttpService {
   private readonly i18nService = inject(I18nService);
+  private readonly storageService = inject(StorageService);
 
   private sessionId = this.generateSessionId();
   private readonly sessionIdReady = this.initializeSessionId();
@@ -23,16 +25,19 @@ export class AnalyticsService extends GlobalHttpService {
   }
 
   private async initializeSessionId(): Promise<void> {
-    const stored = (await this.getStorage(NgStorage.ANALYTICS_SESSION_ID)) as
-      | string
-      | null;
+    const stored = (await this.storageService.getStorage(
+      NgStorage.ANALYTICS_SESSION_ID,
+    )) as string | null;
 
     if (stored) {
       this.sessionId = stored;
       return;
     }
 
-    await this.setStorage(NgStorage.ANALYTICS_SESSION_ID, this.sessionId);
+    await this.storageService.setStorage(
+      NgStorage.ANALYTICS_SESSION_ID,
+      this.sessionId,
+    );
   }
 
   async trackEvent(event: IAnalyticsEvent): Promise<void> {

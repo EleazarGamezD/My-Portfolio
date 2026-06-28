@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
 import { NgStorage } from '@core/enum/ngStorage/ngStorage.enum';
 import {
@@ -18,19 +18,25 @@ import {
 import { API_ADMIN_ROUTES } from '@core/routes/admin/admin.routes';
 import { IDashboardMetrics } from '@core/interfaces/analytics/analytics.interface';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
+import { StorageService } from '@services/storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminAuthService extends GlobalHttpService {
+  private readonly storageService = inject(StorageService);
+
   async login(email: string, password: string) {
     const response = await this.makeRequest<
       IAdminLoginResponse,
       IAdminLoginRequest
     >(API_ADMIN_ROUTES.login, { email, password }, RequestMethod.POST);
 
-    await this.setStorage(NgStorage.TOKEN, response.accessToken);
-    await this.setStorage(NgStorage.USER_EMAIL, response.user.email);
+    await this.storageService.setStorage(NgStorage.TOKEN, response.accessToken);
+    await this.storageService.setStorage(
+      NgStorage.USER_EMAIL,
+      response.user.email,
+    );
 
     return response;
   }
@@ -41,8 +47,11 @@ export class AdminAuthService extends GlobalHttpService {
       ISetupAccountRequest
     >(API_ADMIN_ROUTES.setupAccount, payload, RequestMethod.POST);
 
-    await this.setStorage(NgStorage.TOKEN, response.accessToken);
-    await this.setStorage(NgStorage.USER_EMAIL, response.user.email);
+    await this.storageService.setStorage(NgStorage.TOKEN, response.accessToken);
+    await this.storageService.setStorage(
+      NgStorage.USER_EMAIL,
+      response.user.email,
+    );
 
     return response;
   }
@@ -162,7 +171,7 @@ export class AdminAuthService extends GlobalHttpService {
   }
 
   async isAuthenticated() {
-    const token = await this.getStorage(NgStorage.TOKEN);
+    const token = await this.storageService.getStorage(NgStorage.TOKEN);
 
     if (!token) {
       return false;
@@ -177,8 +186,8 @@ export class AdminAuthService extends GlobalHttpService {
   }
 
   async logout() {
-    await this.deleteStorage(NgStorage.TOKEN);
-    await this.deleteStorage(NgStorage.USER_EMAIL);
-    await this.deleteStorage(NgStorage.TOKEN_EXPIRES_AT);
+    await this.storageService.deleteStorage(NgStorage.TOKEN);
+    await this.storageService.deleteStorage(NgStorage.USER_EMAIL);
+    await this.storageService.deleteStorage(NgStorage.TOKEN_EXPIRES_AT);
   }
 }

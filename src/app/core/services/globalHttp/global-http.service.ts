@@ -20,10 +20,11 @@ import { environment } from '../../../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class GlobalHttpService extends StorageService {
+export class GlobalHttpService {
   _http = inject(HttpClient);
   private readonly ngZone = inject(NgZone);
   private readonly requestStateService = inject(RequestStateService);
+  private readonly tokenStorage = inject(StorageService);
 
   /**
    * Returns a promise that resolves to an HttpHeaders object containing the Authorization header with a valid bearer token.
@@ -31,7 +32,9 @@ export class GlobalHttpService extends StorageService {
    * @returns {Promise<HttpHeaders>} A promise that resolves to an HttpHeaders object containing the Authorization header with a valid bearer token.
    */
   public async getAuthHeaders(): Promise<HttpHeaders> {
-    const token = (await this.getStorage(NgStorage.TOKEN)) as string;
+    const token = (await this.tokenStorage.getStorage(
+      NgStorage.TOKEN,
+    )) as string;
     let headers = new HttpHeaders();
 
     if (environment.backendApiKey) {
@@ -121,9 +124,9 @@ export class GlobalHttpService extends StorageService {
       return;
     }
 
-    await this.deleteStorage(NgStorage.TOKEN);
-    await this.deleteStorage(NgStorage.USER_EMAIL);
-    await this.deleteStorage(NgStorage.TOKEN_EXPIRES_AT);
+    await this.tokenStorage.deleteStorage(NgStorage.TOKEN);
+    await this.tokenStorage.deleteStorage(NgStorage.USER_EMAIL);
+    await this.tokenStorage.deleteStorage(NgStorage.TOKEN_EXPIRES_AT);
 
     const redirectTo = encodeURIComponent(
       `${window.location.pathname}${window.location.search}${window.location.hash}`,
