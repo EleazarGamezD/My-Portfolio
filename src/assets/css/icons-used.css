@@ -81,9 +81,14 @@
 }
 
 .fa-x-twitter::before {
-  content: "X";
-  font-family: Arial, sans-serif;
-  font-weight: 700;
+  background-color: currentColor;
+  content: "";
+  height: 1em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 1227' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M714.2 519.3 1160.9 0h-105.8L667.2 450.9 357.3 0H0l468.5 681.8L0 1226.4h105.8l409.7-476.2 327.2 476.2H1200L714.2 519.3Zm-145 168.5-47.5-67.9L144 79.7h162.6l304.9 436.2 47.5 67.9 396.2 566.9H892.6L569.2 687.8Z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 1227' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M714.2 519.3 1160.9 0h-105.8L667.2 450.9 357.3 0H0l468.5 681.8L0 1226.4h105.8l409.7-476.2 327.2 476.2H1200L714.2 519.3Zm-145 168.5-47.5-67.9L144 79.7h162.6l304.9 436.2 47.5 67.9 396.2 566.9H892.6L569.2 687.8Z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  width: 1em;
 }
 
 .fa-download::before {
