@@ -9,7 +9,7 @@
             <p class="admin-copy">Crea tu usuario definitivo. La cuenta de bootstrap será eliminada automáticamente.</p>
 
             @if (error) {
-              <div class="alert alert-danger" role="alert">{{ error }}</div>
+            <div class="alert alert-danger" role="alert">{{ error }}</div>
             }
 
             <div class="mb-3">
@@ -26,14 +26,27 @@
             </div>
             <div class="mb-3">
               <label for="setupPassword" class="form-label">Contraseña</label>
-              <input id="setupPassword" type="password" class="form-control" [(ngModel)]="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" />
+              <div class="password-field">
+                <input id="setupPassword" [type]="showPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" />
+                <button type="button" class="password-toggle" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                  <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+                </button>
+              </div>
             </div>
             <div class="mb-4">
               <label for="setupConfirmPassword" class="form-label">Confirmar contraseña</label>
-              <input id="setupConfirmPassword" type="password" class="form-control" [(ngModel)]="confirmPassword" placeholder="Repite la contraseña" autocomplete="new-password" />
+              <div class="password-field">
+                <input id="setupConfirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="confirmPassword" placeholder="Repite la contraseña" autocomplete="new-password" />
+                <button type="button" class="password-toggle" (click)="showConfirmPassword = !showConfirmPassword" [attr.aria-label]="showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                  <i class="bi" [class.bi-eye]="!showConfirmPassword" [class.bi-eye-slash]="showConfirmPassword"></i>
+                </button>
+              </div>
+              @if (passwordsDoNotMatch) {
+              <small class="password-feedback">Las contraseñas no coinciden.</small>
+              }
             </div>
 
-            <button class="btn btn-primary w-100" type="button" (click)="submit()" [disabled]="loading || !email || !username || !displayName || !password || !confirmPassword">
+            <button class="btn btn-primary w-100" type="button" (click)="submit()" [disabled]="loading || !email || !username || !displayName || !password || !confirmPassword || passwordsDoNotMatch">
               {{ loading ? 'Configurando...' : 'Configurar cuenta' }}
             </button>
           </div>

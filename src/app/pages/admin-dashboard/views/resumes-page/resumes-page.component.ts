@@ -1,11 +1,11 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   OnInit,
   PLATFORM_ID,
-  ChangeDetectionStrategy,
-  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -55,6 +55,13 @@ export class AdminResumesPageComponent implements OnInit {
   error: string | null = null;
   successMessage: string | null = null;
   savingLanguage: ResumeLanguage | null = null;
+  generatingPdf = false;
+  showLanguageDialog = false;
+  generatedResumeToSave: {
+    language: ResumeLanguage;
+    fileName: string;
+    blob: Blob;
+  } | null = null;
 
   readonly slots: ResumeSlotDraft[] = [
     this.createEmptySlot('es', 'CV Español', 1),
@@ -319,6 +326,33 @@ export class AdminResumesPageComponent implements OnInit {
     });
   }
 
+  private readBlobAsDataUrl(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () =>
+        resolve(typeof reader.result === 'string' ? reader.result : '');
+      reader.onerror = () => reject(new Error('No se pudo leer el PDF generado.'));
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  private downloadBlob(blob: Blob, fileName: string): void {
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    URL.revokeObjectURL(url);
+  }
+
+  private getGeneratedFileName(response: Response, lang: ResumeLanguage): string {
+    const disposition = response.headers.get('Content-Disposition') || '';
+    const match = /filename="?(?<fileName>[^";]+)"?/iu.exec(disposition);
+    return match?.groups?.['fileName'] || (lang === 'es' ? 'cv-es.pdf' : 'resume-en.pdf');
+  }
+
   private showSuccessToast(message: string, title: string): void {
     if (!isPlatformBrowser(this.platformId)) {
       return;
@@ -335,16 +369,90 @@ export class AdminResumesPageComponent implements OnInit {
     this.toastr.error(message, title, { timeOut: 3500 });
   }
 
-  downloadGeneratedPdf(lang: ResumeLanguage): void {
+  openLanguageDialog(): void {
+    if (!isPlatformBrowser(this.platformId) || this.generatingPdf) return;
+    this.showLanguageDialog = true;
+  }
+
+  closeLanguageDialog(): void {
+    if (this.generatingPdf) return;
+    this.showLanguageDialog = false;
+  }
+
+  closeGeneratedResumeDialog(): void {
+    if (this.generatingPdf || this.savingLanguage) return;
+    this.generatedResumeToSave = null;
+  }
+
+  async generateDynamicPdf(lang: ResumeLanguage): Promise<void> {
     if (!isPlatformBrowser(this.platformId)) return;
-    const url = API_CONTENT_ROUTES.generateCvPdf(lang);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = lang === 'es' ? 'cv-es.pdf' : 'resume-en.pdf';
-    anchor.target = '_blank';
-    anchor.rel = 'noopener';
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
+
+    try {
+      this.generatingPdf = true;
+      this.showLanguageDialog = false;
+      this.error = null;
+      this.successMessage = null;
+      this.cdr.detectChanges();
+
+      const response = await fetch(API_CONTENT_ROUTES.generateCvPdf(lang), {
+        cache: 'no-store',
+      });
+
+      if (!response.ok) {
+        throw new Error('No se pudo generar el PDF.');
+      }
+
+      const blob = await response.blob();
+      const fileName = this.getGeneratedFileName(response, lang);
+      this.downloadBlob(blob, fileName);
+
+      this.generatedResumeToSave = { language: lang, fileName, blob };
+    } catch (error) {
+      this.error =
+        error instanceof Error ? error.message : 'No se pudo generar el CV.';
+      this.showErrorToast(this.error, 'Generar CV');
+    } finally {
+      this.generatingPdf = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  async saveGeneratedResume(): Promise<void> {
+    const generatedResume = this.generatedResumeToSave;
+    if (!generatedResume) {
+      return;
+    }
+
+    const slot = this.slots.find(
+      (candidate) => candidate.language === generatedResume.language,
+    );
+    if (!slot) {
+      this.generatedResumeToSave = null;
+      return;
+    }
+
+    try {
+      this.generatingPdf = true;
+      this.error = null;
+      this.successMessage = null;
+
+      slot.title ||= slot.heading;
+      slot.description ||=
+        generatedResume.language === 'es'
+          ? 'Curriculum profesional en español.'
+          : 'Professional resume in English.';
+      slot.fileName = generatedResume.fileName;
+      slot.mimeType = generatedResume.blob.type || 'application/pdf';
+      slot.base64 = await this.readBlobAsDataUrl(generatedResume.blob);
+      await this.saveSlot(slot);
+      this.generatedResumeToSave = null;
+    } catch (error) {
+      this.error =
+        error instanceof Error ? error.message : 'No se pudo guardar el CV.';
+      this.showErrorToast(this.error, 'Guardar CV');
+    } finally {
+      this.generatingPdf = false;
+      this.cdr.detectChanges();
+    }
   }
 }

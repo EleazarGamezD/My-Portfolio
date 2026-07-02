@@ -2,13 +2,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
+  effect,
   inject,
+  OnInit,
 } from '@angular/core';
 import { IApiHeroSlide } from '@core/interfaces/content/content.interface';
 import { ContentService } from '@core/services/content/content.service';
-import { HomeSwiperSlideElementComponent } from '../home-swiper-slide-element/home-swiper-slide-element.component';
+import { I18nService } from '@core/services/i18n/i18n.service';
 import { requestTemplateReinit } from '@core/utils/template/template-reinit.utils';
+import { HomeSwiperSlideElementComponent } from '../home-swiper-slide-element/home-swiper-slide-element.component';
 
 @Component({
   selector: 'app-home-banner-slider',
@@ -20,6 +22,19 @@ import { requestTemplateReinit } from '@core/utils/template/template-reinit.util
 export class HomeBannerSliderComponent implements OnInit {
   private readonly contentService = inject(ContentService);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private readonly i18nService = inject(I18nService);
+  private lastLanguage = this.i18nService.currentLanguage();
+
+  private readonly languageRefresh = effect(() => {
+    const language = this.i18nService.currentLanguage();
+    if (language === this.lastLanguage) {
+      return;
+    }
+
+    this.lastLanguage = language;
+    this.changeDetectorRef.detectChanges();
+    this.resetSliderAfterLanguageChange();
+  });
 
   sliderContentArray: IApiHeroSlide[] = [];
 
@@ -41,5 +56,16 @@ export class HomeBannerSliderComponent implements OnInit {
       typeof slide.image === 'string' ? slide.image : slide.image?.url || '';
 
     return imageKey || slide.title?.es || slide.title?.en || `${index}`;
+  }
+
+  private resetSliderAfterLanguageChange(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.setTimeout(() => {
+      window.templateBridge?.resetSwipers?.();
+      requestTemplateReinit([0, 120, 420]);
+    });
   }
 }

@@ -1,9 +1,9 @@
 import {
+  ChangeDetectionStrategy,
   Component,
+  inject,
   OnDestroy,
   OnInit,
-  ChangeDetectionStrategy,
-  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -26,6 +26,8 @@ export class AdminSetupAccountComponent implements OnInit, OnDestroy {
   displayName = '';
   password = '';
   confirmPassword = '';
+  showPassword = false;
+  showConfirmPassword = false;
   loading = false;
   error: string | null = null;
   private readonly adminStylesheetId = 'admin-coreui-stylesheet';
@@ -36,6 +38,14 @@ export class AdminSetupAccountComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.disableAdminThemeContext();
+  }
+
+  get passwordsDoNotMatch(): boolean {
+    return Boolean(
+      this.password &&
+      this.confirmPassword &&
+      this.password !== this.confirmPassword,
+    );
   }
 
   async submit(): Promise<void> {

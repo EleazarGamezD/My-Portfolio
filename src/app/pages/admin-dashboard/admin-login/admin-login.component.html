@@ -9,15 +9,15 @@
             <p class="admin-copy">Accede con tu usuario administrador para gestionar métricas y contenido dinámico.</p>
 
             @if (error) {
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
+            <div class="alert alert-danger" role="alert">
+              {{ error }}
+            </div>
             }
 
             @if (infoMessage) {
-              <div class="alert alert-warning" role="alert">
-                {{ infoMessage }}
-              </div>
+            <div class="alert alert-warning" role="alert">
+              {{ infoMessage }}
+            </div>
             }
 
             <div class="mb-3">
@@ -27,7 +27,12 @@
 
             <div class="mb-4">
               <label for="adminPassword" class="form-label">Password</label>
-              <input id="adminPassword" type="password" class="form-control" [(ngModel)]="password" placeholder="Enter your password" autocomplete="current-password" />
+              <div class="password-field">
+                <input id="adminPassword" [type]="showPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="password" placeholder="Enter your password" autocomplete="current-password" />
+                <button type="button" class="password-toggle" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                  <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+                </button>
+              </div>
             </div>
 
             <button class="btn btn-primary w-100" type="button" (click)="login()" [disabled]="loading || !email || !password">
@@ -35,7 +40,7 @@
             </button>
 
             <div class="text-center mt-3">
-              <a routerLink="/admin/forgot-password" class="text-muted small">¿Olvidaste tu contraseña?</a>
+              <a routerLink="/admin/forgot-password" class="admin-back-link small">¿Olvidaste tu contraseña?</a>
             </div>
 
             <div class="text-center mt-2">

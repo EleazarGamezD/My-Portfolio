@@ -364,6 +364,34 @@
     });
   }
 
+  function resetSwipers() {
+    if (typeof window.Swiper === "undefined") {
+      return;
+    }
+
+    document.querySelectorAll(".swiper").forEach(function (element) {
+      try {
+        if (
+          element.swiper &&
+          typeof element.swiper.destroy === "function"
+        ) {
+          element.swiper.destroy(true, true);
+        }
+
+        element.querySelectorAll("[data-anime]").forEach(function (animeElement) {
+          animeElement.classList.remove("anime-complete");
+          animeElement.style.removeProperty("opacity");
+          animeElement.style.removeProperty("transform");
+          animeElement.style.removeProperty("transition");
+        });
+      } catch (error) {
+        console.error("Error resetting Swiper:", error);
+      }
+    });
+
+    reinitSwiper();
+  }
+
   function reinitAnimations() {
     document.querySelectorAll("[data-anime]").forEach(function (element) {
       animateElement(element, false);
@@ -464,6 +492,7 @@
       reinitParallax();
       triggerResizeEvent();
     },
+    resetSwipers: resetSwipers,
   };
 
   window.initializeComponents = function () {

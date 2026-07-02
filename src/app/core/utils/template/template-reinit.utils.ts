@@ -29,11 +29,6 @@ export function requestTemplateReinit(delays: number[] = [120, 420]): Promise<vo
     return Promise.resolve();
   }
 
-  const bridge = window as Window & { templateBridge?: { reinitAll?: () => void } };
-  if (typeof bridge.templateBridge?.reinitAll !== 'function') {
-    return Promise.resolve();
-  }
-
   const uniqueDelays = Array.from(new Set(delays.filter((delay) => Number.isFinite(delay) && delay >= 0)));
   return Promise.all(uniqueDelays.map((delay) => dispatchTemplateReinit(delay))).then(() => undefined);
 }

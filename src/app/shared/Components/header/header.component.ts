@@ -147,9 +147,18 @@ export class HeaderComponent implements OnInit {
     if (language === this.i18nService.currentLanguage()) {
       return;
     }
-    this.router.navigateByUrl(
-      this.i18nService.replaceLanguageInUrl(this.router.url, language),
+
+    const nextUrl = this.i18nService.replaceLanguageInUrl(
+      this.router.url,
+      language,
     );
+
+    if (this.isBrowser) {
+      window.location.assign(nextUrl);
+      return;
+    }
+
+    this.router.navigateByUrl(nextUrl);
   }
 
   get alternateLanguage(): AppLanguage {

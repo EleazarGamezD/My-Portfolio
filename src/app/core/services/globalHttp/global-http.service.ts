@@ -86,7 +86,9 @@ export class GlobalHttpService {
   ): Promise<T> {
     const headers = await this.getAuthHeaders();
     const requestOptions: object =
-      method === RequestMethod.GET ? { headers } : { body: options, headers };
+      method === RequestMethod.GET
+        ? { headers: headers.set('Cache-Control', 'no-cache').set('Pragma', 'no-cache') }
+        : { body: options, headers };
 
     this.requestStateService.beginRequest();
 

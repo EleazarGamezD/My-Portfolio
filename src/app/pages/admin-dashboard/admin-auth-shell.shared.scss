@@ -78,6 +78,38 @@
   color: #fff;
 }
 
+.password-field {
+  position: relative;
+
+  .form-control {
+    padding-right: 3rem;
+  }
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.9rem;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1;
+  padding: 0.25rem;
+}
+
+.password-toggle:hover,
+.password-toggle:focus-visible {
+  color: #ffffff;
+}
+
+.password-feedback {
+  display: block;
+  margin-top: 0.4rem;
+  color: #ffd2d2;
+  font-size: 0.85rem;
+}
+
 .btn-primary {
   border: none;
   background: linear-gradient(

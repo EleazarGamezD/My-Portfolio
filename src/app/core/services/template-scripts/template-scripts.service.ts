@@ -3,7 +3,7 @@ import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 
 declare global {
   interface Window {
-    templateBridge?: { reinitAll?: () => void };
+    templateBridge?: { reinitAll?: () => void; resetSwipers?: () => void };
   }
 }
 

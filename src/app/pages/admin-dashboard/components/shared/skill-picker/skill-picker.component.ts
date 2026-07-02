@@ -5,7 +5,6 @@ import {
   DoCheck,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
   Output,
   inject,
@@ -24,7 +23,7 @@ import { AdminSkillsSectionComponent } from '@pages/admin-dashboard/components/s
   styleUrl: './skill-picker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SkillPickerComponent implements OnInit, OnChanges, DoCheck {
+export class SkillPickerComponent implements OnInit, DoCheck {
   readonly facade = inject(AdminDashboardFacade);
   private readonly cdr = inject(ChangeDetectorRef);
 
@@ -53,14 +52,11 @@ export class SkillPickerComponent implements OnInit, OnChanges, DoCheck {
     this.cdr.markForCheck();
   }
 
-  ngOnChanges(): void {
-    this.currentPage = 1;
-  }
-
   ngDoCheck(): void {
     const count = this.facade.techSkills.length;
     if (count !== this._lastSkillCount) {
       this._lastSkillCount = count;
+      this.currentPage = Math.min(this.currentPage, this.totalPages);
       this.cdr.markForCheck();
     }
   }

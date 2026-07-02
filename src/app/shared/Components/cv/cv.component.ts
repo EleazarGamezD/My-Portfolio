@@ -9,7 +9,6 @@ import {
   IApiProfile,
   IApiResume,
 } from '@core/interfaces/content/content.interface';
-import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { AnalyticsService } from '@core/services/analytics/analytics.service';
 import { ContentService } from '@core/services/content/content.service';
 import { I18nService } from '@core/services/i18n/i18n.service';
@@ -67,29 +66,31 @@ export class CvComponent implements OnInit {
   }
 
   downloadCV(resume: IApiResume): void {
+    if (!resume.href) {
+      return;
+    }
+
     const fileName = this.getResumeDownloadFileName(resume);
     this.analyticsService.trackCVDownload(fileName);
-    const resumeLanguage = this.resolveResumeLanguage(resume);
-    const generatedUrl = API_CONTENT_ROUTES.generateCvPdf(resumeLanguage);
 
-    const generatedLink = document.createElement('a');
-    generatedLink.href = generatedUrl;
-    generatedLink.target = '_blank';
-    generatedLink.rel = 'noopener noreferrer';
-    generatedLink.download = fileName;
-    document.body.appendChild(generatedLink);
-    generatedLink.click();
-    document.body.removeChild(generatedLink);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = resume.href;
+    downloadLink.target = '_blank';
+    downloadLink.rel = 'noopener noreferrer';
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   }
 
   getResumeTitle(resume: IApiResume) {
     return this.i18nService.selectText(
       resume.title?.es ?? resume.label?.es ?? '',
       resume.title?.en ??
-        resume.label?.en ??
-        resume.title?.es ??
-        resume.label?.es ??
-        '',
+      resume.label?.en ??
+      resume.title?.es ??
+      resume.label?.es ??
+      '',
     );
   }
 
@@ -105,10 +106,10 @@ export class CvComponent implements OnInit {
     const fullName = this.i18nService.selectText(
       this.profile?.label?.es ?? this.profile?.title?.es ?? '',
       this.profile?.label?.en ??
-        this.profile?.title?.en ??
-        this.profile?.label?.es ??
-        this.profile?.title?.es ??
-        '',
+      this.profile?.title?.en ??
+      this.profile?.label?.es ??
+      this.profile?.title?.es ??
+      '',
     );
     const normalizedName = fullName
       .normalize('NFD')
@@ -123,7 +124,7 @@ export class CvComponent implements OnInit {
   }
 
   canDownloadCV(resume: IApiResume): boolean {
-    return Boolean(this.resolveResumeLanguage(resume));
+    return Boolean(resume.href);
   }
 
   private resolveResumeLanguage(resume: IApiResume): 'es' | 'en' {

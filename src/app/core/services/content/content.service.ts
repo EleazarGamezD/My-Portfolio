@@ -14,25 +14,6 @@ import { GlobalHttpService } from '@services/globalHttp/global-http.service';
   providedIn: 'root',
 })
 export class ContentService extends GlobalHttpService {
-  private profilePromise: Promise<IApiProfile> | null = null;
-  private techSkillsPromise: Promise<IApiTechSkill[]> | null = null;
-  private experiencePromise: Promise<IApiContentItem[]> | null = null;
-  private educationPromise: Promise<IApiContentItem[]> | null = null;
-  private certificationsPromise: Promise<IApiContentItem[]> | null = null;
-  private testimonialsPromise: Promise<IApiContentItem[]> | null = null;
-  private socialLinksPromise: Promise<IApiContentItem[]> | null = null;
-  private resumesPromise: Promise<IApiResume[]> | null = null;
-
-  private withCacheResetOnError<T>(
-    request: Promise<T>,
-    reset: () => void,
-  ): Promise<T> {
-    return request.catch((error) => {
-      reset();
-      throw error;
-    });
-  }
-
   private normalizeContentItems(items: IApiContentItem[] | null | undefined): IApiContentItem[] {
     if (!Array.isArray(items)) {
       return [];
@@ -129,28 +110,19 @@ export class ContentService extends GlobalHttpService {
   }
 
   async updateProfile(payload: Partial<IApiProfile>): Promise<IApiProfile> {
-    const response = await this.makeRequest<IApiProfile, Partial<IApiProfile>>(
+    return this.makeRequest<IApiProfile, Partial<IApiProfile>>(
       API_CONTENT_ROUTES.updateProfile,
       payload,
       RequestMethod.PUT,
     );
-    this.profilePromise = Promise.resolve(response);
-    return response;
   }
 
   async getProfile(): Promise<IApiProfile> {
-    this.profilePromise ??= this.withCacheResetOnError(
-      this.makeRequest<IApiProfile, null>(
-        API_CONTENT_ROUTES.getProfile,
-        null,
-        RequestMethod.GET,
-      ),
-      () => {
-        this.profilePromise = null;
-      },
+    return this.makeRequest<IApiProfile, null>(
+      API_CONTENT_ROUTES.getProfile,
+      null,
+      RequestMethod.GET,
     );
-
-    return this.profilePromise;
   }
 
   async getTechSkills(): Promise<IApiTechSkill[]> {
@@ -167,55 +139,27 @@ export class ContentService extends GlobalHttpService {
   }
 
   async getExperience(): Promise<IApiContentItem[]> {
-    this.experiencePromise ??= this.withCacheResetOnError(
-      this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getExperience, null, RequestMethod.GET).then(
-        (items) => this.normalizeContentItems(items),
-      ),
-      () => {
-        this.experiencePromise = null;
-      },
+    return this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getExperience, null, RequestMethod.GET).then(
+      (items) => this.normalizeContentItems(items),
     );
-
-    return this.experiencePromise;
   }
 
   async getEducation(): Promise<IApiContentItem[]> {
-    this.educationPromise ??= this.withCacheResetOnError(
-      this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getEducation, null, RequestMethod.GET).then(
-        (items) => this.normalizeContentItems(items),
-      ),
-      () => {
-        this.educationPromise = null;
-      },
+    return this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getEducation, null, RequestMethod.GET).then(
+      (items) => this.normalizeContentItems(items),
     );
-
-    return this.educationPromise;
   }
 
   async getCertifications(): Promise<IApiContentItem[]> {
-    this.certificationsPromise ??= this.withCacheResetOnError(
-      this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getCertifications, null, RequestMethod.GET).then(
-        (items) => this.normalizeContentItems(items),
-      ),
-      () => {
-        this.certificationsPromise = null;
-      },
+    return this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getCertifications, null, RequestMethod.GET).then(
+      (items) => this.normalizeContentItems(items),
     );
-
-    return this.certificationsPromise;
   }
 
   async getTestimonials(): Promise<IApiContentItem[]> {
-    this.testimonialsPromise ??= this.withCacheResetOnError(
-      this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getTestimonials, null, RequestMethod.GET).then(
-        (items) => this.normalizeContentItems(items),
-      ),
-      () => {
-        this.testimonialsPromise = null;
-      },
+    return this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getTestimonials, null, RequestMethod.GET).then(
+      (items) => this.normalizeContentItems(items),
     );
-
-    return this.testimonialsPromise;
   }
 
   async getTestimonialsPaginated(options: IPaginationOptions): Promise<IPaginationResponse<IApiContentItem>> {
@@ -224,29 +168,15 @@ export class ContentService extends GlobalHttpService {
   }
 
   async getSocialLinks(): Promise<IApiContentItem[]> {
-    this.socialLinksPromise ??= this.withCacheResetOnError(
-      this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getSocialLinks, null, RequestMethod.GET).then(
-        (items) => this.normalizeContentItems(items),
-      ),
-      () => {
-        this.socialLinksPromise = null;
-      },
+    return this.makeRequest<IApiContentItem[], null>(API_CONTENT_ROUTES.getSocialLinks, null, RequestMethod.GET).then(
+      (items) => this.normalizeContentItems(items),
     );
-
-    return this.socialLinksPromise;
   }
 
   async getResumes(): Promise<IApiResume[]> {
-    this.resumesPromise ??= this.withCacheResetOnError(
-      this.makeRequest<IApiResume[], null>(API_CONTENT_ROUTES.getResumes, null, RequestMethod.GET).then((items) =>
-        this.normalizeResumes(items),
-      ),
-      () => {
-        this.resumesPromise = null;
-      },
+    return this.makeRequest<IApiResume[], null>(API_CONTENT_ROUTES.getResumes, null, RequestMethod.GET).then((items) =>
+      this.normalizeResumes(items),
     );
-
-    return this.resumesPromise;
   }
 
   async updateContentItem<T extends IApiContentItem | IApiResume>(
@@ -259,7 +189,6 @@ export class ContentService extends GlobalHttpService {
       payload,
       RequestMethod.PATCH,
     );
-    this.invalidateResourceCache(resourceName);
     return response;
   }
 
@@ -269,49 +198,14 @@ export class ContentService extends GlobalHttpService {
       null,
       RequestMethod.DELETE,
     );
-    this.invalidateResourceCache(resourceName);
     return response;
   }
 
-  invalidateResourceCache(resourceName: string) {
-    switch (resourceName) {
-      case 'profile':
-        this.profilePromise = null;
-        return;
-      case 'techSkills':
-        this.techSkillsPromise = null;
-        return;
-      case 'experience':
-        this.experiencePromise = null;
-        return;
-      case 'education':
-        this.educationPromise = null;
-        return;
-      case 'certifications':
-        this.certificationsPromise = null;
-        return;
-      case 'testimonials':
-        this.testimonialsPromise = null;
-        return;
-      case 'socialLinks':
-        this.socialLinksPromise = null;
-        return;
-      case 'resumes':
-        this.resumesPromise = null;
-        return;
-      default:
-        return;
-    }
+  invalidateResourceCache(_resourceName: string): void {
+    void _resourceName;
   }
 
-  invalidateAllContentCache() {
-    this.profilePromise = null;
-    this.techSkillsPromise = null;
-    this.experiencePromise = null;
-    this.educationPromise = null;
-    this.certificationsPromise = null;
-    this.testimonialsPromise = null;
-    this.socialLinksPromise = null;
-    this.resumesPromise = null;
+  invalidateAllContentCache(): void {
+    return;
   }
 }

@@ -1,9 +1,9 @@
 import {
+  ChangeDetectionStrategy,
   Component,
+  inject,
   OnDestroy,
   OnInit,
-  ChangeDetectionStrategy,
-  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -24,6 +24,8 @@ export class AdminResetPasswordComponent implements OnInit, OnDestroy {
 
   newPassword = '';
   confirmPassword = '';
+  showNewPassword = false;
+  showConfirmPassword = false;
   loading = false;
   error: string | null = null;
   success = false;
@@ -40,6 +42,14 @@ export class AdminResetPasswordComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.disableAdminThemeContext();
+  }
+
+  get passwordsDoNotMatch(): boolean {
+    return Boolean(
+      this.newPassword &&
+      this.confirmPassword &&
+      this.newPassword !== this.confirmPassword,
+    );
   }
 
   async submit(): Promise<void> {

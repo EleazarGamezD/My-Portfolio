@@ -1,9 +1,9 @@
 import {
+  ChangeDetectionStrategy,
   Component,
+  inject,
   OnDestroy,
   OnInit,
-  ChangeDetectionStrategy,
-  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -26,6 +26,7 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
 
   email = '';
   password = '';
+  showPassword = false;
   loading = false;
   error: string | null = null;
   infoMessage: string | null = null;
