@@ -270,10 +270,18 @@ Si olvidaste tu contraseña, visita `https://tu-portfolio.vercel.app/admin/forgo
 ```
 src/
 ├── app/
-│   ├── core/           # Servicios, guardias, interceptores
-│   ├── features/       # Módulos del portfolio (home, projects, experience...)
-│   ├── admin/          # CMS administrativo
-│   └── shared/         # Componentes y pipes reutilizables
+│   ├── core/                       # Servicios, contratos, guards, rutas y utilidades compartidas
+│   └── layouts/
+│       ├── main-layout/            # Shell principal: header, footer, loader y router outlet
+│       ├── admin/                  # Panel administrativo completo
+│       │   ├── admin-layout/       # Navegación y shell del CMS
+│       │   ├── components/         # Componentes exclusivos del panel
+│       │   └── views/              # Páginas lazy-loaded del panel
+│       └── portfolio/              # Sitio público
+│           ├── components/         # Hero, proyectos, CV, contacto, testimonios, etc.
+│           └── pages/home/         # Página principal del portfolio
 ├── environments/       # Archivos de configuración por entorno
 └── assets/             # Imágenes y recursos estáticos locales
 ```
+
+Los aliases `@admin/*` y `@portfolio/*` hacen explícita la frontera de cada interfaz. `core` puede ser consumido por ambas, pero el portfolio y el panel no deben importar componentes internos entre sí.

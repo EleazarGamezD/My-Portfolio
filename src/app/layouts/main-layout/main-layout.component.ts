@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FooterComponent } from '../../shared/Components/footer/footer.component';
-import { HeaderComponent } from '../../shared/Components/header/header.component';
-import { LoaderCircleComponent } from '../../shared/Components/loader-circle/loader-circlecomponent';
-import { ScrollIndicatorComponent } from '../../shared/Components/scroll-indicator/scroll-indicator.component';
+import { FooterComponent } from '@portfolio/components/footer/footer.component';
+import { HeaderComponent } from '@portfolio/components/header/header.component';
+import { LoaderCircleComponent } from '@portfolio/components/loader-circle/loader-circlecomponent';
+import { ScrollIndicatorComponent } from '@portfolio/components/scroll-indicator/scroll-indicator.component';
 
 @Component({
   selector: 'app-main-layout',

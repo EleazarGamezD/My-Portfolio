@@ -20,13 +20,10 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["src/app/shared/components/*"],
-      "@module/*": ["src/app/shared/components/*"],
-      "@modules/*": ["src/app/shared/modules/*"],
+      "@portfolio/*": ["src/app/layouts/portfolio/*"],
+      "@admin/*": ["src/app/layouts/admin/*"],
       "@services/*": ["src/app/core/services/*"],
-      "@pages/*": ["src/app/pages/*"],
       "@layouts/*": ["src/app/layouts/*"],
-      "@shared/*": ["src/app/shared/*"],
       "@core/*": ["src/app/core/*"],
       "@environments/*": ["src/environments/*"]
     }

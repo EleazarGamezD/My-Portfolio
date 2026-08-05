@@ -11,7 +11,7 @@ function localizedRoute(lang: AppLanguage): Route {
       {
         path: '',
         loadComponent: () =>
-          import('@pages/home/home.component')
+          import('@portfolio/pages/home/home.component')
             .then(
               (m) => m.HomeComponent,
             ),
@@ -19,7 +19,7 @@ function localizedRoute(lang: AppLanguage): Route {
       {
         path: 'projectDetails/:id',
         loadComponent: () =>
-          import('@shared/Components/project-details/project-details.component')
+          import('@portfolio/components/project-details/project-details.component')
             .then(
               (m) => m.ProjectDetailsComponent,
             ),
@@ -44,72 +44,72 @@ export const routes: Routes = [
   {
     path: 'admin/login',
     loadComponent: () =>
-      import('@pages/admin-dashboard/admin-login/admin-login.component')
+      import('@admin/admin-login/admin-login.component')
         .then(
           (m) => m.AdminLoginComponent,
         ),
   },
   localizedAdminPublicRoute('es', 'admin/login', () =>
-    import('@pages/admin-dashboard/admin-login/admin-login.component')
+    import('@admin/admin-login/admin-login.component')
       .then((m) => m.AdminLoginComponent),
   ),
   localizedAdminPublicRoute('en', 'admin/login', () =>
-    import('@pages/admin-dashboard/admin-login/admin-login.component')
+    import('@admin/admin-login/admin-login.component')
       .then((m) => m.AdminLoginComponent),
   ),
   {
     path: 'admin/setup-account',
     loadComponent: () =>
-      import('@pages/admin-dashboard/admin-setup-account/admin-setup-account.component')
+      import('@admin/admin-setup-account/admin-setup-account.component')
         .then(
           (m) => m.AdminSetupAccountComponent,
         ),
   },
   localizedAdminPublicRoute('es', 'admin/setup-account', () =>
-    import('@pages/admin-dashboard/admin-setup-account/admin-setup-account.component')
+    import('@admin/admin-setup-account/admin-setup-account.component')
       .then((m) => m.AdminSetupAccountComponent),
   ),
   localizedAdminPublicRoute('en', 'admin/setup-account', () =>
-    import('@pages/admin-dashboard/admin-setup-account/admin-setup-account.component')
+    import('@admin/admin-setup-account/admin-setup-account.component')
       .then((m) => m.AdminSetupAccountComponent),
   ),
   {
     path: 'admin/forgot-password',
     loadComponent: () =>
-      import('@pages/admin-dashboard/admin-forgot-password/admin-forgot-password.component')
+      import('@admin/admin-forgot-password/admin-forgot-password.component')
         .then(
           (m) => m.AdminForgotPasswordComponent,
         ),
   },
   localizedAdminPublicRoute('es', 'admin/forgot-password', () =>
-    import('@pages/admin-dashboard/admin-forgot-password/admin-forgot-password.component')
+    import('@admin/admin-forgot-password/admin-forgot-password.component')
       .then((m) => m.AdminForgotPasswordComponent),
   ),
   localizedAdminPublicRoute('en', 'admin/forgot-password', () =>
-    import('@pages/admin-dashboard/admin-forgot-password/admin-forgot-password.component')
+    import('@admin/admin-forgot-password/admin-forgot-password.component')
       .then((m) => m.AdminForgotPasswordComponent),
   ),
   {
     path: 'admin/reset-password',
     loadComponent: () =>
-      import('@pages/admin-dashboard/admin-reset-password/admin-reset-password.component')
+      import('@admin/admin-reset-password/admin-reset-password.component')
         .then(
           (m) => m.AdminResetPasswordComponent,
         ),
   },
   localizedAdminPublicRoute('es', 'admin/reset-password', () =>
-    import('@pages/admin-dashboard/admin-reset-password/admin-reset-password.component')
+    import('@admin/admin-reset-password/admin-reset-password.component')
       .then((m) => m.AdminResetPasswordComponent),
   ),
   localizedAdminPublicRoute('en', 'admin/reset-password', () =>
-    import('@pages/admin-dashboard/admin-reset-password/admin-reset-password.component')
+    import('@admin/admin-reset-password/admin-reset-password.component')
       .then((m) => m.AdminResetPasswordComponent),
   ),
   {
     path: 'admin',
     canActivate: [adminAuthGuard],
     loadComponent: () =>
-      import('@pages/admin-dashboard/admin-layout/admin-layout.component')
+      import('@admin/admin-layout/admin-layout.component')
         .then(
           (m) => m.AdminLayoutComponent,
         ),
@@ -127,7 +127,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/overview',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/overview-page/overview-page.component')
+          import('@admin/views/overview-page/overview-page.component')
             .then(
               (m) => m.AdminOverviewPageComponent,
             ),
@@ -135,7 +135,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/projects',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/projects-page/projects-page.component')
+          import('@admin/views/projects-page/projects-page.component')
             .then(
               (m) => m.AdminProjectsPageComponent,
             ),
@@ -143,7 +143,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/projects/create',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/project-form-page/project-form-page.component')
+          import('@admin/views/project-form-page/project-form-page.component')
             .then(
               (m) => m.AdminProjectFormPageComponent,
             ),
@@ -154,7 +154,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/projects/edit/:id',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/project-form-page/project-form-page.component')
+          import('@admin/views/project-form-page/project-form-page.component')
             .then(
               (m) => m.AdminProjectFormPageComponent,
             ),
@@ -165,7 +165,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/profile',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/profile-page/profile-page.component')
+          import('@admin/views/profile-page/profile-page.component')
             .then(
               (m) => m.AdminProfilePageComponent,
             ),
@@ -173,7 +173,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/media',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/portfolio-media-page/portfolio-media-page.component')
+          import('@admin/views/portfolio-media-page/portfolio-media-page.component')
             .then(
               (m) => m.AdminPortfolioMediaPageComponent,
             ),
@@ -181,7 +181,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/skills',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/skills-page/skills-page.component')
+          import('@admin/views/skills-page/skills-page.component')
             .then(
               (m) => m.AdminSkillsPageComponent,
             ),
@@ -189,7 +189,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/skills/create',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/skill-form-page/skill-form-page.component')
+          import('@admin/views/skill-form-page/skill-form-page.component')
             .then(
               (m) => m.AdminSkillFormPageComponent,
             ),
@@ -200,7 +200,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/skills/edit/:id',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/skill-form-page/skill-form-page.component')
+          import('@admin/views/skill-form-page/skill-form-page.component')
             .then(
               (m) => m.AdminSkillFormPageComponent,
             ),
@@ -211,7 +211,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/experience',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/experience-page/experience-page.component')
+          import('@admin/views/experience-page/experience-page.component')
             .then(
               (m) => m.AdminExperiencePageComponent,
             ),
@@ -219,7 +219,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/experience/create',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/experience-form-page/experience-form-page.component')
+          import('@admin/views/experience-form-page/experience-form-page.component')
             .then(
               (m) => m.AdminExperienceFormPageComponent,
             ),
@@ -230,7 +230,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/experience/edit/:id',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/experience-form-page/experience-form-page.component')
+          import('@admin/views/experience-form-page/experience-form-page.component')
             .then(
               (m) => m.AdminExperienceFormPageComponent,
             ),
@@ -241,7 +241,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/education',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/content-page/content-page.component')
+          import('@admin/views/content-page/content-page.component')
             .then(
               (m) => m.AdminContentPageComponent,
             ),
@@ -258,7 +258,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/education/create',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/cv-content-form-page/cv-content-form-page.component')
+          import('@admin/views/cv-content-form-page/cv-content-form-page.component')
             .then(
               (m) => m.AdminCvContentFormPageComponent,
             ),
@@ -270,7 +270,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/education/edit/:id',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/cv-content-form-page/cv-content-form-page.component')
+          import('@admin/views/cv-content-form-page/cv-content-form-page.component')
             .then(
               (m) => m.AdminCvContentFormPageComponent,
             ),
@@ -282,7 +282,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/certifications',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/content-page/content-page.component')
+          import('@admin/views/content-page/content-page.component')
             .then(
               (m) => m.AdminContentPageComponent,
             ),
@@ -299,7 +299,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/certifications/create',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/cv-content-form-page/cv-content-form-page.component')
+          import('@admin/views/cv-content-form-page/cv-content-form-page.component')
             .then(
               (m) => m.AdminCvContentFormPageComponent,
             ),
@@ -311,7 +311,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/certifications/edit/:id',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/cv-content-form-page/cv-content-form-page.component')
+          import('@admin/views/cv-content-form-page/cv-content-form-page.component')
             .then(
               (m) => m.AdminCvContentFormPageComponent,
             ),
@@ -323,7 +323,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/testimonials',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/testimonials-page/testimonials-page.component')
+          import('@admin/views/testimonials-page/testimonials-page.component')
             .then(
               (m) => m.AdminTestimonialsPageComponent,
             ),
@@ -331,7 +331,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/testimonials/create',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/testimonial-form-page/testimonial-form-page.component')
+          import('@admin/views/testimonial-form-page/testimonial-form-page.component')
             .then(
               (m) => m.AdminTestimonialFormPageComponent,
             ),
@@ -342,7 +342,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/testimonials/edit/:id',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/testimonial-form-page/testimonial-form-page.component')
+          import('@admin/views/testimonial-form-page/testimonial-form-page.component')
             .then(
               (m) => m.AdminTestimonialFormPageComponent,
             ),
@@ -353,7 +353,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/testimonials/:id',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/testimonial-details-page/testimonial-details-page.component')
+          import('@admin/views/testimonial-details-page/testimonial-details-page.component')
             .then(
               (m) => m.AdminTestimonialDetailsPageComponent,
             ),
@@ -361,7 +361,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/contactMe',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/contact-me-page/contact-me-page.component')
+          import('@admin/views/contact-me-page/contact-me-page.component')
             .then(
               (m) => m.AdminContactMePageComponent,
             ),
@@ -369,7 +369,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/resumes',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/resumes-page/resumes-page.component')
+          import('@admin/views/resumes-page/resumes-page.component')
             .then(
               (m) => m.AdminResumesPageComponent,
             ),
@@ -377,7 +377,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/socialLinks',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/content-page/content-page.component')
+          import('@admin/views/content-page/content-page.component')
             .then(
               (m) => m.AdminContentPageComponent,
             ),
@@ -394,7 +394,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/users',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/users-page/users-page.component')
+          import('@admin/views/users-page/users-page.component')
             .then(
               (m) => m.AdminUsersPageComponent,
             ),
@@ -402,7 +402,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/themes',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/themes-page/themes-page.component')
+          import('@admin/views/themes-page/themes-page.component')
             .then(
               (m) => m.AdminThemesPageComponent,
             ),
@@ -410,7 +410,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/themes/create',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/theme-form-page/theme-form-page.component')
+          import('@admin/views/theme-form-page/theme-form-page.component')
             .then(
               (m) => m.AdminThemeFormPageComponent,
             ),
@@ -419,7 +419,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/themes/edit/:id',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/theme-form-page/theme-form-page.component')
+          import('@admin/views/theme-form-page/theme-form-page.component')
             .then(
               (m) => m.AdminThemeFormPageComponent,
             ),
@@ -428,7 +428,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/dangerZone',
         loadComponent: () =>
-          import('@pages/admin-dashboard/views/danger-zone-page/danger-zone-page.component')
+          import('@admin/views/danger-zone-page/danger-zone-page.component')
             .then(
               (m) => m.DangerZonePageComponent,
             ),
@@ -455,3 +455,4 @@ export const routes: Routes = [
     redirectTo: DEFAULT_LANGUAGE,
   },
 ];
+
