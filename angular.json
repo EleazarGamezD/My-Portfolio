@@ -56,7 +56,6 @@
               "src/assets/css/icons-used.css",
               "src/assets/css/style.css",
               "src/assets/css/responsive.css",
-              "src/assets/spa-salon/spa-salon.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss"
             ],
@@ -78,8 +77,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "3MB",
-                  "maximumError": "9MB"
+                  "maximumWarning": "1700kB",
+                  "maximumError": "2MB"
                 },
                 {
                   "type": "anyComponentStyle",

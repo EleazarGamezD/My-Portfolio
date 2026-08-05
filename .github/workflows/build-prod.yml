@@ -25,7 +25,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -38,24 +38,20 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      - name: Clear npm cache
-        run: npm cache clean --force
-
       - name: Install Dependencies
-        run: npm install --legacy-peer-deps --force
-
-      - name: Verify Dependencies
-        run: npm ls
-
-      - name: Install Angular CLI
-        run: npm install -g @angular/cli --force
+        run: npm ci --legacy-peer-deps
 
       - name: Generate Angular environment files
         run: npm run config
 
-      # Uncomment the following lines to run tests
-      # - name: Run Tests
-      #   run: npm test
+      - name: Run Tests
+        run: npm test -- --watch=false
+
+      - name: Verify Backend Availability
+        run: |
+          API_URL="${BACKEND_API_URL%/}"
+          API_BASE="${API_URL%/api}"
+          curl --fail --silent --show-error --retry 3 --retry-delay 2 "$API_BASE/health"
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest --force
