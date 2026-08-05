@@ -173,8 +173,12 @@
       return;
     }
 
-    cacheOriginalAnimationMarkup(element);
-    restoreOriginalAnimationMarkup(element);
+    // Angular owns the children of dynamic containers. Restoring a cached
+    // snapshot here would delete content rendered after an API response.
+    if (options.el === "lines" || options.el === "words") {
+      cacheOriginalAnimationMarkup(element);
+      restoreOriginalAnimationMarkup(element);
+    }
 
     var targets = resolveAnimationTargets(element, options);
     var staggerValue = options.staggervalue || 0;

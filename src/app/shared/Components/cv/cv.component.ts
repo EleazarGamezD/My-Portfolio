@@ -70,22 +70,14 @@ export class CvComponent implements OnInit {
     }
   }
 
-  downloadCV(resume: IApiResume): void {
+  /** Records a CV download initiated through the native file link. */
+  trackCVDownload(resume: IApiResume): void {
     if (!resume.href) {
       return;
     }
 
     const fileName = this.getResumeDownloadFileName(resume);
     this.analyticsService.trackCVDownload(fileName);
-
-    const downloadLink = document.createElement('a');
-    downloadLink.href = resume.href;
-    downloadLink.target = '_blank';
-    downloadLink.rel = 'noopener noreferrer';
-    downloadLink.download = fileName;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
   }
 
   getResumeTitle(resume: IApiResume) {
@@ -106,7 +98,7 @@ export class CvComponent implements OnInit {
     );
   }
 
-  private getResumeDownloadFileName(resume: IApiResume): string {
+  getResumeDownloadFileName(resume: IApiResume): string {
     const language = this.resolveResumeLanguage(resume);
     const fullName = this.i18nService.selectText(
       this.profile?.label?.es ?? this.profile?.title?.es ?? '',

@@ -43,7 +43,12 @@ describe('CvComponent', () => {
 
   it('keeps resumes when optional profile content fails', async () => {
     contentService.getResumes.mockResolvedValueOnce([
-      { _id: 'resume-1', active: true, title: { es: 'CV', en: 'CV' } },
+      {
+        _id: 'resume-1',
+        active: true,
+        href: 'https://storage.example.test/cv.pdf',
+        title: { es: 'CV', en: 'CV' },
+      },
     ]);
     contentService.getProfile.mockRejectedValueOnce(new Error('profile unavailable'));
 
@@ -51,5 +56,8 @@ describe('CvComponent', () => {
 
     expect(component.resumes).toHaveLength(1);
     expect(component.error).toBeNull();
+    expect(fixture.nativeElement.querySelector('a[download]')?.href).toBe(
+      'https://storage.example.test/cv.pdf',
+    );
   });
 });
