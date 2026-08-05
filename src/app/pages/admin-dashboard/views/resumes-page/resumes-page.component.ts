@@ -348,6 +348,11 @@ export class AdminResumesPageComponent implements OnInit {
   }
 
   private getGeneratedFileName(response: Response, lang: ResumeLanguage): string {
+    const headerFileName = response.headers.get('X-CV-PDF-Filename');
+    if (headerFileName) {
+      return headerFileName;
+    }
+
     const disposition = response.headers.get('Content-Disposition') || '';
     const match = /filename="?(?<fileName>[^";]+)"?/iu.exec(disposition);
     return match?.groups?.['fileName'] || (lang === 'es' ? 'cv-es.pdf' : 'resume-en.pdf');
@@ -402,8 +407,8 @@ export class AdminResumesPageComponent implements OnInit {
         throw new Error('No se pudo generar el PDF.');
       }
 
-      const blob = await response.blob();
       const fileName = this.getGeneratedFileName(response, lang);
+      const blob = await response.blob();
       this.downloadBlob(blob, fileName);
 
       this.generatedResumeToSave = { language: lang, fileName, blob };

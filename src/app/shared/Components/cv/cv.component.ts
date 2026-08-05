@@ -44,16 +44,21 @@ export class CvComponent implements OnInit {
     try {
       this.loading = true;
       this.error = null;
-      const [resumes, profile] = await this.withTimeout(
-        Promise.all([
-          this.contentService.getResumes(),
-          this.contentService.getProfile(),
-        ]),
-      );
+      const [resumesResult, profileResult] = await Promise.allSettled([
+        this.withTimeout(this.contentService.getResumes()),
+        this.withTimeout(this.contentService.getProfile()),
+      ]);
+      if (resumesResult.status === 'rejected') {
+        throw resumesResult.reason;
+      }
+
+      const resumes = resumesResult.value;
       this.resumes = Array.isArray(resumes)
         ? resumes.filter((resume) => resume.active !== false)
         : [];
-      this.profile = profile;
+      this.profile = profileResult.status === 'fulfilled'
+        ? profileResult.value
+        : null;
     } catch (err) {
       console.error('Error loading resumes:', err);
       this.error = this.t('cv.loadError');

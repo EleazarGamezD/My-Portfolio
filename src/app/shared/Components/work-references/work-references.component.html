@@ -5,6 +5,16 @@
   <div class="container overlap-gap-section">
     <div class="row justify-content-center mb-6 md-mb-8 xs-mb-40px">
       <div class="col-xl-10 testimonials-style-11 position-relative ps-15 pe-15 sm-ps-15px sm-pe-15px text-center">
+        @if (loading) {
+          <p class="text-dark-gray py-5" role="status">{{ t('common.loading') }}</p>
+        }
+        @if (error && !loading) {
+          <div class="alert alert-danger" role="alert">{{ error }}</div>
+        }
+        @if (!loading && !error && workReferences.length === 0) {
+          <p class="text-dark-gray py-5">{{ t('workReferences.empty') || 'No hay testimonios disponibles.' }}</p>
+        }
+        @if (!loading && !error && workReferences.length > 0) {
         <div class="swiper slider-custom-text" data-slider-options='{ "loop": true, "keyboard": { "enabled": true, "onlyInViewport": true }, "autoplay": { "delay": 4000, "disableOnInteraction": false }, "navigation": { "nextEl": ".swiper-button-next-nav", "prevEl": ".swiper-button-previous-nav", "effect": "fade" } }'>
           <div class="swiper-wrapper">
             @for(testimonial of workReferences; track trackTestimonial($index, testimonial)){
@@ -28,6 +38,7 @@
         <div class="swiper-button-next-nav swiper-button-next slider-custom-text-next fs-14 text-uppercase text-dark-gray fw-500 ls-1px">
           {{ t('workReferences.next') }}
         </div>
+        }
         <!-- end slider pagination -->
       </div>
     </div>

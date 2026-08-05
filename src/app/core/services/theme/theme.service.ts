@@ -6,20 +6,50 @@ import { GlobalHttpService } from '@services/globalHttp/global-http.service';
 import { environment } from '../../../../environments/environment';
 
 const BASE = environment.apiUrl;
+const THEME_CACHE_KEY = `${environment.appName}-active-theme-colors`;
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService extends GlobalHttpService {
   private applied = false;
+  private loadedFromApi = false;
+  private loadPromise?: Promise<void>;
   private readonly platformId = inject(PLATFORM_ID);
 
+  constructor() {
+    super();
+    this.applyCachedTheme();
+  }
+
+  /**
+   * Applies the cached theme immediately and refreshes it once from the API.
+   * Concurrent callers share the same refresh request.
+   */
   async loadAndApplyActiveTheme(): Promise<void> {
-    if (this.applied || !isPlatformBrowser(this.platformId)) return;
+    if (!isPlatformBrowser(this.platformId) || this.loadedFromApi) return;
+    if (this.applied) {
+      void this.refreshActiveTheme();
+      return;
+    }
+
+    await this.refreshActiveTheme();
+  }
+
+  private refreshActiveTheme(): Promise<void> {
+    if (this.loadPromise) return this.loadPromise;
+
+    this.loadPromise = this.fetchAndApplyActiveTheme().finally(() => {
+      this.loadPromise = undefined;
+    });
+    return this.loadPromise;
+  }
+
+  private async fetchAndApplyActiveTheme(): Promise<void> {
     try {
       const theme = await this.makeRequest<ITheme | null, null>(`${BASE}/themes/active`, null, RequestMethod.GET);
       if (theme?.colors) {
         this.applyTheme(theme.colors);
-        this.applied = true;
       }
+      this.loadedFromApi = true;
     } catch {
       // fail silently – default CSS vars remain
     }
@@ -73,6 +103,24 @@ export class ThemeService extends GlobalHttpService {
       root.setProperty('--primary-font', colors.primaryFont);
       this.loadGoogleFont(colors.primaryFont);
     }
+    this.applied = true;
+    try {
+      localStorage.setItem(THEME_CACHE_KEY, JSON.stringify(colors));
+    } catch {
+      // Storage may be unavailable in privacy mode; the applied theme still works.
+    }
+  }
+
+  private applyCachedTheme(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    try {
+      const cachedTheme = localStorage.getItem(THEME_CACHE_KEY);
+      if (cachedTheme) {
+        this.applyTheme(JSON.parse(cachedTheme) as IThemeColors);
+      }
+    } catch {
+      // Ignore unavailable or malformed browser storage and keep CSS defaults.
+    }
   }
 
   private loadGoogleFont(fontValue: string): void {
@@ -89,5 +137,9 @@ export class ThemeService extends GlobalHttpService {
 
   resetApplied(): void {
     this.applied = false;
+    this.loadedFromApi = false;
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(THEME_CACHE_KEY);
+    }
   }
 }

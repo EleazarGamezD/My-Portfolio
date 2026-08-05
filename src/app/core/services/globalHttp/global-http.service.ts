@@ -25,6 +25,7 @@ export class GlobalHttpService {
   private readonly ngZone = inject(NgZone);
   private readonly requestStateService = inject(RequestStateService);
   private readonly tokenStorage = inject(StorageService);
+  private readonly inFlightGets = new Map<string, Promise<unknown>>();
 
   /**
    * Returns a promise that resolves to an HttpHeaders object containing the Authorization header with a valid bearer token.
@@ -53,6 +54,7 @@ export class GlobalHttpService {
    * @param route URL of the request.
    * @param payload Optional data to be passed to the request. If the request is a GET, this is ignored.
    * @param method HTTP method. Defaults to RequestMethod.GET.
+   * Concurrent GET requests to the same URL and auth context share one network call.
    * @returns A Promise that resolves with the response to the HTTP request.
    * @throws An error if the HTTP request fails.
    */
@@ -85,24 +87,39 @@ export class GlobalHttpService {
     method: string = RequestMethod.GET,
   ): Promise<T> {
     const headers = await this.getAuthHeaders();
-    const requestOptions: object =
-      method === RequestMethod.GET
-        ? { headers: headers.set('Cache-Control', 'no-cache').set('Pragma', 'no-cache') }
-        : { body: options, headers };
+    const requestOptions: object = method === RequestMethod.GET
+      ? { headers }
+      : { body: options, headers };
+    const getRequestKey = method === RequestMethod.GET
+      ? `${url}|${headers.get('Authorization') ?? ''}|${headers.get('x-api-key') ?? ''}`
+      : null;
+
+    if (getRequestKey) {
+      const pendingRequest = this.inFlightGets.get(getRequestKey);
+      if (pendingRequest) {
+        return pendingRequest as Promise<T>;
+      }
+    }
 
     this.requestStateService.beginRequest();
-
-    try {
-      return await lastValueFrom(
+    const request = lastValueFrom(
         this._http.request<T>(method, url, requestOptions).pipe(
           map((response) => response as T),
           defaultIfEmpty(null as T),
           catchError((error: HttpErrorResponse) => throwError(() => error)),
         ),
-      );
-    } finally {
-      this.requestStateService.endRequest();
+      ).finally(() => {
+        this.requestStateService.endRequest();
+        if (getRequestKey) {
+          this.inFlightGets.delete(getRequestKey);
+        }
+      });
+
+    if (getRequestKey) {
+      this.inFlightGets.set(getRequestKey, request);
     }
+
+    return request;
   }
 
   private async handleAuthFailure(error: unknown): Promise<void> {
@@ -110,6 +127,17 @@ export class GlobalHttpService {
       !(error instanceof HttpErrorResponse) ||
       error.status !== 401 ||
       typeof window === 'undefined'
+    ) {
+      return;
+    }
+
+    const responseMessage =
+      typeof error.error === 'object' && error.error !== null
+        ? (error.error as { message?: unknown }).message
+        : null;
+    if (
+      typeof responseMessage === 'string' &&
+      responseMessage.toLowerCase().includes('x-api-key')
     ) {
       return;
     }

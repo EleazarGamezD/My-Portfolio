@@ -30,26 +30,40 @@ export class WorkReferencesComponent implements OnInit {
   profile: IApiProfile | null = null;
   workReferences: IApiContentItem[] = [];
   downSideIcons: { url: string }[] = [];
+  loading = true;
+  error: string | null = null;
 
   async ngOnInit() {
     try {
-      const [testimonials, profile] = await Promise.all([
+      this.loading = true;
+      this.error = null;
+      const [testimonialsResult, profileResult] = await Promise.allSettled([
         this.contentService.getTestimonials(),
         this.contentService.getProfile(),
       ]);
+      if (testimonialsResult.status === 'rejected') {
+        throw testimonialsResult.reason;
+      }
+
+      const testimonials = testimonialsResult.value;
       this.workReferences = Array.isArray(testimonials)
         ? testimonials.filter((item): item is IApiContentItem => Boolean(item))
         : [];
-      this.profile = profile;
+      this.profile = profileResult.status === 'fulfilled'
+        ? profileResult.value
+        : null;
       this.downSideIcons = (
-        profile.metadata?.portfolioMedia?.testimonialLogos ?? []
+        this.profile?.metadata?.portfolioMedia?.testimonialLogos ?? []
       )
         .map((asset) => resolveImageAssetUrl(asset))
         .filter((url): url is string => Boolean(url))
         .map((url) => ({ url }));
     } catch (error) {
       console.warn('Failed to load testimonials from API.', error);
+      this.error = this.t('workReferences.loadError') || 'No se pudieron cargar los testimonios.';
+      this.workReferences = [];
     } finally {
+      this.loading = false;
       this.changeDetectorRef.detectChanges();
       requestTemplateReinit();
     }

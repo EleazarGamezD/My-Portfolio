@@ -39,7 +39,7 @@
 
   <!-- start cvs section -->
   <div id="cvs"></div>
-  @defer (on viewport) {
+  @defer (on idle) {
     <app-cv />
   } @placeholder {
     <div class="deferred-section-placeholder" aria-hidden="true"></div>
@@ -48,7 +48,7 @@
 
   <!-- start work reference section -->
   <div id="work-references"></div>
-  @defer (on viewport) {
+  @defer (on idle) {
     <app-work-references />
   } @placeholder {
     <div class="deferred-section-placeholder" aria-hidden="true"></div>
