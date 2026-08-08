@@ -4,12 +4,13 @@
   "scripts": {
     "ng": "ng",
     "config": "node scripts/set-env.mjs",
+    "icons:sync": "node scripts/generate-tech-stack-icons.mjs",
     "start": "ng serve",
     "dev": "ng serve --watch --host 0.0.0.0",
     "dev:remote": "ng serve --configuration development --watch --host 0.0.0.0",
     "local": "ng serve --c local-development --watch --host 0.0.0.0",
-    "build": "ng build",
-    "build:prod": "ng build --configuration production --base-href /My-Portfolio/",
+    "build": "npm run icons:sync && ng build",
+    "build:prod": "npm run icons:sync && ng build --configuration production --base-href /My-Portfolio/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:My-Portfolio": "node dist/my-portfolio/server/server.mjs"
@@ -48,6 +49,7 @@
     "ngx-toastr": "^20.0.5",
     "rxjs": "~7.8.0",
     "swiper": "^11.2.4",
+    "tech-stack-icons": "^3.7.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },

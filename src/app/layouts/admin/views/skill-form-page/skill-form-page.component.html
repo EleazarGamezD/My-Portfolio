@@ -104,8 +104,27 @@
                   <div class="skill-panel skill-panel--media">
                     <div class="skill-panel__head">
                       <h3>Icono</h3>
-                      <p>Sube un icono limpio y reconocible. Esta misma pieza se reutiliza en tarjetas, filtros y detalles.</p>
+                      <p>Busca el icono por el nombre de la skill o sube uno manualmente.</p>
                     </div>
+                    <div class="skill-icon-search">
+                      <label class="form-label" for="skill-icon-search">Buscar icono</label>
+                      <input id="skill-icon-search" cFormControl type="search" name="skill-icon-search" [(ngModel)]="iconSearch" placeholder="Angular, Node.js, MongoDB..." autocomplete="off" />
+                    </div>
+                    @if (matchingIcons.length) {
+                      <div class="skill-icon-library">
+                        <span class="skill-icon-library__label">Iconos encontrados</span>
+                        <div class="skill-icon-library__grid">
+                          @for (icon of matchingIcons; track icon.name) {
+                            <button type="button" class="skill-icon-option" (click)="selectLibraryIcon(icon)" [attr.aria-label]="'Usar icono de ' + icon.name">
+                              <img [src]="iconPreview(icon)" alt="" />
+                              <span>{{ icon.name }}</span>
+                            </button>
+                          }
+                        </div>
+                      </div>
+                    } @else if (iconSearch.length >= 2 && iconCatalog.length) {
+                      <p class="skill-icon-library__empty">No encontramos un icono para “{{ iconSearch }}”. Puedes subirlo manualmente.</p>
+                    }
                     <app-photo-editor [assets]="iconAssets" [maxPhotos]="1" [variant]="'single'" [title]="'Icono de la skill'" [subTitle]="'Agrega, cambia o elimina el icono principal.'" [emptyLabel]="'Agregar icono'" [addButtonLabel]="'Agregar'" [changeButtonLabel]="'Cambiar'" [removeButtonLabel]="'Eliminar'" (assetsChange)="onIconAssetsChange($event)" (uploadError)="onUploadError($event)">
                     </app-photo-editor>
                   </div>

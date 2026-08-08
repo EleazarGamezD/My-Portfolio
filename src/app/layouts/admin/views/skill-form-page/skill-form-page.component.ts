@@ -4,8 +4,10 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  PLATFORM_ID,
   OnInit,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TECH_SKILL_CATEGORY_OPTIONS, TechSkillCategory } from '@core/enum/tech-skills/tech-skill-category.enum';
@@ -23,6 +25,11 @@ import { ToastrService } from 'ngx-toastr';
 import { ShowErrorsComponent } from '../../components/shared/show-errors/show-errors.component';
 
 type SkillFormMode = 'create' | 'edit';
+
+interface TechStackIcon {
+  name: string;
+  svg: string;
+}
 
 @Component({
   selector: 'app-admin-skill-form-page',
@@ -47,6 +54,7 @@ export class AdminSkillFormPageComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly platformId = inject(PLATFORM_ID);
 
   mode: SkillFormMode = 'create';
   skillId = '';
@@ -57,8 +65,11 @@ export class AdminSkillFormPageComponent implements OnInit {
   draft: Partial<IApiTechSkill> = this.createEmptyDraft();
   readonly categoryOptions = TECH_SKILL_CATEGORY_OPTIONS;
   selectedCategory: TechSkillCategory | '' = '';
+  iconCatalog: TechStackIcon[] = [];
+  iconSearch = '';
 
   async ngOnInit(): Promise<void> {
+    void this.loadIconCatalog();
     this.mode = (this.route.snapshot.data['mode'] as SkillFormMode) || 'create';
 
     if (this.mode === 'create') {
@@ -111,6 +122,17 @@ export class AdminSkillFormPageComponent implements OnInit {
     return `skill-form-${this.mode}-${this.skillId || 'new'}-icon`;
   }
 
+  get matchingIcons(): TechStackIcon[] {
+    const query = this.normalizeIconName(this.iconSearch);
+    if (query.length < 2) {
+      return [];
+    }
+
+    return this.iconCatalog
+      .filter((icon) => this.normalizeIconName(icon.name).includes(query))
+      .slice(0, 8);
+  }
+
   onLabelChange(value: string): void {
     const normalized = this.normalizeSkillLabel(value);
     this.draft.label = { es: normalized, en: normalized };
@@ -121,6 +143,23 @@ export class AdminSkillFormPageComponent implements OnInit {
   onIconAssetsChange(assets: IProjectAsset[]): void {
     this.draft.icon = assets[0] ?? null;
     this.error = null;
+  }
+
+  selectLibraryIcon(icon: TechStackIcon): void {
+    const file = `data:image/svg+xml;base64,${this.toBase64(icon.svg)}`;
+    this.draft.icon = {
+      id: crypto.randomUUID(),
+      name: `${icon.name}.svg`,
+      file,
+      fileName: `${icon.name}.svg`,
+      extension: 'svg',
+    };
+    this.iconSearch = icon.name;
+    this.error = null;
+  }
+
+  iconPreview(icon: TechStackIcon): string {
+    return `data:image/svg+xml;base64,${this.toBase64(icon.svg)}`;
   }
 
   onUploadError(message: string): void {
@@ -203,6 +242,23 @@ export class AdminSkillFormPageComponent implements OnInit {
     }
   }
 
+  private async loadIconCatalog(): Promise<void> {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    try {
+      const response = await fetch('assets/data/tech-stack-icons.json');
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      this.iconCatalog = await response.json() as TechStackIcon[];
+      this.cdr.detectChanges();
+    } catch {
+      this.iconCatalog = [];
+    }
+  }
+
   private createEmptyDraft(): Partial<IApiTechSkill> {
     return {
       label: { es: '', en: '' },
@@ -222,5 +278,19 @@ export class AdminSkillFormPageComponent implements OnInit {
       .filter(Boolean)
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join(' ');
+  }
+
+  private normalizeIconName(value: string): string {
+    return value
+      .toLowerCase()
+      .replace('c++', 'cpp')
+      .replace('c#', 'csharp')
+      .replace('.net', 'dotnet')
+      .replace(/[^a-z0-9]/g, '');
+  }
+
+  private toBase64(value: string): string {
+    const bytes = new TextEncoder().encode(value);
+    return btoa(Array.from(bytes, (byte) => String.fromCharCode(byte)).join(''));
   }
 }
