@@ -104,42 +104,6 @@
   font-weight: 900;
 }
 
-.skill-hero__meta {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.9rem;
-  margin-top: 0.15rem;
-}
-
-.skill-hero__meta-card {
-  padding: 0.95rem 1rem;
-  border: 1px solid var(--skill-soft-line);
-  border-radius: 1.2rem;
-  background: var(--skill-surface);
-
-  strong {
-    display: block;
-    margin-top: 0.18rem;
-    color: var(--skill-ink);
-    font-size: 0.98rem;
-  }
-
-  small {
-    display: block;
-    margin-top: 0.3rem;
-    color: var(--skill-muted);
-    line-height: 1.5;
-  }
-}
-
-.skill-hero__meta-label {
-  color: var(--skill-accent);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.72rem;
-  font-weight: 900;
-}
-
 .skill-hero__preview {
   grid-area: preview;
   display: flex;
@@ -374,10 +338,6 @@
   .skill-hero__topbar {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .skill-hero__meta {
-    grid-template-columns: 1fr;
   }
 
   .skill-preview-card__tile,

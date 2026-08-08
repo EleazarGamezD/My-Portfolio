@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RequestMethod } from '@core/enum/globalHttpRequest/globalHttpRequest.enum';
+import type { TechSkillCategory } from '@core/enum/tech-skills/tech-skill-category.enum';
 import {
   IApiContentItem,
   IApiProfile,
@@ -9,6 +10,11 @@ import {
 import { IPaginationOptions, IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { API_CONTENT_ROUTES } from '@core/routes/content/content.routes';
 import { GlobalHttpService } from '@services/globalHttp/global-http.service';
+
+interface TechSkillPaginationOptions extends IPaginationOptions {
+  search?: string;
+  category?: TechSkillCategory;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -133,8 +139,11 @@ export class ContentService extends GlobalHttpService {
     );
   }
 
-  async getTechSkillsPaginated(options: IPaginationOptions): Promise<IPaginationResponse<IApiTechSkill>> {
-    const route = this.buildPaginatedRoute(API_CONTENT_ROUTES.getTechSkills, options);
+  async getTechSkillsPaginated(options: TechSkillPaginationOptions): Promise<IPaginationResponse<IApiTechSkill>> {
+    const params = new URLSearchParams(this.buildPaginatedRoute('', options).replace(/^\?/u, ''));
+    if (options.search?.trim()) params.set('search', options.search.trim());
+    if (options.category) params.set('category', options.category);
+    const route = `${API_CONTENT_ROUTES.getTechSkills}?${params.toString()}`;
     return this.makeRequest<IPaginationResponse<IApiTechSkill>, null>(route, null, RequestMethod.GET);
   }
 

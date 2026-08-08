@@ -1,6 +1,6 @@
 <section>
   <div class="base-shell">
-    <app-skills-list [skills]="skills" [loading]="loading" [deletingSkillId]="deletingSkillId" [pagination]="pagination" (pageChange)="changePage($event)" (deleteSkill)="deleteSkill($event)">
+    <app-skills-list [skills]="skills" [loading]="loading" [deletingSkillId]="deletingSkillId" [pagination]="pagination" [search]="search" [category]="category" [categoryOptions]="categoryOptions" (searchChange)="onSearchChange($event)" (categoryChange)="onCategoryChange($event)" (pageChange)="changePage($event)" (deleteSkill)="deleteSkill($event)">
     </app-skills-list>
   </div>
 </section>

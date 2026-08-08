@@ -117,7 +117,7 @@ export class CvComponent implements OnInit {
     const [firstName = 'portfolio', ...rest] = normalizedName.split(' ');
     const lastName = rest.at(-1) || 'owner';
 
-    return `${firstName}_${lastName}_${language}_cv.pdf`;
+    return `${firstName}${lastName}-cv-${language}.pdf`;
   }
 
   canDownloadCV(resume: IApiResume): boolean {

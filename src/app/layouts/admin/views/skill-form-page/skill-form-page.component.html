@@ -42,18 +42,6 @@
                       Usa un nombre claro, decide si debe estar activa y carga un icono consistente para reutilizarlo en
                       proyectos, filtros y vistas públicas.
                     </p>
-                    <div class="skill-hero__meta">
-                      <div class="skill-hero__meta-card">
-                        <span class="skill-hero__meta-label">Idiomas</span>
-                        <strong>ES + EN unificado</strong>
-                        <small>El mismo label se replica en ambos idiomas.</small>
-                      </div>
-                      <div class="skill-hero__meta-card">
-                        <span class="skill-hero__meta-label">Slug</span>
-                        <strong>Auto generado</strong>
-                        <small>El backend lo crea al guardar, no lo editas aquí.</small>s
-                      </div>
-                    </div>
                   </div>
                   <aside class="skill-hero__preview">
                     <div class="skill-preview-card">
@@ -87,6 +75,16 @@
                         <label class="form-label">Nombre de la skill</label>
                         <input cFormControl type="text" name="skill-label" [ngModel]="draftLabel" (ngModelChange)="onLabelChange($event)" placeholder="Angular" required #skillLabel="ngModel" />
                         <app-show-errors [control]="skillLabel.control" [requiredField]="'nombre de la skill'" />
+                      </div>
+                      <div>
+                        <label class="form-label">Categoría</label>
+                        <select cFormControl name="skill-category" [(ngModel)]="selectedCategory" required #skillCategory="ngModel">
+                          <option value="" disabled>Selecciona una categoría</option>
+                          @for (option of categoryOptions; track option.value) {
+                            <option [value]="option.value">{{ option.label }}</option>
+                          }
+                        </select>
+                        <app-show-errors [control]="skillCategory.control" [requiredField]="'categoría'" />
                       </div>
                       <div class="skill-toggle-card">
                         <div>

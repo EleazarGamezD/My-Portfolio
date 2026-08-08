@@ -1,3 +1,4 @@
+import type { TechSkillCategory } from '@core/enum/tech-skills/tech-skill-category.enum';
 import type { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 
 export interface ILocalizedText {
@@ -76,6 +77,7 @@ export interface IApiContentItem {
 export interface IApiTechSkill extends IApiContentItem {
   icon?: string | IProjectAsset | null;
   value?: string;
+  metadata?: Record<string, unknown> & { category?: TechSkillCategory };
 }
 
 export interface IApiResume extends IApiContentItem {

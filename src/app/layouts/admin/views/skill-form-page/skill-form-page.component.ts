@@ -1,12 +1,14 @@
+import { PhotoEditorComponent } from '@admin/components/shared/photo-editor/photo-editor.component';
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
-  ChangeDetectionStrategy,
   inject,
+  OnInit,
 } from '@angular/core';
-import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TECH_SKILL_CATEGORY_OPTIONS, TechSkillCategory } from '@core/enum/tech-skills/tech-skill-category.enum';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IProjectAsset } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
@@ -17,9 +19,8 @@ import {
   CardModule,
   FormModule,
 } from '@coreui/angular';
-import { PhotoEditorComponent } from '@admin/components/shared/photo-editor/photo-editor.component';
-import { ShowErrorsComponent } from '../../components/shared/show-errors/show-errors.component';
 import { ToastrService } from 'ngx-toastr';
+import { ShowErrorsComponent } from '../../components/shared/show-errors/show-errors.component';
 
 type SkillFormMode = 'create' | 'edit';
 
@@ -54,6 +55,8 @@ export class AdminSkillFormPageComponent implements OnInit {
   notFound = false;
   error: string | null = null;
   draft: Partial<IApiTechSkill> = this.createEmptyDraft();
+  readonly categoryOptions = TECH_SKILL_CATEGORY_OPTIONS;
+  selectedCategory: TechSkillCategory | '' = '';
 
   async ngOnInit(): Promise<void> {
     this.mode = (this.route.snapshot.data['mode'] as SkillFormMode) || 'create';
@@ -131,6 +134,10 @@ export class AdminSkillFormPageComponent implements OnInit {
       this.error = 'El nombre de la skill es obligatorio.';
       return;
     }
+    if (!this.selectedCategory) {
+      this.error = 'La categoría de la skill es obligatoria.';
+      return;
+    }
 
     this.onLabelChange(normalized);
     this.error = null;
@@ -143,6 +150,7 @@ export class AdminSkillFormPageComponent implements OnInit {
         value: this.draft.value,
         icon: this.draft.icon ?? null,
         active: this.draft.active ?? true,
+        metadata: { ...(this.draft.metadata ?? {}), category: this.selectedCategory },
       };
 
       if (this.mode === 'create') {
@@ -184,6 +192,7 @@ export class AdminSkillFormPageComponent implements OnInit {
       }
 
       this.draft = structuredClone(skill);
+      this.selectedCategory = skill.metadata?.category ?? '';
     } catch (error) {
       this.error =
         error instanceof Error ? error.message : 'No se pudo cargar la skill.';
@@ -201,6 +210,7 @@ export class AdminSkillFormPageComponent implements OnInit {
       value: '',
       icon: null,
       active: true,
+      metadata: {},
     };
   }
 

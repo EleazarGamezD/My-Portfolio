@@ -16,6 +16,24 @@
     <p class="admin-page-copy mb-0">Administra el catálogo visual de habilidades que luego se relacionan con los proyectos.</p>
   </div>
 
+  <div class="skills-filters">
+    <div class="skills-filter skills-filter--search">
+      <label for="skill-search">Buscar por nombre</label>
+      <input cFormControl id="skill-search" type="search" [ngModel]="search" (ngModelChange)="searchChange.emit($event)" placeholder="Angular, MongoDB..." />
+    </div>
+    <div class="skills-filter skills-filter--category">
+      <label for="skill-category-filter">Clasificación</label>
+      <div class="skills-select-wrap">
+        <select cFormControl id="skill-category-filter" [ngModel]="category" (ngModelChange)="categoryChange.emit($event)">
+          <option value="">Todas las categorías</option>
+          @for (option of categoryOptions; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
   @if (!loading && skills.length === 0) {
     <div class="empty-state">
       <p>No se encontraron habilidades.</p>
@@ -47,6 +65,7 @@
             </div>
             <div class="skill-card__body">
               <h3>{{ getSkillLabel(skill) }}</h3>
+              <c-badge color="info">{{ getSkillCategory(skill) }}</c-badge>
               <c-badge [color]="skill.active ? 'success' : 'secondary'">
                 {{ skill.active ? 'activa' : 'inactiva' }}
               </c-badge>

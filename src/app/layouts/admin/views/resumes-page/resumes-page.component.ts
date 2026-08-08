@@ -62,6 +62,7 @@ export class AdminResumesPageComponent implements OnInit {
     fileName: string;
     blob: Blob;
   } | null = null;
+  private profileName = '';
 
   readonly slots: ResumeSlotDraft[] = [
     this.createEmptySlot('es', 'CV Español', 1),
@@ -78,8 +79,12 @@ export class AdminResumesPageComponent implements OnInit {
       this.error = null;
       this.successMessage = null;
 
-      await this.adminAuthService.getCurrentAdmin();
-      const resumes = await this.contentService.getResumes();
+      const [, resumes, profile] = await Promise.all([
+        this.adminAuthService.getCurrentAdmin(),
+        this.contentService.getResumes(),
+        this.contentService.getProfile(),
+      ]);
+      this.profileName = profile.label?.es || profile.label?.en || profile.title?.es || profile.title?.en || '';
       this.hydrateSlots(resumes);
     } catch (error) {
       this.error =
@@ -355,7 +360,18 @@ export class AdminResumesPageComponent implements OnInit {
 
     const disposition = response.headers.get('Content-Disposition') || '';
     const match = /filename="?(?<fileName>[^";]+)"?/iu.exec(disposition);
-    return match?.groups?.['fileName'] || (lang === 'es' ? 'cv-es.pdf' : 'resume-en.pdf');
+    return match?.groups?.['fileName'] || this.buildGeneratedFileName(lang);
+  }
+
+  private buildGeneratedFileName(lang: ResumeLanguage): string {
+    const normalizedName = this.profileName
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/gu, '')
+      .replace(/[^a-zA-Z0-9\s_-]/gu, ' ')
+      .replace(/\s+/gu, ' ')
+      .trim();
+    const [firstName = 'portfolio', ...rest] = normalizedName.split(' ');
+    return `${firstName}${rest.at(-1) || 'owner'}-cv-${lang}.pdf`;
   }
 
   private showSuccessToast(message: string, title: string): void {

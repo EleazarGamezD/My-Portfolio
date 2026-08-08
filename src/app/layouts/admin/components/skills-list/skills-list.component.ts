@@ -1,15 +1,18 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
   Output,
-  ChangeDetectionStrategy,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import type { TechSkillCategory } from '@core/enum/tech-skills/tech-skill-category.enum';
+import { TECH_SKILL_CATEGORY_OPTIONS } from '@core/enum/tech-skills/tech-skill-category.enum';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { resolveImageAssetUrl } from '@core/utils/image/admin-image.utils';
-import { BadgeModule, ButtonModule, SpinnerModule } from '@coreui/angular';
+import { BadgeModule, ButtonModule, FormModule, SpinnerModule } from '@coreui/angular';
 import {
   AdminActionMenuAction,
   AdminActionMenuComponent,
@@ -24,6 +27,8 @@ import {
     BadgeModule,
     SpinnerModule,
     AdminActionMenuComponent,
+    FormsModule,
+    FormModule,
   ],
   templateUrl: './skills-list.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -33,6 +38,9 @@ export class SkillsListComponent {
   @Input() skills: IApiTechSkill[] = [];
   @Input() loading = false;
   @Input() deletingSkillId: string | null = null;
+  @Input() search = '';
+  @Input() category: TechSkillCategory | '' = '';
+  @Input() categoryOptions = TECH_SKILL_CATEGORY_OPTIONS;
   @Input() pagination: IPaginationResponse<IApiTechSkill> = {
     data: [],
     totalItems: 0,
@@ -44,6 +52,8 @@ export class SkillsListComponent {
 
   @Output() deleteSkill = new EventEmitter<IApiTechSkill>();
   @Output() pageChange = new EventEmitter<number>();
+  @Output() searchChange = new EventEmitter<string>();
+  @Output() categoryChange = new EventEmitter<TechSkillCategory | ''>();
 
   getSkillLabel(skill: IApiTechSkill): string {
     return skill.label?.es || skill.label?.en || skill.value || 'Skill';
@@ -51,6 +61,11 @@ export class SkillsListComponent {
 
   getSkillIcon(skill: IApiTechSkill): string | null {
     return resolveImageAssetUrl(skill.icon ?? null);
+  }
+
+  getSkillCategory(skill: IApiTechSkill): string {
+    const category = skill.metadata?.category;
+    return TECH_SKILL_CATEGORY_OPTIONS.find((option) => option.value === category)?.label ?? 'Sin categoría';
   }
 
   get visiblePages(): number[] {

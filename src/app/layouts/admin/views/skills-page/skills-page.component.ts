@@ -1,14 +1,16 @@
+import { SkillsListComponent } from '@admin/components/skills-list/skills-list.component';
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
-  ChangeDetectionStrategy,
   inject,
+  OnDestroy,
+  OnInit,
 } from '@angular/core';
+import { TECH_SKILL_CATEGORY_OPTIONS, TechSkillCategory } from '@core/enum/tech-skills/tech-skill-category.enum';
 import { IApiTechSkill } from '@core/interfaces/content/content.interface';
 import { IPaginationResponse } from '@core/interfaces/projects/projects.interfaces';
 import { ContentService } from '@core/services/content/content.service';
-import { SkillsListComponent } from '@admin/components/skills-list/skills-list.component';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -18,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
   changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './skills-page.component.html',
 })
-export class AdminSkillsPageComponent implements OnInit {
+export class AdminSkillsPageComponent implements OnInit, OnDestroy {
   private readonly contentService = inject(ContentService);
   private readonly toastr = inject(ToastrService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -27,6 +29,10 @@ export class AdminSkillsPageComponent implements OnInit {
   loading = true;
   deletingSkillId: string | null = null;
   readonly pageSize = 8;
+  readonly categoryOptions = TECH_SKILL_CATEGORY_OPTIONS;
+  search = '';
+  category: TechSkillCategory | '' = '';
+  private searchTimer?: ReturnType<typeof setTimeout>;
   pagination: IPaginationResponse<IApiTechSkill> = {
     data: [],
     totalItems: 0,
@@ -38,6 +44,21 @@ export class AdminSkillsPageComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.loadSkillsPage();
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this.searchTimer);
+  }
+
+  onSearchChange(value: string): void {
+    this.search = value;
+    clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => void this.loadSkillsPage(1), 300);
+  }
+
+  async onCategoryChange(value: TechSkillCategory | ''): Promise<void> {
+    this.category = value;
+    await this.loadSkillsPage(1);
   }
 
   async changePage(page: number): Promise<void> {
@@ -87,6 +108,8 @@ export class AdminSkillsPageComponent implements OnInit {
         limit: this.pageSize,
         sortBy: 'order',
         sortOrder: 'asc',
+        search: this.search,
+        category: this.category || undefined,
       });
 
       this.pagination = response;
