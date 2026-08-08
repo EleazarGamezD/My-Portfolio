@@ -1,6 +1,5 @@
 {
   "installCommand": "npm ci --legacy-peer-deps",
-  "buildCommand": "npm run config && npm run build",
   "headers": [
     {
       "source": "/index.csr.html",
