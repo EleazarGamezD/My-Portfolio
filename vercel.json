@@ -1,5 +1,7 @@
 {
   "installCommand": "npm ci --legacy-peer-deps",
+  "buildCommand": "npm run config && npm run build",
+  "outputDirectory": "dist/Portfolio_frontend_v2/browser",
   "headers": [
     {
       "source": "/index.csr.html",
@@ -21,6 +23,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.csr.html"
+    },
     {
       "source": "/(es|en)/projectDetails/(.*)",
       "destination": "/index.csr.html"
